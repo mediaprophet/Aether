@@ -1,0 +1,27 @@
+{
+  "editor.formatOnSave": true,
+  "[toml]": {
+    "editor.formatOnSave": false
+  },
+  "[handlebars]": {
+    "editor.formatOnSave": false
+  },
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[html]": {
+    "editor.formatOnSave": false
+  },
+  "dioxus.formatOnSave": "disabled",
+  // "rust-analyzer.check.workspace": true,
+  // "rust-analyzer.check.workspace": false,
+  // "rust-analyzer.check.features": "all",
+  // "rust-analyzer.cargo.buildScripts.rebuildOnSave": false,
+  // "rust-analyzer.check.workspace": false,
+  // "rust-analyzer.check.allTargets": true,
+  "rust-analyzer.cargo.features": "all",
+  "rust-analyzer.check.features": "all",
+  "rust-analyzer.cargo.extraArgs": [
+    "--tests"
+  ],
+}

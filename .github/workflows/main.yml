@@ -1,0 +1,624 @@
+# Whenever an open PR is updated, the workflow will be triggered
+#
+# This can get expensive, so we do a lot of caching and checks to prevent unnecessary runs
+# Language linting (typos, link-check) runs on every push; Rust jobs are gated behind path checks
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+
+# workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0 # todo(jon): cargo-cache wipes incremental artifacts, but we eventually want to cache them
+  # CARGO_PROFILE_DEV_PACKAGE_STAR_STRIP: debuginfo # strip debug info from deps to shrink cache
+  RUST_BACKTRACE: 1
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Path gate + shared Rust toolchain config — every Rust job consumes the
+  # `rust_stable` / `rust_nightly` outputs from here so we have a single source
+  # of truth that also works inside `strategy.matrix` (where `env.*` is not
+  # available, but `needs.*.outputs` is).
+  # ---------------------------------------------------------------------------
+  rust:
+    runs-on: warp-ubuntu-latest-x64-4x
+    outputs:
+      rust: ${{ steps.filter.outputs.rust }}
+      rust_stable: ${{ steps.toolchains.outputs.rust_stable }}
+      rust_nightly: ${{ steps.toolchains.outputs.rust_nightly }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            rust:
+              - 'packages/**'
+              - 'examples/**'
+              - 'docs/guide/**'
+              - 'src/**'
+              - '.github/**'
+              - 'lib.rs'
+              - 'Cargo.toml'
+              - 'Makefile.toml'
+      - id: toolchains
+        run: |
+          echo "rust_stable=1.94.0" >> "$GITHUB_OUTPUT"
+          echo "rust_nightly=nightly-2026-05-01" >> "$GITHUB_OUTPUT"
+
+  # ---------------------------------------------------------------------------
+  # Language linting — runs on every push
+  # ---------------------------------------------------------------------------
+  typos:
+    if: github.event.pull_request.draft == false
+    name: "Lint | Typos"
+    runs-on: warp-ubuntu-latest-x64-4x
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check for typos
+        uses: crate-ci/typos@master
+
+  link-check:
+    if: github.event.pull_request.draft == false
+    name: "Lint | Links"
+    runs-on: warp-ubuntu-latest-x64-4x
+    steps:
+      - uses: actions/checkout@v5
+      - name: Restore lychee cache
+        uses: actions/cache@v5
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
+      - name: Run lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --config ./lychee.toml './**/*.md'
+          fail: true
+
+  # ---------------------------------------------------------------------------
+  # Rust jobs — only run when relevant paths change
+  # ---------------------------------------------------------------------------
+  lint:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Lint | Clippy, fmt, schema, msrv"
+    runs-on: warp-ubuntu-latest-x64-4x
+    steps:
+      - uses: actions/checkout@v5
+      - name: Refresh apt package lists
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev
+          version: 1.2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+          components: rustfmt, clippy
+      - uses: cargo-bins/cargo-binstall@main
+      - name: Install cargo-msrv
+        run: cargo binstall cargo-msrv -y --force --locked
+      - uses: ./.github/actions/rust-cache
+      - name: Rustfmt
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        run: cargo clippy --workspace --examples --tests --all-features --all-targets -- -D warnings
+      - name: Check schema
+        run: cargo run -p dioxus-cli -- config schema --out packages/cli/schema.json
+      - name: Verify schema is up to date
+        run: |
+          if ! git diff --exit-code packages/cli/schema.json; then
+            echo "::error::Schema is out of date. Run 'dx config schema --out packages/cli/schema.json' and commit the changes."
+            exit 1
+          fi
+      - name: Verify MSRV
+        run: cargo msrv --output-format json verify -- cargo check
+      - name: Find MSRV on verify failure
+        if: ${{ failure() }}
+        run: cargo msrv --output-format json find -- cargo check
+
+  docs:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Docs | Build"
+    runs-on: warp-ubuntu-latest-x64-4x
+    steps:
+      - uses: actions/checkout@v5
+      - name: Refresh apt package lists
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev
+          version: 1.2
+      - name: Install Rust ${{ needs.rust.outputs.rust_nightly }}
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_nightly }}
+      - uses: ./.github/actions/rust-cache
+      - name: "doc --lib --all-features"
+        run: |
+          cargo doc --workspace --no-deps --all-features --document-private-items
+        env:
+          RUSTDOCFLAGS: -Dwarnings --document-private-items
+
+  test-docs:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Docs | Test"
+    runs-on: warp-ubuntu-latest-x64-4x
+    steps:
+      - uses: actions/checkout@v5
+      - name: Refresh apt package lists
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev
+          version: 1.2
+      - name: Install Rust ${{ needs.rust.outputs.rust_nightly }}
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_nightly }}
+      - uses: ./.github/actions/rust-cache
+      - name: "doc --lib --all-features"
+        run: |
+          cargo test --doc --workspace --all-features
+
+  bundle-linux-smoke:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Bundle | Linux"
+    runs-on: warp-ubuntu-latest-x64-4x
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - name: Free Disk Space
+        uses: ./.github/actions/free-disk-space
+      - name: Refresh apt package lists
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev patchelf desktop-file-utils librsvg2-dev
+          version: 1.2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+      - uses: ./.github/actions/rust-cache
+      - name: Bundle hotdog as Linux packages
+        working-directory: ./examples/01-app-demos/hotdog
+        run: cargo run --manifest-path ../../../Cargo.toml -p dioxus-cli -- bundle --platform desktop --package-types appimage --package-types deb --package-types rpm
+      - name: Verify Linux bundle outputs
+        run: |
+          find target -name '*.AppImage' -print
+          find target -name '*.deb' -print
+          find target -name '*.rpm' -print
+          test -n "$(find target -name '*.AppImage' -print -quit)"
+          test -n "$(find target -name '*.deb' -print -quit)"
+          test -n "$(find target -name '*.rpm' -print -quit)"
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: hotdog-linux-bundles
+          path: |
+            target/**/*.AppImage
+            target/**/*.deb
+            target/**/*.rpm
+          if-no-files-found: ignore
+          retention-days: 7
+
+  bundle-macos-smoke:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Bundle | macOS"
+    runs-on: warp-macos-latest-arm64-6x
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+      - uses: ./.github/actions/rust-cache
+      - name: Bundle hotdog as macOS packages
+        working-directory: ./examples/01-app-demos/hotdog
+        run: cargo run --manifest-path ../../../Cargo.toml -p dioxus-cli -- bundle --platform desktop --package-types macos --package-types dmg
+      - name: Verify macOS bundle outputs
+        run: |
+          find target -type d -name '*.app' -print
+          find target -type f -name '*.dmg' -print
+          test -n "$(find target -type d -name '*.app' -print -quit)"
+          test -n "$(find target -type f -name '*.dmg' -print -quit)"
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: hotdog-macos-bundles
+          path: |
+            target/**/*.app
+            target/**/*.dmg
+          if-no-files-found: ignore
+          retention-days: 7
+
+  windows-bundle-smoke:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Bundle | Windows"
+    runs-on: warp-windows-2025-x64-8x
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Dev Drive
+        run: ${{ github.workspace }}/.github/workflows/setup-dev-drive.ps1
+      - name: Copy Repo to Dev Drive
+        run: Copy-Item -Path "${{ github.workspace }}" -Destination "$env:DIOXUS_WORKSPACE" -Recurse
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+          components: rustfmt, clippy
+      - uses: ./.github/actions/rust-cache
+        with:
+          key: "windows-bundle-${{ runner.os }}"
+          workspaces: ${{ env.DIOXUS_WORKSPACE }}
+      - name: Bundle hotdog as Windows packages
+        working-directory: ${{ env.DIOXUS_WORKSPACE }}/examples/01-app-demos/hotdog
+        run: cargo run --release --manifest-path ..\..\..\Cargo.toml -p dioxus-cli -- bundle --platform desktop --package-types msi --package-types nsis
+      - name: Verify Windows bundle outputs
+        working-directory: ${{ env.DIOXUS_WORKSPACE }}
+        shell: pwsh
+        run: |
+          $msi = Get-ChildItem -Path .\target\dx -Recurse -File -Include "*.msi"
+          $nsis = Get-ChildItem -Path .\target\dx -Recurse -File -Include "*-setup.exe"
+          $msi | ForEach-Object { $_.FullName }
+          $nsis | ForEach-Object { $_.FullName }
+          if (-not $msi) { throw "Expected MSI artifact was not produced." }
+          if (-not $nsis) { throw "Expected NSIS artifact was not produced." }
+      - name: Target dir size by extension
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path "$env:DIOXUS_WORKSPACE\target" -Recurse -File |
+            Group-Object Extension |
+            Sort-Object { ($_.Group | Measure-Object Length -Sum).Sum } -Descending |
+            Select-Object -First 20 @{N='Ext';E={$_.Name}}, Count, @{N='SizeMB';E={[math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 1)}} |
+            Format-Table -AutoSize
+      # - name: Clean Windows artifacts before cache save
+      #   shell: pwsh
+      #   run: |
+      #     Get-ChildItem -Path "$env:DIOXUS_WORKSPACE\target" -Recurse -Include "*.pdb","*.exe","*.dll" | Remove-Item -Force
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: hotdog-windows-bundles-smoke
+          path: |
+            ${{ env.DIOXUS_WORKSPACE }}/target/**/*.msi
+            ${{ env.DIOXUS_WORKSPACE }}/target/**/*-setup.exe
+          if-no-files-found: ignore
+          retention-days: 7
+
+  windows:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Playwright | Windows"
+    runs-on: warp-windows-2025-x64-8x
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Dev Drive
+        run: ${{ github.workspace }}/.github/workflows/setup-dev-drive.ps1
+      - name: Copy Repo to Dev Drive
+        run: Copy-Item -Path "${{ github.workspace }}" -Destination "$env:DIOXUS_WORKSPACE" -Recurse
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+          targets: wasm32-unknown-unknown
+          components: rustfmt, clippy
+      - uses: ./.github/actions/rust-cache
+        with:
+          workspaces: ${{ env.DIOXUS_WORKSPACE }}
+      - name: Playwright
+        working-directory: ${{ env.DIOXUS_WORKSPACE }}/packages/playwright-tests
+        env:
+          CARGO_INCREMENTAL: 1
+        run: |
+          npm ci
+          npm install -D @playwright/test
+          npx playwright install
+          npx playwright test
+      # - name: Clean Windows artifacts before cache save
+      #   if: always()
+      #   shell: pwsh
+      #   run: |
+      #     Get-ChildItem -Path "$env:DIOXUS_WORKSPACE\target" -Recurse -Include "*.pdb","*.exe","*.dll" | Remove-Item -Force
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: playwright-report-windows
+          path: ${{ env.DIOXUS_WORKSPACE }}/packages/playwright-tests/playwright-report/
+          retention-days: 7
+
+
+  playwright:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Playwright | ${{ matrix.name }}"
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      matrix:
+        include:
+          - { os: warp-ubuntu-latest-x64-8x, name: "Linux (stable)", toolchain: "${{ needs.rust.outputs.rust_stable }}", targets: "x86_64-unknown-linux-gnu,wasm32-unknown-unknown" }
+          - { os: warp-ubuntu-latest-x64-8x, name: "Linux (beta)", toolchain: beta, targets: "x86_64-unknown-linux-gnu,wasm32-unknown-unknown" }
+          - { os: warp-macos-latest-arm64-6x, name: "macOS (stable)", toolchain: "${{ needs.rust.outputs.rust_stable }}", targets: "aarch64-apple-darwin,wasm32-unknown-unknown" }
+          - { os: warp-macos-latest-arm64-6x, name: "macOS (beta)", toolchain: beta, targets: "aarch64-apple-darwin,wasm32-unknown-unknown" }
+    steps:
+      # Do our best to cache the toolchain and node install steps
+      - uses: actions/checkout@v5
+      - name: Free Disk Space
+        if: runner.os == 'Linux'
+        uses: ./.github/actions/free-disk-space
+      - name: Refresh apt package lists
+        if: runner.os == 'Linux'
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        if: runner.os == 'Linux'
+        with:
+          packages: glib-networking glib-networking-common glib-networking-services libaa1 libabsl20220623t64 libass9 libasyncns0 libavc1394-0 libavcodec60 libavfilter9 libavformat60 libavtp0 libavutil58 libblas3 libbluray2 libbs2b0 libcaca0 libcairo-script-interpreter2 libcdparanoia0 libchromaprint1 libcjson1 libcodec2-1.2 libdav1d7 libdc1394-25 libdca0 libdecor-0-0 libdirectfb-1.7-7t64 libdv4t64 libdvdnav4 libdvdread8t64 libfaad2 libflac12t64 libfluidsynth3 libfreeaptx0 libgav1-1 libgme0 libgraphene-1.0-0 libgsm1 libgssdp-1.6-0 libgstreamer-plugins-good1.0-0 libgtk-4-common libgupnp-1.6-0 libgupnp-igd-1.6-0 libhwy1t64 libiec61883-0 libimath-3-1-29t64 libinstpatch-1.0-2 libjack-jackd2-0 libjxl0.7 liblapack3 liblc3-1 libldacbt-enc2 liblilv-0-0 liblrdf0 libltc11 libmbedcrypto7t64 libmfx1 libmjpegutils-2.1-0t64 libmodplug1 libmp3lame0 libmpcdec6 libmpeg2encpp-2.1-0t64 libmpg123-0t64 libmplex2-2.1-0t64 libmysofa1 libneon27t64 libnice10 libogg0 libopenal-data libopenal1 libopenexr-3-1-30 libopenh264-7 libopenmpt0t64 libopenni2-0 liborc-0.4-0t64 libpipewire-0.3-0t64 libplacebo338 libpocketsphinx3 libpostproc57 libproxy1v5 libpulse0 libqrencode4 libraptor2-0 librav1e0 libraw1394-11 librist4 librubberband2 libsamplerate0 libsbc1 libsdl2-2.0-0 libsecret-common libserd-0-0 libshine3 libshout3 libsndfile1 libsndio7.0 libsord-0-0 libsoundtouch1 libsoup-3.0-0 libsoup-3.0-common libsoxr0 libspa-0.2-modules libspandsp2t64 libspeex1 libsphinxbase3t64 libsratom-0-0 libsrt1.5-gnutls libsrtp2-1 libssh-gcrypt-4 libsvtav1enc1d1 libswresample4 libswscale7 libtag1v5 libtag1v5-vanilla libtheora0 libtwolame0 libudfread0 libunibreak5 libv4l-0t64 libv4lconvert0t64 libva-drm2 libva-x11-2 libva2 libvdpau1 libvidstab1.1 libvisual-0.4-0 libvo-aacenc0 libvo-amrwbenc0 libvorbis0a libvorbisenc2 libvorbisfile3 libvpl2 libwavpack1 libwebrtc-audio-processing1 libwildmidi2 libx265-199 libxcb-xkb1 libxkbcommon-x11-0 libcups2t64 libxml2 libxml2-dev libxvidcore4 libyuv0 libzbar0t64 libzimg2 libzix-0-0 libzvbi-common libzvbi0t64 libzxing3 ocl-icd-libopencl1 timgm6mb-soundfont xfonts-encodings xfonts-utils binutils lld binutils-devel binutils-gold fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont fonts-wqy-zenhei gstreamer1.0-libav gstreamer1.0-plugins-bad gstreamer1.0-plugins-good libavif16 libevent-2.1-7t64 libgstreamer-plugins-bad1.0-0 libharfbuzz-icu0 libhyphen0 libmanette-0.2-0 libsecret-1-0 libwoff1 xfonts-cyrillic xfonts-scalable fonts-ipafont-mincho fonts-tlwg-loma gstreamer1.0-x
+          version: 1.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          targets: ${{ matrix.targets }}
+      - uses: ./.github/actions/rust-cache
+        with:
+          key: "playwright-${{ matrix.toolchain }}-${{ runner.os }}"
+      - name: Wipe dx cache
+        if: runner.os == 'Linux'
+        run: |
+          rm -rf ./target/dx
+      - name: Playwright
+        working-directory: ./packages/playwright-tests
+        env:
+          # The hot patch test requires incremental compilation
+          CARGO_INCREMENTAL: 1
+        run: |
+          npm ci
+          npm install -D @playwright/test
+          npx playwright install
+          npx playwright test
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.toolchain }}-${{ runner.os }}
+          path: ./packages/playwright-tests/playwright-report/
+          retention-days: 7
+
+
+
+  test:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Test | Linux"
+    runs-on: warp-ubuntu-latest-x64-8x
+    steps:
+      - uses: actions/checkout@v5
+      - name: Free Disk Space
+        uses: ./.github/actions/free-disk-space
+      - name: Refresh apt package lists
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev
+          version: 1.2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+          components: rustfmt, clippy
+      - uses: ./.github/actions/rust-cache
+      - uses: browser-actions/setup-firefox@latest
+      - run: cargo test --lib --bins --tests --examples --workspace --exclude dioxus-desktop
+
+  release-test:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Test | Linux (Release)"
+    runs-on: warp-ubuntu-latest-x64-8x
+    steps:
+      - uses: actions/checkout@v5
+      - name: Free Disk Space
+        uses: ./.github/actions/free-disk-space
+      - name: Refresh apt package lists
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev
+          version: 1.2
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+          components: rustfmt, clippy
+      - uses: ./.github/actions/rust-cache
+      - uses: browser-actions/setup-firefox@latest
+      - run: cargo test --lib --bins --tests --examples --workspace --exclude dioxus-desktop --profile release-unoptimized
+
+  matrix_test:
+    needs: rust
+    runs-on: ${{ matrix.platform.os }}
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Cross | ${{ matrix.platform.target }}"
+    env:
+      RUST_CARGO_COMMAND: ${{ matrix.platform.cross == true && 'cross' || 'cargo' }}
+    strategy:
+      matrix:
+        platform:
+          - {
+              target: aarch64-apple-darwin,
+              os: warp-macos-latest-arm64-6x,
+              toolchain: "${{ needs.rust.outputs.rust_stable }}",
+              cross: false,
+              command: "test",
+              args: "--all --tests",
+              platform: "desktop",
+            }
+          - {
+              target: aarch64-apple-ios,
+              os: warp-macos-latest-arm64-6x,
+              toolchain: "${{ needs.rust.outputs.rust_stable }}",
+              cross: false,
+              command: "build",
+              args: "--package dioxus-desktop",
+              platform: "ios",
+            }
+          - {
+              target: aarch64-unknown-linux-gnu,
+              os: warp-ubuntu-latest-arm64-4x,
+              toolchain: "${{ needs.rust.outputs.rust_stable }}",
+              cross: false,
+              command: "build",
+              args: "--all --tests",
+              platform: "desktop",
+            }
+          - {
+              target: aarch64-linux-android,
+              os: warp-ubuntu-latest-x64-4x,
+              toolchain: "${{ needs.rust.outputs.rust_stable }}",
+              cross: true,
+              command: "build",
+              args: "--package dioxus-desktop",
+              platform: "android",
+            }
+
+    steps:
+      - uses: actions/checkout@v5
+      - name: Free Disk Space
+        if: runner.os == 'Linux'
+        uses: ./.github/actions/free-disk-space
+
+      - name: Refresh apt package lists
+        if: ${{ runner.os == 'Linux' && matrix.platform.target != 'aarch64-unknown-linux-gnu' }}
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        if: ${{ runner.os == 'Linux' && matrix.platform.target != 'aarch64-unknown-linux-gnu' }}
+        with:
+          packages: pkg-config libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev
+          version: 1.2-${{ matrix.platform.target }}-${{ matrix.platform.os }} # disambiguate since we're in a matrix and this caching action doesn't factor in these variables
+
+      - name: Install Linux desktop dependencies for ARM
+        if: ${{ matrix.platform.target == 'aarch64-unknown-linux-gnu' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev
+
+      - name: Verify GLib pkg-config metadata on ARM Linux
+        if: ${{ matrix.platform.target == 'aarch64-unknown-linux-gnu' }}
+        run: pkg-config --modversion glib-2.0
+
+      - name: Configure pkg-config for ARM Linux desktop deps
+        if: ${{ matrix.platform.target == 'aarch64-unknown-linux-gnu' }}
+        run: |
+          echo "PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_LIBDIR=/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig" >> "$GITHUB_ENV"
+
+      - name: install stable
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.platform.toolchain }}
+          targets: ${{ matrix.platform.target }}
+          components: rustfmt
+
+      - name: Install nasm for windows (tls)1
+        if: ${{ matrix.platform.target == 'x86_64-pc-windows-msvc' }}
+        uses: ilammy/setup-nasm@v1
+
+      - name: Install cross
+        if: ${{ matrix.platform.cross == true }}
+        uses: taiki-e/install-action@cross
+
+      - uses: ./.github/actions/rust-cache
+        with:
+          key: "matrix-${{ matrix.platform.target }}"
+
+      - name: test
+        run: |
+          ${{ env.RUST_CARGO_COMMAND }} ${{ matrix.platform.command }} ${{ matrix.platform.args }} --target ${{ matrix.platform.target }}
+
+  # Verify that declared minimum dependency versions actually compile.
+  # Catches issues like https://github.com/DioxusLabs/dioxus/issues/5433 where
+  # the code uses APIs not available in the declared minimum version.
+  min-deps:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Check | Minimum dependency versions"
+    runs-on: warp-ubuntu-latest-x64-4x
+    steps:
+      - uses: actions/checkout@v5
+      - name: Refresh apt package lists
+        run: sudo apt-get update
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libwebkit2gtk-4.1-dev libgtk-3-dev libasound2-dev libudev-dev libayatana-appindicator3-dev libglib2.0-dev
+          version: 1.2
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_nightly }}
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+      - uses: ./.github/actions/rust-cache
+      - name: Generate minimal-version lockfile
+        run: cargo +${{ needs.rust.outputs.rust_nightly }} update -Zdirect-minimal-versions
+      - name: Check workspace with minimum versions
+        run: cargo +${{ needs.rust.outputs.rust_stable }} check --workspace
+
+  nix:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Nix | ${{ matrix.name }}"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - { os: warp-ubuntu-latest-x64-8x, name: Linux }
+          - { os: warp-macos-latest-arm64-6x, name: macOS }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: nixbuild/nix-quick-install-action@master
+      - uses: jkelleyrtp/cache-nix-action@jk/use-warpbuild
+        with:
+          primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.nix', 'flake.lock') }}-${{ hashFiles('Cargo.lock') }}
+          restore-prefixes-first-match: |
+            nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.nix', 'flake.lock') }}-
+            nix-${{ runner.os }}-${{ runner.arch }}-
+          backend: warpbuild
+      - name: Build dioxus-cli from the flake
+        run: nix build .#dioxus-cli
+      - name: Smoke test devShell
+        shell: bash
+        run: |
+          nix develop .#default -c bash -lc '
+            cargo --version
+            rustc --version
+            pkg-config --modversion openssl
+            if [[ "${{ runner.os }}" == "Linux" ]]; then
+              pkg-config --modversion gtk+-3.0
+              pkg-config --modversion webkit2gtk-4.1
+            fi
+          '
