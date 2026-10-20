@@ -37,5 +37,5 @@ mod lens;
 mod ui;
 
 pub use dom::{Dom, El, Node, NodeId, dyn_text, el, mount, text};
-pub use lens::{Field, Index, Lens, Path, Root, VecLens};
+pub use lens::{ArrayIndex, ArrayLens, Field, Index, Lens, Path, Root, VecLens};
 pub use ui::{Ctx, Effect, Memo, ReadGuard, ResourceHandle, ResourceState, Ui, WriteGuard};

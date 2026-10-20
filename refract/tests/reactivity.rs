@@ -496,3 +496,61 @@ fn multiple_read_guards_coexist() {
         assert_eq!(&*b, "hi");
     });
 }
+
+#[test]
+fn zero_heap_fixed_array_lens_granularity() {
+    use refract::ArrayLens;
+
+    #[derive(Clone, Copy, Default, PartialEq, Eq, Debug)]
+    struct QuinStub {
+        subject: u64,
+        predicate: u64,
+        object: u64,
+    }
+
+    struct ZeroHeapState {
+        slots: [QuinStub; 4],
+    }
+
+    let mut ui = Ui::new(ZeroHeapState {
+        slots: [QuinStub::default(); 4],
+    });
+
+    let slots = lens!(ZeroHeapState => 0: slots);
+    let slot0 = slots.at(0);
+    let slot1 = slots.at(1);
+
+    let slot0_runs = Rc::new(Cell::new(0));
+    let slot1_runs = Rc::new(Cell::new(0));
+
+    let c0 = slot0_runs.clone();
+    ui.effect(move |ctx| {
+        let _ = *ctx.get(slot0);
+        c0.set(c0.get() + 1);
+    });
+
+    let c1 = slot1_runs.clone();
+    ui.effect(move |ctx| {
+        let _ = *ctx.get(slot1);
+        c1.set(c1.get() + 1);
+    });
+
+    assert_eq!(slot0_runs.get(), 1);
+    assert_eq!(slot1_runs.get(), 1);
+
+    // Mutating slot 0 must wake slot0 reader only, not slot1
+    ui.with(|ctx| {
+        ctx.write(slot0).subject = 42;
+    });
+
+    assert_eq!(slot0_runs.get(), 2);
+    assert_eq!(slot1_runs.get(), 1);
+
+    // Mutating slot 1 must wake slot1 reader only
+    ui.with(|ctx| {
+        ctx.write(slot1).predicate = 99;
+    });
+
+    assert_eq!(slot0_runs.get(), 2);
+    assert_eq!(slot1_runs.get(), 2);
+}
