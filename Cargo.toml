@@ -1,4 +1,4 @@
-[workspace]
+﻿[workspace]
 resolver = "2"
 members = [
     "packages/dioxus",
@@ -450,7 +450,7 @@ name = "dioxus-examples"
 authors = ["Jonathan Kelley"]
 edition = "2024"
 description = "Top level crate for the Dioxus repository"
-license = "MIT OR Apache-2.0"
+license-file = "LICENSE"
 repository = "https://github.com/DioxusLabs/dioxus/"
 homepage = "https://dioxuslabs.com"
 documentation = "https://dioxuslabs.com"
@@ -1131,3 +1131,4 @@ doc-scrape-examples = true
 [[example]]
 name = "__scrape_example_list"
 path = "examples/scripts/scrape_examples.rs"
+
