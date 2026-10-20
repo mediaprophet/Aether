@@ -84,6 +84,7 @@ pub struct WindowConfig {
     pub(crate) disable_file_drop_handler: bool,
     pub(crate) additional_windows_args: Option<String>,
     pub(crate) navigation_handler: Option<NavigationHandler>,
+    pub(crate) enable_webgpu: bool,
 
     #[allow(clippy::type_complexity)]
     pub(crate) on_window: Option<Box<dyn FnMut(Arc<Window>, &mut VirtualDom) + 'static>>,
@@ -122,6 +123,7 @@ impl WindowConfig {
             on_window: None,
             additional_windows_args: None,
             navigation_handler: None,
+            enable_webgpu: true,
         }
     }
 
@@ -301,6 +303,16 @@ impl WindowConfig {
     /// Add additional windows only launch arguments for webview2
     pub fn with_windows_browser_args(mut self, additional_args: impl ToString) -> Self {
         self.additional_windows_args = Some(additional_args.to_string());
+        self
+    }
+
+    /// Configure WebGPU hardware acceleration and limit compatibility shimming.
+    ///
+    /// When enabled (the default), WebView2 launches with WebGPU and ANGLE/Vulkan flags,
+    /// and injects the Qualia WebGPU device limit shim so `requestDevice()` avoids deprecated
+    /// parameter errors.
+    pub fn with_webgpu(mut self, enable: bool) -> Self {
+        self.enable_webgpu = enable;
         self
     }
 
@@ -534,6 +546,12 @@ impl Config {
     /// Add additional windows only launch arguments for webview2
     pub fn with_windows_browser_args(mut self, additional_args: impl ToString) -> Self {
         self.window = self.window.with_windows_browser_args(additional_args);
+        self
+    }
+
+    /// Configure WebGPU hardware acceleration and limit compatibility shimming for the default window.
+    pub fn with_webgpu(mut self, enable: bool) -> Self {
+        self.window = self.window.with_webgpu(enable);
         self
     }
 
