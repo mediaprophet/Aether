@@ -182,6 +182,62 @@ pub trait VecLens<S: 'static, T: 'static>: Lens<S, Target = Vec<T>> {
 
 impl<S: 'static, T: 'static, L: Lens<S, Target = Vec<T>>> VecLens<S, T> for L {}
 
+/// An element projection into a fixed-size stack array `[T; N]`, carrying a runtime index.
+///
+/// Designed specifically for zero-heap architectures (such as QualiaDB Rule 0) where state
+/// is stored in fixed-size buffers rather than heap-allocated `Vec`s.
+pub struct ArrayIndex<P, T, const N: usize> {
+    parent: P,
+    index: usize,
+    _marker: std::marker::PhantomData<fn() -> T>,
+}
+
+impl<P: Copy, T, const N: usize> Clone for ArrayIndex<P, T, N> {
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+impl<P: Copy, T, const N: usize> Copy for ArrayIndex<P, T, N> {}
+
+impl<S, P, T, const N: usize> Lens<S> for ArrayIndex<P, T, N>
+where
+    S: 'static,
+    P: Lens<S, Target = [T; N]>,
+    T: 'static,
+{
+    type Target = T;
+
+    fn push_path(&self, out: &mut Path) {
+        self.parent.push_path(out);
+        out.push(self.index as u32);
+    }
+
+    fn get<'a>(&self, state: &'a S) -> &'a T {
+        &self.parent.get(state)[self.index]
+    }
+
+    fn get_mut<'a>(&self, state: &'a mut S) -> &'a mut T {
+        &mut self.parent.get_mut(state)[self.index]
+    }
+}
+
+/// Extension for lenses over fixed-size stack arrays `[T; N]`: project to an element.
+pub trait ArrayLens<S: 'static, T: 'static, const N: usize>: Lens<S, Target = [T; N]> {
+    /// Lens to element `index`. Writing one element does not invalidate
+    /// readers of its siblings.
+    fn at(self, index: usize) -> ArrayIndex<Self, T, N> {
+        assert!(index < N, "index out of bounds for fixed array lens");
+        ArrayIndex {
+            parent: self,
+            index,
+            _marker: std::marker::PhantomData,
+        }
+    }
+}
+
+impl<S: 'static, T: 'static, const N: usize, L: Lens<S, Target = [T; N]>> ArrayLens<S, T, N> for L {}
+
+
 /// Build a field lens from a chain of `segment: field` pairs.
 ///
 /// ```ignore
