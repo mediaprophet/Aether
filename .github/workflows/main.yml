@@ -9,13 +9,15 @@ on:
   push:
     branches:
       - main
+      - qualia-main
 
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - main
+      - qualia-main
 
-# workflow_dispatch:
+  workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -34,7 +36,7 @@ jobs:
   # available, but `needs.*.outputs` is).
   # ---------------------------------------------------------------------------
   rust:
-    runs-on: warp-ubuntu-latest-x64-4x
+    runs-on: ubuntu-latest
     outputs:
       rust: ${{ steps.filter.outputs.rust }}
       rust_stable: ${{ steps.toolchains.outputs.rust_stable }}
@@ -65,7 +67,7 @@ jobs:
   typos:
     if: github.event.pull_request.draft == false
     name: "Lint | Typos"
-    runs-on: warp-ubuntu-latest-x64-4x
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Check for typos
@@ -74,7 +76,7 @@ jobs:
   link-check:
     if: github.event.pull_request.draft == false
     name: "Lint | Links"
-    runs-on: warp-ubuntu-latest-x64-4x
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Restore lychee cache
@@ -96,7 +98,7 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Lint | Clippy, fmt, schema, msrv"
-    runs-on: warp-ubuntu-latest-x64-4x
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Refresh apt package lists
@@ -135,7 +137,7 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Docs | Build"
-    runs-on: warp-ubuntu-latest-x64-4x
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Refresh apt package lists
@@ -159,7 +161,7 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Docs | Test"
-    runs-on: warp-ubuntu-latest-x64-4x
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Refresh apt package lists
@@ -181,7 +183,7 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Bundle | Linux"
-    runs-on: warp-ubuntu-latest-x64-4x
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
@@ -223,7 +225,7 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Bundle | macOS"
-    runs-on: warp-macos-latest-arm64-6x
+    runs-on: macos-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
@@ -254,14 +256,14 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Bundle | Windows"
-    runs-on: warp-windows-2025-x64-8x
+    runs-on: windows-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
       - name: Setup Dev Drive
         run: ${{ github.workspace }}/.github/workflows/setup-dev-drive.ps1
       - name: Copy Repo to Dev Drive
-        run: Copy-Item -Path "${{ github.workspace }}" -Destination "$env:DIOXUS_WORKSPACE" -Recurse
+        run: Copy-Item -Path "${{ github.workspace }}" -Destination "$env:AETHER_WORKSPACE" -Recurse
       - name: Install Rust
         uses: dtolnay/rust-toolchain@master
         with:
@@ -270,12 +272,12 @@ jobs:
       - uses: ./.github/actions/rust-cache
         with:
           key: "windows-bundle-${{ runner.os }}"
-          workspaces: ${{ env.DIOXUS_WORKSPACE }}
+          workspaces: ${{ env.AETHER_WORKSPACE }}
       - name: Bundle hotdog as Windows packages
-        working-directory: ${{ env.DIOXUS_WORKSPACE }}/examples/01-app-demos/hotdog
+        working-directory: ${{ env.AETHER_WORKSPACE }}/examples/01-app-demos/hotdog
         run: cargo run --release --manifest-path ..\..\..\Cargo.toml -p dioxus-cli -- bundle --platform desktop --package-types msi --package-types nsis
       - name: Verify Windows bundle outputs
-        working-directory: ${{ env.DIOXUS_WORKSPACE }}
+        working-directory: ${{ env.AETHER_WORKSPACE }}
         shell: pwsh
         run: |
           $msi = Get-ChildItem -Path .\target\dx -Recurse -File -Include "*.msi"
@@ -287,7 +289,7 @@ jobs:
       - name: Target dir size by extension
         shell: pwsh
         run: |
-          Get-ChildItem -Path "$env:DIOXUS_WORKSPACE\target" -Recurse -File |
+          Get-ChildItem -Path "$env:AETHER_WORKSPACE\target" -Recurse -File |
             Group-Object Extension |
             Sort-Object { ($_.Group | Measure-Object Length -Sum).Sum } -Descending |
             Select-Object -First 20 @{N='Ext';E={$_.Name}}, Count, @{N='SizeMB';E={[math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 1)}} |
@@ -295,14 +297,14 @@ jobs:
       # - name: Clean Windows artifacts before cache save
       #   shell: pwsh
       #   run: |
-      #     Get-ChildItem -Path "$env:DIOXUS_WORKSPACE\target" -Recurse -Include "*.pdb","*.exe","*.dll" | Remove-Item -Force
+      #     Get-ChildItem -Path "$env:AETHER_WORKSPACE\target" -Recurse -Include "*.pdb","*.exe","*.dll" | Remove-Item -Force
       - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: hotdog-windows-bundles-smoke
           path: |
-            ${{ env.DIOXUS_WORKSPACE }}/target/**/*.msi
-            ${{ env.DIOXUS_WORKSPACE }}/target/**/*-setup.exe
+            ${{ env.AETHER_WORKSPACE }}/target/**/*.msi
+            ${{ env.AETHER_WORKSPACE }}/target/**/*-setup.exe
           if-no-files-found: ignore
           retention-days: 7
 
@@ -310,14 +312,14 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Playwright | Windows"
-    runs-on: warp-windows-2025-x64-8x
+    runs-on: windows-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
       - name: Setup Dev Drive
         run: ${{ github.workspace }}/.github/workflows/setup-dev-drive.ps1
       - name: Copy Repo to Dev Drive
-        run: Copy-Item -Path "${{ github.workspace }}" -Destination "$env:DIOXUS_WORKSPACE" -Recurse
+        run: Copy-Item -Path "${{ github.workspace }}" -Destination "$env:AETHER_WORKSPACE" -Recurse
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -329,9 +331,9 @@ jobs:
           components: rustfmt, clippy
       - uses: ./.github/actions/rust-cache
         with:
-          workspaces: ${{ env.DIOXUS_WORKSPACE }}
+          workspaces: ${{ env.AETHER_WORKSPACE }}
       - name: Playwright
-        working-directory: ${{ env.DIOXUS_WORKSPACE }}/packages/playwright-tests
+        working-directory: ${{ env.AETHER_WORKSPACE }}/packages/playwright-tests
         env:
           CARGO_INCREMENTAL: 1
         run: |
@@ -343,12 +345,12 @@ jobs:
       #   if: always()
       #   shell: pwsh
       #   run: |
-      #     Get-ChildItem -Path "$env:DIOXUS_WORKSPACE\target" -Recurse -Include "*.pdb","*.exe","*.dll" | Remove-Item -Force
+      #     Get-ChildItem -Path "$env:AETHER_WORKSPACE\target" -Recurse -Include "*.pdb","*.exe","*.dll" | Remove-Item -Force
       - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: playwright-report-windows
-          path: ${{ env.DIOXUS_WORKSPACE }}/packages/playwright-tests/playwright-report/
+          path: ${{ env.AETHER_WORKSPACE }}/packages/playwright-tests/playwright-report/
           retention-days: 7
 
 
@@ -361,10 +363,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - { os: warp-ubuntu-latest-x64-8x, name: "Linux (stable)", toolchain: "${{ needs.rust.outputs.rust_stable }}", targets: "x86_64-unknown-linux-gnu,wasm32-unknown-unknown" }
-          - { os: warp-ubuntu-latest-x64-8x, name: "Linux (beta)", toolchain: beta, targets: "x86_64-unknown-linux-gnu,wasm32-unknown-unknown" }
-          - { os: warp-macos-latest-arm64-6x, name: "macOS (stable)", toolchain: "${{ needs.rust.outputs.rust_stable }}", targets: "aarch64-apple-darwin,wasm32-unknown-unknown" }
-          - { os: warp-macos-latest-arm64-6x, name: "macOS (beta)", toolchain: beta, targets: "aarch64-apple-darwin,wasm32-unknown-unknown" }
+          - { os: ubuntu-latest, name: "Linux (stable)", toolchain: "${{ needs.rust.outputs.rust_stable }}", targets: "x86_64-unknown-linux-gnu,wasm32-unknown-unknown" }
+          - { os: ubuntu-latest, name: "Linux (beta)", toolchain: beta, targets: "x86_64-unknown-linux-gnu,wasm32-unknown-unknown" }
+          - { os: macos-latest, name: "macOS (stable)", toolchain: "${{ needs.rust.outputs.rust_stable }}", targets: "aarch64-apple-darwin,wasm32-unknown-unknown" }
+          - { os: macos-latest, name: "macOS (beta)", toolchain: beta, targets: "aarch64-apple-darwin,wasm32-unknown-unknown" }
     steps:
       # Do our best to cache the toolchain and node install steps
       - uses: actions/checkout@v5
@@ -417,7 +419,7 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Test | Linux"
-    runs-on: warp-ubuntu-latest-x64-8x
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Free Disk Space
@@ -440,7 +442,7 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Test | Linux (Release)"
-    runs-on: warp-ubuntu-latest-x64-8x
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Free Disk Space
@@ -471,7 +473,7 @@ jobs:
         platform:
           - {
               target: aarch64-apple-darwin,
-              os: warp-macos-latest-arm64-6x,
+              os: macos-latest,
               toolchain: "${{ needs.rust.outputs.rust_stable }}",
               cross: false,
               command: "test",
@@ -480,7 +482,7 @@ jobs:
             }
           - {
               target: aarch64-apple-ios,
-              os: warp-macos-latest-arm64-6x,
+              os: macos-latest,
               toolchain: "${{ needs.rust.outputs.rust_stable }}",
               cross: false,
               command: "build",
@@ -489,7 +491,7 @@ jobs:
             }
           - {
               target: aarch64-unknown-linux-gnu,
-              os: warp-ubuntu-latest-arm64-4x,
+              os: ubuntu-24.04-arm,
               toolchain: "${{ needs.rust.outputs.rust_stable }}",
               cross: false,
               command: "build",
@@ -498,7 +500,7 @@ jobs:
             }
           - {
               target: aarch64-linux-android,
-              os: warp-ubuntu-latest-x64-4x,
+              os: ubuntu-latest,
               toolchain: "${{ needs.rust.outputs.rust_stable }}",
               cross: true,
               command: "build",
@@ -567,7 +569,7 @@ jobs:
     needs: rust
     if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
     name: "Check | Minimum dependency versions"
-    runs-on: warp-ubuntu-latest-x64-4x
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Refresh apt package lists
@@ -596,18 +598,17 @@ jobs:
     strategy:
       matrix:
         include:
-          - { os: warp-ubuntu-latest-x64-8x, name: Linux }
-          - { os: warp-macos-latest-arm64-6x, name: macOS }
+          - { os: ubuntu-latest, name: Linux }
+          - { os: macos-latest, name: macOS }
     steps:
       - uses: actions/checkout@v5
       - uses: nixbuild/nix-quick-install-action@master
-      - uses: jkelleyrtp/cache-nix-action@jk/use-warpbuild
+      - uses: nix-community/cache-nix-action@v5
         with:
           primary-key: nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.nix', 'flake.lock') }}-${{ hashFiles('Cargo.lock') }}
           restore-prefixes-first-match: |
             nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.nix', 'flake.lock') }}-
             nix-${{ runner.os }}-${{ runner.arch }}-
-          backend: warpbuild
       - name: Build dioxus-cli from the flake
         run: nix build .#dioxus-cli
       - name: Smoke test devShell
