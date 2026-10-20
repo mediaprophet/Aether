@@ -96,3 +96,4 @@ fn MyComponent(name: String) -> Element {
 4. Hot-reload has two systems: RSX template diffing (fast) and Subsecond code patching (full Rust)
 5. Assets use link sections and binary patching - the `asset!()` macro creates symbols the CLI processes
 
+

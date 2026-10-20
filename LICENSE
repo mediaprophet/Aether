@@ -1,4 +1,4 @@
-﻿Copyright (c) 2026 Timothy Charles Holborn
+Copyright (c) 2026 Timothy Charles Holborn
 https://www.linkedin.com/in/ubiquitous/ | timothy.holborn@gmail.com
 
 Attribution-NonCommercial-NoDerivatives 4.0 International
@@ -38,9 +38,3 @@ these terms and conditions.
 
 For the full legal text of the license, please visit:
 https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
-
-=======================================================================
-All Qualia-specific modifications, integrations, extensions, and
-downstream authoring within this framework are licensed under the
-above terms and owned by Timothy Charles Holborn. Upstream Dioxus
-source code retains its respective Apache-2.0 and MIT licensing.

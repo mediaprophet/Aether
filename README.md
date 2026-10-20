@@ -1,4 +1,4 @@
-<p>
+﻿<p>
     <p align="center" >
       <!-- <img src="./notes/header-light-updated.svg#gh-light-mode-only" >
       <img src="./notes/header-dark-updated.svg#gh-dark-mode-only" > -->
@@ -51,20 +51,20 @@
     <span> | </span>
     <a href="https://dioxuslabs.com/learn/0.7/tutorial"> Tutorial </a>
     <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/zh-cn/README.md"> 中文 </a>
+    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/zh-cn/README.md"> ä¸­æ–‡ </a>
     <span> | </span>
     <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/pt-br/README.md"> PT-BR </a>
     <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/ja-jp/README.md"> 日本語 </a>
+    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/ja-jp/README.md"> æ—¥æœ¬èªž </a>
     <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/tr-tr"> Türkçe </a>
+    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/tr-tr"> TÃ¼rkÃ§e </a>
     <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/ko-kr"> 한국어 </a>
+    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/ko-kr"> í•œêµ­ì–´ </a>
   </h3>
 </div>
 <br>
 <!-- <p align="center">
-  <a href="https://github.com/DioxusLabs/dioxus/releases/tag/v0.7.0">✨ Dioxus 0.7 is out!!! ✨</a>
+  <a href="https://github.com/DioxusLabs/dioxus/releases/tag/v0.7.0">âœ¨ Dioxus 0.7 is out!!! âœ¨</a>
 </p> -->
 <br>
 
@@ -82,7 +82,7 @@ fn app() -> Element {
 }
 ```
 
-## ⭐️ Unique features:
+## â­ï¸ Unique features:
 
 - Cross-platform apps in three lines of code (web, desktop, mobile, server, and more)
 - [Ergonomic state management](https://dioxuslabs.com/blog/release-050) combines the best of React, Solid, and Svelte
@@ -273,13 +273,14 @@ dx serve --example <example> --platform web -- --no-default-features
   <img src="https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=30&columns=10" />
 </a>
 
-## License
+## License & Attribution
 
-This project is licensed under either the [MIT license] or the [Apache-2 License].
+This repository is a specialized application framework for the Qualia ecosystem.
 
-[apache-2 license]: https://github.com/DioxusLabs/dioxus/blob/master/LICENSE-APACHE
-[mit license]: https://github.com/DioxusLabs/dioxus/blob/master/LICENSE-MIT
+**Copyright (c) 2026 Timothy Charles Holborn**  
+https://www.linkedin.com/in/ubiquitous/ | timothy.holborn@gmail.com  
+**License:** Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)  
+See [`LICENSE`](LICENSE) for full legal terms.
 
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in Dioxus by you, shall be licensed as MIT or Apache-2, without any additional
-terms or conditions.
+Upstream historical licenses (Apache-2.0 / MIT) are qualified and preserved under [`upstream-licenses/`](upstream-licenses/README.md) for provenance.
+
