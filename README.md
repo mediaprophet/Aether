@@ -1,286 +1,167 @@
-﻿<p>
-    <p align="center" >
-      <!-- <img src="./notes/header-light-updated.svg#gh-light-mode-only" >
-      <img src="./notes/header-dark-updated.svg#gh-dark-mode-only" > -->
-      <!-- <a href="https://dioxuslabs.com">
-          <img src="./notes/flat-splash.avif">
-      </a> -->
-      <img src="./notes/splash-header-darkmode.svg#gh-dark-mode-only" style="width: 80%; height: auto;">
-      <img src="./notes/splash-header.svg#gh-light-mode-only" style="width: 80%; height: auto;">
-      <!-- <img src="./notes/image-splash.avif"> -->
-      <br>
-    </p>
-</p>
-<div align="center">
-  <!-- Crates version -->
-  <a href="https://crates.io/crates/dioxus">
-    <img src="https://img.shields.io/crates/v/dioxus.svg?style=flat-square"
-    alt="Crates.io version" />
-  </a>
-  <!-- Downloads -->
-  <a href="https://crates.io/crates/dioxus">
-    <img src="https://img.shields.io/crates/d/dioxus.svg?style=flat-square"
-      alt="Download" />
-  </a>
-  <!-- docs -->
-  <a href="https://docs.rs/dioxus">
-    <img src="https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square"
-      alt="docs.rs docs" />
-  </a>
-  <!-- CI -->
-  <a href="https://github.com/jkelleyrtp/dioxus/actions">
-    <img src="https://github.com/dioxuslabs/dioxus/actions/workflows/main.yml/badge.svg"
-      alt="CI status" />
-  </a>
+# Aether — Sovereign Application Framework for QualiaDB & Webizen
 
-  <!--Awesome -->
-  <a href="https://dioxuslabs.com/awesome">
-    <img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="Awesome Page" />
-  </a>
-  <!-- Discord -->
-  <a href="https://discord.gg/XgGxMSkvUM">
-    <img src="https://img.shields.io/discord/899851952891002890.svg?logo=discord&style=flat-square" alt="Discord Link" />
-  </a>
-</div>
+> High-performance cross-platform application framework with native WebGPU acceleration, zero-heap lens reactivity (`refract`), spatial window ergonomics, and unified desktop, web, and spatial rendering.
 
-<div align="center">
-  <h3>
-    <a href="https://dioxuslabs.com"> Website </a>
-    <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/tree/main/examples"> Examples </a>
-    <span> | </span>
-    <a href="https://dioxuslabs.com/learn/0.7/tutorial"> Tutorial </a>
-    <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/zh-cn/README.md"> ä¸­æ–‡ </a>
-    <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/pt-br/README.md"> PT-BR </a>
-    <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/ja-jp/README.md"> æ—¥æœ¬èªž </a>
-    <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/tr-tr"> TÃ¼rkÃ§e </a>
-    <span> | </span>
-    <a href="https://github.com/DioxusLabs/dioxus/blob/main/notes/translations/ko-kr"> í•œêµ­ì–´ </a>
-  </h3>
-</div>
-<br>
-<!-- <p align="center">
-  <a href="https://github.com/DioxusLabs/dioxus/releases/tag/v0.7.0">âœ¨ Dioxus 0.7 is out!!! âœ¨</a>
-</p> -->
-<br>
+[![CI](https://github.com/mediaprophet/rust-app-framework/actions/workflows/main.yml/badge.svg)](https://github.com/mediaprophet/rust-app-framework/actions/workflows/main.yml)
+[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC_BY--NC--ND_4.0-lightgrey.svg)](LICENSE-QUALIA)
+[![Ecosystem: QualiaDB](https://img.shields.io/badge/Ecosystem-QualiaDB-blue.svg)](https://github.com/mediaprophet/qualiaDB)
+[![Platform: Desktop_|_Web_|_Mobile](https://img.shields.io/badge/Platforms-Desktop_%7C_Web_%7C_Mobile-orange.svg)](#architecture--workspace-structure)
 
-Build for web, desktop, and mobile, and more with a single codebase. Zero-config setup, integrated hot-reloading, and signals-based state management. Add backend functionality with Server Functions and bundle with our CLI.
+**Aether** is the sovereign application engine powering the next-generation spatial computing environment of [Webizen OS-Shell](https://github.com/WebizenAI/webizen-os-shell) and the [QualiaDB](https://github.com/mediaprophet/qualiaDB) multi-agent cognitive ecosystem. 
+
+Forked from Dioxus and re-engineered for demanding spatial, cognitive, and zero-heap hot-path requirements, Aether unites the ergonomics of modern reactive web programming with the zero-overhead determinism of native Rust systems programming.
+
+---
+
+## Strategic Innovations & Core Pillars
+
+### 1. Built-in WebGPU Acceleration & Limits Compatibility Shim
+Embedded webviews and browser runtimes frequently suffer from silent WebGPU failures, missing Vulkan/ANGLE flags, or breaking changes in the W3C WebGPU specification:
+- **Out-of-the-Box WebView2 GPU Enablement**: Aether Desktop automatically configures Windows WebView2 with `--enable-unsafe-webgpu`, `--enable-features=Vulkan,DefaultANGLEVulkan,VulkanFromANGLE`, `--use-angle=vulkan`, and `--ignore-gpu-blocklist`. Hardware-accelerated shaders and compute kernels run without manual registry tweaks or fragile shell wrapper scripts.
+- **W3C Device Limits Compatibility Shim**: Modern Chromium/Edge builds throw hard JavaScript exceptions when unrecognized limits are passed to `requestDevice()`. In particular, `maxInterStageShaderComponents` was removed by W3C, causing downstream `wgpu` applications to fail on initialization. Aether injects Qualia's authoritative compatibility shim into every window, automatically filtering deprecated or unsupported limits against `adapter.limits` before `requestDevice()` executes.
+- **Adaptive Fallback Policy**: Supports multi-tier adapter discovery (Default $\to$ Compatibility $\to$ Low-Power $\to$ Software), ensuring robust execution across discrete GPUs, integrated graphics, and mobile silicon.
+
+### 2. Zero-Heap Reactive Store & Lens Runtime (`refract`)
+Standard UI frameworks rely heavily on heap allocations (`Vec`, `String`, `Box`) and runtime borrow counting (`RefCell`), causing allocator contention and cache misses:
+- **QualiaDB Rule 0 Compliance**: Built specifically to adhere to the immovable *Zero heap in hot paths* constraint, `refract` delivers a borrow-checked reactive UI system with **zero `RefCell` overhead** and zero runtime borrow counting.
+- **Fixed-Buffer Array Projections ([`ArrayLens`](refract/src/lens.rs))**: UI components can focus directly on fixed-size stack arrays (`[T; N]`) and 48-byte Super-Quins (`[NQuin; N]`) with element-level invalidation granularity. Updating a single slot wakes only its direct observers without allocating a single byte on the heap.
+- **Autoregressive Streaming at 60+ Tokens/Sec**: Evaluates and updates high-frequency LLM token streams and cognitive traces directly at leaf nodes without triggering virtual DOM tree reconciliation passes.
+
+### 3. Spatial Desktop Shell & Native Window Lifecycle
+Designed to serve as the runtime foundation for the Webizen OS-Shell halo chrome:
+- **Glassmorphism & Frameless Ergonomics**: Native support for Windows Acrylic, Mica, full alpha transparency, click-through regions, and non-rectangular custom window geometries.
+- **System Tray & Auxiliary Window Coordination**: Built-in tray lifecycle management (`HideToTray`, `QuitShell`, restore) and lightweight auxiliary window spawning for companion tools (Poet, Studio, Settings, System Monitor).
+- **Direct GPU Viewport Integration**: Extends `packages/native` (Blitz + Vello) with `custom-widget` hooks to mount raw `wgpu` surfaces directly inside the window tree. Qualia's `PortalGpu` 10D manifold projections and WGSL Forge compute shaders render alongside UI elements with zero IPC serialization overhead.
+
+---
+
+## Architecture & Workspace Structure
+
+```text
+rust-app-framework/
+├── packages/
+│   ├── desktop/          # Wry/Tao desktop webview runner with WebGPU & limits shim
+│   ├── native/           # Blitz + AnyRender + Vello native GPU renderer (custom-widget support)
+│   ├── web/              # Direct WASM browser renderer
+│   ├── core/             # VirtualDOM, dynamic templates, diffing, and component scheduler
+│   ├── signals/          # Copyable reactive signals & stores (generational-box)
+│   ├── hooks/            # Ergonomic hooks (use_signal, use_effect, use_resource, etc.)
+│   ├── router/           # Type-safe client & desktop routing
+│   ├── fullstack/        # SSR, progressive hydration, and server functions
+│   └── cli/              # Development server, hot-reloading, and multiplatform bundler
+├── refract/              # Zero-heap store & lens reactive runtime (QualiaDB optimized)
+├── .github/workflows/    # Clean CI workflows configured for standard GitHub Actions
+└── upstream-licenses/    # Upstream Dioxus MIT and Apache-2.0 license texts
+```
+
+---
+
+## Quickstart
+
+### 1. Standard Desktop Application with WebGPU
+
+Add Aether to your `Cargo.toml`:
+
+```toml
+[dependencies]
+dioxus = { git = "https://github.com/mediaprophet/rust-app-framework.git", branch = "qualia-main", features = ["desktop"] }
+```
+
+Launch a hardware-accelerated desktop window:
 
 ```rust
-fn app() -> Element {
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(App);
+}
+
+#[component]
+fn App() -> Element {
     let mut count = use_signal(|| 0);
 
     rsx! {
-        h1 { "High-Five counter: {count}" }
-        button { onclick: move |_| count += 1, "Up high!" }
-        button { onclick: move |_| count -= 1, "Down low!" }
+        div {
+            style: "display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #030712; color: #f9fafb; font-family: sans-serif;",
+            h1 { "Aether Spatial Host" }
+            p { "Active Count: {count}" }
+            button {
+                style: "padding: 8px 16px; border-radius: 8px; background: #4f46e5; color: white; border: none; cursor: pointer;",
+                onclick: move |_| count += 1,
+                "Increment"
+            }
+        }
     }
 }
 ```
 
-## â­ï¸ Unique features:
+### 2. Zero-Heap Reactive State (`refract`)
 
-- Cross-platform apps in three lines of code (web, desktop, mobile, server, and more)
-- [Ergonomic state management](https://dioxuslabs.com/blog/release-050) combines the best of React, Solid, and Svelte
-- Built-in featureful, type-safe, fullstack web framework
-- Integrated bundler for deploying to the web, macOS, Linux, and Windows
-- Subsecond Rust hot-patching and asset hot-reloading
-- And more! [Take a tour of Dioxus](https://dioxuslabs.com/learn/0.7/).
+For high-frequency or memory-constrained evaluators where heap allocation is prohibited:
 
-## Instant hot-reloading
+```rust
+use refract::{Ui, lens, ArrayLens};
 
-With one command, `dx serve` and your app is running. Edit your markup, styles, and see changes in milliseconds. Use our experimental `dx serve --hotpatch` to update Rust code in real time.
+#[derive(Clone, Copy, Default, PartialEq, Eq)]
+struct QuinSlot {
+    subject: u64,
+    predicate: u64,
+    object: u64,
+}
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/DioxusLabs/screenshots/refs/heads/main/blitz/hotreload-video.webp">
-  <!-- <video src="https://private-user-images.githubusercontent.com/10237910/386919031-6da371d5-3340-46da-84ff-628216851ba6.mov" width="500"></video> -->
-  <!-- <video src="https://private-user-images.githubusercontent.com/10237910/386919031-6da371d5-3340-46da-84ff-628216851ba6.mov" width="500"></video> -->
-</div>
+struct CoreState {
+    slots: [QuinSlot; 8], // Zero-heap fixed-size buffer
+}
 
-## Build Beautiful Apps
+fn main() {
+    let mut ui = Ui::new(CoreState {
+        slots: [QuinSlot::default(); 8],
+    });
 
-Dioxus apps are styled with HTML and CSS. Use the built-in TailwindCSS support or load your favorite CSS library. Easily call into native code (objective-c, JNI, Web-Sys) for a perfect native touch.
+    let slots = lens!(CoreState => 0: slots);
+    let slot0 = slots.at(0); // Element-level lens projection (zero heap allocation)
 
-<div align="center">
-  <img src="./notes/ebou2.avif">
-</div>
+    ui.effect(move |ctx| {
+        let s = ctx.get(slot0);
+        println!("Slot 0 updated: subject = {}", s.subject);
+    });
 
-
-
-## Truly fullstack applications
-
-Dioxus deeply integrates with [axum](https://github.com/tokio-rs/axum) to provide powerful fullstack capabilities for both clients and servers. Pick from a wide array of built-in batteries like WebSockets, SSE, Streaming, File Upload/Download, Server-Side-Rendering, Forms, Middleware, and Hot-Reload, or go fully custom and integrate your existing axum backend.
-
-<div align="center">
-  <img src="./notes/fullstack-websockets.avif" width="700">
-</div>
-
-## Experimental Native Renderer
-
-Render using web-sys, webview, server-side-rendering, liveview, or even with our experimental WGPU-based renderer. Embed Dioxus in Bevy, WGPU, or even run on embedded Linux!
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/DioxusLabs/screenshots/refs/heads/main/blitz/native-blitz-wgpu.webp">
-</div>
-
-
-## First-party primitive components
-
-Get started quickly with a complete set of primitives modeled after shadcn/ui and Radix-Primitives.
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/DioxusLabs/screenshots/refs/heads/main/blitz/dioxus-components.webp" width="700">
-</div>
-
-## First-class Android and iOS support
-
-Dioxus is the fastest way to build native mobile apps with Rust. Simply run `dx serve --platform android` and your app is running in an emulator or on device in seconds. Call directly into JNI and Native APIs.
-
-<div align="center">
-  <img src="./notes/android_and_ios2.avif" width="500">
-</div>
-
-
-
-## Bundle for web, desktop, and mobile
-
-Simply run `dx bundle` and your app will be built and bundled with maximization optimizations. On the web, take advantage of [`.avif` generation, `.wasm` compression, minification](https://dioxuslabs.com/learn/0.7/tutorial/assets), and more. Build WebApps weighing [less than 50kb](https://github.com/ealmloff/tiny-dioxus/) and desktop/mobile apps less than 5mb.
-
-<div align="center">
-  <img src="./notes/bundle.gif">
-</div>
-
-
-## Fantastic documentation
-
-We've put a ton of effort into building clean, readable, and comprehensive documentation. All html elements and listeners are documented with MDN docs, and our Docs runs continuous integration with Dioxus itself to ensure that the docs are always up to date. Check out the [Dioxus website](https://dioxuslabs.com/learn/0.7/) for guides, references, recipes, and more. Fun fact: we use the Dioxus website as a testbed for new Dioxus features - [check it out!](https://github.com/dioxusLabs/docsite)
-
-<div align="center">
-  <img src="./notes/docs.avif">
-</div>
-
-
-## Community
-
-Dioxus is a community-driven project, with a very active [Discord](https://discord.gg/XgGxMSkvUM) and [GitHub](https://github.com/DioxusLabs/dioxus/issues) community. We're always looking for help, and we're happy to answer questions and help you get started. [Our SDK](https://github.com/DioxusLabs/dioxus-std) is community-run and we even have a [GitHub organization](https://github.com/dioxus-community/) for the best Dioxus crates that receive free upgrades and support.
-
-<div align="center">
-  <img src="./notes/dioxus-community.avif">
-</div>
-
-## Full-time core team
-
-Dioxus has grown from a side project to a small team of fulltime engineers. Thanks to the generous support of FutureWei, Satellite.im, the GitHub Accelerator program, we're able to work on Dioxus full-time. Our long term goal is for Dioxus to become self-sustaining by providing paid high-quality enterprise tools. If your company is interested in adopting Dioxus and would like to work with us, please reach out!
-
-## Supported Platforms
-
-<div align="center">
-  <table style="width:100%">
-    <tr>
-      <td>
-      <b>Web</b>
-      </td>
-      <td>
-        <ul>
-          <li>Render directly to the DOM using WebAssembly</li>
-          <li>Pre-render with SSR and rehydrate on the client</li>
-          <li>Simple "hello world" at about 50kb, comparable to React</li>
-          <li>Built-in dev server and hot reloading for quick iteration</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-      <b>Desktop</b>
-      </td>
-      <td>
-        <ul>
-          <li>Render using Webview or - experimentally - with WGPU or <a href="https://freyaui.dev">Freya</a> (Skia) </li>
-          <li>Zero-config setup. Simply `cargo run` or `dx serve` to build your app </li>
-          <li>Full support for native system access without IPC </li>
-          <li>Supports macOS, Linux, and Windows. Portable <3mb binaries </li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-      <b>Mobile</b>
-      </td>
-      <td>
-        <ul>
-          <li>Render using Webview or - experimentally - with WGPU or Skia </li>
-          <li>Build .ipa and .apk files for iOS and Android </li>
-          <li>Call directly into Java and Objective-C with minimal overhead</li>
-          <li>From "hello world" to running on device in seconds</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-      <b>Server-side Rendering</b>
-      </td>
-      <td>
-        <ul>
-          <li>Suspense, hydration, and server-side rendering</li>
-          <li>Quickly drop in backend functionality with server functions</li>
-          <li>Extractors, middleware, and routing integrations</li>
-          <li>Static-site generation and incremental regeneration</li>
-        </ul>
-      </td>
-    </tr>
-  </table>
-</div>
-
-## Running the examples
-
-> The examples in the main branch of this repository target the git version of dioxus and the CLI. If you are looking for examples that work with the latest stable release of dioxus, check out the [0.6 branch](https://github.com/DioxusLabs/dioxus/tree/v0.6/examples).
-
-The examples in the top level of this repository can be run with:
-
-```sh
-cargo run --example <example>
+    ui.with(|ctx| {
+        ctx.write(slot0).subject = 42; // Wakes only slot 0 observers
+    });
+}
 ```
 
-However, we encourage you to download the dioxus-cli to test out features like hot-reloading. To install the most recent binary CLI, you can use cargo binstall.
+---
 
-```sh
-curl -fsSL https://dioxuslabs.com/install.sh | bash
+## Building & Verification
+
+### Desktop Build:
+```bash
+cargo build -p dioxus-desktop
 ```
 
-If this CLI is out-of-date, you can install it directly from git or cargo-binstall
-
-```sh
-cargo install --git https://github.com/DioxusLabs/dioxus dioxus-cli --locked
+### Run `refract` Zero-Heap Suite:
+```bash
+cargo test -p refract
 ```
 
-With the CLI, you can also run examples with the web platform. You will need to disable the default desktop feature and enable the web feature with this command:
-
-```sh
-dx serve --example <example> --platform web -- --no-default-features
+### Web / WASM Verification:
+```bash
+cargo check -p dioxus-web --target wasm32-unknown-unknown
 ```
 
-## Contributing
+---
 
-- Check out the website [section on contributing](https://dioxuslabs.com/learn/0.7/beyond/contributing).
-- Report issues on our [issue tracker](https://github.com/dioxuslabs/dioxus/issues).
-- [Join](https://discord.gg/XgGxMSkvUM) the discord and ask questions!
+## Intellectual Property & Licensing Notice
 
-<a href="https://github.com/dioxuslabs/dioxus/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=30&columns=10" />
-</a>
-
-## License & Attribution
-
-This repository is a specialized application framework for the Qualia ecosystem.
+QualiaDB, Aether, the Qualia App Framework, and all Qualia-specific architectures, integrations, modifications, and extensions are governed by:
 
 **Copyright (c) 2026 Timothy Charles Holborn**  
-https://www.linkedin.com/in/ubiquitous/ | timothy.holborn@gmail.com  
+**[LinkedIn](https://www.linkedin.com/in/ubiquitous/) | [Email](mailto:timothy.holborn@gmail.com)**  
 **License:** Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)  
-See [`LICENSE`](LICENSE) for full legal terms.
+Full terms: [`LICENSE-QUALIA`](LICENSE-QUALIA) and [Creative Commons Legal Code](https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode).  
 
-Upstream historical licenses (Apache-2.0 / MIT) are qualified and preserved under [`upstream-licenses/`](upstream-licenses/README.md) for provenance.
+Upstream Dioxus framework code retains its respective Apache-2.0 and MIT licensing as documented in [`upstream-licenses/`](upstream-licenses/).
 
+All participating AI agents, contributors, and downstream integrators must strictly honor this copyright, moral rights, and non-commercial attribution. Unlawful extraction, stripping of provenance, or unauthorized commercial exploitation is strictly prohibited.
