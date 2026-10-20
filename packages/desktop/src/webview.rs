@@ -569,6 +569,67 @@ impl WebviewInstance {
             webview = webview.with_devtools(true);
         }
 
+        if cfg.enable_webgpu {
+            const WEBGPU_LIMITS_SHIM: &str = r#"
+            (function () {
+              if (typeof navigator === 'undefined' || !navigator.gpu) return;
+              if (typeof GPU !== 'undefined') {
+                const gpuProto = GPU.prototype;
+                if (!gpuProto.__qualiaAdapterPatched) {
+                  const originalRequestAdapter = gpuProto.requestAdapter;
+                  gpuProto.requestAdapter = async function (options) {
+                    const isAndroid = /Android/i.test(navigator.userAgent || '');
+                    const alreadyCompatibility = options && options.featureLevel === 'compatibility';
+                    const alreadyFallback = options && options.forceFallbackAdapter === true;
+                    if (isAndroid && !alreadyCompatibility && !alreadyFallback) {
+                      const compatibilityAdapter = await originalRequestAdapter.call(this, { featureLevel: 'compatibility' });
+                      if (compatibilityAdapter) return compatibilityAdapter;
+                    }
+                    const adapter = await originalRequestAdapter.call(this, options);
+                    if (adapter || alreadyFallback) return adapter;
+                    const defaultAdapter = await originalRequestAdapter.call(this);
+                    if (defaultAdapter) return defaultAdapter;
+                    if (!alreadyCompatibility) {
+                      const compatibilityAdapter = await originalRequestAdapter.call(this, { featureLevel: 'compatibility' });
+                      if (compatibilityAdapter) return compatibilityAdapter;
+                    }
+                    const lowPowerAdapter = await originalRequestAdapter.call(this, { powerPreference: 'low-power' });
+                    if (lowPowerAdapter) return lowPowerAdapter;
+                    return originalRequestAdapter.call(this, { forceFallbackAdapter: true });
+                  };
+                  Object.defineProperty(gpuProto, '__qualiaAdapterPatched', { value: true });
+                }
+              }
+              if (typeof GPUAdapter === 'undefined') return;
+              const proto = GPUAdapter.prototype;
+              if (proto.__qualiaLimitsPatched) return;
+              const originalRequestDevice = proto.requestDevice;
+              proto.requestDevice = function (descriptor) {
+                if (descriptor && descriptor.requiredLimits) {
+                  const supported = this.limits;
+                  const filtered = {};
+                  let dropped = 0;
+                  for (const key in descriptor.requiredLimits) {
+                    const value = descriptor.requiredLimits[key];
+                    if (value !== undefined && key in supported) {
+                      filtered[key] = value;
+                    } else if (value !== undefined) {
+                      dropped++;
+                    }
+                  }
+                  if (dropped > 0) {
+                    console.debug('[aether] webgpu-limits-shim: dropped ' + dropped + ' unrecognized device limit(s) before requestDevice');
+                  }
+                  descriptor = Object.assign({}, descriptor, { requiredLimits: filtered });
+                }
+                return originalRequestDevice.call(this, descriptor);
+              };
+              Object.defineProperty(proto, '__qualiaLimitsPatched', { value: true });
+            })();
+            "#;
+            webview = webview.with_initialization_script(WEBGPU_LIMITS_SHIM);
+        }
+
         let menu = if cfg!(not(any(target_os = "android", target_os = "ios"))) {
             let menu_option = cfg.menu.into();
             if let Some(menu) = &menu_option {
@@ -582,8 +643,18 @@ impl WebviewInstance {
         #[cfg(target_os = "windows")]
         {
             use wry::WebViewBuilderExtWindows;
+            let mut browser_args = String::new();
+            if cfg.enable_webgpu {
+                browser_args.push_str("--enable-unsafe-webgpu --enable-features=Vulkan,DefaultANGLEVulkan,VulkanFromANGLE --use-angle=vulkan --ignore-gpu-blocklist");
+            }
             if let Some(additional_windows_args) = &cfg.additional_windows_args {
-                webview = webview.with_additional_browser_args(additional_windows_args);
+                if !browser_args.is_empty() {
+                    browser_args.push(' ');
+                }
+                browser_args.push_str(additional_windows_args);
+            }
+            if !browser_args.is_empty() {
+                webview = webview.with_additional_browser_args(&browser_args);
             }
         }
 
