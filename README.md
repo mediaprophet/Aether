@@ -1,4 +1,4 @@
-# Aether — Sovereign Application Framework for QualiaDB & Webizen
+# Aether — Application Framework for QualiaDB & Webizen
 
 > High-performance cross-platform application framework with native WebGPU acceleration, zero-heap lens reactivity (`refract`), spatial window ergonomics, and unified desktop, web, and spatial rendering.
 
