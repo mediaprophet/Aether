@@ -34,8 +34,25 @@
 
 mod dom;
 mod lens;
+pub mod quin_lens;
+pub mod semantic_ui;
 mod ui;
+mod ui_guards;
+mod ui_scheduler;
 
 pub use dom::{Dom, El, Node, NodeId, dyn_text, el, mount, text};
-pub use lens::{ArrayIndex, ArrayLens, Field, Index, Lens, Path, Root, VecLens};
+pub use lens::{
+    ArrayIndex, ArrayLens, Field, Index, InlinePath, Lens, MAX_INLINE_PATH_DEPTH, Path, Root,
+    VecLens, paths_overlap,
+};
+pub use quin_lens::{
+    BitemporalStamp, QUIN_PARITY_SALT, QuinFieldLens, QuinSlot, QuinSlotLens, QuinStampLens,
+    QuinWindow, QuinWindowLens,
+};
+pub use semantic_ui::{
+    AssertionKind, ChallengeState, ContextualAssertionView, ContributionStage,
+    ContributionStageView, DimensionOutcome, FairnessReviewView, InstrumentReadiness,
+    WellFairDimension, contextual_assertion_badge, contribution_lifecycle_bar,
+    fairness_review_panel, instrument_readiness_card,
+};
 pub use ui::{Ctx, Effect, Memo, ReadGuard, ResourceHandle, ResourceState, Ui, WriteGuard};

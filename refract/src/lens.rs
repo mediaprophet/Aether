@@ -5,20 +5,103 @@
 //! that the runtime hands to your closures, so exclusivity is enforced
 //! entirely by the borrow checker. No `RefCell`, no runtime borrow counting.
 
-/// A structural path into the state tree. Paths are compared by prefix
-/// overlap: writing `state.todos` invalidates readers of `state.todos[3].done`
-/// and vice versa, but writing `state.todos[3]` does not touch readers of
-/// `state.todos[4]`.
-pub type Path = Vec<u32>;
+/// Maximum number of structural segments stored inline on the stack.
+pub const MAX_INLINE_PATH_DEPTH: usize = 8;
+
+/// A zero-heap, stack-allocated structural path into the state tree.
+///
+/// Paths are compared by prefix overlap: writing `state.todos` invalidates
+/// readers of `state.todos[3].done` and vice versa, but writing
+/// `state.todos[3]` does not touch readers of `state.todos[4]`.
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default)]
+pub struct InlinePath {
+    segments: [u32; MAX_INLINE_PATH_DEPTH],
+    len: u8,
+}
+
+impl InlinePath {
+    /// Create an empty inline path with zero segments.
+    #[inline]
+    pub const fn new() -> Self {
+        Self {
+            segments: [0; MAX_INLINE_PATH_DEPTH],
+            len: 0,
+        }
+    }
+
+    /// Append a segment to the inline path.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the path depth exceeds [`MAX_INLINE_PATH_DEPTH`].
+    #[inline]
+    pub fn push(&mut self, segment: u32) {
+        let idx = self.len as usize;
+        assert!(
+            idx < MAX_INLINE_PATH_DEPTH,
+            "InlinePath depth exceeded MAX_INLINE_PATH_DEPTH ({MAX_INLINE_PATH_DEPTH})"
+        );
+        self.segments[idx] = segment;
+        self.len += 1;
+    }
+
+    /// Return the number of active segments in the path.
+    #[inline]
+    pub const fn len(&self) -> usize {
+        self.len as usize
+    }
+
+    /// Return `true` if the path has no segments (i.e. points to [`Root`]).
+    #[inline]
+    pub const fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
+    /// Borrow the active path segments as a slice.
+    #[inline]
+    pub fn as_slice(&self) -> &[u32] {
+        &self.segments[..self.len as usize]
+    }
+}
+
+impl PartialEq for InlinePath {
+    #[inline]
+    fn eq(&self, other: &Self) -> bool {
+        self.as_slice() == other.as_slice()
+    }
+}
+
+impl Eq for InlinePath {}
+
+impl std::ops::Deref for InlinePath {
+    type Target = [u32];
+
+    #[inline]
+    fn deref(&self) -> &[u32] {
+        self.as_slice()
+    }
+}
+
+impl AsRef<[u32]> for InlinePath {
+    #[inline]
+    fn as_ref(&self) -> &[u32] {
+        self.as_slice()
+    }
+}
+
+/// Alias for [`InlinePath`] preserving backwards compatibility across the crate.
+pub type Path = InlinePath;
 
 /// `true` if one path is a prefix of the other.
-pub(crate) fn paths_overlap(a: &[u32], b: &[u32]) -> bool {
+#[inline]
+pub fn paths_overlap(a: &[u32], b: &[u32]) -> bool {
     a.iter().zip(b.iter()).all(|(x, y)| x == y)
 }
 
 /// A composable projection from root state `S` to a target `T`.
 ///
-/// Implementors are `Copy` handles: [`Root`], [`Field`], and [`Index`].
+/// Implementors are `Copy` handles: [`Root`], [`Field`], [`Index`], and [`ArrayIndex`].
 pub trait Lens<S: 'static>: Copy + 'static {
     /// The projected target type.
     type Target: ?Sized + 'static;
@@ -236,7 +319,6 @@ pub trait ArrayLens<S: 'static, T: 'static, const N: usize>: Lens<S, Target = [T
 }
 
 impl<S: 'static, T: 'static, const N: usize, L: Lens<S, Target = [T; N]>> ArrayLens<S, T, N> for L {}
-
 
 /// Build a field lens from a chain of `segment: field` pairs.
 ///
