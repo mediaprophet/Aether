@@ -1,10 +1,10 @@
-﻿# Upstream / Historical License Qualification Notice
+# Upstream / Historical License Qualification Notice
 
 This directory preserves the historical licenses of the upstream Dioxus project (Apache-2.0 and MIT) for source provenance.
 
 ### Qualification & Governing Terms
 
-This codebase (`rust-app-framework`) has been forked and is being fundamentally overhauled for the Qualia ecosystem.
+This codebase (`aether`, formerly `rust-app-framework`) has been forked and is being fundamentally overhauled for the Qualia ecosystem.
 
 All subsequent architectures, modifications, refactorings, extensions, and integrations are governed by:
 

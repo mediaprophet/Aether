@@ -2,7 +2,7 @@
 
 > High-performance cross-platform application framework with native WebGPU acceleration, zero-heap lens reactivity (`refract`), spatial window ergonomics, and unified desktop, web, and spatial rendering.
 
-[![CI](https://github.com/mediaprophet/rust-app-framework/actions/workflows/main.yml/badge.svg)](https://github.com/mediaprophet/rust-app-framework/actions/workflows/main.yml)
+[![CI](https://github.com/mediaprophet/Aether/actions/workflows/main.yml/badge.svg)](https://github.com/mediaprophet/Aether/actions/workflows/main.yml)
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC_BY--NC--ND_4.0-lightgrey.svg)](LICENSE-QUALIA)
 [![Ecosystem: QualiaDB](https://img.shields.io/badge/Ecosystem-QualiaDB-blue.svg)](https://github.com/mediaprophet/qualiaDB)
 [![Platform: Desktop_|_Web_|_Mobile](https://img.shields.io/badge/Platforms-Desktop_%7C_Web_%7C_Mobile-orange.svg)](#architecture--workspace-structure)
@@ -38,7 +38,7 @@ Designed to serve as the runtime foundation for the Webizen OS-Shell halo chrome
 ## Architecture & Workspace Structure
 
 ```text
-rust-app-framework/
+aether/
 ├── packages/
 │   ├── desktop/          # Wry/Tao desktop webview runner with WebGPU & limits shim
 │   ├── native/           # Blitz + AnyRender + Vello native GPU renderer (custom-widget support)
@@ -64,7 +64,7 @@ Add Aether to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-dioxus = { git = "https://github.com/mediaprophet/rust-app-framework.git", branch = "qualia-main", features = ["desktop"] }
+dioxus = { git = "https://github.com/mediaprophet/Aether.git", branch = "qualia-main", features = ["desktop"] }
 ```
 
 Launch a hardware-accelerated desktop window:
