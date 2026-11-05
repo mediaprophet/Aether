@@ -1,5 +1,6 @@
 // RSX and component definition
 pub use dioxus_core;
+pub use dioxus_config_macros;
 pub use dioxus_core::{
     AnyhowContext, Attribute, Callback, Component, Element, ErrorBoundary, ErrorContext, Event,
     EventHandler, Fragment, HasAttributes, IntoDynNode, RenderError, ScopeId, SuspenseBoundary,

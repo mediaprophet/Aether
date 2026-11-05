@@ -190,7 +190,7 @@ impl ComponentBody {
                 #block
             }
 
-            dioxus::config_macros::maybe_wasm_split! {
+            dioxus_config_macros::maybe_wasm_split! {
                 if wasm_split {
                     {
                         static __MODULE: wasm_split::LazyLoader<#props_ty, #out_ty> =

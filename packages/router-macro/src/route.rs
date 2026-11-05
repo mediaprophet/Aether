@@ -297,7 +297,7 @@ impl Route {
                 quote! {
                     #[allow(unused)]
                     (#last_index, Self::#name { #(#dynamic_segments,)* }) => {
-                        dioxus::config_macros::maybe_wasm_split! {
+                        dioxus_config_macros::maybe_wasm_split! {
                             if wasm_split {
                                 {
                                     fn #comp_name(args: #router_name) -> Element {
