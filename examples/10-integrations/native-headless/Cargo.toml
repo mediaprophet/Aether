@@ -2,7 +2,7 @@
 name = "native-headless"
 version = "0.0.0"
 edition = "2024"
-license = "MIT"
+license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [features]

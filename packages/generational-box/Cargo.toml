@@ -1,11 +1,11 @@
 [package]
 name = "generational-box"
-authors = ["Evan Almloff"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 version = { workspace = true }
 edition = "2024"
 description = "A box backed by a generational runtime"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
 keywords = ["generational", "box", "memory", "allocator"]
 rust-version = "1.85.0"
 

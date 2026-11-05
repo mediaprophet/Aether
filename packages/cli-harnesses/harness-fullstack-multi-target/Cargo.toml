@@ -2,7 +2,7 @@
 name = "harness-fullstack-multi-target"
 version = "0.0.1"
 edition = "2024"
-license = "MIT OR Apache-2.0"
+license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [dependencies]

@@ -1,11 +1,11 @@
 [package]
 name = "dioxus-devtools"
-authors = ["Jonathan Kelley", "Evan Almloff"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 version = { workspace = true }
 edition = "2024"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com/learn/0.4/migration/hot_reload"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 description = "Hot reloading utilities for Dioxus"
 keywords = ["dom", "ui", "gui", "react", "hot-reloading"]
 

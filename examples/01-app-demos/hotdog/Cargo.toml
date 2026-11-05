@@ -1,7 +1,7 @@
 [package]
 name = "hotdog"
 version = "0.1.0"
-authors = ["Dioxus Labs"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
 publish = false
 

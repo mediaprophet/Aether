@@ -3,7 +3,7 @@ name = "refract"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.88"
-license = "MIT"
+license = "CC-BY-NC-ND-4.0"
 description = "A store/lens-first reactive UI runtime experiment."
 publish = false
 

@@ -1,13 +1,13 @@
 [package]
 name = "dioxus-renderer-oracle"
 version = { workspace = true }
-authors = ["Dioxus Labs"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
 description = "A fast oracle renderer for validating Dioxus VirtualDom mutations."
-license = "MIT OR Apache-2.0"
+license = "CC-BY-NC-ND-4.0"
 publish = false
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 rust-version = "1.85.0"
 
 [dependencies]

@@ -3,11 +3,11 @@ name = "manganis-macro"
 version.workspace = true
 edition = "2024"
 rust-version = "1.85.0"
-authors = ["Evan Almloff"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 description = "Ergonomic, automatic, cross crate asset collection and optimization"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/tree/main/packages/manganis/manganis-macro"
-homepage = "https://dioxuslabs.com"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["assets"]
 
 [lib]

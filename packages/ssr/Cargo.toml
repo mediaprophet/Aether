@@ -1,11 +1,11 @@
 [package]
 name = "dioxus-ssr"
 version = { workspace = true }
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
 description = "Dioxus render-to-string"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "ssr"]
 
 [dependencies]

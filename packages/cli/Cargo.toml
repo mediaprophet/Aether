@@ -1,11 +1,11 @@
 [package]
 name = "dioxus-cli"
 version = { workspace = true }
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
 description = "CLI for building fullstack web, desktop, and mobile apps with a single codebase."
-repository = "https://github.com/DioxusLabs/dioxus/"
-license = "MIT OR Apache-2.0"
+repository = "https://github.com/mediaprophet/Aether"
+license = "CC-BY-NC-ND-4.0"
 keywords = ["mobile", "gui", "cli", "dioxus", "wasm"]
 rust-version = "1.93.0"
 

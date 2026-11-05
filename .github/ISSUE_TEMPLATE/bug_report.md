@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve Dioxus
+about: Create a report to help us improve Aether
 labels: bug
 ---
 
@@ -26,10 +26,10 @@ Steps to reproduce the behavior:
 
 **Environment:**
 
-- Dioxus version:  <!-- e.g. v0.17, main -->
-- Rust version:    <!-- e.g. 1.123.0, nightly -->
-- OS info:         <!-- e.g. macOS, NixOS 25.05 -->
-- App platform:    <!-- e.g. web, desktop -->
+- Aether version:  <!-- e.g. v0.8.0-alpha.3, main -->
+- Rust version:    <!-- e.g. 1.85.0, nightly -->
+- OS info:         <!-- e.g. Windows 11, macOS, Linux -->
+- App platform:    <!-- e.g. web, desktop, native -->
 
 **Questionnaire**
 

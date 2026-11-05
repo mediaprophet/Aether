@@ -142,6 +142,9 @@ pub use subsecond;
 pub use dioxus_asset_resolver as asset_resolver;
 
 pub mod prelude {
+    pub use crate as dioxus;
+    pub use crate as aether;
+
     #[cfg(feature = "document")]
     #[cfg_attr(docsrs, doc(cfg(feature = "document")))]
     #[doc(inline)]

@@ -2,11 +2,11 @@
 name = "dioxus-asset-resolver"
 edition = "2024"
 version.workspace = true
-authors = ["Jonathan Kelley", "Dioxus Labs"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 description = "Cross-platform asset resolver for manganis and dioxus"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["web", "desktop", "mobile", "gui", "wasm"]
 rust-version = "1.85.0"
 

@@ -2,11 +2,11 @@
 name = "dioxus-autofmt"
 version = { workspace = true }
 edition = "2024"
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 description = "Autofomatter for Dioxus RSX"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["web", "desktop", "mobile", "gui", "wasm"]
 
 [dependencies]

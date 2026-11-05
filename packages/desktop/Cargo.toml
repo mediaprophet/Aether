@@ -1,12 +1,12 @@
 [package]
 name = "dioxus-desktop"
 version = { workspace = true }
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
 description = "WebView renderer for Dioxus"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com/learn/0.7/getting_started"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react"]
 rust-version = "1.85.0"
 

@@ -3,11 +3,11 @@ name = "dioxus-logger"
 version = { workspace = true }
 edition = "2024"
 description = "A logging utility to provide a standard interface whether you're targeting web desktop, fullstack, and more."
-authors = ["DogeDark", "Jonathan Kelley"]
-repository = "https://github.com/dioxuslabs/dioxus"
-homepage = "https://github.com/dioxuslabs/dioxus"
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 readme = "README.md"
-license = "MIT"
+license = "CC-BY-NC-ND-4.0"
 keywords = ["dioxus", "log", "logging"]
 categories = ["development-tools::debugging"]
 

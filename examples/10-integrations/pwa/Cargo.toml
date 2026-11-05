@@ -1,7 +1,7 @@
 [package]
 name = "dioxus-pwa-example"
 version = "0.1.0"
-authors = ["Antonio Curavalea <one.kyonblack@gmail.com>"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
 publish = false
 

@@ -1,12 +1,12 @@
 [package]
 name = "dioxus-core-template"
 version = { workspace = true }
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
 description = "Static template representation and const builder for Dioxus."
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react"]
 rust-version = "1.85.0"
 

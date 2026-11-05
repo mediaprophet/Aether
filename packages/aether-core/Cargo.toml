@@ -1,0 +1,20 @@
+[package]
+name = "aether-core"
+version = { workspace = true }
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+edition = "2024"
+description = "Core VirtualDOM, diffing, and component scheduler for Aether"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
+documentation = "https://github.com/mediaprophet/Aether"
+keywords = ["web", "desktop", "mobile", "gui", "wasm"]
+rust-version = "1.85.0"
+publish = false
+
+[dependencies]
+dioxus-core = { workspace = true }
+
+[features]
+default = []
+serialize = ["dioxus-core/serialize"]

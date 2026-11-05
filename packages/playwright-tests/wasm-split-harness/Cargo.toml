@@ -3,7 +3,7 @@ name = "wasm-split-harness"
 version = "0.1.0"
 edition = "2024"
 publish = false
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 
 [dependencies]
 dioxus = { workspace = true, features = ["web", "router", "wasm-split"] }

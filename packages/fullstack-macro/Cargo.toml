@@ -2,10 +2,10 @@
 name = "dioxus-fullstack-macro"
 version = { workspace = true }
 edition = "2024"
-repository = "https://github.com/DioxusLabs/dioxus/"
+repository = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "liveview"]
-authors = ["Jonathan Kelley", "Evan Almloff"]
-license = "MIT OR Apache-2.0"
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+license = "CC-BY-NC-ND-4.0"
 description = "Server function macros for Dioxus"
 
 [dependencies]

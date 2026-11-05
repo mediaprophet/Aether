@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: If you have any interesting advice, you can tell us.
+about: Propose a new feature or enhancement for Aether
 labels: enhancement
 ---
 

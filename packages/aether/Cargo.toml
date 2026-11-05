@@ -1,0 +1,45 @@
+[package]
+name = "aether"
+version = { workspace = true }
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+edition = "2024"
+description = "Sovereign application framework for QualiaDB and Webizen OS-Shell with WebGPU acceleration and zero-heap lens reactivity."
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
+documentation = "https://github.com/mediaprophet/Aether"
+keywords = ["web", "desktop", "mobile", "gui", "wasm"]
+rust-version = "1.85.0"
+publish = false
+
+[dependencies]
+dioxus = { path = "../dioxus", version = "=0.8.0-alpha.3", default-features = false }
+refract = { path = "../../refract" }
+
+[features]
+default = ["dioxus/default"]
+lib = ["dioxus/lib"]
+minimal = ["dioxus/minimal"]
+signals = ["dioxus/signals"]
+macro = ["dioxus/macro"]
+html = ["dioxus/html"]
+hooks = ["dioxus/hooks"]
+devtools = ["dioxus/devtools"]
+mounted = ["dioxus/mounted"]
+asset = ["dioxus/asset"]
+document = ["dioxus/document"]
+logger = ["dioxus/logger"]
+cli-config = ["dioxus/cli-config"]
+warnings = ["dioxus/warnings"]
+wasm-split = ["dioxus/wasm-split"]
+launch = ["dioxus/launch"]
+router = ["dioxus/router"]
+fullstack = ["dioxus/fullstack"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+web = ["dioxus/web"]
+ssr = ["dioxus/ssr"]
+liveview = ["dioxus/liveview"]
+native = ["dioxus/native"]
+server = ["dioxus/server"]
+third-party-renderer = ["dioxus/third-party-renderer"]

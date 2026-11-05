@@ -2,12 +2,12 @@
 name = "dioxus-liveview"
 version = { workspace = true }
 edition = "2024"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com/learn/0.7/getting_started"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "liveview"]
 description = "Build server-side apps with Dioxus"
-authors = ["Jonathan Kelley", "Evan Almloff"]
-license = "MIT OR Apache-2.0"
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+license = "CC-BY-NC-ND-4.0"
 
 [dependencies]
 thiserror = { workspace = true }

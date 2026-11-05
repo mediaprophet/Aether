@@ -1,0 +1,22 @@
+[package]
+name = "aether-html"
+version = { workspace = true }
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+edition = "2024"
+description = "HTML Element vocabulary for Aether"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
+documentation = "https://github.com/mediaprophet/Aether"
+keywords = ["dom", "ui", "gui", "aether"]
+rust-version = "1.85.0"
+publish = false
+
+[dependencies]
+dioxus-html = { workspace = true, default-features = false }
+
+[features]
+default = ["dioxus-html/default"]
+serialize = ["dioxus-html/serialize"]
+hot-reload-context = ["dioxus-html/hot-reload-context"]
+html-to-rsx = ["dioxus-html/html-to-rsx"]

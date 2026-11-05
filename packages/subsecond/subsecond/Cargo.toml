@@ -2,10 +2,10 @@
 name = "subsecond"
 edition = "2024"
 version.workspace = true
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 description = "A runtime hotpatching engine for Rust hot-reloading."
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/tree/main/packages/subsecond"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
 keywords = ["hotpatch", "engine", "subsecond", "dioxus", "hot-reload"]
 readme = "../README.md"
 

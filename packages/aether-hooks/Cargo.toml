@@ -1,0 +1,20 @@
+[package]
+name = "aether-hooks"
+version = { workspace = true }
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+edition = "2024"
+description = "Ergonomic reactive hooks for Aether"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
+documentation = "https://github.com/mediaprophet/Aether"
+keywords = ["dom", "ui", "gui", "aether"]
+rust-version = "1.85.0"
+publish = false
+
+[dependencies]
+dioxus-hooks = { workspace = true }
+
+[features]
+default = []
+nightly-features = ["dioxus-hooks/nightly-features"]

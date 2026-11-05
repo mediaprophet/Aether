@@ -1,6 +1,15 @@
 [workspace]
 resolver = "2"
 members = [
+    "packages/aether",
+    "packages/aether-native",
+    "packages/aether-desktop",
+    "packages/aether-web",
+    "packages/aether-core",
+    "packages/aether-signals",
+    "packages/aether-hooks",
+    "packages/aether-html",
+    "packages/aether-router",
     "packages/dioxus",
     "packages/core",
     "packages/core-template",
@@ -123,9 +132,26 @@ exclude = ["packages/stores/tests/visibility-helper"]
 
 [workspace.package]
 version = "0.8.0-alpha.3"
+edition = "2024"
+rust-version = "1.85.0"
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+license = "CC-BY-NC-ND-4.0"
+homepage = "https://github.com/mediaprophet/Aether"
+repository = "https://github.com/mediaprophet/Aether"
+documentation = "https://github.com/mediaprophet/Aether"
+publish = false
 
 # dependencies that are shared across packages
 [workspace.dependencies]
+aether = { path = "packages/aether", version = "=0.8.0-alpha.3" }
+aether-native = { path = "packages/aether-native", version = "=0.8.0-alpha.3" }
+aether-desktop = { path = "packages/aether-desktop", version = "=0.8.0-alpha.3", default-features = false }
+aether-web = { path = "packages/aether-web", version = "=0.8.0-alpha.3", default-features = false }
+aether-core = { path = "packages/aether-core", version = "=0.8.0-alpha.3" }
+aether-signals = { path = "packages/aether-signals", version = "=0.8.0-alpha.3" }
+aether-hooks = { path = "packages/aether-hooks", version = "=0.8.0-alpha.3" }
+aether-html = { path = "packages/aether-html", version = "=0.8.0-alpha.3", default-features = false }
+aether-router = { path = "packages/aether-router", version = "=0.8.0-alpha.3" }
 dioxus = { path = "packages/dioxus", version = "=0.8.0-alpha.3" }
 dioxus-core = { path = "packages/core", version = "=0.8.0-alpha.3" }
 dioxus-core-template = { path = "packages/core-template", version = "=0.8.0-alpha.3" }
@@ -446,18 +472,18 @@ inherits = "dev"
 # This is a "virtual package"
 # It is not meant to be published, but is used so "cargo run --example XYZ" works properly
 [package]
-name = "dioxus-examples"
-authors = ["Jonathan Kelley"]
-edition = "2024"
-description = "Top level crate for the Dioxus repository"
-license-file = "LICENSE"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com"
-documentation = "https://dioxuslabs.com"
-keywords = ["dom", "ui", "gui", "react", "wasm"]
-rust-version = "1.85.0"
+name = "aether-examples"
+authors = { workspace = true }
+edition = { workspace = true }
+description = "Top level examples crate for the Aether repository"
+license = { workspace = true }
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = { workspace = true }
+keywords = ["dom", "ui", "gui", "aether", "wasm"]
+rust-version = { workspace = true }
 publish = false
-version = "0.7.5"
+version = "0.8.0-alpha.3"
 
 [dependencies]
 reqwest = { workspace = true, features = ["json"] }

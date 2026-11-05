@@ -1,0 +1,52 @@
+[package]
+name = "aether-native"
+version = { workspace = true }
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+edition = "2024"
+description = "Native GPU renderer for Aether based on Blitz and Etalon"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
+documentation = "https://github.com/mediaprophet/Aether"
+keywords = ["dom", "ui", "gui", "aether"]
+rust-version = "1.85.0"
+publish = false
+
+[dependencies]
+dioxus-native = { path = "../native", version = "=0.8.0-alpha.3", default-features = false }
+
+[features]
+default = ["dioxus-native/default"]
+prelude = ["dioxus-native/prelude"]
+svg = ["dioxus-native/svg"]
+floats = ["dioxus-native/floats"]
+autofocus = ["dioxus-native/autofocus"]
+system-fonts = ["dioxus-native/system-fonts"]
+complex-scripts = ["dioxus-native/complex-scripts"]
+woff = ["dioxus-native/woff"]
+text-transform-icu = ["dioxus-native/text-transform-icu"]
+writing-mode = ["dioxus-native/writing-mode"]
+clipboard = ["dioxus-native/clipboard"]
+file-dialog = ["dioxus-native/file-dialog"]
+accessibility = ["dioxus-native/accessibility"]
+data-uri = ["dioxus-native/data-uri"]
+vello = ["dioxus-native/vello"]
+vello-hybrid = ["dioxus-native/vello-hybrid"]
+skia = ["dioxus-native/skia"]
+skia-pixels = ["dioxus-native/skia-pixels"]
+skia-softbuffer = ["dioxus-native/skia-softbuffer"]
+skia-raster-base = ["dioxus-native/skia-raster-base"]
+vello-cpu = ["dioxus-native/vello-cpu"]
+vello-cpu-pixels = ["dioxus-native/vello-cpu-pixels"]
+vello-cpu-softbuffer = ["dioxus-native/vello-cpu-softbuffer"]
+vello-cpu-base = ["dioxus-native/vello-cpu-base"]
+font-embolden = ["dioxus-native/font-embolden"]
+apple-font-embolden = ["dioxus-native/apple-font-embolden"]
+scrollbars = ["dioxus-native/scrollbars"]
+net = ["dioxus-native/net"]
+html = ["dioxus-native/html"]
+hot-reload = ["dioxus-native/hot-reload"]
+log-times = ["dioxus-native/log-times"]
+log-phase-times = ["dioxus-native/log-phase-times"]
+log-frame-times = ["dioxus-native/log-frame-times"]
+tracing = ["dioxus-native/tracing"]

@@ -2,10 +2,10 @@
 name = "dioxus-core-types"
 edition = "2024"
 version.workspace = true
-authors = ["Jonathan Kelley", "Evan Almloff"]
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com"
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 description = "CLI Configuration for dioxus-cli"
 keywords = ["dom", "ui", "gui", "react", ]
 

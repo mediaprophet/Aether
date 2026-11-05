@@ -2,12 +2,12 @@
 name = "dioxus-interpreter-js"
 version = { workspace = true }
 edition = "2024"
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 description = "JS Interpreter for Dioxus - a concurrent renderer-agnostic Virtual DOM for interactive user experiences"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com"
-documentation = "https://docs.rs/dioxus"
+license = "CC-BY-NC-ND-4.0"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
+documentation = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "wasm"]
 
 [dependencies]

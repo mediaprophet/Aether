@@ -2,10 +2,10 @@
 name = "dioxus-html-internal-macro"
 version = { workspace = true }
 edition = "2024"
-repository = "https://github.com/DioxusLabs/dioxus/"
-homepage = "https://dioxuslabs.com"
+repository = "https://github.com/mediaprophet/Aether"
+homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "liveview"]
-license = "MIT OR Apache-2.0"
+license = "CC-BY-NC-ND-4.0"
 description = "HTML function macros for Dioxus"
 
 

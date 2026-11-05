@@ -2,10 +2,10 @@
 name = "wasm-splitter"
 version = { workspace = true }
 edition = "2024"
-authors = ["Jonathan Kelley"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 description = "A tool for splitting up large WASM binaries into smaller chunks"
-repository = "https://github.com/DioxusLabs/dioxus/"
-license = "MIT OR Apache-2.0"
+repository = "https://github.com/mediaprophet/Aether"
+license = "CC-BY-NC-ND-4.0"
 keywords = ["wasm", "cli", "split", "dioxus"]
 rust-version = "1.85.0"
 

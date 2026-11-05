@@ -1,9 +1,9 @@
 [package]
 name = "dioxus-vdom-fuzz"
 version = { workspace = true }
-authors = ["Dioxus Labs"]
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-license = "MIT OR Apache-2.0"
+license = "CC-BY-NC-ND-4.0"
 publish = false
 rust-version = "1.85.0"
 
