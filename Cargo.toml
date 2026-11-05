@@ -206,13 +206,13 @@ blitz-traits = { version = "=0.3.0-beta.4" }
 blitz-shell = { version = "=0.3.0-beta.4", default-features = false }
 peniko = { version = "0.6.1", default-features = false }
 anyrender = { version = "0.14.0" }
-anyrender_vello = { package = "vector-gpu-render-adapter", version = "=0.15.0", path = "../hypermedia-production/crates/vector-gpu-render-adapter" }
-anyrender_vello_cpu = { package = "vector-cpu-render-adapter", version = "=0.18.0", path = "../hypermedia-production/crates/vector-cpu-render-adapter" }
-anyrender_vello_hybrid = { package = "vector-hybrid-render-adapter", version = "=0.11.0", path = "../hypermedia-production/crates/vector-hybrid-render-adapter" }
-anyrender_skia = { package = "vector-skia-render-adapter", version = "=0.12.0", path = "../hypermedia-production/crates/vector-skia-render-adapter" }
-wgpu_context = { package = "gpu-device-context", version = "=0.10.0", path = "../hypermedia-production/crates/gpu-device-context" }
-wgpu = { package = "etalon", version = "=0.0.2", path = "../etalon/etalon" }
-vello = { package = "vector-compute-renderer", version = "=0.11.0", path = "../hypermedia-production/crates/vector-compute-renderer" }
+anyrender_vello = { package = "vector-gpu-render-adapter", version = "=0.15.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
+anyrender_vello_cpu = { package = "vector-cpu-render-adapter", version = "=0.18.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
+anyrender_vello_hybrid = { package = "vector-hybrid-render-adapter", version = "=0.11.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
+anyrender_skia = { package = "vector-skia-render-adapter", version = "=0.12.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
+wgpu_context = { package = "gpu-device-context", version = "=0.10.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
+wgpu = { package = "etalon", version = "=0.0.2", git = "https://github.com/mediaprophet/etalon.git", branch = "qualiadb-migration" }
+vello = { package = "vector-compute-renderer", version = "=0.11.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
 winit = { version = "=0.31.0-beta.3" }
 atomic_refcell = "0.1.13"
 
