@@ -1,11 +1,11 @@
 //! This file exports functions into the vscode extension
 
-use dioxus_autofmt::{FormattedBlock, IndentOptions, IndentType};
+use aether_autofmt::{FormattedBlock, IndentOptions, IndentType};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub fn format_rsx(raw: String, use_tabs: bool, indent_size: usize) -> String {
-    let block = dioxus_autofmt::fmt_block(
+    let block = aether_autofmt::fmt_block(
         &raw,
         0,
         IndentOptions::new(
@@ -28,7 +28,7 @@ pub fn format_selection(
     indent_size: usize,
     base_indent: usize,
 ) -> String {
-    let block = dioxus_autofmt::fmt_block(
+    let block = aether_autofmt::fmt_block(
         &raw,
         base_indent,
         IndentOptions::new(
@@ -77,7 +77,7 @@ pub fn format_file(contents: String, use_tabs: bool, indent_size: usize) -> Form
     );
 
     let Ok(Ok(_edits)) = syn::parse_file(&contents)
-        .map(|file| dioxus_autofmt::try_fmt_file(&contents, &file, options))
+        .map(|file| aether_autofmt::try_fmt_file(&contents, &file, options))
     else {
         return FormatBlockInstance {
             new: contents,
@@ -85,7 +85,7 @@ pub fn format_file(contents: String, use_tabs: bool, indent_size: usize) -> Form
         };
     };
 
-    let out = dioxus_autofmt::apply_formats(&contents, _edits.clone());
+    let out = aether_autofmt::apply_formats(&contents, _edits.clone());
     FormatBlockInstance { new: out, _edits }
 }
 
@@ -94,8 +94,8 @@ pub fn translate_rsx(contents: String, _component: bool) -> String {
     // Ensure we're loading valid HTML
     let dom = html_parser::Dom::parse(&contents).unwrap();
 
-    let callbody = dioxus_rsx_rosetta::rsx_from_html(&dom);
+    let callbody = aether_rsx_rosetta::rsx_from_html(&dom);
 
     // Convert the HTML to RSX
-    dioxus_autofmt::write_block_out(&callbody).unwrap()
+    aether_autofmt::write_block_out(&callbody).unwrap()
 }

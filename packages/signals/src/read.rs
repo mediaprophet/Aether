@@ -5,7 +5,7 @@ use std::{
 };
 
 use crate::{MappedSignal, ReadSignal, ext_methods};
-use dioxus_core::Subscribers;
+use aether_core::Subscribers;
 use generational_box::{AnyStorage, UnsyncStorage};
 
 /// A reference to a value that can be read from.
@@ -17,7 +17,7 @@ pub type ReadableRef<'a, T: Readable, O = <T as Readable>::Target> =
 ///
 /// # Example
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn double(something_readable: &impl Readable<Target = i32>) -> i32 {
 ///     something_readable.cloned() * 2
 /// }
@@ -108,7 +108,7 @@ pub trait ReadableExt: Readable {
     ///
     /// # Example
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// fn MyComponent(mut count: Signal<i32>) -> Element {
     ///     let mut event_source = use_signal(|| None);
     ///     let doubled = use_memo(move || {
@@ -177,7 +177,7 @@ pub trait ReadableExt: Readable {
     ///
     /// # Example
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// fn List(list: Signal<Vec<i32>>) -> Element {
     ///     rsx! {
     ///         for index in 0..list.len() {

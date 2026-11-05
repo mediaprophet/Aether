@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-fullstack-core"
+name = "aether-fullstack-core"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 version = { workspace = true }
 edition = "2024"
-description = "Hooks for serializing futures, values in dioxus-fullstack and other utilities"
+description = "Hooks for serializing futures, values in aether-fullstack and other utilities"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -11,13 +11,13 @@ keywords = ["web", "gui", "server"]
 resolver = "2"
 
 [dependencies]
-dioxus-core = { workspace = true, features = ["serialize"]}
-dioxus-signals = { workspace = true }
-dioxus-hooks = { workspace = true }
+aether-core = { workspace = true, features = ["serialize"]}
+aether-signals = { workspace = true }
+aether-hooks = { workspace = true }
 futures-channel = { workspace = true }
 serde = { workspace = true }
-dioxus-history = { workspace = true }
-dioxus-document = { workspace = true }
+aether-history = { workspace = true }
+aether-document = { workspace = true }
 ciborium = { workspace = true }
 base64 = { workspace = true }
 tracing = { workspace = true }
@@ -37,8 +37,8 @@ web = []
 server = []
 
 [dev-dependencies]
-dioxus-fullstack = { workspace = true }
-dioxus = { workspace = true, features = ["fullstack"] }
+aether-fullstack = { workspace = true }
+aether = { workspace = true, features = ["fullstack"] }
 
 [package.metadata.docs.rs]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]

@@ -47,7 +47,7 @@ impl ToTokens for CallBody {
         out.append_all(quote! {{
             #[cfg(debug_assertions)]
             let __rsx_location =
-                dioxus_core::internal::RsxLocation::new(file!(), line!(), column!());
+                aether_core::internal::RsxLocation::new(file!(), line!(), column!());
             #body
         }})
     }

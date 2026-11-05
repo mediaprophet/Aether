@@ -2,7 +2,7 @@
 
 use crate::{StreamingError, reqwest_error_to_request_error};
 use bytes::Bytes;
-use dioxus_fullstack_core::RequestError;
+use aether_fullstack_core::RequestError;
 use futures::Stream;
 use futures::{TryFutureExt, TryStreamExt};
 use headers::{ContentType, Header};
@@ -163,13 +163,13 @@ impl ClientRequest {
 
     /// Creates a new reqwest request builder with the method, url, and headers set from this ClientRequest
     ///
-    /// Using this method attaches `X-Request-Client: dioxus` header to the request.
+    /// Using this method attaches `X-Request-Client: aether` header to the request.
     pub fn new_reqwest_request(&self) -> reqwest::RequestBuilder {
         let client = GLOBAL_REQUEST_CLIENT.get_or_init(Self::new_reqwest_client);
 
         let mut req = client
             .request(self.method.clone(), self.url.clone())
-            .header("X-Request-Client", "dioxus");
+            .header("X-Request-Client", "aether");
 
         for (key, value) in self.headers.iter() {
             req = req.header(key, value);
@@ -178,7 +178,7 @@ impl ClientRequest {
         req
     }
 
-    /// Using this method attaches `X-Request-Client-Dioxus` header to the request.
+    /// Using this method attaches `X-Request-Client-Aether` header to the request.
     #[cfg(feature = "web")]
     pub fn new_gloo_request(&self) -> gloo_net::http::RequestBuilder {
         let mut builder = gloo_net::http::RequestBuilder::new(
@@ -193,7 +193,7 @@ impl ClientRequest {
             )
             .as_str(),
         )
-        .header("X-Request-Client", "dioxus")
+        .header("X-Request-Client", "aether")
         .method(self.method.clone());
 
         for (key, value) in self.headers.iter() {
@@ -215,16 +215,16 @@ impl ClientRequest {
     #[cfg(not(target_arch = "wasm32"))]
     pub async fn send_multipart(
         self,
-        form: &dioxus_html::FormData,
+        form: &aether_html::FormData,
     ) -> Result<ClientResponse, RequestError> {
         let mut outgoing = reqwest::multipart::Form::new();
 
         for (key, value) in form.values() {
             match value {
-                dioxus_html::FormValue::Text(text) => {
+                aether_html::FormValue::Text(text) => {
                     outgoing = outgoing.text(key.to_string(), text.to_string());
                 }
-                dioxus_html::FormValue::File(Some(file_data)) => {
+                aether_html::FormValue::File(Some(file_data)) => {
                     outgoing = outgoing
                         .file(key.to_string(), file_data.path())
                         .await
@@ -234,7 +234,7 @@ impl ClientRequest {
                             ))
                         })?;
                 }
-                dioxus_html::FormValue::File(None) => {
+                aether_html::FormValue::File(None) => {
                     // No file was selected for this input, so we skip it.
                     outgoing = outgoing.part(key.to_string(), reqwest::multipart::Part::bytes(b""));
                 }
@@ -642,7 +642,7 @@ mod native {
 mod browser {
     use crate::{ClientResponseDriver, StreamingError};
     use bytes::Bytes;
-    use dioxus_fullstack_core::RequestError;
+    use aether_fullstack_core::RequestError;
     use futures::{Stream, StreamExt};
     use http::{HeaderMap, StatusCode};
     use js_sys::Uint8Array;

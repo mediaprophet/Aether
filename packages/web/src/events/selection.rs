@@ -1,5 +1,5 @@
 use super::{Synthetic, WebEventExt};
-use dioxus_html::{HasSelectionData, SelectionDirection, TextSelection};
+use aether_html::{HasSelectionData, SelectionDirection, TextSelection};
 use wasm_bindgen::JsCast;
 use web_sys::{Event, HtmlInputElement, HtmlTextAreaElement};
 
@@ -34,7 +34,7 @@ fn selection_direction_from_web(direction: &str) -> SelectionDirection {
     }
 }
 
-impl WebEventExt for dioxus_html::SelectionData {
+impl WebEventExt for aether_html::SelectionData {
     type WebEvent = web_sys::Event;
 
     #[inline(always)]

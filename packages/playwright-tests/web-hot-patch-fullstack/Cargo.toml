@@ -1,16 +1,16 @@
 [package]
-name = "dioxus-playwright-fullstack-patch-test"
+name = "aether-playwright-fullstack-patch-test"
 version = "0.0.1"
 edition = "2024"
-description = "Playwright test for Dioxus Web"
+description = "Playwright test for Aether Web"
 license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [dependencies]
-dioxus = { path = "../../dioxus", features = ["fullstack"] }
+aether = { path = "../../aether", features = ["fullstack"] }
 
 [features]
-web = ["dioxus/web"]
-server = ["dioxus/server"]
+web = ["aether/web"]
+server = ["aether/server"]
 
 [workspace]

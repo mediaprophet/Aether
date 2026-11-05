@@ -2,10 +2,10 @@
 //!
 //! You could load in any file type, but this example uses a video file.
 
-use dioxus::desktop::wry::http;
-use dioxus::desktop::wry::http::Response;
-use dioxus::desktop::{AssetRequest, use_asset_handler};
-use dioxus::prelude::*;
+use aether::desktop::wry::http;
+use aether::desktop::wry::http::Response;
+use aether::desktop::{AssetRequest, use_asset_handler};
+use aether::prelude::*;
 use http::{header::*, response::Builder as ResponseBuilder, status::StatusCode};
 use std::{io::SeekFrom, path::PathBuf};
 use tokio::io::{AsyncReadExt, AsyncSeekExt, AsyncWriteExt};
@@ -16,7 +16,7 @@ fn main() {
     // For the sake of this example, we will download the video file if it doesn't exist
     ensure_video_is_loaded();
 
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

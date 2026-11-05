@@ -1,4 +1,4 @@
-use dioxus_core::{LaunchConfig, VirtualDom};
+use aether_core::{LaunchConfig, VirtualDom};
 use std::path::PathBuf;
 use std::{borrow::Cow, sync::Arc};
 use tao::window::{Icon, WindowBuilder};
@@ -10,7 +10,7 @@ use wry::http::{Request as HttpRequest, Response as HttpResponse};
 use wry::{RequestAsyncResponder, WebViewId};
 
 use crate::ipc::UserWindowEvent;
-use crate::menubar::{DioxusMenu, default_menu_bar};
+use crate::menubar::{AetherMenu, default_menu_bar};
 
 type CustomEventHandler = Box<
     dyn 'static
@@ -39,10 +39,10 @@ pub enum WindowCloseBehaviour {
 /// so we only swap out the default menu bar when decorations are disabled
 pub(crate) enum MenuBuilderState {
     Unset,
-    Set(Option<DioxusMenu>),
+    Set(Option<AetherMenu>),
 }
 
-impl From<MenuBuilderState> for Option<DioxusMenu> {
+impl From<MenuBuilderState> for Option<AetherMenu> {
     fn from(val: MenuBuilderState) -> Self {
         match val {
             MenuBuilderState::Unset => Some(default_menu_bar()),
@@ -95,10 +95,10 @@ impl WindowConfig {
     #[inline]
     pub fn new() -> Self {
         let mut window: WindowBuilder = WindowBuilder::new()
-            .with_title(dioxus_cli_config::app_title().unwrap_or_else(|| "Dioxus App".to_string()));
+            .with_title(aether_cli_config::app_title().unwrap_or_else(|| "Aether App".to_string()));
 
         // During development we want the window to be on top so we can see it while we work
-        let always_on_top = dioxus_cli_config::always_on_top().unwrap_or(true);
+        let always_on_top = aether_cli_config::always_on_top().unwrap_or(true);
 
         if cfg!(debug_assertions) {
             window = window.with_always_on_top(always_on_top);
@@ -135,7 +135,7 @@ impl WindowConfig {
 
     /// Set the directory where WebView2 stores its user data (cookies, cache, IndexedDB, etc.).
     ///
-    /// If not set, Dioxus automatically chooses a sensible default:
+    /// If not set, Aether automatically chooses a sensible default:
     /// - **Windows:** `%LOCALAPPDATA%/<exe_name>` — this avoids the WebView2 default of
     ///   placing data next to the executable, which fails in read-only locations like
     ///   `Program Files` or on certain drive types (e.g. ReFS dev drives).
@@ -205,7 +205,7 @@ impl WindowConfig {
     /// ```rust
     /// # use wry::http::response::Response as HTTPResponse;
     /// # use std::borrow::Cow;
-    /// # use dioxus_desktop::WindowConfig;
+    /// # use aether_desktop::WindowConfig;
     /// #
     /// # fn main() {
     /// let cfg = WindowConfig::new()
@@ -221,7 +221,7 @@ impl WindowConfig {
     ///     });
     /// # }
     /// ```
-    /// note a key difference between Dioxus and Wry, the protocol name doesn't explicitly need to be a
+    /// note a key difference between Aether and Wry, the protocol name doesn't explicitly need to be a
     /// [`String`], but needs to implement [`ToString`].
     ///
     /// See [`wry`](wry::WebViewBuilder::with_asynchronous_custom_protocol) for more details on implementation
@@ -248,18 +248,18 @@ impl WindowConfig {
         self
     }
 
-    /// Use a custom index.html instead of the default Dioxus one.
+    /// Use a custom index.html instead of the default Aether one.
     ///
     /// Make sure your index.html is valid HTML.
     ///
-    /// Dioxus injects some loader code into the closing body tag. Your document
+    /// Aether injects some loader code into the closing body tag. Your document
     /// must include a body element!
     pub fn with_custom_index(mut self, index: String) -> Self {
         self.custom_index = Some(index);
         self
     }
 
-    /// Set the name of the element that Dioxus will use as the root.
+    /// Set the name of the element that Aether will use as the root.
     ///
     /// This is akin to calling React.render() on the element with the specified name.
     pub fn with_root_name(mut self, name: impl Into<String>) -> Self {
@@ -281,7 +281,7 @@ impl WindowConfig {
     /// > [`with_decorations`](tao::window::WindowBuilder::with_decorations)
     /// > is set to false and passed into [`with_window`](WindowConfig::with_window)
     #[allow(unused)]
-    pub fn with_menu(mut self, menu: impl Into<Option<DioxusMenu>>) -> Self {
+    pub fn with_menu(mut self, menu: impl Into<Option<AetherMenu>>) -> Self {
         #[cfg(not(any(target_os = "ios", target_os = "android")))]
         {
             if self.window.window.decorations {
@@ -316,7 +316,7 @@ impl WindowConfig {
         self
     }
 
-    /// Set a custom navigation handler for non-dioxus URLs.
+    /// Set a custom navigation handler for non-aether URLs.
     /// Return true to allow navigation inside the webview, false to block.
     pub fn with_navigation_handler(mut self, f: impl Fn(&str) -> bool + 'static) -> Self {
         self.navigation_handler = Some(Box::new(f));
@@ -411,7 +411,7 @@ impl Config {
     /// Set whether or not DMA-BUF usage should be disabled on Wayland.
     ///
     /// Defaults to true to avoid issues on some systems. If you want to enable DMA-BUF usage, set this to false.
-    /// See <https://github.com/DioxusLabs/dioxus/issues/4528#issuecomment-3476430611>
+    /// See <https://github.com/AetherLabs/aether/issues/4528#issuecomment-3476430611>
     pub fn with_disable_dma_buf_on_wayland(mut self, disable: bool) -> Self {
         self.disable_dma_buf_on_wayland = disable;
         self
@@ -512,13 +512,13 @@ impl Config {
         self
     }
 
-    /// Use a custom index.html instead of the default Dioxus one.
+    /// Use a custom index.html instead of the default Aether one.
     pub fn with_custom_index(mut self, index: String) -> Self {
         self.window = self.window.with_custom_index(index);
         self
     }
 
-    /// Set the name of the element that Dioxus will use as the root.
+    /// Set the name of the element that Aether will use as the root.
     pub fn with_root_name(mut self, name: impl Into<String>) -> Self {
         self.window = self.window.with_root_name(name);
         self
@@ -532,7 +532,7 @@ impl Config {
 
     /// Sets the menu the window opened by `launch` will use.
     #[allow(unused)]
-    pub fn with_menu(mut self, menu: impl Into<Option<DioxusMenu>>) -> Self {
+    pub fn with_menu(mut self, menu: impl Into<Option<AetherMenu>>) -> Self {
         self.window = self.window.with_menu(menu);
         self
     }
@@ -555,7 +555,7 @@ impl Config {
         self
     }
 
-    /// Set a custom navigation handler for non-dioxus URLs.
+    /// Set a custom navigation handler for non-aether URLs.
     pub fn with_navigation_handler(mut self, f: impl Fn(&str) -> bool + 'static) -> Self {
         self.window = self.window.with_navigation_handler(f);
         self

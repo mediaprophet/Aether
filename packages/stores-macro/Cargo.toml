@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-stores-macro"
+name = "aether-stores-macro"
 version = { workspace = true }
 edition = "2024"
 repository = "https://github.com/mediaprophet/Aether"
@@ -7,7 +7,7 @@ homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "liveview"]
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 license = "CC-BY-NC-ND-4.0"
-description = "Server function macros for Dioxus"
+description = "Server function macros for Aether"
 
 [dependencies]
 proc-macro2 = { workspace = true }
@@ -16,8 +16,8 @@ syn = { workspace = true, features = ["full", "extra-traits"] }
 convert_case = { workspace = true }
 
 [dev-dependencies]
-dioxus = { workspace = true }
-dioxus-stores = { workspace = true }
+aether = { workspace = true }
+aether-stores = { workspace = true }
 
 [lib]
 proc-macro = true

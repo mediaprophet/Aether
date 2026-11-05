@@ -2,7 +2,7 @@
 #![doc(html_logo_url = "https://avatars.githubusercontent.com/u/79236386")]
 #![doc(html_favicon_url = "https://avatars.githubusercontent.com/u/79236386")]
 
-//! # Dioxus Namespace for HTML
+//! # Aether Namespace for HTML
 //!
 //! This crate provides a set of compile-time correct HTML elements that can be used with the Rsx and Html macros.
 //! This system allows users to easily build new tags, new types, and customize the output of the Rsx and Html macros.
@@ -41,14 +41,14 @@ pub use data_transfer::*;
 pub use bytes;
 
 #[doc(hidden)]
-pub use dioxus_core;
+pub use aether_core;
 #[doc(hidden)]
-pub use dioxus_html_internal_macro::define_elements as __define_elements;
+pub use aether_html_internal_macro::define_elements as __define_elements;
 
 /// Define typed custom elements (and their typed attributes) for use in `rsx!`.
 ///
 /// Reach for `define_elements!` when your app needs project-specific element
-/// names or attributes that should type-check just like the built-in Dioxus
+/// names or attributes that should type-check just like the built-in Aether
 /// HTML elements. Each element becomes a typed builder, and each listed
 /// attribute becomes a typed method you can set in `rsx!`.
 ///
@@ -60,9 +60,9 @@ pub use dioxus_html_internal_macro::define_elements as __define_elements;
 /// # Example
 ///
 /// ```rust, ignore
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
-/// dioxus::html::define_elements! {
+/// aether::html::define_elements! {
 ///     // Renders as `<analytics-panel>` even though the Rust name is `analyticsPanel`.
 ///     #[element(name = "analytics-panel")]
 ///     analyticsPanel {
@@ -86,9 +86,9 @@ pub use dioxus_html_internal_macro::define_elements as __define_elements;
 #[macro_export]
 macro_rules! define_elements {
     ($($tokens:tt)*) => {
-        $crate::__dioxus_html_define_elements_with_detected_gated_attributes! {
+        $crate::__aether_html_define_elements_with_detected_gated_attributes! {
             $crate::__define_elements,
-            core = $crate::dioxus_core,
+            core = $crate::aether_core,
             html = $crate;
             $($tokens)*
         }

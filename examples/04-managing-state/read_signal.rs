@@ -5,10 +5,10 @@
 //! it." Any `Signal<T>` or `Memo<T>` coerces into a `ReadSignal<T>` automatically, so the
 //! parent passes them in unchanged.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

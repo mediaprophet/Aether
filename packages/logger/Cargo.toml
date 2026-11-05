@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-logger"
+name = "aether-logger"
 version = { workspace = true }
 edition = "2024"
 description = "A logging utility to provide a standard interface whether you're targeting web desktop, fullstack, and more."
@@ -8,12 +8,12 @@ repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
 readme = "README.md"
 license = "CC-BY-NC-ND-4.0"
-keywords = ["dioxus", "log", "logging"]
+keywords = ["aether", "log", "logging"]
 categories = ["development-tools::debugging"]
 
 
 [dependencies]
-dioxus-cli-config = { workspace = true }
+aether-cli-config = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["registry", "std", "env-filter"] }
 
@@ -27,7 +27,7 @@ wasm-bindgen = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["fmt"] }
 
 [dev-dependencies]
-dioxus = { workspace = true, features = ["fullstack"] }
+aether = { workspace = true, features = ["fullstack"] }
 
 [target.'cfg(target_arch = "wasm32")'.dev-dependencies]
 serde_json = { workspace = true }

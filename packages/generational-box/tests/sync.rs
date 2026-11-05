@@ -1,4 +1,4 @@
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/2636
+// Regression test for https://github.com/AetherLabs/aether/issues/2636
 
 use std::time::Duration;
 

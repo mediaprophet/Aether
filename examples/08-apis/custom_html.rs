@@ -1,17 +1,17 @@
 //! This example shows how to use a custom index.html and custom <HEAD> extensions
 //! to add things like stylesheets, scripts, and third-party JS libraries.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::new()
+    aether::LaunchBuilder::new()
         .with_cfg(
-            dioxus::desktop::Config::new().with_custom_index(
+            aether::desktop::Config::new().with_custom_index(
                 r#"
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Dioxus app</title>
+    <title>Aether app</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>body { background-color: olive; }</style>
   </head>

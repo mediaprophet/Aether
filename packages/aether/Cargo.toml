@@ -3,43 +3,129 @@ name = "aether"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Sovereign application framework for QualiaDB and Webizen OS-Shell with WebGPU acceleration and zero-heap lens reactivity."
+description = "Build fullstack web, desktop, and mobile apps with a single codebase."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
-documentation = "https://github.com/mediaprophet/Aether"
 keywords = ["web", "desktop", "mobile", "gui", "wasm"]
 rust-version = "1.85.0"
-publish = false
 
 [dependencies]
-dioxus = { path = "../dioxus", version = "=0.8.0-alpha.3", default-features = false }
-refract = { path = "../../refract" }
+aether-core = { workspace = true }
+aether-config-macros = { workspace = true }
+aether-html = { workspace = true, optional = true }
+aether-document = { workspace = true, optional = true }
+aether-history = { workspace = true, optional = true }
+aether-core-macro = { workspace = true, optional = true }
+aether-config-macro = { workspace = true, optional = true }
+aether-stores = { workspace = true, optional = true }
+aether-hooks = { workspace = true, optional = true }
+aether-signals = { workspace = true, optional = true }
+aether-router = { workspace = true, optional = true }
+aether-web = { workspace = true, default-features = false, optional = true }
+aether-desktop = { workspace = true, default-features = true, optional = true }
+aether-liveview = { workspace = true, optional = true }
+aether-ssr = { workspace = true, optional = true }
+aether-native = { workspace = true, optional = true }
+aether-server = { workspace = true, default-features = true, optional = true }
+aether-fullstack = { workspace = true, default-features = true, optional = true }
+aether-fullstack-macro = { workspace = true, optional = true }
+aether-asset-resolver = { workspace = true, optional = true }
+manganis = { workspace = true, features = ["aether"], optional = true }
+aether-logger = { workspace = true, optional = true }
+warnings = { workspace = true, optional = true }
+wasm-splitter = { workspace = true, optional = true }
+subsecond = { workspace = true }
+
+serde = { workspace = true, optional = true }
+aether-cli-config = { workspace = true, optional = true }
+aether-devtools = { workspace = true, optional = true }
 
 [features]
-default = ["dioxus/default"]
-lib = ["dioxus/lib"]
-minimal = ["dioxus/minimal"]
-signals = ["dioxus/signals"]
-macro = ["dioxus/macro"]
-html = ["dioxus/html"]
-hooks = ["dioxus/hooks"]
-devtools = ["dioxus/devtools"]
-mounted = ["dioxus/mounted"]
-asset = ["dioxus/asset"]
-document = ["dioxus/document"]
-logger = ["dioxus/logger"]
-cli-config = ["dioxus/cli-config"]
-warnings = ["dioxus/warnings"]
-wasm-split = ["dioxus/wasm-split"]
-launch = ["dioxus/launch"]
-router = ["dioxus/router"]
-fullstack = ["dioxus/fullstack"]
-desktop = ["dioxus/desktop"]
-mobile = ["dioxus/mobile"]
-web = ["dioxus/web"]
-ssr = ["dioxus/ssr"]
-liveview = ["dioxus/liveview"]
-native = ["dioxus/native"]
-server = ["dioxus/server"]
-third-party-renderer = ["dioxus/third-party-renderer"]
+default = [
+  "launch",
+  "devtools",
+  "logger",
+  "lib"
+]
+# All features recommended for use in libraries
+lib = [
+  "macro",
+  "html",
+  "signals",
+  "hooks",
+  "mounted",
+  "document",
+  "asset",
+  "warnings",
+  "cli-config",
+]
+# The minimal set of features required to use aether renderers for minimal binary size
+minimal = ["macro", "html", "signals", "hooks", "launch"]
+signals = ["dep:aether-signals", "dep:aether-stores"]
+macro = ["dep:aether-core-macro"]
+html = ["dep:aether-html"]
+hooks = ["dep:aether-hooks"]
+devtools = ["dep:aether-devtools", "aether-web?/devtools"]
+mounted = ["aether-web?/mounted"]
+asset = ["dep:manganis", "dep:aether-asset-resolver"]
+document = ["aether-web?/document", "dep:aether-document", "dep:aether-history"]
+logger = ["dep:aether-logger"]
+cli-config = ["dep:aether-cli-config"]
+warnings = ["dep:warnings"]
+wasm-split = [
+  "dep:wasm-splitter",
+  "aether-config-macros/wasm-split",
+] # note: to turn on the router splitter, you need to manually enable wasm-split on the router
+
+launch = ["dep:aether-config-macro"]
+router = ["dep:aether-router"]
+
+# Platforms
+fullstack = [
+  "dep:aether-fullstack",
+  "aether-config-macro/fullstack",
+  "dep:serde",
+  "aether-web?/document",
+  "aether-web?/hydrate",
+  "aether-server?/document",
+  "aether-web?/devtools",
+  "aether-web?/mounted",
+  "aether-web?/document"
+]
+desktop = ["dep:aether-desktop", "aether-config-macro/desktop"]
+mobile = ["dep:aether-desktop", "aether-config-macro/mobile"]
+web = [
+  "dep:aether-web",
+  "aether-fullstack?/web",
+  "aether-config-macro/web",
+  "dep:aether-cli-config",
+  "aether-cli-config?/web",
+  "aether-asset-resolver?/web",
+]
+ssr = ["dep:aether-ssr", "aether-config-macro/ssr"]
+liveview = ["dep:aether-liveview", "aether-config-macro/liveview"]
+native = ["dep:aether-native", "aether-config-macro/native"] # todo(jon): decompose the desktop crate such that "webview" is the default and native is opt-in
+server = [
+  "dep:aether-server",
+  "aether-fullstack?/server",
+  "dep:aether-fullstack-macro",
+  "ssr",
+  "aether-liveview?/axum",
+]
+
+# This feature just disables the no-renderer-enabled warning
+third-party-renderer = []
+
+[dev-dependencies]
+futures-util = { workspace = true }
+tracing = { workspace = true }
+rand = { workspace = true, features = ["small_rng"] }
+thiserror = { workspace = true }
+env_logger = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+aether = { workspace = true }
+
+[package.metadata.docs.rs]
+cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+features = ["router", "ssr", "web", "fullstack", "signals", "hooks", "html", "liveview", "server", "warnings"]

@@ -4,10 +4,10 @@
 //! sets the browser tab title; on desktop it becomes the window title. Because it's a
 //! regular component, its contents can be driven by signals and update live.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

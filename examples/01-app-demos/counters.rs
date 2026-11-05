@@ -1,11 +1,11 @@
 //! A simple counters example that stores a list of items in a vec and then iterates over them.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const STYLE: Asset = asset!("/examples/assets/counter.css");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -31,7 +31,7 @@ fn app() -> Element {
             // We need a key to uniquely identify each counter. You really shouldn't be using the index, so we're using
             // the counter value itself.
             //
-            // If we used the index, and a counter is removed, dioxus would need to re-write the contents of all following
+            // If we used the index, and a counter is removed, aether would need to re-write the contents of all following
             // counters instead of simply removing the one that was removed
             //
             // You should use a stable identifier for the key, like a unique id or the value of the counter itself

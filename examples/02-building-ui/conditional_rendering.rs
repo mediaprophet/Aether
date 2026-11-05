@@ -4,10 +4,10 @@
 //! `rsx!` blocks early from a component function. Elements outside of a conditional will
 //! render normally — only the branched portion swaps as state changes.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 #[derive(PartialEq, Clone, Copy)]

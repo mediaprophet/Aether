@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 //! # Routable
 
-use dioxus_core::Element;
+use aether_core::Element;
 use std::iter::FlatMap;
 use std::slice::Iter;
 use std::{fmt::Display, str::FromStr};
@@ -29,7 +29,7 @@ impl<E: Display> Display for RouteParseError<E> {
 /// **This trait is automatically implemented for any types that implement `From<&str>`.**
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Routable, Clone, PartialEq, Debug)]
 /// enum Route {
@@ -90,7 +90,7 @@ impl<T: for<'a> From<&'a str>> FromQuery for T {
 /// **This trait is automatically implemented for any types that implement `FromStr` and `Default`.**
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Routable, Clone, PartialEq, Debug)]
 /// enum Route {
@@ -193,7 +193,7 @@ where
 /// **This trait is automatically implemented for any types that implement [`Display`].**
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Routable, Clone, PartialEq, Debug)]
 /// enum Route {
@@ -308,8 +308,8 @@ impl<T: ToQueryArgument<M>, M> Display for DisplayQueryArgument<'_, T, M> {
 /// # Example
 ///
 /// ```rust
-/// use dioxus::prelude::*;
-/// use dioxus_router::FromHashFragment;
+/// use aether::prelude::*;
+/// use aether_router::FromHashFragment;
 ///
 /// #[derive(Routable, Clone)]
 /// #[rustfmt::skip]
@@ -393,7 +393,7 @@ where
 /// **This trait is automatically implemented for any types that implement `FromStr` and `Default`.**
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Routable, Clone, PartialEq, Debug)]
 /// enum Route {
@@ -476,8 +476,8 @@ fn full_circle() {
 /// **This trait is automatically implemented for any types that implement `IntoIterator<Item=impl Display>`.**
 ///
 /// ```rust
-/// use dioxus::prelude::*;
-/// use dioxus_router::{ToRouteSegments, FromRouteSegments};
+/// use aether::prelude::*;
+/// use aether_router::{ToRouteSegments, FromRouteSegments};
 ///
 /// #[derive(Routable, Clone, PartialEq, Debug)]
 /// enum Route {
@@ -568,8 +568,8 @@ fn to_route_segments() {
 /// **This trait is automatically implemented for any types that implement `FromIterator<impl Display>`.**
 ///
 /// ```rust
-/// use dioxus::prelude::*;
-/// use dioxus_router::{ToRouteSegments, FromRouteSegments};
+/// use aether::prelude::*;
+/// use aether_router::{ToRouteSegments, FromRouteSegments};
 ///
 /// #[derive(Routable, Clone, PartialEq, Debug)]
 /// enum Route {
@@ -661,11 +661,11 @@ type SiteMapFlattened<'a> = FlatMap<
 /// 2. Converted to a route.
 /// 3. Rendered as a component.
 ///
-/// This trait should generally be derived using the [`dioxus_router_macro::Routable`] macro which has more information about the syntax.
+/// This trait should generally be derived using the [`aether_router_macro::Routable`] macro which has more information about the syntax.
 ///
 /// ## Example
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// fn App() -> Element {
 ///     rsx! {
@@ -739,7 +739,7 @@ pub trait Routable: FromStr<Err: Display> + Display + Clone + 'static {
     ///
     /// # Example
     /// ```rust
-    /// use dioxus::prelude::*;
+    /// use aether::prelude::*;
     ///
     /// #[component]
     /// fn Home() -> Element { VNode::empty() }
@@ -806,7 +806,7 @@ pub trait Routable: FromStr<Err: Display> + Display + Clone + 'static {
     ///
     /// # Example
     /// ```rust
-    /// use dioxus::prelude::*;
+    /// use aether::prelude::*;
     ///
     /// #[component]
     /// fn Home() -> Element { VNode::empty() }

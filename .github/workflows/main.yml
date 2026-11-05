@@ -120,7 +120,7 @@ jobs:
       - name: Clippy
         run: cargo clippy --workspace --examples --tests --all-features --all-targets -- -D warnings
       - name: Check schema
-        run: cargo run -p dioxus-cli -- config schema --out packages/cli/schema.json
+        run: cargo run -p aether-cli -- config schema --out packages/cli/schema.json
       - name: Verify schema is up to date
         run: |
           if ! git diff --exit-code packages/cli/schema.json; then
@@ -201,7 +201,7 @@ jobs:
       - uses: ./.github/actions/rust-cache
       - name: Bundle hotdog as Linux packages
         working-directory: ./examples/01-app-demos/hotdog
-        run: cargo run --manifest-path ../../../Cargo.toml -p dioxus-cli -- bundle --platform desktop --package-types appimage --package-types deb --package-types rpm
+        run: cargo run --manifest-path ../../../Cargo.toml -p aether-cli -- bundle --platform desktop --package-types appimage --package-types deb --package-types rpm
       - name: Verify Linux bundle outputs
         run: |
           find target -name '*.AppImage' -print
@@ -235,7 +235,7 @@ jobs:
       - uses: ./.github/actions/rust-cache
       - name: Bundle hotdog as macOS packages
         working-directory: ./examples/01-app-demos/hotdog
-        run: cargo run --manifest-path ../../../Cargo.toml -p dioxus-cli -- bundle --platform desktop --package-types macos --package-types dmg
+        run: cargo run --manifest-path ../../../Cargo.toml -p aether-cli -- bundle --platform desktop --package-types macos --package-types dmg
       - name: Verify macOS bundle outputs
         run: |
           find target -type d -name '*.app' -print
@@ -275,7 +275,7 @@ jobs:
           workspaces: ${{ env.AETHER_WORKSPACE }}
       - name: Bundle hotdog as Windows packages
         working-directory: ${{ env.AETHER_WORKSPACE }}/examples/01-app-demos/hotdog
-        run: cargo run --release --manifest-path ..\..\..\Cargo.toml -p dioxus-cli -- bundle --platform desktop --package-types msi --package-types nsis
+        run: cargo run --release --manifest-path ..\..\..\Cargo.toml -p aether-cli -- bundle --platform desktop --package-types msi --package-types nsis
       - name: Verify Windows bundle outputs
         working-directory: ${{ env.AETHER_WORKSPACE }}
         shell: pwsh
@@ -436,7 +436,7 @@ jobs:
           components: rustfmt, clippy
       - uses: ./.github/actions/rust-cache
       - uses: browser-actions/setup-firefox@latest
-      - run: cargo test --lib --bins --tests --examples --workspace --exclude dioxus-desktop
+      - run: cargo test --lib --bins --tests --examples --workspace --exclude aether-desktop
 
   release-test:
     needs: rust
@@ -459,7 +459,7 @@ jobs:
           components: rustfmt, clippy
       - uses: ./.github/actions/rust-cache
       - uses: browser-actions/setup-firefox@latest
-      - run: cargo test --lib --bins --tests --examples --workspace --exclude dioxus-desktop --profile release-unoptimized
+      - run: cargo test --lib --bins --tests --examples --workspace --exclude aether-desktop --profile release-unoptimized
 
   matrix_test:
     needs: rust
@@ -486,7 +486,7 @@ jobs:
               toolchain: "${{ needs.rust.outputs.rust_stable }}",
               cross: false,
               command: "build",
-              args: "--package dioxus-desktop",
+              args: "--package aether-desktop",
               platform: "ios",
             }
           - {
@@ -504,7 +504,7 @@ jobs:
               toolchain: "${{ needs.rust.outputs.rust_stable }}",
               cross: true,
               command: "build",
-              args: "--package dioxus-desktop",
+              args: "--package aether-desktop",
               platform: "android",
             }
 
@@ -563,7 +563,7 @@ jobs:
           ${{ env.RUST_CARGO_COMMAND }} ${{ matrix.platform.command }} ${{ matrix.platform.args }} --target ${{ matrix.platform.target }}
 
   # Verify that declared minimum dependency versions actually compile.
-  # Catches issues like https://github.com/DioxusLabs/dioxus/issues/5433 where
+  # Catches issues like https://github.com/AetherLabs/aether/issues/5433 where
   # the code uses APIs not available in the declared minimum version.
   min-deps:
     needs: rust
@@ -609,8 +609,8 @@ jobs:
           restore-prefixes-first-match: |
             nix-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.nix', 'flake.lock') }}-
             nix-${{ runner.os }}-${{ runner.arch }}-
-      - name: Build dioxus-cli from the flake
-        run: nix build .#dioxus-cli
+      - name: Build aether-cli from the flake
+        run: nix build .#aether-cli
       - name: Smoke test devShell
         shell: bash
         run: |

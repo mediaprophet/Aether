@@ -339,7 +339,7 @@ struct WindowsResource {
 impl WindowsResource {
     /// Create a new resource with version info struct
     ///
-    /// We initialize the resource file with values provided in Dioxus.toml
+    /// We initialize the resource file with values provided in Aether.toml
     ///
     fn new(version: u64, file_version: u64) -> Self {
         let props: HashMap<String, String> = HashMap::new();
@@ -591,7 +591,7 @@ impl WindowsResource {
             ""
         };
 
-        // this could probably be done with variables in Dioxus.toml instead of env::var
+        // this could probably be done with variables in Aether.toml instead of env::var
         let windres_path = if let Ok(windres) = env::var("WINDRES") {
             windres
         } else {
@@ -643,7 +643,7 @@ impl WindowsResource {
     }
 
     fn compile_with_toolkit_msvc(&mut self, target: &Triple, output_dir: &Path) -> Result<()> {
-        // The path to this could also be provided via Dioxus.toml if someone has the exe in other places
+        // The path to this could also be provided via Aether.toml if someone has the exe in other places
         let toolkit = get_sdk(matches!(target.architecture, Architecture::X86_64))?;
 
         let rc_file = self.write_resource_file(output_dir)?;

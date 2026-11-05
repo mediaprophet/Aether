@@ -1,31 +1,31 @@
 //! tray icon
 
-use dioxus_core::{provide_context, try_consume_context, use_hook};
+use aether_core::{provide_context, try_consume_context, use_hook};
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
 pub use tray_icon::*;
 
 /// tray icon menu type trait
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
-pub type DioxusTrayMenu = tray_icon::menu::Menu;
+pub type AetherTrayMenu = tray_icon::menu::Menu;
 #[cfg(any(target_os = "ios", target_os = "android"))]
-pub type DioxusTrayMenu = ();
+pub type AetherTrayMenu = ();
 
 /// tray icon icon type trait
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
-pub type DioxusTrayIcon = tray_icon::Icon;
+pub type AetherTrayIcon = tray_icon::Icon;
 #[cfg(any(target_os = "ios", target_os = "android"))]
-pub type DioxusTrayIcon = ();
+pub type AetherTrayIcon = ();
 
 /// tray icon type trait
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
-pub type DioxusTray = tray_icon::TrayIcon;
+pub type AetherTray = tray_icon::TrayIcon;
 #[cfg(any(target_os = "ios", target_os = "android"))]
-pub type DioxusTray = ();
+pub type AetherTray = ();
 
 /// initializes a tray icon
 #[allow(unused)]
-pub fn init_tray_icon(menu: DioxusTrayMenu, icon: Option<DioxusTrayIcon>) -> DioxusTray {
+pub fn init_tray_icon(menu: AetherTrayMenu, icon: Option<AetherTrayIcon>) -> AetherTray {
     #[cfg(any(target_os = "windows", target_os = "linux", target_os = "macos"))]
     {
         let icon = icon.map(Ok).unwrap_or_else(crate::default_icon);
@@ -47,7 +47,7 @@ pub fn init_tray_icon(menu: DioxusTrayMenu, icon: Option<DioxusTrayIcon>) -> Dio
 }
 
 /// Returns a default tray icon menu
-pub fn default_tray_icon() -> DioxusTrayMenu {
+pub fn default_tray_icon() -> AetherTrayMenu {
     #[cfg(any(target_os = "windows", target_os = "linux", target_os = "macos"))]
     {
         use tray_icon::menu::{Menu, PredefinedMenuItem};

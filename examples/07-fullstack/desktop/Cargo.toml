@@ -5,10 +5,10 @@ edition = "2024"
 publish = false
 
 [dependencies]
-dioxus = { workspace = true, features = ["launch", "fullstack"] }
+aether = { workspace = true, features = ["launch", "fullstack"] }
 serde = { workspace = true }
 
 [features]
 default = []
-server = ["dioxus/server"]
-desktop = ["dioxus/desktop"]
+server = ["aether/server"]
+desktop = ["aether/desktop"]

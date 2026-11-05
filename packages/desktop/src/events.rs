@@ -4,7 +4,7 @@ use crate::{
     element::DesktopElement,
     file_upload::{DesktopFileDragEvent, DesktopFormData},
 };
-use dioxus_html::*;
+use aether_html::*;
 
 pub(crate) struct SerializedHtmlEventConverter;
 

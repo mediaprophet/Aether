@@ -277,7 +277,7 @@ impl Scope {
     /// # Example
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// #[derive(Clone)]
     /// struct SharedState(&'static str);
     ///
@@ -331,8 +331,8 @@ impl Scope {
     /// Because this future runs during suspense, you need to be careful to work with hydration. It is not recommended to do any async IO work in this future, as it can easily cause hydration issues. However, you can use isomorphic tasks to do work that can be consistently replicated on the server and client like logging or responding to state changes.
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_core::spawn_isomorphic;
+    /// # use aether::prelude::*;
+    /// # use aether_core::spawn_isomorphic;
     /// // ❌ Do not do requests in isomorphic tasks. It may resolve at a different time on the server and client, causing hydration issues.
     /// let mut state = use_signal(|| None);
     /// spawn_isomorphic(async move {

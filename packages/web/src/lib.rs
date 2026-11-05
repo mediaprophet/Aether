@@ -2,11 +2,11 @@
 #![doc(html_favicon_url = "https://avatars.githubusercontent.com/u/79236386")]
 #![deny(missing_docs)]
 
-//! # Dioxus Web
+//! # Aether Web
 
 pub use crate::cfg::Config;
 use crate::hydration::SuspenseMessage;
-use dioxus_core::{ScopeId, VirtualDom};
+use aether_core::{ScopeId, VirtualDom};
 use dom::WebsysDom;
 use futures_util::{FutureExt, StreamExt, pin_mut, select};
 
@@ -47,7 +47,7 @@ pub use hydration::*;
 /// # Example
 ///
 /// ```ignore, rust
-/// let app_fut = dioxus_web::run_with_props(App, RootProps { name: String::from("foo") });
+/// let app_fut = aether_web::run_with_props(App, RootProps { name: String::from("foo") });
 /// wasm_bindgen_futures::spawn_local(app_fut);
 /// ```
 pub async fn run(mut virtual_dom: VirtualDom, web_config: Config) -> ! {
@@ -56,7 +56,7 @@ pub async fn run(mut virtual_dom: VirtualDom, web_config: Config) -> ! {
 
     #[cfg(feature = "document")]
     if let Some(history) = web_config.history.clone() {
-        virtual_dom.in_scope(ScopeId::ROOT, || dioxus_core::provide_context(history));
+        virtual_dom.in_scope(ScopeId::ROOT, || aether_core::provide_context(history));
     }
 
     #[cfg(feature = "document")]
@@ -82,8 +82,8 @@ pub async fn run(mut virtual_dom: VirtualDom, web_config: Config) -> ! {
             futures_util::select! {
                 msg = hotreload_rx.next() => {
                     if let Some(msg) = msg
-                        && msg.for_build_id == Some(dioxus_cli_config::build_id()) {
-                            dioxus_devtools::apply_changes(&virtual_dom, &msg);
+                        && msg.for_build_id == Some(aether_cli_config::build_id()) {
+                            aether_devtools::apply_changes(&virtual_dom, &msg);
                         }
                 }
                 _ = &mut timeout => {
@@ -94,19 +94,19 @@ pub async fn run(mut virtual_dom: VirtualDom, web_config: Config) -> ! {
 
         #[cfg(feature = "hydrate")]
         {
-            use dioxus_fullstack_core::HydrationContext;
+            use aether_fullstack_core::HydrationContext;
 
             // Get the initial hydration data from the client
             #[wasm_bindgen::prelude::wasm_bindgen(inline_js = r#"
                 export function get_initial_hydration_data() {
-                    const decoded = atob(window.initial_dioxus_hydration_data);
+                    const decoded = atob(window.initial_aether_hydration_data);
                     return Uint8Array.from(decoded, (c) => c.charCodeAt(0))
                 }
                 export function get_initial_hydration_debug_types() {
-                    return window.initial_dioxus_hydration_debug_types;
+                    return window.initial_aether_hydration_debug_types;
                 }
                 export function get_initial_hydration_debug_locations() {
-                    return window.initial_dioxus_hydration_debug_locations;
+                    return window.initial_aether_hydration_debug_locations;
                 }
             "#)]
             extern "C" {
@@ -135,8 +135,8 @@ pub async fn run(mut virtual_dom: VirtualDom, web_config: Config) -> ! {
             server_data.in_context(|| {
                 virtual_dom.in_scope(ScopeId::ROOT, || {
                     // Provide a hydration compatible create error boundary method
-                    dioxus_core::provide_create_error_boundary(
-                        dioxus_fullstack_core::init_error_boundary,
+                    aether_core::provide_create_error_boundary(
+                        aether_fullstack_core::init_error_boundary,
                     );
                     #[cfg(feature = "document")]
                     document::init_fullstack_document();
@@ -221,13 +221,13 @@ pub async fn run(mut virtual_dom: VirtualDom, web_config: Config) -> ! {
         #[cfg(all(feature = "devtools", debug_assertions))]
         if let Some(hr_msg) = template {
             // Replace all templates
-            dioxus_devtools::apply_changes(&virtual_dom, &hr_msg);
+            aether_devtools::apply_changes(&virtual_dom, &hr_msg);
 
             if !hr_msg.assets.is_empty() {
                 crate::devtools::invalidate_browser_asset_cache();
             }
 
-            if hr_msg.for_build_id == Some(dioxus_cli_config::build_id()) {
+            if hr_msg.for_build_id == Some(aether_cli_config::build_id()) {
                 devtools::show_toast(
                     "Hot-patch success!",
                     &format!("App successfully patched in {} ms", hr_msg.ms_elapsed),

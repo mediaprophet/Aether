@@ -3,7 +3,7 @@ use crate::{
     innerlude::{CapturedError, provide_context},
     try_consume_context, use_hook,
 };
-use dioxus_core_template::{TemplateRawTree, TemplateStorage};
+use aether_core_template::{TemplateRawTree, TemplateStorage};
 use std::{
     any::Any,
     cell::RefCell,
@@ -202,7 +202,7 @@ fn default_handler(errors: ErrorContext) -> Element {
     ))
 }
 
-#[derive(dioxus_core_macro::Props, Clone)]
+#[derive(aether_core_macro::Props, Clone)]
 pub struct ErrorBoundaryProps {
     children: Element,
     #[props(into, default = ErrorHandler(Rc::new(default_handler)))]
@@ -229,7 +229,7 @@ impl PartialEq for ErrorBoundaryProps {
 /// ## Example
 ///
 /// ```rust, no_run
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// fn App() -> Element {
 ///     let mut multiplier = use_signal(|| String::from("2"));
@@ -277,7 +277,7 @@ impl PartialEq for ErrorBoundaryProps {
 /// you can call the [`ErrorContext::clear_errors`] method. This will clear all errors and re-render the children.
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn App() -> Element {
 ///     let mut multiplier = use_signal(|| String::new());
 ///     rsx! {

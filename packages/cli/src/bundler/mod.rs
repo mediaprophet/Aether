@@ -22,7 +22,7 @@ pub(crate) struct Bundle {
 
 /// BundleContext wraps a BuildRequest and provides the settings API
 /// that bundle format modules need. This is the adapter between
-/// Dioxus build infrastructure and the individual bundler implementations.
+/// Aether build infrastructure and the individual bundler implementations.
 pub(crate) struct BundleContext<'a> {
     pub(crate) build: &'a BuildRequest,
 

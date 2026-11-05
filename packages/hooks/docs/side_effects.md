@@ -2,12 +2,12 @@ Effects are reactive closures that run **after the component has finished render
 
 **Effects are specifically created for side effects. If you are trying to derive state, use a [memo](#derived-state), or [resource](#derived-async-state) instead.**
 
-If you are trying to update the DOM, you can use the [`use_effect`](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_effect.html) hook to run an effect after the component has finished rendering.
+If you are trying to update the DOM, you can use the [`use_effect`](https://docs.rs/aether/latest/aether/prelude/fn.use_effect.html) hook to run an effect after the component has finished rendering.
 
 `use_effect` will subscribe to any changes in the signal values it captures effects will always run after first mount and then whenever the signal values change. If the use_effect call was skipped due to an early return, the effect will no longer activate.
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn MyComponent() -> Element {
     let mut count = use_signal(|| 0);
 
@@ -17,7 +17,7 @@ fn MyComponent() -> Element {
 
         // You can use the count value to update the DOM manually
         document::eval(&format!(
-            r#"var c = document.getElementById("dioxus-canvas");
+            r#"var c = document.getElementById("aether-canvas");
 var ctx = c.getContext("2d");
 ctx.font = "30px Arial";
 ctx.fillText("{count}", 10, 50);"#
@@ -31,7 +31,7 @@ ctx.fillText("{count}", 10, 50);"#
             "Increment"
         }
         canvas {
-            id: "dioxus-canvas",
+            id: "aether-canvas",
         }
     }
 }
@@ -44,7 +44,7 @@ To add non-reactive dependencies, you can use the [`crate::use_reactive()`] hook
 Signals will automatically be added as dependencies, so you don't need to call this method for them.
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # async fn sleep(delay: u32) {}
 
 #[component]
@@ -58,12 +58,12 @@ fn Comp(count: u32) -> Element {
 
 ## Modifying mounted nodes
 
-One of the most common use cases for effects is modifying or reading something from the rendered DOM. Dioxus provides access to the DOM with the [`onmounted`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmounted.html) event.
+One of the most common use cases for effects is modifying or reading something from the rendered DOM. Aether provides access to the DOM with the [`onmounted`](https://docs.rs/aether/latest/aether/events/fn.onmounted.html) event.
 
 You can combine `use_effect` with `onmounted` to run an effect with access to a DOM element after all rendering is finished:
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn MyComponent() -> Element {
     let mut current_text = use_signal(String::new);
     let mut mounted_text_div: Signal<Option<MountedEvent>> = use_signal(|| None);

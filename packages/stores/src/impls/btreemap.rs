@@ -5,7 +5,7 @@ use std::{
 };
 
 use crate::{ReadStore, store::Store};
-use dioxus_signals::{
+use aether_signals::{
     AnyStorage, BorrowError, BorrowMutError, ReadSignal, Readable, ReadableExt, UnsyncStorage,
     Writable, WriteLock, WriteSignal,
 };
@@ -19,8 +19,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// assert_eq!(store.len(), 0);
@@ -37,8 +37,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// assert!(store.is_empty());
@@ -57,8 +57,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     /// # Example
     ///
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// store.insert(0, "value1".to_string());
@@ -90,8 +90,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// store.insert(0, "value1".to_string());
@@ -121,8 +121,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// assert!(store.get(0).is_none());
@@ -151,8 +151,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// store.insert(0, "value".to_string());
@@ -176,8 +176,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// store.insert(1, "value1".to_string());
@@ -199,8 +199,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// store.insert(1, "value1".to_string());
@@ -224,8 +224,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// assert!(!store.contains_key(&0));
@@ -246,8 +246,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// assert!(store.get(0).is_none());
@@ -269,8 +269,8 @@ impl<Lens: Readable<Target = BTreeMap<K, V>> + 'static, K: 'static, V: 'static>
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
-    /// use dioxus::prelude::*;
+    /// use aether_stores::*;
+    /// use aether::prelude::*;
     /// use std::collections::BTreeMap;
     /// let mut store = use_store(|| BTreeMap::new());
     /// store.insert(0, "value".to_string());
@@ -312,7 +312,7 @@ where
 
     type Storage = Write::Storage;
 
-    fn try_read_unchecked(&self) -> Result<dioxus_signals::ReadableRef<'static, Self>, BorrowError>
+    fn try_read_unchecked(&self) -> Result<aether_signals::ReadableRef<'static, Self>, BorrowError>
     where
         Self::Target: 'static,
     {
@@ -322,7 +322,7 @@ where
         })
     }
 
-    fn try_peek_unchecked(&self) -> Result<dioxus_signals::ReadableRef<'static, Self>, BorrowError>
+    fn try_peek_unchecked(&self) -> Result<aether_signals::ReadableRef<'static, Self>, BorrowError>
     where
         Self::Target: 'static,
     {
@@ -332,7 +332,7 @@ where
         })
     }
 
-    fn subscribers(&self) -> dioxus_core::Subscribers
+    fn subscribers(&self) -> aether_core::Subscribers
     where
         Self::Target: 'static,
     {
@@ -350,7 +350,7 @@ where
 
     fn try_write_unchecked(
         &self,
-    ) -> Result<dioxus_signals::WritableRef<'static, Self>, BorrowMutError>
+    ) -> Result<aether_signals::WritableRef<'static, Self>, BorrowMutError>
     where
         Self::Target: 'static,
     {

@@ -3,10 +3,10 @@
 //! Memos will also pause when their parent component pauses, so if you have a memo that depends on a signal, and the
 //! signal pauses, the memo will pause too.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

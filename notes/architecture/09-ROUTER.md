@@ -1,6 +1,6 @@
-# Dioxus Router Architecture
+# Aether Router Architecture
 
-The Dioxus router provides type-safe, declarative routing with support for nested layouts, dynamic parameters, and platform-agnostic navigation.
+The Aether router provides type-safe, declarative routing with support for nested layouts, dynamic parameters, and platform-agnostic navigation.
 
 ## Route Definition
 
@@ -81,7 +81,7 @@ impl RouterContext {
 
 The router context is:
 1. Created in `Router` component with `RouterConfig`
-2. Provided via Dioxus context to children
+2. Provided via Aether context to children
 3. Uses **signals** for reactive updates
 4. Tracks **subscribers** for re-rendering
 5. Integrates with **history provider**

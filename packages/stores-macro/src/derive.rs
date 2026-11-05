@@ -138,13 +138,13 @@ fn mapped_type(
     field_type: &syn::Type,
 ) -> TokenStream2 {
     let lens = quote! {
-        dioxus_stores::macro_helpers::dioxus_signals::MappedMutSignal<
+        aether_stores::macro_helpers::aether_signals::MappedMutSignal<
             #field_type, __Lens,
             fn(&#item #ty_generics) -> &#field_type,
             fn(&mut #item #ty_generics) -> &mut #field_type,
         >
     };
-    quote! { dioxus_stores::Store<#field_type, #lens> }
+    quote! { aether_stores::Store<#field_type, #lens> }
 }
 
 /// Map the original generics into the transposed type's generic arguments.
@@ -223,7 +223,7 @@ fn derive_store_struct(
     let (_, ty_generics, _) = generics.split_for_impl();
     let (extension_impl_generics, extension_ty_generics, extension_where_clause) =
         extension_generics.split_for_impl();
-    let store_ty = quote! { dioxus_stores::Store<#struct_name #ty_generics, __Lens> };
+    let store_ty = quote! { aether_stores::Store<#struct_name #ty_generics, __Lens> };
 
     // Prepend a `__V` witness type parameter to the extension trait. Each
     // method is gated on `Self: witness<__V>`, and `__V` is inferred from a
@@ -339,7 +339,7 @@ fn generate_is_variant_method(
     let body = quote! {
         {
             self.selector().track_shallow();
-            let ref_self = dioxus_stores::macro_helpers::dioxus_signals::ReadableExt::peek(self.selector());
+            let ref_self = aether_stores::macro_helpers::aether_signals::ReadableExt::peek(self.selector());
             matches!(&*ref_self, #enum_name::#variant_name { .. })
         }
     };
@@ -424,7 +424,7 @@ fn derive_store_enum(
     let (_, ty_generics, _) = generics.split_for_impl();
     let (extension_impl_generics, extension_ty_generics, extension_where_clause) =
         extension_generics.split_for_impl();
-    let store_ty = quote! { dioxus_stores::Store<#enum_name #ty_generics, __Lens> };
+    let store_ty = quote! { aether_stores::Store<#enum_name #ty_generics, __Lens> };
 
     // Every accessor is gated on the enum's own visibility, since variant
     // fields inherit it.
@@ -457,7 +457,7 @@ fn derive_store_enum(
 
     // The generated items that check the variant of the enum need to read the enum which requires these extra bounds
     let readable_bounds = quote! {
-        __Lens: dioxus_stores::macro_helpers::dioxus_signals::Readable<Target = #enum_name #ty_generics>,
+        __Lens: aether_stores::macro_helpers::aether_signals::Readable<Target = #enum_name #ty_generics>,
         #enum_name #ty_generics: 'static
     };
 
@@ -558,7 +558,7 @@ fn derive_store_enum(
                 // We only do a shallow read of the store to get the current variant. We only need to rerun
                 // this match when the variant changes, not when the fields change
                 self.selector().track_shallow();
-                let read = dioxus_stores::macro_helpers::dioxus_signals::ReadableExt::peek(self.selector());
+                let read = aether_stores::macro_helpers::aether_signals::ReadableExt::peek(self.selector());
                 match &*read {
                     #(#transposed_match_arms)*
                     // The enum may be #[non_exhaustive]

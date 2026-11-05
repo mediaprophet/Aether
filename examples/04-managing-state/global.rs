@@ -5,7 +5,7 @@
 //! global signal, simply use its methods like a regular signal. Calls to `read` and `write` will be forwarded to the
 //! signal at the root of your app using the `static`'s address.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const STYLE: Asset = asset!("/examples/assets/counter.css");
 
@@ -13,7 +13,7 @@ static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
 static DOUBLED_COUNT: GlobalMemo<i32> = Memo::global(|| COUNT() * 2);
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

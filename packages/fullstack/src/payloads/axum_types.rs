@@ -2,7 +2,7 @@ use super::*;
 use crate::{ClientResponse, FromResponse};
 pub use axum::extract::Json;
 use axum::response::{Html, NoContent, Redirect};
-use dioxus_fullstack_core::{RequestError, ServerFnError};
+use aether_fullstack_core::{RequestError, ServerFnError};
 use futures::StreamExt;
 use http::StatusCode;
 use std::future::Future;

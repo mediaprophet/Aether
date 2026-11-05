@@ -1,4 +1,4 @@
-//! This example demonstrates server-sent events (SSE) using Dioxus Fullstack.
+//! This example demonstrates server-sent events (SSE) using Aether Fullstack.
 //!
 //! Server-sent events allow the server to push updates to the client over a single HTTP connection.
 //! This is useful for real-time updates, notifications, or any scenario where the server needs to
@@ -22,11 +22,11 @@
 //! can be used as an event type. Calls to `.recv()` will wait for the next event to arrive and
 //! deserialize it into the correct type.
 
-use dioxus::prelude::*;
-use dioxus_fullstack::ServerEvents;
+use aether::prelude::*;
+use aether_fullstack::ServerEvents;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -41,7 +41,7 @@ fn app() -> Element {
             events.push(event);
         }
 
-        dioxus::Ok(())
+        aether::Ok(())
     });
 
     rsx! {

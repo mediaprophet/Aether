@@ -6,8 +6,8 @@ use axum::extract::FromRequest;
 use axum::response::IntoResponse;
 use axum::{Json, response::Html};
 use bytes::Bytes;
-use dioxus::prelude::*;
-use dioxus_fullstack::{FileStream, ServerFnError, Text, TextStream, Websocket, get};
+use aether::prelude::*;
+use aether_fullstack::{FileStream, ServerFnError, Text, TextStream, Websocket, get};
 use futures::StreamExt;
 use http::HeaderMap;
 use http::StatusCode;
@@ -171,7 +171,7 @@ mod custom_serialize {
 mod custom_types {
     use axum::response::Response;
     // use axum_core::response::Response;
-    use dioxus_fullstack::{
+    use aether_fullstack::{
         ClientRequest, ClientResponse, FromResponse, IntoRequest, RequestError, WebSocketOptions,
     };
 
@@ -276,7 +276,7 @@ mod overlap {
 }
 
 mod http_ext {
-    use dioxus::Result;
+    use aether::Result;
 
     use super::*;
 

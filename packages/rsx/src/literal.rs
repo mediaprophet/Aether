@@ -157,7 +157,7 @@ impl ToTokens for HotReloadFormattedSegment {
     fn to_tokens(&self, tokens: &mut TokenStream2) {
         let segments = self.quote_with_dynamic_ids(&[]);
         tokens.extend(quote! {
-            dioxus_core::internal::FmtedSegments::new(#segments.to_vec())
+            aether_core::internal::FmtedSegments::new(#segments.to_vec())
         });
     }
 }
@@ -175,13 +175,13 @@ impl HotReloadFormattedSegment {
         let mut next_dynamic = 0usize;
         let segments = self.segments.iter().map(|segment| match segment {
             Segment::Literal(lit) => quote! {
-                dioxus_core::internal::FmtSegment::Literal { value: #lit }
+                aether_core::internal::FmtSegment::Literal { value: #lit }
             },
             Segment::Formatted(_) => {
                 let id = dynamic_ids.get(next_dynamic).copied().unwrap_or(usize::MAX);
                 next_dynamic += 1;
                 quote! {
-                    dioxus_core::internal::FmtSegment::Dynamic { id: #id }
+                    aether_core::internal::FmtSegment::Dynamic { id: #id }
                 }
             }
         });

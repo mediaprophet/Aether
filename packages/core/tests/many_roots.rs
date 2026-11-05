@@ -1,7 +1,7 @@
 #![allow(non_snake_case)]
 
-use dioxus::prelude::*;
-use dioxus_renderer_oracle::{RendererOracle, SnapshotNode};
+use aether::prelude::*;
+use aether_renderer_oracle::{RendererOracle, SnapshotNode};
 
 macro_rules! oversized_static_divs {
     ($render:ident) => {
@@ -107,7 +107,7 @@ fn render_app(app: fn() -> Element) -> Vec<SnapshotNode> {
 }
 
 /// Should push the text node onto the stack and modify it
-/// Regression test for https://github.com/DioxusLabs/dioxus/issues/2809 and https://github.com/DioxusLabs/dioxus/issues/3055
+/// Regression test for https://github.com/AetherLabs/aether/issues/2809 and https://github.com/AetherLabs/aether/issues/3055
 #[test]
 fn many_roots() {
     fn app() -> Element {

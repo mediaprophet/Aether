@@ -1,17 +1,17 @@
 //! An advanced usage of the router with nested routes and redirects.
 //!
-//! Dioxus implements an enum-based router, which allows you to define your routes in a type-safe way.
+//! Aether implements an enum-based router, which allows you to define your routes in a type-safe way.
 //! However, since we need to bake quite a bit of logic into the enum, we have to add some extra syntax.
 //!
 //! Note that you don't need to use advanced features like nest, redirect, etc, since these can all be implemented
 //! manually, but they are provided as a convenience.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const STYLE: Asset = asset!("/examples/assets/router.css");
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         rsx! {
             Stylesheet { href: STYLE }
             Router::<Route> {}
@@ -76,7 +76,7 @@ fn NavBar() -> Element {
 
 #[component]
 fn Home() -> Element {
-    rsx! { h1 { "Welcome to the Dioxus Blog!" } }
+    rsx! { h1 { "Welcome to the Aether Blog!" } }
 }
 
 #[component]

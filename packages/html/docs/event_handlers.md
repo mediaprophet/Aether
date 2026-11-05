@@ -1,9 +1,9 @@
 # Event Handlers
 
-Event Handlers let you react to user input in your application. In Dioxus, event handlers accept a closure that is called when the event occurs:
+Event Handlers let you react to user input in your application. In Aether, event handlers accept a closure that is called when the event occurs:
 
 ```rust, no_run
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn App() -> Element {
     rsx! {
@@ -20,10 +20,10 @@ fn App() -> Element {
 
 Events take a closure with the `'static` lifetime. This means that the closure can only access data that either exists for the entire lifetime of the application, or data that you move into the closure.
 
-State in dioxus is `copy` which makes it very easy to move into `'static` closures like event handlers:
+State in aether is `copy` which makes it very easy to move into `'static` closures like event handlers:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let mut count = use_signal(|| 0);
 
 rsx! {
@@ -41,7 +41,7 @@ rsx! {
 If you need to access data that is not `Copy`, you may need to clone the data before you move it into the closure:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // String is not `Copy`
 let string = "hello world".to_string();
 
@@ -66,10 +66,10 @@ rsx! {
 
 ## Async Event Handlers
 
-In addition to closures that return nothing, you can also use async closures to handle events. If you return an async block from an event handler, dioxus will automatically spawn it:
+In addition to closures that return nothing, you can also use async closures to handle events. If you return an async block from an event handler, aether will automatically spawn it:
 
 ```rust, no_run
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn App() -> Element {
     rsx! {

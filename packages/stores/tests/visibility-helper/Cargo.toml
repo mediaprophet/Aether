@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-stores-visibility-helper"
+name = "aether-stores-visibility-helper"
 version = "0.0.0"
 edition = "2024"
 publish = false
@@ -8,5 +8,5 @@ publish = false
 path = "src/lib.rs"
 
 [dependencies]
-dioxus-stores = { path = "../.." }
-dioxus-signals = { path = "../../../signals" }
+aether-stores = { path = "../.." }
+aether-signals = { path = "../../../signals" }

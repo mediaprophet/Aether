@@ -4,7 +4,7 @@ use crate::Color;
 use anyrender::{PaintRef, PaintScene, RenderContext, ResourceId};
 use blitz_dom::Widget;
 use blitz_dom::node::ComputedStyles;
-use dioxus_native::DeviceHandle;
+use aether_native::DeviceHandle;
 use peniko::kurbo::{Affine, Rect};
 use peniko::{Fill, ImageBrush, ImageSampler};
 use std::sync::mpsc::{Receiver, Sender, channel};

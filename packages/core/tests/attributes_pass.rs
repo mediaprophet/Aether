@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
-use dioxus_core::VNodeChild;
+use aether::prelude::*;
+use aether_core::VNodeChild;
 
 /// Make sure that rsx! is parsing templates and their attributes properly
 #[test]

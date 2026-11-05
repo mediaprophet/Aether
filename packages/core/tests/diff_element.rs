@@ -1,7 +1,7 @@
-use dioxus::dioxus_core::AttributeValue;
-use dioxus::prelude::*;
-use dioxus_core::{ScopeId, generation};
-use dioxus_renderer_oracle::{EditSummary, RendererOracle};
+use aether::aether_core::AttributeValue;
+use aether::prelude::*;
+use aether_core::{ScopeId, generation};
+use aether_renderer_oracle::{EditSummary, RendererOracle};
 
 #[test]
 fn text_diff() {

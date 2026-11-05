@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_core::generation;
-use dioxus_renderer_oracle::{EditSummary, RendererOracle, SnapshotNode};
+use aether::prelude::*;
+use aether_core::generation;
+use aether_renderer_oracle::{EditSummary, RendererOracle, SnapshotNode};
 
 #[test]
 fn list_creates_one_by_one() {
@@ -238,7 +238,7 @@ fn replace_and_add_items() {
     assert_eq!(summary.replaces, 0);
 }
 
-// Simplified regression test for https://github.com/DioxusLabs/dioxus/issues/4924
+// Simplified regression test for https://github.com/AetherLabs/aether/issues/4924
 #[test]
 fn nested_unkeyed_lists() {
     fn app() -> Element {

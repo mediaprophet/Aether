@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-hooks"
+name = "aether-hooks"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Basic useful hooks for Dioxus."
+description = "Basic useful hooks for Aether."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -14,8 +14,8 @@ default = []
 nightly-features = []
 
 [dependencies]
-dioxus-core = { workspace = true }
-dioxus-signals = { workspace = true }
+aether-core = { workspace = true }
+aether-signals = { workspace = true }
 futures-channel = { workspace = true }
 tracing = { workspace = true }
 slab = { workspace = true }
@@ -25,8 +25,8 @@ rustversion = { workspace = true }
 
 [dev-dependencies]
 futures-util = { workspace = true, default-features = false }
-dioxus-core = { workspace = true }
-dioxus = { workspace = true }
+aether-core = { workspace = true }
+aether = { workspace = true }
 web-sys = { workspace = true, features = ["Document", "Window", "Element"] }
 tokio = { workspace = true, features = ["full"] }
 reqwest = { workspace = true }

@@ -6,10 +6,10 @@
 //! Note that redirects returned to the client won't navigate the SPA to a new page automatically.
 //! For managing a session or auth with client side routing, you'll need to handle that in the SPA itself.
 
-use dioxus::{fullstack::Redirect, prelude::*};
+use aether::{fullstack::Redirect, prelude::*};
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         rsx! {
             Router::<Route> {}
         }

@@ -1,6 +1,6 @@
 use before_input::WebBeforeInputData;
 use clipboard::WebClipboardData;
-use dioxus_html::{
+use aether_html::{
     BeforeInputData, ClipboardData, DragData, FormData, HtmlEventConverter, ImageData,
     PlatformEventData,
 };
@@ -34,7 +34,7 @@ mod transition;
 mod visible;
 mod wheel;
 
-/// A wrapper for the websys event that allows us to give it the impls from dioxus-html
+/// A wrapper for the websys event that allows us to give it the impls from aether-html
 pub(crate) struct Synthetic<T: 'static> {
     /// The inner web sys event that the synthetic event wraps
     pub event: T,
@@ -50,7 +50,7 @@ impl<T: 'static> Synthetic<T> {
 pub(crate) struct WebEventConverter;
 
 #[inline(always)]
-fn downcast_event(event: &dioxus_html::PlatformEventData) -> &GenericWebSysEvent {
+fn downcast_event(event: &aether_html::PlatformEventData) -> &GenericWebSysEvent {
     event
         .downcast::<GenericWebSysEvent>()
         .expect("event should be a GenericWebSysEvent")
@@ -147,7 +147,7 @@ macro_rules! with_web_event_converters {
                 #[cfg(not(feature = "mounted"))]
                 {
                     let _ = event;
-                    panic!("mounted events require the `mounted` feature on dioxus-web")
+                    panic!("mounted events require the `mounted` feature on aether-web")
                 }
             };
             convert_mouse_data(MouseData) => web_sys::MouseEvent;
@@ -191,14 +191,14 @@ macro_rules! expand_web_event_converter {
 
     (@method $converter:ident, $data:ident, $web_ty:ty) => {
         #[inline(always)]
-        fn $converter(&self, event: &PlatformEventData) -> dioxus_html::$data {
+        fn $converter(&self, event: &PlatformEventData) -> aether_html::$data {
             Synthetic::new(downcast_event(event).raw.clone().unchecked_into::<$web_ty>()).into()
         }
     };
 
     (@method $converter:ident, $data:ident, $web_ty:ty, $event:ident, $body:block) => {
         #[inline(always)]
-        fn $converter(&self, $event: &PlatformEventData) -> dioxus_html::$data $body
+        fn $converter(&self, $event: &PlatformEventData) -> aether_html::$data $body
     };
 }
 
@@ -237,7 +237,7 @@ macro_rules! expand_web_event_changes {
     };
 }
 
-dioxus_html::with_html_event_groups!(expand_web_event_changes);
+aether_html::with_html_event_groups!(expand_web_event_changes);
 
 /// A extension trait for web-sys events that provides a way to get the event as a web-sys event.
 pub trait WebEventExt {

@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
-use dioxus_core::{
+use aether::prelude::*;
+use aether_core::{
     BorrowedAttributeValue, ElementId, Runtime, WriteMutations, generation, needs_update,
     queue_effect,
 };
@@ -21,8 +21,8 @@ fn effect_queued_during_render_immediate_has_runtime() {
 
     let mut dom = VirtualDom::new(app);
 
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
-    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
+    dom.render_immediate(&mut aether_core::NoOpMutations);
 }
 
 static SHOW_EFFECT_CHILD: AtomicBool = AtomicBool::new(false);

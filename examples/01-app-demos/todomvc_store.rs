@@ -1,9 +1,9 @@
-//! The typical TodoMVC app, implemented in Dioxus with stores. Stores let us
+//! The typical TodoMVC app, implemented in Aether with stores. Stores let us
 //! share nested reactive state between components. They let us keep our todomvc
 //! state in a single struct without wrapping every type in a signal while still
 //! maintaining fine grained reactivity.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use std::{collections::HashMap, vec};
 
 const STYLE: Asset = asset!("/examples/assets/todomvc.css");
@@ -98,7 +98,7 @@ impl<Lens> Store<TodoItem, Lens> {
 }
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -213,7 +213,7 @@ fn TodoEntry(mut todos: Store<TodoState>, id: u32) -> Element {
 
     rsx! {
         li {
-            // Dioxus lets you use if statements in rsx to conditionally render attributes
+            // Aether lets you use if statements in rsx to conditionally render attributes
             // These will get merged into a single class attribute
             class: if checked() { "completed" },
             class: if is_editing() { "editing" },

@@ -3,7 +3,7 @@
 //! This sets up a websocket connection to the devserver and handles messages from it.
 //! We also set up a little recursive timer that will attempt to reconnect if the connection is lost.
 
-use dioxus_devtools::{DevserverMsg, HotReloadMsg};
+use aether_devtools::{DevserverMsg, HotReloadMsg};
 use futures_channel::mpsc::{UnboundedReceiver, UnboundedSender, unbounded};
 use js_sys::JsString;
 use std::fmt::Display;
@@ -22,7 +22,7 @@ const TOAST_TIMEOUT: Duration = Duration::from_secs(5);
 const TOAST_TIMEOUT_LONG: Duration = Duration::from_secs(3600); // Duration::MAX is too long for JS.
 
 pub(crate) fn init(config: &crate::Config) -> UnboundedReceiver<HotReloadMsg> {
-    // Create the tx/rx pair that we'll use for the top-level future in the dioxus loop
+    // Create the tx/rx pair that we'll use for the top-level future in the aether loop
     let (tx, rx) = unbounded();
 
     // Wire up the websocket to the devserver
@@ -42,22 +42,22 @@ pub(crate) fn init(config: &crate::Config) -> UnboundedReceiver<HotReloadMsg> {
 }
 
 fn make_ws(tx: UnboundedSender<HotReloadMsg>, poll_interval: i32, reload: bool) {
-    // Get the location of the devserver, using the current location plus the /_dioxus path
-    // The idea here being that the devserver is always located on the /_dioxus behind a proxy
+    // Get the location of the devserver, using the current location plus the /_aether path
+    // The idea here being that the devserver is always located on the /_aether behind a proxy
     let location = web_sys::window().unwrap().location();
     let url = format!(
-        "{protocol}//{host}/_dioxus?build_id={build_id}",
+        "{protocol}//{host}/_aether?build_id={build_id}",
         protocol = match location.protocol().unwrap() {
             prot if prot == "https:" => "wss:",
             _ => "ws:",
         },
         host = location.host().unwrap(),
-        build_id = dioxus_cli_config::build_id(),
+        build_id = aether_cli_config::build_id(),
     );
 
     let ws = WebSocket::new(&url).unwrap();
 
-    // Set the onmessage handler to bounce messages off to the main dioxus loop
+    // Set the onmessage handler to bounce messages off to the main aether loop
     let tx_ = tx.clone();
     ws.set_onmessage(Some(
         Closure::<dyn FnMut(MessageEvent)>::new(move |e: MessageEvent| {
@@ -73,7 +73,7 @@ fn make_ws(tx: UnboundedSender<HotReloadMsg>, poll_interval: i32, reload: bool) 
                 Ok(DevserverMsg::HotReload(hr)) => _ = tx_.unbounded_send(hr),
 
                 // todo: we want to throw a screen here that shows the user that the devserver has disconnected
-                // Would be nice to do that with dioxus itself or some html/css
+                // Would be nice to do that with aether itself or some html/css
                 // But if the dev server shutsdown we don't want to be super aggressive about it... let's
                 // play with other devservers to see how they handle this
                 Ok(DevserverMsg::Shutdown) => {
@@ -189,7 +189,7 @@ fn make_ws(tx: UnboundedSender<HotReloadMsg>, poll_interval: i32, reload: bool) 
         // https://developer.mozilla.org/en-US/docs/Web/API/Console/log
         // log, info, warn, error, debug
         let ws: &JsValue = ws.as_ref();
-        dioxus_interpreter_js::minimal_bindings::monkeyPatchConsole(ws.clone());
+        aether_interpreter_js::minimal_bindings::monkeyPatchConsole(ws.clone());
     }
 }
 
@@ -282,7 +282,7 @@ pub(crate) fn invalidate_browser_asset_cache() {
     }
 }
 
-/// Initialize required devtools for dioxus-playground.
+/// Initialize required devtools for aether-playground.
 ///
 /// This listens for window message events from other Windows (such as window.top when this is running in an iframe).
 fn playground(tx: UnboundedSender<HotReloadMsg>) {

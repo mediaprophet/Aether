@@ -1,14 +1,14 @@
-# Dioxus Signals
+# Aether Signals
 
-Dioxus Signals is an ergonomic Copy runtime for data with local subscriptions.
+Aether Signals is an ergonomic Copy runtime for data with local subscriptions.
 
 ## Copy Data
 
 All signals implement Copy, even if the inner value does not implement copy. This makes it easy to move any data into futures or children.
 
 ```rust
-use dioxus::prelude::*;
-use dioxus_signals::*;
+use aether::prelude::*;
+use aether_signals::*;
 
 #[component]
 fn App() -> Element {
@@ -30,8 +30,8 @@ fn App() -> Element {
 Signals will only subscribe to components when you read from the signal in that component. It will never subscribe to a component when reading data in a future or event handler.
 
 ```rust
-use dioxus::prelude::*;
-use dioxus_signals::*;
+use aether::prelude::*;
+use aether_signals::*;
 
 #[component]
 fn App() -> Element {
@@ -69,8 +69,8 @@ fn Child(props: ChildProps) -> Element {
 Because subscriptions happen when you read from (not create) the data, you can provide signals through the normal context API:
 
 ```rust
-use dioxus::prelude::*;
-use dioxus_signals::*;
+use aether::prelude::*;
+use aether_signals::*;
 
 #[component]
 fn App() -> Element {
@@ -94,13 +94,13 @@ fn Child() -> Element {
 
 ## Computed Data
 
-In addition to local subscriptions in components, `dioxus-signals` provides a way to derive data with local subscriptions.
+In addition to local subscriptions in components, `aether-signals` provides a way to derive data with local subscriptions.
 
 The use_memo hook will only rerun when any signals inside the hook change:
 
 ```rust
-use dioxus::prelude::*;
-use dioxus_signals::*;
+use aether::prelude::*;
+use aether_signals::*;
 
 #[component]
 fn App() -> Element {

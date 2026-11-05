@@ -2,10 +2,10 @@
 //!
 //! This example shows how to adjust the zoom of a desktop app using the webview.zoom method.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::desktop().launch(app);
+    aether::LaunchBuilder::desktop().launch(app);
 }
 
 fn app() -> Element {
@@ -20,7 +20,7 @@ fn app() -> Element {
             oninput: move |e| {
                 if let Ok(new_zoom) = e.value().parse::<f64>() {
                     level.set(new_zoom);
-                    _ = dioxus::desktop::window().webview.zoom(new_zoom);
+                    _ = aether::desktop::window().webview.zoom(new_zoom);
                 }
             }
         }

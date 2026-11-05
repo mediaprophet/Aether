@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
-use dioxus_desktop::DesktopContext;
+use aether::prelude::*;
+use aether_desktop::DesktopContext;
 
 #[path = "./utils.rs"]
 mod utils;

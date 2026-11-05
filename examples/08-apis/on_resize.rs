@@ -4,11 +4,11 @@
 //! These fields can typically only be read asynchronously, since various renderers need to release the main thread to
 //! perform layout and painting.
 
-use dioxus::prelude::*;
-use dioxus_html::geometry::euclid::Size2D;
+use aether::prelude::*;
+use aether_html::geometry::euclid::Size2D;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

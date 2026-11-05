@@ -1,4 +1,4 @@
-use dioxus_core::{provide_context, provide_root_context};
+use aether_core::{provide_context, provide_root_context};
 use std::{rc::Rc, sync::Arc};
 
 mod memory;
@@ -6,7 +6,7 @@ pub use memory::*;
 
 /// Get the history provider for the current platform if the platform doesn't implement a history functionality.
 pub fn history() -> Rc<dyn History> {
-    match dioxus_core::try_consume_context::<Rc<dyn History>>() {
+    match aether_core::try_consume_context::<Rc<dyn History>>() {
         Some(history) => history,
         None => {
             tracing::error!(
@@ -28,7 +28,7 @@ pub trait History {
     /// **Must start** with `/`. **Must _not_ contain** the prefix.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # #[component]
     /// # fn Index() -> Element { VNode::empty() }
     /// # #[component]
@@ -40,7 +40,7 @@ pub trait History {
     ///     #[route("/some-other-page")]
     ///     OtherPage {},
     /// }
-    /// let mut history = dioxus::history::MemoryHistory::default();
+    /// let mut history = aether::history::MemoryHistory::default();
     /// assert_eq!(history.current_route(), "/");
     ///
     /// history.push(Route::OtherPage {}.to_string());
@@ -52,8 +52,8 @@ pub trait History {
     /// Get the current path prefix of the URL.
     ///
     /// Not all [`History`]s need a prefix feature. It is meant for environments where a
-    /// dioxus-router-core-routed application is not running on `/`. The [`History`] is responsible
-    /// for removing the prefix from the dioxus-router-core-internal path, and also for adding it back in
+    /// aether-router-core-routed application is not running on `/`. The [`History`] is responsible
+    /// for removing the prefix from the aether-router-core-internal path, and also for adding it back in
     /// during navigation. This functions value is only used for creating `href`s (e.g. for SSR or
     /// display (but not navigation) in a web app).
     fn current_prefix(&self) -> Option<String> {
@@ -65,7 +65,7 @@ pub trait History {
     /// If a [`History`] cannot know this, it should return [`true`].
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # #[component]
     /// # fn Index() -> Element { VNode::empty() }
     /// # fn Other() -> Element { VNode::empty() }
@@ -76,7 +76,7 @@ pub trait History {
     ///     #[route("/other")]
     ///     Other {},
     /// }
-    /// let mut history = dioxus::history::MemoryHistory::default();
+    /// let mut history = aether::history::MemoryHistory::default();
     /// assert_eq!(history.can_go_back(), false);
     ///
     /// history.push(Route::Other {}.to_string());
@@ -93,7 +93,7 @@ pub trait History {
     /// might be called, even if `can_go_back` returns [`false`].
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # #[component]
     /// # fn Index() -> Element { VNode::empty() }
     /// # #[component]
@@ -105,7 +105,7 @@ pub trait History {
     ///     #[route("/some-other-page")]
     ///     OtherPage {},
     /// }
-    /// let mut history = dioxus::history::MemoryHistory::default();
+    /// let mut history = aether::history::MemoryHistory::default();
     /// assert_eq!(history.current_route(), "/");
     ///
     /// history.go_back();
@@ -124,7 +124,7 @@ pub trait History {
     /// If a [`History`] cannot know this, it should return [`true`].
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # #[component]
     /// # fn Index() -> Element { VNode::empty() }
     /// # #[component]
@@ -136,7 +136,7 @@ pub trait History {
     ///     #[route("/some-other-page")]
     ///     OtherPage {},
     /// }
-    /// let mut history = dioxus::history::MemoryHistory::default();
+    /// let mut history = aether::history::MemoryHistory::default();
     /// assert_eq!(history.can_go_forward(), false);
     ///
     /// history.push(Route::OtherPage {}.to_string());
@@ -156,7 +156,7 @@ pub trait History {
     /// might be called, even if `can_go_forward` returns [`false`].
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # #[component]
     /// # fn Index() -> Element { VNode::empty() }
     /// # #[component]
@@ -168,7 +168,7 @@ pub trait History {
     ///     #[route("/some-other-page")]
     ///     OtherPage {},
     /// }
-    /// let mut history = dioxus::history::MemoryHistory::default();
+    /// let mut history = aether::history::MemoryHistory::default();
     /// history.push(Route::OtherPage {}.to_string());
     /// assert_eq!(history.current_route(), Route::OtherPage {}.to_string());
     ///
@@ -188,7 +188,7 @@ pub trait History {
     /// 3. Clear the navigation future.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # #[component]
     /// # fn Index() -> Element { VNode::empty() }
     /// # #[component]
@@ -200,7 +200,7 @@ pub trait History {
     ///     #[route("/some-other-page")]
     ///     OtherPage {},
     /// }
-    /// let mut history = dioxus::history::MemoryHistory::default();
+    /// let mut history = aether::history::MemoryHistory::default();
     /// assert_eq!(history.current_route(), Route::Index {}.to_string());
     ///
     /// history.push(Route::OtherPage {}.to_string());
@@ -216,7 +216,7 @@ pub trait History {
     /// untouched.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # #[component]
     /// # fn Index() -> Element { VNode::empty() }
     /// # #[component]
@@ -228,7 +228,7 @@ pub trait History {
     ///     #[route("/some-other-page")]
     ///     OtherPage {},
     /// }
-    /// let mut history = dioxus::history::MemoryHistory::default();
+    /// let mut history = aether::history::MemoryHistory::default();
     /// assert_eq!(history.current_route(), Route::Index {}.to_string());
     ///
     /// history.replace(Route::OtherPage {}.to_string());

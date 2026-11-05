@@ -10,7 +10,7 @@ FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
-RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/DioxusLabs/dioxus/refs/heads/main/.github/install.sh | bash
+RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/AetherLabs/aether/refs/heads/main/.github/install.sh | bash
 RUN /.cargo/bin/dx bundle --platform web --features production
 
 FROM chef AS runtime

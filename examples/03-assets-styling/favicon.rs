@@ -4,12 +4,12 @@
 //! `asset!`, the favicon is bundled into the app and served with the same path-mangling
 //! and cache-busting as any other asset.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const FAVICON: Asset = asset!("/examples/assets/logo.png");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

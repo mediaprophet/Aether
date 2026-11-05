@@ -3,7 +3,7 @@
 //! Defines a public struct with fields at every visibility tier so downstream
 //! fixtures can probe which accessors are reachable across a crate boundary.
 
-use dioxus_stores::Store;
+use aether_stores::Store;
 
 #[derive(Store)]
 pub struct Item {

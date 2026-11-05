@@ -170,7 +170,7 @@ impl Attribute {
 
                     quote! {
                         Box::new([
-                            dioxus_core::Attribute::new(
+                            aether_core::Attribute::new(
                                 #attribute,
                                 #value,
                                 #ns,
@@ -196,7 +196,7 @@ impl Attribute {
                         AttributeName::BuiltIn(name) => {
                             let method = event_handler_method(name, &self.value);
                             quote_spanned! { span =>
-                                ::std::vec::Vec::<dioxus_core::Attribute>::new()
+                                ::std::vec::Vec::<aether_core::Attribute>::new()
                                     .#method(#tokens)
                                     .into_boxed_slice()
                             }
@@ -585,7 +585,7 @@ impl IfAttributeValue {
 
         // Quote an attribute value and convert the value to a string if it is formatted
         // We always quote formatted segments as strings inside if statements so they have a consistent type
-        // This fixes https://github.com/DioxusLabs/dioxus/issues/2997
+        // This fixes https://github.com/AetherLabs/aether/issues/2997
         fn quote_attribute_value_string(
             value: &AttributeValue,
             contains_expression: bool,

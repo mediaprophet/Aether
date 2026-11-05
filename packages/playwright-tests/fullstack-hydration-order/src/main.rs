@@ -1,11 +1,11 @@
 // Adjacent server components that both use server functions shouldn't cause
 // hydration issues
-// https://github.com/DioxusLabs/dioxus/issues/4595
+// https://github.com/AetherLabs/aether/issues/4595
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(|| rsx! { Home {} });
+    aether::launch(|| rsx! { Home {} });
 }
 
 #[component]

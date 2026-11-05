@@ -1,10 +1,10 @@
 use anyrender::CompositeAlphaMode;
 use blitz_dom::FontContext;
-use dioxus_core::LaunchConfig;
+use aether_core::LaunchConfig;
 use peniko::Color;
 use winit::window::WindowAttributes;
 
-/// Launch-time configuration for a dioxus-native application.
+/// Launch-time configuration for a aether-native application.
 pub struct Config {
     pub(crate) window_attributes: WindowAttributes,
     pub(crate) font_ctx: Option<FontContext>,
@@ -17,7 +17,7 @@ impl LaunchConfig for Config {}
 impl Default for Config {
     fn default() -> Self {
         let window_attributes = WindowAttributes::default()
-            .with_title(dioxus_cli_config::app_title().unwrap_or_else(|| "Dioxus App".to_string()));
+            .with_title(aether_cli_config::app_title().unwrap_or_else(|| "Aether App".to_string()));
 
         // On WASM, append the canvas to the document body. Surface size is
         // intentionally not seeded: winit-web's with_surface_size writes inline

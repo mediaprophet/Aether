@@ -4,10 +4,10 @@
 //! Radio groups share a `name` attribute so only one option can be selected at a time;
 //! the selected value comes through `evt.value()`.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

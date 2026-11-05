@@ -1,4 +1,4 @@
-//! How to use links in Dioxus
+//! How to use links in Aether
 //!
 //! The `router` crate gives us a `Link` component which is a much more powerful version of the standard HTML link.
 //! However, you can use the traditional `<a>` tag if you want to build your own `Link` component.
@@ -6,12 +6,12 @@
 //! The `Link` component integrates with the Router and is smart enough to detect if the link is internal or external.
 //! It also allows taking any `Route` as a target, making your links typesafe
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const STYLE: Asset = asset!("/examples/assets/links.css");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -64,15 +64,15 @@ fn DefaultLinks() -> Element {
         // Just some default links
         div { id: "external-links",
             // This link will open in a webbrowser
-            a { href: "http://dioxuslabs.com/", "Default link - links outside of your app" }
+            a { href: "http://aetherlabs.com/", "Default link - links outside of your app" }
 
             // This link will do nothing - we're preventing the default behavior
-            // It will just log "Hello Dioxus" to the console
+            // It will just log "Hello Aether" to the console
             a {
-                href: "http://dioxuslabs.com/",
+                href: "http://aetherlabs.com/",
                 onclick: |event| {
                     event.prevent_default();
-                    println!("Hello Dioxus")
+                    println!("Hello Aether")
                 },
                 "Custom event link - links inside of your app"
             }

@@ -1,6 +1,6 @@
 use crate::snapshot::{SnapshotAttr, SnapshotNode, attr_key, format_snapshot_mismatch};
 use crate::vdom_snapshot::{fresh_snapshot, vdom_snapshot};
-use dioxus_core::{BorrowedAttributeValue, Element, ElementId, VirtualDom, WriteMutations};
+use aether_core::{BorrowedAttributeValue, Element, ElementId, VirtualDom, WriteMutations};
 use std::{fmt, mem};
 
 type NodeId = usize;
@@ -580,7 +580,7 @@ impl OracleArena {
     }
 }
 
-/// The "real semantics" the dioxus stack machine drives. Borrows an
+/// The "real semantics" the aether stack machine drives. Borrows an
 /// [`OracleArena`] for the duration of one render.
 struct ArenaBackend<'a> {
     arena: &'a mut OracleArena,
@@ -900,7 +900,7 @@ impl<W: WriteMutations> WriteMutations for EditCountingWriter<'_, W> {
     }
 }
 
-/// A fast in-memory renderer for testing Dioxus mutations.
+/// A fast in-memory renderer for testing Aether mutations.
 ///
 /// `RendererOracle` applies the same mutation stream a renderer receives and
 /// exposes stable snapshots that tests can compare against a fresh render.
@@ -945,7 +945,7 @@ impl RendererOracle {
         }
     }
 
-    /// Build a writer that applies dioxus mutations into the arena, driving the
+    /// Build a writer that applies aether mutations into the arena, driving the
     /// local stack machine and counting edits.
     fn writer(&mut self) -> EditCountingWriter<'_, StackWriter<'_, ArenaBackend<'_>>> {
         EditCountingWriter {

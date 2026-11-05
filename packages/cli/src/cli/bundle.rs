@@ -20,14 +20,14 @@ pub struct Bundle {
     /// The directory in which the final bundle will be placed.
     ///
     /// Relative paths will be placed relative to the current working directory if specified.
-    /// Otherwise, the out_dir path specified in Dioxus.toml will be used (relative to the crate root).
+    /// Otherwise, the out_dir path specified in Aether.toml will be used (relative to the crate root).
     ///
     /// We will flatten the artifacts into this directory - there will be no differentiation between
     /// artifacts produced by different platforms.
     #[clap(long)]
     pub out_dir: Option<PathBuf>,
 
-    /// The arguments for the dioxus build
+    /// The arguments for the aether build
     #[clap(flatten)]
     pub(crate) args: CommandWithPlatformOverrides<BuildArgs>,
 }
@@ -168,12 +168,12 @@ impl Bundle {
             // Check if required fields are provided instead of failing silently.
             if build.config.bundle.identifier.is_none() {
                 bail!(
-                    "\n\nBundle identifier was not provided in `Dioxus.toml`. Add it as:\n\n[bundle]\nidentifier = \"com.mycompany\"\n\n"
+                    "\n\nBundle identifier was not provided in `Aether.toml`. Add it as:\n\n[bundle]\nidentifier = \"com.mycompany\"\n\n"
                 );
             }
             if build.config.bundle.publisher.is_none() {
                 bail!(
-                    "\n\nBundle publisher was not provided in `Dioxus.toml`. Add it as:\n\n[bundle]\npublisher = \"MyCompany\"\n\n"
+                    "\n\nBundle publisher was not provided in `Aether.toml`. Add it as:\n\n[bundle]\npublisher = \"MyCompany\"\n\n"
                 );
             }
         }

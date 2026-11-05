@@ -1,6 +1,6 @@
 # Generational Box
 
-Generational Box is a runtime for Rust that allows any static type to implement `Copy`. It can be combined with a global runtime to create an ergonomic state solution like `dioxus-signals`. This crate doesn't have any `unsafe` code.
+Generational Box is a runtime for Rust that allows any static type to implement `Copy`. It can be combined with a global runtime to create an ergonomic state solution like `aether-signals`. This crate doesn't have any `unsafe` code.
 
 Three main types manage state in Generational Box:
 

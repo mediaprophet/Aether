@@ -1,10 +1,10 @@
 use std::rc::Rc;
 
-use dioxus::prelude::*;
-use dioxus_history::{History, MemoryHistory};
-use dioxus_router::components::HistoryProvider;
+use aether::prelude::*;
+use aether_history::{History, MemoryHistory};
+use aether_router::components::HistoryProvider;
 
-// Tests for regressions of <https://github.com/DioxusLabs/dioxus/issues/2468>
+// Tests for regressions of <https://github.com/AetherLabs/aether/issues/2468>
 #[test]
 fn router_without_index_route_parses() {
     let mut vdom = VirtualDom::new_with_props(
@@ -14,7 +14,7 @@ fn router_without_index_route_parses() {
         },
     );
     vdom.rebuild_in_place();
-    let as_string = dioxus_ssr::render(&vdom);
+    let as_string = aether_ssr::render(&vdom);
     assert_eq!(as_string, "<div>router with no index route renders</div>")
 }
 

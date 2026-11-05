@@ -2,9 +2,9 @@
 
 use std::rc::Rc;
 
-use dioxus::prelude::*;
-use dioxus_core::generation;
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_core::generation;
+use aether_renderer_oracle::RendererOracle;
 
 // The tests in this file are intended to be run with Miri, so not all of them contain assertions.
 // If the tests  complete under Miri, they have passed.
@@ -100,7 +100,7 @@ fn memo_works_properly() {
 
     let mut dom = VirtualDom::new(app);
 
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 }
 
 #[test]
@@ -124,7 +124,7 @@ fn free_works_on_root_hooks() {
 
     let ptr = Rc::new("asdasd".to_string());
     let mut dom = VirtualDom::new_with_props(app, AppProps { inner: ptr.clone() });
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
     // ptr gets cloned into props and then into the hook
     assert!(Rc::strong_count(&ptr) > 1);
@@ -190,11 +190,11 @@ fn supports_async() {
 
     rt.block_on(async {
         let mut dom = VirtualDom::new(app);
-        dom.rebuild(&mut dioxus_core::NoOpMutations);
+        dom.rebuild(&mut aether_core::NoOpMutations);
 
         for _ in 0..10 {
             dom.wait_for_work().await;
-            dom.render_immediate(&mut dioxus_core::NoOpMutations);
+            dom.render_immediate(&mut aether_core::NoOpMutations);
         }
     });
 }

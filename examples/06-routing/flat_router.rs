@@ -7,12 +7,12 @@
 //! in your app simply by adding the variant to the enum and creating a new component with the same name. You can
 //! override this of course.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const STYLE: Asset = asset!("/examples/assets/flat_router.css");
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         rsx! {
             Stylesheet { href: STYLE }
             Router::<Route> {}

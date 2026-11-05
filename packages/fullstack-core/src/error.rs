@@ -11,7 +11,7 @@ use crate::HttpError;
 ///
 /// # Example
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[server]
 /// async fn parse_number(number: String) -> Result<f32> {

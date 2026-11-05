@@ -1,9 +1,9 @@
 //! Port of the https://codepen.io/ryanfinni/pen/VwZeGxN example
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_renderer_oracle::RendererOracle;
 
 fn basic_syntax_is_a_template() -> Element {
     let asd = 123;

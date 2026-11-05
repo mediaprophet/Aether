@@ -1,4 +1,4 @@
-use dioxus_html::{
+use aether_html::{
     HasMouseData, InteractionElementOffset, InteractionLocation, Modifiers, ModifiersInteraction,
     PointerInteraction,
     geometry::{ClientPoint, ElementPoint, PagePoint, ScreenPoint},
@@ -50,7 +50,7 @@ impl ModifiersInteraction for Synthetic<MouseEvent> {
 }
 
 impl PointerInteraction for Synthetic<MouseEvent> {
-    fn held_buttons(&self) -> dioxus_html::input_data::MouseButtonSet {
+    fn held_buttons(&self) -> aether_html::input_data::MouseButtonSet {
         decode_mouse_button_set(self.event.buttons())
     }
 
@@ -65,7 +65,7 @@ impl HasMouseData for Synthetic<MouseEvent> {
     }
 }
 
-impl WebEventExt for dioxus_html::MouseData {
+impl WebEventExt for aether_html::MouseData {
     type WebEvent = web_sys::MouseEvent;
 
     #[inline(always)]

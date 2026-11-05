@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[component]
 pub fn error_page() -> Element {

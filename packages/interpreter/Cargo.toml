@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-interpreter-js"
+name = "aether-interpreter-js"
 version = { workspace = true }
 edition = "2024"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
-description = "JS Interpreter for Dioxus - a concurrent renderer-agnostic Virtual DOM for interactive user experiences"
+description = "JS Interpreter for Aether - a concurrent renderer-agnostic Virtual DOM for interactive user experiences"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -23,9 +23,9 @@ sledgehammer_utils = { version = "0.3.1", optional = true }
 serde = { workspace = true, features = ["derive"], optional = true }
 rustc-hash = { workspace = true, optional = true }
 
-dioxus-core = { workspace = true, optional = true }
-dioxus-core-types = { workspace = true, optional = true }
-dioxus-html = { workspace = true, optional = true }
+aether-core = { workspace = true, optional = true }
+aether-core-types = { workspace = true, optional = true }
+aether-html = { workspace = true, optional = true }
 
 [build-dependencies]
 lazy-js-bundle = { workspace = true }
@@ -42,5 +42,5 @@ webonly = [
     "dep:web-sys",
     "sledgehammer_bindgen/web",
 ]
-binary-protocol = ["sledgehammer", "dep:dioxus-core", "dep:dioxus-core-types", "dep:dioxus-html"]
+binary-protocol = ["sledgehammer", "dep:aether-core", "dep:aether-core-types", "dep:aether-html"]
 minimal_bindings = []

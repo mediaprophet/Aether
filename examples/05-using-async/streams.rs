@@ -1,11 +1,11 @@
 //! Handle async streams using use_future and awaiting the next value.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use futures_timer::Delay;
 use futures_util::{Stream, StreamExt, future, stream};
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

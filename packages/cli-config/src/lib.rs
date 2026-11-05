@@ -7,9 +7,9 @@
 //!     >
 //! </div>
 //!
-//! # Dioxus CLI configuration
+//! # Aether CLI configuration
 //!
-//! This crate exposes the various configuration options that the Dioxus CLI sets when running the
+//! This crate exposes the various configuration options that the Aether CLI sets when running the
 //! application during development.
 //!
 //! Note that these functions will return a different value when running under the CLI, so make sure
@@ -33,7 +33,7 @@
 //! ```rust, ignore
 //! async fn launch_axum(app: axum::Router<()>) {
 //!     // Read the PORT and ADDR environment variables set by the CLI
-//!     let addr = dioxus_cli_config::fullstack_address_or_localhost();
+//!     let addr = aether_cli_config::fullstack_address_or_localhost();
 //!
 //!     // Bind to the address and serve the application
 //!     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
@@ -46,7 +46,7 @@
 //! ## Stability
 //!
 //! The *values* that these functions return are *not* guaranteed to be stable between patch releases
-//! of Dioxus. At any time, we might change the values that the CLI sets or the way that they are read.
+//! of Aether. At any time, we might change the values that the CLI sets or the way that they are read.
 //!
 //! We also don't guarantee the stability of the env var names themselves. If you want to rely on a
 //! particular env var, use the defined constants in your code.
@@ -56,21 +56,21 @@ use std::{
     path::PathBuf,
 };
 
-pub const CLI_ENABLED_ENV: &str = "DIOXUS_CLI_ENABLED";
+pub const CLI_ENABLED_ENV: &str = "AETHER_CLI_ENABLED";
 pub const SERVER_IP_ENV: &str = "IP";
 pub const SERVER_PORT_ENV: &str = "PORT";
-pub const DEVSERVER_IP_ENV: &str = "DIOXUS_DEVSERVER_IP";
-pub const DEVSERVER_PORT_ENV: &str = "DIOXUS_DEVSERVER_PORT";
-pub const ALWAYS_ON_TOP_ENV: &str = "DIOXUS_ALWAYS_ON_TOP";
-pub const ASSET_ROOT_ENV: &str = "DIOXUS_ASSET_ROOT";
-pub const APP_TITLE_ENV: &str = "DIOXUS_APP_TITLE";
-pub const PRODUCT_NAME_ENV: &str = "DIOXUS_PRODUCT_NAME";
+pub const DEVSERVER_IP_ENV: &str = "AETHER_DEVSERVER_IP";
+pub const DEVSERVER_PORT_ENV: &str = "AETHER_DEVSERVER_PORT";
+pub const ALWAYS_ON_TOP_ENV: &str = "AETHER_ALWAYS_ON_TOP";
+pub const ASSET_ROOT_ENV: &str = "AETHER_ASSET_ROOT";
+pub const APP_TITLE_ENV: &str = "AETHER_APP_TITLE";
+pub const PRODUCT_NAME_ENV: &str = "AETHER_PRODUCT_NAME";
 
 #[deprecated(since = "0.6.0", note = "The CLI currently does not set this.")]
 #[doc(hidden)]
-pub const OUT_DIR: &str = "DIOXUS_OUT_DIR";
-pub const SESSION_CACHE_DIR: &str = "DIOXUS_SESSION_CACHE_DIR";
-pub const BUILD_ID: &str = "DIOXUS_BUILD_ID";
+pub const OUT_DIR: &str = "AETHER_OUT_DIR";
+pub const SESSION_CACHE_DIR: &str = "AETHER_SESSION_CACHE_DIR";
+pub const BUILD_ID: &str = "AETHER_BUILD_ID";
 
 /// Reads an environment variable at runtime in debug mode or at compile time in
 /// release mode. When bundling in release mode, we will not be running under the
@@ -101,7 +101,7 @@ macro_rules! read_env_config {
 /// the appropriate protocol and path.
 ///
 /// For reference, the devserver typically lives on `127.0.0.1:8080` and serves the devserver websocket
-/// on `127.0.0.1:8080/_dioxus`.
+/// on `127.0.0.1:8080/_aether`.
 pub fn devserver_raw_addr() -> Option<SocketAddr> {
     let port = std::env::var(DEVSERVER_PORT_ENV).ok();
 
@@ -120,14 +120,14 @@ pub fn devserver_raw_addr() -> Option<SocketAddr> {
 
 /// Get the address of the devserver for use over a websocket
 ///
-/// This is meant for internal use, though if you are building devtools around Dioxus, this would be
+/// This is meant for internal use, though if you are building devtools around Aether, this would be
 /// useful to connect as a "listener" to the devserver.
 ///
 /// Unlike [`devserver_raw_addr`], this returns a string that can be used directly to connect to the
-/// devserver over a websocket. IE `ws://127.0.0.1:8080/_dioxus`.
+/// devserver over a websocket. IE `ws://127.0.0.1:8080/_aether`.
 pub fn devserver_ws_endpoint() -> Option<String> {
     let addr = devserver_raw_addr()?;
-    Some(format!("ws://{addr}/_dioxus"))
+    Some(format!("ws://{addr}/_aether"))
 }
 
 /// Get the IP that the server should be bound to.
@@ -168,7 +168,7 @@ pub fn server_port() -> Option<u16> {
 /// ```rust, ignore
 /// async fn launch_axum(app: axum::Router<()>) {
 ///     // Read the PORT and ADDR environment variables set by the CLI
-///     let addr = dioxus_cli_config::fullstack_address_or_localhost();
+///     let addr = aether_cli_config::fullstack_address_or_localhost();
 ///
 ///     // Bind to the address and serve the application
 ///     let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
@@ -187,11 +187,11 @@ pub fn fullstack_address_or_localhost() -> SocketAddr {
     SocketAddr::new(ip, port)
 }
 
-/// Get the title of the application, usually set by the Dioxus.toml.
+/// Get the title of the application, usually set by the Aether.toml.
 ///
 /// This is used to set the title of the desktop window if the app itself doesn't set it.
 pub fn app_title() -> Option<String> {
-    read_env_config!("DIOXUS_APP_TITLE")
+    read_env_config!("AETHER_APP_TITLE")
 }
 
 /// Check if the application should forced to "float" on top of other windows.
@@ -232,7 +232,7 @@ pub fn base_path() -> Option<String> {
         return web_base_path();
     }
 
-    read_env_config!("DIOXUS_ASSET_ROOT")
+    read_env_config!("AETHER_ASSET_ROOT")
 }
 
 #[cfg(feature = "web")]
@@ -267,7 +267,7 @@ pub fn web_base_path() -> Option<String> {
     // In release mode, we get the base path from the environment variable
     #[cfg(not(debug_assertions))]
     {
-        option_env!("DIOXUS_ASSET_ROOT").map(ToString::to_string)
+        option_env!("AETHER_ASSET_ROOT").map(ToString::to_string)
     }
 }
 
@@ -332,5 +332,5 @@ pub fn build_id() -> u64 {
 
 /// The product name of the bundled application.
 pub fn product_name() -> Option<String> {
-    read_env_config!("DIOXUS_PRODUCT_NAME")
+    read_env_config!("AETHER_PRODUCT_NAME")
 }

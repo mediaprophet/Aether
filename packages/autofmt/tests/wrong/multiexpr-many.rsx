@@ -1,6 +1,6 @@
 #![allow(dead_code, unused)]
-use dioxus::desktop::use_window;
-use dioxus::prelude::*;
+use aether::desktop::use_window;
+use aether::prelude::*;
 use std::{
     process::exit,
     time::{Duration, Instant},
@@ -8,7 +8,7 @@ use std::{
 use tokio::time::sleep;
 
 fn main() {
-    dioxus::LaunchBuilder::desktop().launch(app);
+    aether::LaunchBuilder::desktop().launch(app);
 }
 
 struct WindowPreferences {

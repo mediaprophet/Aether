@@ -746,7 +746,7 @@ Type=Application
             })?;
         }
 
-        tracing::info!("No bundle icons configured; using the default Dioxus icon");
+        tracing::info!("No bundle icons configured; using the default Aether icon");
         Ok(vec![default_icon])
     }
 

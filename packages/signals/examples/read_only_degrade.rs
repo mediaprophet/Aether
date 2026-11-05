@@ -1,10 +1,10 @@
 //! Signals can degrade into a Read variant automatically
 //! This is done thanks to a conversion by the #[component] macro
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

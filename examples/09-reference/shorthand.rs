@@ -1,9 +1,9 @@
-//! Dioxus supports shorthand syntax for creating elements and components.
+//! Aether supports shorthand syntax for creating elements and components.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

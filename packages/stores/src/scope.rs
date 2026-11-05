@@ -1,11 +1,11 @@
 //! This module contains the `SelectorScope` type with raw access to the underlying store system. Most applications should
-//! use the [`Store`](dioxus_stores_macro::Store) macro to derive stores for their data structures, which provides a more ergonomic API.
+//! use the [`Store`](aether_stores_macro::Store) macro to derive stores for their data structures, which provides a more ergonomic API.
 
 use std::{fmt::Debug, hash::Hash};
 
 use crate::subscriptions::{PathKey, StoreSubscriptions, TinyVec};
-use dioxus_core::Subscribers;
-use dioxus_signals::{
+use aether_core::Subscribers;
+use aether_signals::{
     BorrowError, BorrowMutError, MappedMutSignal, Readable, ReadableRef, Writable, WritableExt,
     WritableRef,
 };
@@ -20,7 +20,7 @@ use dioxus_signals::{
 /// the selector is read to, it will track the current path in the subscription tree. When it is written to
 /// it marks itself and all its children as dirty.
 ///
-/// When you derive the [`Store`](dioxus_stores_macro::Store) macro on your data structure,
+/// When you derive the [`Store`](aether_stores_macro::Store) macro on your data structure,
 /// it generates methods that map the lock to a new type and scope the path to a specific part of the subscription structure.
 /// For example, a `Counter` store might look like this:
 ///
@@ -33,14 +33,14 @@ use dioxus_signals::{
 /// impl CounterStoreExt for Store<Counter> {
 ///     fn count(
 ///         self,
-///     ) -> dioxus_stores::Store<
+///     ) -> aether_stores::Store<
 ///         i32,
-///         dioxus_stores::macro_helpers::dioxus_signals::MappedMutSignal<i32, __W>,
+///         aether_stores::macro_helpers::aether_signals::MappedMutSignal<i32, __W>,
 ///     > {
 ///         let __map_field: fn(&CounterTree) -> &i32 = |value| &value.count;
 ///         let __map_mut_field: fn(&mut CounterTree) -> &mut i32 = |value| &mut value.count;
 ///         let scope = self.selector().scope(0u32, __map_field, __map_mut_field);
-///         dioxus_stores::Store::new(scope)
+///         aether_stores::Store::new(scope)
 ///     }
 /// }
 /// ```

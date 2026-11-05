@@ -8,7 +8,7 @@
 // re-exported to make it possible to implement a custom Client without adding a separate
 // dependency on `bytes`
 pub use bytes::Bytes;
-pub use dioxus_fullstack_core::{ServerFnError, ServerFnResult};
+pub use aether_fullstack_core::{ServerFnError, ServerFnResult};
 
 pub use axum;
 pub use config::ServeConfig;

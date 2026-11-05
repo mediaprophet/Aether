@@ -1,6 +1,6 @@
 //! Tests the use_drop hook
-use dioxus::dioxus_core::use_drop;
-use dioxus::prelude::*;
+use aether::aether_core::use_drop;
+use aether::prelude::*;
 use std::sync::{Arc, Mutex};
 
 type Shared<T> = Arc<Mutex<T>>;
@@ -60,7 +60,7 @@ fn drop_runs() {
     *render_child.lock().unwrap() = false;
 
     dom.mark_dirty(ScopeId::APP);
-    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+    dom.render_immediate(&mut aether_core::NoOpMutations);
 
     assert_eq!(*drop_count.lock().unwrap(), 1);
     *render_child.lock().unwrap() = false;

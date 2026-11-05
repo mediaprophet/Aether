@@ -1,12 +1,12 @@
 #![allow(unused, non_upper_case_globals, non_snake_case)]
 
-use dioxus_core::{NoOpMutations, current_scope_id, generation};
+use aether_core::{NoOpMutations, current_scope_id, generation};
 use std::collections::HashMap;
 use std::rc::Rc;
 
-use dioxus::prelude::*;
-use dioxus_core::ElementId;
-use dioxus_signals::*;
+use aether::prelude::*;
+use aether_core::ElementId;
+use aether_signals::*;
 use std::cell::RefCell;
 
 #[test]

@@ -29,8 +29,8 @@ pub enum NavigationTarget<R = String> {
     /// An internal path that the router can navigate to by itself.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_router::navigation::NavigationTarget;
+    /// # use aether::prelude::*;
+    /// # use aether_router::navigation::NavigationTarget;
     /// # #[component]
     /// # fn Index() -> Element {
     /// #     unreachable!()
@@ -48,8 +48,8 @@ pub enum NavigationTarget<R = String> {
     /// An external target that the router doesn't control.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_router::navigation::NavigationTarget;
+    /// # use aether::prelude::*;
+    /// # use aether_router::navigation::NavigationTarget;
     /// # #[component]
     /// # fn Index() -> Element {
     /// #     unreachable!()
@@ -59,8 +59,8 @@ pub enum NavigationTarget<R = String> {
     ///     #[route("/")]
     ///     Index {},
     /// }
-    /// let explicit = NavigationTarget::<Route>::External(String::from("https://dioxuslabs.com/"));
-    /// let implicit: NavigationTarget::<Route> = "https://dioxuslabs.com/".parse().unwrap();
+    /// let explicit = NavigationTarget::<Route>::External(String::from("https://aetherlabs.com/"));
+    /// let implicit: NavigationTarget::<Route> = "https://aetherlabs.com/".parse().unwrap();
     /// assert_eq!(explicit, implicit);
     /// ```
     External(String),

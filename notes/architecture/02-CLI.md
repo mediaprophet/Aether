@@ -1,6 +1,6 @@
-# Dioxus CLI Architecture
+# Aether CLI Architecture
 
-The `dx` CLI is a comprehensive build tool for Dioxus applications, supporting development, building, bundling, and cross-platform deployment.
+The `dx` CLI is a comprehensive build tool for Aether applications, supporting development, building, bundling, and cross-platform deployment.
 
 ## Command Structure
 
@@ -15,7 +15,7 @@ Entry point: `main.rs` with async tokio runtime and `TraceController` for error 
 - `Check` - Lint/validate RSX
 - `Translate` - Convert HTML/JSX to RSX
 - `Autoformat` - Format RSX code
-- `Config` - Manage Dioxus.toml
+- `Config` - Manage Aether.toml
 - `Doctor` - Diagnose environment
 - `Components` - Component registry
 - `SelfUpdate` - Update CLI
@@ -46,7 +46,7 @@ The "plan" for a single build:
 ```
 BuildRequest
 ├── workspace: Workspace metadata
-├── config: DioxusConfig
+├── config: AetherConfig
 ├── package: Package details
 ├── features: Vec<String>
 ├── target: Triple
@@ -113,7 +113,7 @@ Terminal UI with ratatui:
 ### File Change Handling
 ```
 File modified → detect type
-├── Rust file → diff RSX using dioxus_rsx_hotreload::diff_rsx()
+├── Rust file → diff RSX using aether_rsx_hotreload::diff_rsx()
 │   ├── Extract changed templates
 │   ├── Build HotReloadMsg
 │   └── Send via WebSocket
@@ -184,7 +184,7 @@ Caches compiled dependency symbols:
 
 ## Configuration
 
-### DioxusConfig (Dioxus.toml)
+### AetherConfig (Aether.toml)
 ```toml
 [application]
 asset_dir = "assets"
@@ -205,7 +205,7 @@ publisher = "Company"
 
 ### Resolution Order
 1. Default values
-2. Dioxus.toml in project root
+2. Aether.toml in project root
 3. CLI argument overrides
 4. Environment variables
 
@@ -215,7 +215,7 @@ publisher = "Company"
 ```
 Workspace
 ├── krates: Krates (cargo metadata, dependency graph)
-├── settings: CliSettings (user settings ~/.config/dioxus/)
+├── settings: CliSettings (user settings ~/.config/aether/)
 ├── sysroot: Rust target sysroot
 ├── rustc_version: Version
 ├── wasm_opt: Optional path
@@ -242,7 +242,7 @@ Lazy-loaded via `Workspace::current()` with tokio Mutex.
 4. Optional `StructuredOutput` variant for results
 
 ### Customizing Build Hooks
-- Pre/post-build scripts in Dioxus.toml
+- Pre/post-build scripts in Aether.toml
 - Custom linker integration
 - Asset transformation pipeline
 

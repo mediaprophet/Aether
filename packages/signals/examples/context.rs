@@ -1,9 +1,9 @@
 #![allow(non_snake_case)]
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app)
+    aether::launch(app)
 }
 
 // Because signal is never read in this component, this component will not rerun when the signal changes

@@ -1,4 +1,4 @@
-//! This example showcases the built-in websocket functionality in Dioxus Fullstack.
+//! This example showcases the built-in websocket functionality in Aether Fullstack.
 //!
 //! We can create a new websocket endpoint that takes the WebSocketOptions as a body and returns
 //! a `Websocket` instance that the client uses to communicate with the server.
@@ -15,12 +15,12 @@
 //! strongly typed, making it easy to send and receive messages without having to manually
 //! serialize and deserialize them.
 
-use dioxus::{fullstack::CborEncoding, prelude::*};
-use dioxus_fullstack::{WebSocketOptions, Websocket, use_websocket};
+use aether::{fullstack::CborEncoding, prelude::*};
+use aether_fullstack::{WebSocketOptions, Websocket, use_websocket};
 use serde::{Deserialize, Serialize};
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

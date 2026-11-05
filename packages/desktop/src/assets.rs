@@ -1,9 +1,9 @@
-use dioxus_core::Callback;
+use aether_core::Callback;
 use rustc_hash::FxHashMap;
 use std::{cell::RefCell, rc::Rc};
 use wry::{RequestAsyncResponder, http::Request};
 
-/// A request for an asset within dioxus-desktop.
+/// A request for an asset within aether-desktop.
 pub type AssetRequest = Request<Vec<u8>>;
 
 pub struct AssetHandler {

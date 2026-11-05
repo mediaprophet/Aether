@@ -1,6 +1,6 @@
 use std::future::Future;
 
-use dioxus_core::{Element, VirtualDom};
+use aether_core::{Element, VirtualDom};
 
 #[cfg(feature = "axum")]
 pub mod axum_adapter;

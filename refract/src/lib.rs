@@ -1,6 +1,6 @@
 //! # refract
 //!
-//! An experimental Dioxus-like reactive UI runtime built from scratch around
+//! An experimental Aether-like reactive UI runtime built from scratch around
 //! **stores and lenses**, inspired by [qk](https://github.com/ealmloff/qk).
 //!
 //! The [`Ui`] runtime owns the root state; reactive closures receive a

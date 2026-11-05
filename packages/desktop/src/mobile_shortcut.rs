@@ -4,7 +4,7 @@ use super::*;
 use std::str::FromStr;
 use tao::event_loop::EventLoopWindowTarget;
 
-use dioxus_html::input_data::keyboard_types::Modifiers;
+use aether_html::input_data::keyboard_types::Modifiers;
 
 #[derive(Clone, Debug)]
 pub struct Accelerator;
@@ -90,4 +90,4 @@ pub enum HotKeyState {
     Released,
 }
 
-pub(crate) type Code = dioxus_html::input_data::keyboard_types::Code;
+pub(crate) type Code = aether_html::input_data::keyboard_types::Code;

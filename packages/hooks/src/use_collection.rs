@@ -13,7 +13,7 @@ set_map({ ...map, [key]: value });
 The new value then causes the appropriate update when passed into children.
 
 This is moderately efficient because the fields of the map are moved, but the data itself is not cloned.
-However, if you used similar approach with Dioxus:
+However, if you used similar approach with Aether:
 
 ```rust
 let (map, set_map) = use_signal(|| HashMap::new());
@@ -26,12 +26,12 @@ set_map({
 Unfortunately, you'd be cloning the entire state every time a value is changed. The obvious solution is to
 wrap every element in the HashMap with an Rc. That way, cloning the HashMap is on par with its JS equivalent.
 
-Fortunately, we can make this operation even more efficient in Dioxus, leveraging the borrow rules of Rust.
+Fortunately, we can make this operation even more efficient in Aether, leveraging the borrow rules of Rust.
 
 This hook provides a memoized collection, memoized setters, and memoized getters. This particular hook is
 extremely powerful for implementing lists and supporting core state management needs for small apps.
 
-If you need something even more powerful, check out the dedicated atomic state management Dioxus Dataflow, which
+If you need something even more powerful, check out the dedicated atomic state management Aether Dataflow, which
 uses the same memoization on top of the use_context API.
 
 Here's a fully-functional todo app using the use_map API:

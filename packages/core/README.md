@@ -1,10 +1,10 @@
-# dioxus-core
+# aether-core
 
-`dioxus-core` provides a fast and featureful VirtualDom implementation for Rust.
+`aether-core` provides a fast and featureful VirtualDom implementation for Rust.
 
 ```rust, no_run
 # tokio::runtime::Runtime::new().unwrap().block_on(async {
-use dioxus_core::{VirtualDom, Event, Element, Mutations, VNode, ElementId};
+use aether_core::{VirtualDom, Event, Element, Mutations, VNode, ElementId};
 
 let mut vdom = VirtualDom::new(app);
 let real_dom = SomeRenderer::new();
@@ -27,9 +27,9 @@ loop {
 
 ## Features
 
-A virtualdom is an efficient and flexible tree data structure that allows you to manage state for a graphical user interface. The Dioxus VirtualDom is perhaps the most fully-featured virtualdom implementation in Rust and powers renderers running across Web, Desktop, Mobile, SSR, TUI, LiveView, and more. When you use the Dioxus VirtualDom, you immediately enable users of your renderer to leverage the wide ecosystem of Dioxus components, hooks, and associated tooling.
+A virtualdom is an efficient and flexible tree data structure that allows you to manage state for a graphical user interface. The Aether VirtualDom is perhaps the most fully-featured virtualdom implementation in Rust and powers renderers running across Web, Desktop, Mobile, SSR, TUI, LiveView, and more. When you use the Aether VirtualDom, you immediately enable users of your renderer to leverage the wide ecosystem of Aether components, hooks, and associated tooling.
 
-Some features of `dioxus-core` include:
+Some features of `aether-core` include:
 
 - UI components are just functions
 - State is provided by hooks
@@ -42,7 +42,7 @@ If you are just starting, check out the Guides first.
 
 ## Understanding the implementation
 
-`dioxus-core` is designed to be a lightweight crate that. It exposes a number of flexible primitives without being deeply concerned about the intracices of state management itself. We provide a number of useful abstractions built on these primitives in the `dioxus-hooks` crate as well as the `dioxus-signals` crate.
+`aether-core` is designed to be a lightweight crate that. It exposes a number of flexible primitives without being deeply concerned about the intracices of state management itself. We provide a number of useful abstractions built on these primitives in the `aether-hooks` crate as well as the `aether-signals` crate.
 
 The important abstractions to understand are:
 
@@ -54,13 +54,13 @@ The important abstractions to understand are:
 
 ## Usage
 
-The `dioxus` crate exports the `rsx` macro which transforms a helpful, simpler syntax of Rust.
+The `aether` crate exports the `rsx` macro which transforms a helpful, simpler syntax of Rust.
 
 First, start with your app:
 
 ```rust
-# use dioxus::dioxus_core::{Mutations, VirtualDom};
-use dioxus::prelude::*;
+# use aether::aether_core::{Mutations, VirtualDom};
+use aether::prelude::*;
 
 // First, declare a root component
 fn app() -> Element {
@@ -80,20 +80,20 @@ fn main() {
 
 ## Contributing
 
-- Check out the website [section on contributing](https://dioxuslabs.com/learn/0.7/beyond/contributing).
-- Report issues on our [issue tracker](https://github.com/dioxuslabs/dioxus/issues).
+- Check out the website [section on contributing](https://aetherlabs.com/learn/0.7/beyond/contributing).
+- Report issues on our [issue tracker](https://github.com/aetherlabs/aether/issues).
 - [Join](https://discord.gg/XgGxMSkvUM) the discord and ask questions!
 
-<a href="https://github.com/dioxuslabs/dioxus/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=30&columns=10" />
+<a href="https://github.com/aetherlabs/aether/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=aetherlabs/aether&max=30&columns=10" />
 </a>
 
 ## License
 
 This project is licensed under the [MIT license].
 
-[mit license]: https://github.com/DioxusLabs/dioxus/blob/master/LICENSE-MIT
+[mit license]: https://github.com/AetherLabs/aether/blob/master/LICENSE-MIT
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in Dioxus by you, shall be licensed as MIT, without any additional
+for inclusion in Aether by you, shall be licensed as MIT, without any additional
 terms or conditions.

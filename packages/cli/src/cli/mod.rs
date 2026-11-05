@@ -42,9 +42,9 @@ use std::{
     process::Command,
 };
 
-/// Dioxus: build web, desktop, and mobile apps with a single codebase.
+/// Aether: build web, desktop, and mobile apps with a single codebase.
 #[derive(Parser)]
-#[clap(name = "dioxus", version = VERSION.as_str())]
+#[clap(name = "aether", version = VERSION.as_str())]
 #[clap(styles = CARGO_STYLING)]
 pub(crate) struct Cli {
     #[command(subcommand)]
@@ -56,7 +56,7 @@ pub(crate) struct Cli {
 
 #[derive(Subcommand)]
 pub(crate) enum Commands {
-    /// Create a new Dioxus project.
+    /// Create a new Aether project.
     #[clap(name = "new")]
     New(create::Create),
 
@@ -64,11 +64,11 @@ pub(crate) enum Commands {
     #[clap(name = "serve")]
     Serve(serve::ServeArgs),
 
-    /// Bundle the Dioxus app into a shippable object.
+    /// Bundle the Aether app into a shippable object.
     #[clap(name = "bundle")]
     Bundle(bundle::Bundle),
 
-    /// Build the Dioxus project and all of its assets.
+    /// Build the Aether project and all of its assets.
     #[clap(name = "build")]
     Build(CommandWithPlatformOverrides<build::BuildArgs>),
 
@@ -76,7 +76,7 @@ pub(crate) enum Commands {
     #[clap(name = "run")]
     Run(run::RunArgs),
 
-    /// Init a new project for Dioxus in the current directory (by default).
+    /// Init a new project for Aether in the current directory (by default).
     /// Will attempt to keep your project in a good state.
     #[clap(name = "init")]
     Init(init::Init),
@@ -95,7 +95,7 @@ pub(crate) enum Commands {
     #[clap(subcommand)]
     Print(print::Print),
 
-    /// Translate a source file into Dioxus code.
+    /// Translate a source file into Aether code.
     #[clap(name = "translate")]
     Translate(translate::Translate),
 
@@ -107,21 +107,21 @@ pub(crate) enum Commands {
     #[clap(name = "check")]
     Check(check::Check),
 
-    /// Dioxus config file controls.
+    /// Aether config file controls.
     #[clap(subcommand)]
     #[clap(name = "config")]
     Config(config::Config),
 
-    /// Update the Dioxus CLI to the latest version.
+    /// Update the Aether CLI to the latest version.
     #[clap(name = "self-update")]
     SelfUpdate(update::SelfUpdate),
 
-    /// Run a dioxus build tool. IE `build-assets`, `hotpatch`, etc
+    /// Run a aether build tool. IE `build-assets`, `hotpatch`, etc
     #[clap(name = "tools")]
     #[clap(subcommand)]
     Tools(BuildTools),
 
-    /// Manage components from the `dioxus-component` registry.
+    /// Manage components from the `aether-component` registry.
     #[clap(name = "components")]
     #[clap(subcommand)]
     Components(component::ComponentCommand),

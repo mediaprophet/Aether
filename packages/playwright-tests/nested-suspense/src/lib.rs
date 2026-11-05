@@ -7,12 +7,12 @@
 //
 // Without Javascript, content may not load into the right location, but it should still be somewhere in the html even if it is invisible
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use serde::{Deserialize, Serialize};
 
 pub fn app() -> Element {
     // Start streaming immediately
-    use_hook(dioxus::fullstack::commit_initial_chunk);
+    use_hook(aether::fullstack::commit_initial_chunk);
 
     rsx! {
         SuspenseBoundary {

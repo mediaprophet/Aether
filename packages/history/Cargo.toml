@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-history"
+name = "aether-history"
 edition = "2024"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
-description = "History provider for dioxus"
+description = "History provider for aether"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -11,8 +11,8 @@ keywords = ["dom", "ui", "gui", "react"]
 
 
 [dependencies]
-dioxus-core = { workspace = true }
+aether-core = { workspace = true }
 tracing = { workspace = true }
 
 [dev-dependencies]
-dioxus = { workspace = true, features = ["router"] }
+aether = { workspace = true, features = ["router"] }

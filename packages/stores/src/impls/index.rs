@@ -7,7 +7,7 @@ use std::{
 };
 
 use crate::{ReadStore, scope::SelectorScope, store::Store};
-use dioxus_signals::{
+use aether_signals::{
     AnyStorage, BorrowError, BorrowMutError, ReadSignal, Readable, UnsyncStorage, Writable,
     WriteLock, WriteSignal,
 };
@@ -55,7 +55,7 @@ impl<Lens, T> Store<T, Lens> {
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| vec![1, 2, 3]);
     /// let indexed_store = store.index(1);
     /// // The indexed store can access the store methods of the indexed store.
@@ -89,7 +89,7 @@ where
 
     type Storage = Write::Storage;
 
-    fn try_read_unchecked(&self) -> Result<dioxus_signals::ReadableRef<'static, Self>, BorrowError>
+    fn try_read_unchecked(&self) -> Result<aether_signals::ReadableRef<'static, Self>, BorrowError>
     where
         Self::Target: 'static,
     {
@@ -100,7 +100,7 @@ where
         })
     }
 
-    fn try_peek_unchecked(&self) -> Result<dioxus_signals::ReadableRef<'static, Self>, BorrowError>
+    fn try_peek_unchecked(&self) -> Result<aether_signals::ReadableRef<'static, Self>, BorrowError>
     where
         Self::Target: 'static,
     {
@@ -111,7 +111,7 @@ where
         })
     }
 
-    fn subscribers(&self) -> dioxus_core::Subscribers
+    fn subscribers(&self) -> aether_core::Subscribers
     where
         Self::Target: 'static,
     {
@@ -129,7 +129,7 @@ where
 
     fn try_write_unchecked(
         &self,
-    ) -> Result<dioxus_signals::WritableRef<'static, Self>, BorrowMutError>
+    ) -> Result<aether_signals::WritableRef<'static, Self>, BorrowMutError>
     where
         Self::Target: 'static,
     {

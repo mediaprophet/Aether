@@ -268,12 +268,12 @@ test("svg elements can receive hydrated listeners", async ({ page }) => {
   await page.locator("#hydrated-circle").click();
   await expect(page.locator("#svg-click-count")).toHaveText("svg clicks: 1");
   await expect(page.locator("#hydrated-circle")).toHaveAttribute(
-    "data-dioxus-id",
+    "data-aether-id",
     /\d+/
   );
 });
 
-// Regression for https://github.com/DioxusLabs/dioxus/issues/5548: `textarea`
+// Regression for https://github.com/AetherLabs/aether/issues/5548: `textarea`
 // content is raw text, so SSR cannot wrap it in hydration markers. The body must
 // hydrate from the server-rendered text and stay patchable afterwards.
 test("textarea dynamic body hydrates without markers and updates", async ({

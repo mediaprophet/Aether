@@ -1,7 +1,7 @@
 use crate::Transportable;
-use dioxus_core::{RenderError, suspend, use_hook};
-use dioxus_hooks::*;
-use dioxus_signals::ReadableExt;
+use aether_core::{RenderError, suspend, use_hook};
+use aether_hooks::*;
+use aether_signals::ReadableExt;
 use std::future::Future;
 
 /// Runs a future with a manual list of dependencies and returns a resource with the result if the future is finished or a suspended error if it is still running.
@@ -15,7 +15,7 @@ use std::future::Future;
 /// Unlike [`use_resource`] dependencies are only tracked inside the function that spawns the async block, not the async block itself.
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// // ❌ The future inside of use_server_future is not reactive
 /// let id = use_signal(|| 0);
 /// use_server_future(move || {
@@ -41,9 +41,9 @@ use std::future::Future;
 /// # Example
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// # async fn fetch_article(id: u32) -> String { unimplemented!() }
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// fn App() -> Element {
 ///     let mut article_id = use_signal(|| 0);

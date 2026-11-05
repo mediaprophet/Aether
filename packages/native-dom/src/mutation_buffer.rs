@@ -1,5 +1,5 @@
-//! Buffering of Dioxus mutations so that they can be applied after the VirtualDom has run
-use dioxus_core::{AnyValue, BorrowedAttributeValue, ElementId, WriteMutations};
+//! Buffering of Aether mutations so that they can be applied after the VirtualDom has run
+use aether_core::{AnyValue, BorrowedAttributeValue, ElementId, WriteMutations};
 use std::rc::Rc;
 
 /// A span of [`MutationBuffer::strings`]

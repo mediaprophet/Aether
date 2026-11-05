@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[component]
 pub fn Explainer(invert: bool, title: &'static str, content: Element, flasher: Element) -> Element {

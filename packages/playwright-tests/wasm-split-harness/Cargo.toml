@@ -6,8 +6,8 @@ publish = false
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 
 [dependencies]
-dioxus = { workspace = true, features = ["web", "router", "wasm-split"] }
-dioxus-router = { workspace = true, features = ["wasm-split"] }
+aether = { workspace = true, features = ["web", "router", "wasm-split"] }
+aether-router = { workspace = true, features = ["wasm-split"] }
 anyhow = { workspace = true }
 async-compression = { workspace = true, features = [
     "futures-io",

@@ -1,11 +1,11 @@
-//! Suspense in Dioxus
+//! Suspense in Aether
 //!
 //! Suspense allows components to bubble up loading states to parent components, simplifying data fetching.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app)
+    aether::launch(app)
 }
 
 fn app() -> Element {

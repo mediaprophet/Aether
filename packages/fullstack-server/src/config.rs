@@ -1,7 +1,7 @@
-//! Configuration for how to serve a Dioxus application
+//! Configuration for how to serve a Aether application
 #![allow(non_snake_case)]
 
-use dioxus_core::LaunchConfig;
+use aether_core::LaunchConfig;
 use std::any::Any;
 use std::sync::Arc;
 
@@ -10,7 +10,7 @@ use crate::{IncrementalRendererConfig, IndexHtml};
 #[allow(unused)]
 pub(crate) type ContextProviders = Arc<Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync + 'static>>>;
 
-/// A ServeConfig is used to configure how to serve a Dioxus application. It contains information about how to serve static assets, and what content to render with [`dioxus_ssr`].
+/// A ServeConfig is used to configure how to serve a Aether application. It contains information about how to serve static assets, and what content to render with [`aether_ssr`].
 #[derive(Clone)]
 pub struct ServeConfig {
     pub(crate) index: IndexHtml,
@@ -98,12 +98,12 @@ impl ServeConfig {
     ///
     /// ```rust, no_run
     /// # fn app() -> Element { unimplemented!() }
-    /// use dioxus::prelude::*;
+    /// use aether::prelude::*;
     ///
     /// // Finally, launch the app with the config
     /// LaunchBuilder::new()
     ///     // Only set the server config if the server feature is enabled
-    ///     .with_cfg(server_only!(dioxus_server::ServeConfig::default().incremental(dioxus_server::IncrementalRendererConfig::default())))
+    ///     .with_cfg(server_only!(aether_server::ServeConfig::default().incremental(aether_server::IncrementalRendererConfig::default())))
     ///     .launch(app);
     /// ```
     pub fn incremental(mut self, cfg: IncrementalRendererConfig) -> Self {
@@ -111,7 +111,7 @@ impl ServeConfig {
         self
     }
 
-    /// Provide context to the root and server functions. You can use this context while rendering with [`consume_context`](dioxus_core::consume_context).
+    /// Provide context to the root and server functions. You can use this context while rendering with [`consume_context`](aether_core::consume_context).
     ///
     ///
     /// The context providers passed into this method will be called when the context type is requested which may happen many times in the lifecycle of the application.
@@ -121,18 +121,18 @@ impl ServeConfig {
     ///
     /// ```rust, no_run
     /// #![allow(non_snake_case)]
-    /// use dioxus::prelude::*;
+    /// use aether::prelude::*;
     /// use std::sync::Arc;
     /// use std::any::Any;
     ///
     /// fn main() {
     ///     // Hydrate the application on the client
     ///     #[cfg(not(feature = "server"))]
-    ///     dioxus::launch(app);
+    ///     aether::launch(app);
     ///
     ///    #[cfg(feature = "server")]
-    ///    dioxus_server::serve(|| async move {
-    ///        use dioxus_server::{axum, ServeConfig, DioxusRouterExt};
+    ///    aether_server::serve(|| async move {
+    ///        use aether_server::{axum, ServeConfig, AetherRouterExt};
     ///
     ///        let config = ServeConfig::default()
     ///            // You can provide context to your whole app on the server (including server functions) with the `context_provider` method on the launch builder
@@ -140,7 +140,7 @@ impl ServeConfig {
     ///
     ///        Ok(
     ///            axum::Router::new()
-    ///                .serve_dioxus_application(config, app)
+    ///                .serve_aether_application(config, app)
     ///        )
     ///    })
     /// }
@@ -170,7 +170,7 @@ impl ServeConfig {
     }
 
     /// Provide context to the root and server functions. You can use this context
-    /// while rendering with [`consume_context`](dioxus_core::consume_context).
+    /// while rendering with [`consume_context`](aether_core::consume_context).
     ///
     ///
     /// The context providers passed into this method will be called when the context type is requested which may happen many times in the lifecycle of the application.
@@ -180,16 +180,16 @@ impl ServeConfig {
     ///
     /// ```rust, no_run
     /// #![allow(non_snake_case)]
-    /// use dioxus::prelude::*;
+    /// use aether::prelude::*;
     ///
     /// fn main() {
     ///     #[cfg(not(feature = "server"))]
     ///     // Hydrate the application on the client
-    ///     dioxus::launch(app);
+    ///     aether::launch(app);
     ///
     ///     #[cfg(feature = "server")]
-    ///     dioxus_server::serve(|| async move {
-    ///        use dioxus_server::{axum, ServeConfig, DioxusRouterExt};
+    ///     aether_server::serve(|| async move {
+    ///        use aether_server::{axum, ServeConfig, AetherRouterExt};
     ///
     ///         let config = ServeConfig::default()
     ///             // You can provide context to your whole app on the server (including server functions) with the `context_provider` method on the launch builder
@@ -197,7 +197,7 @@ impl ServeConfig {
     ///
     ///         Ok(
     ///             axum::Router::new()
-    ///                 .serve_dioxus_application(config, app)
+    ///                 .serve_aether_application(config, app)
     ///         )
     ///     });
     /// }
@@ -223,23 +223,23 @@ impl ServeConfig {
         self
     }
 
-    /// Provide context to the root and server functions. You can use this context while rendering with [`consume_context`](dioxus_core::consume_context).
+    /// Provide context to the root and server functions. You can use this context while rendering with [`consume_context`](aether_core::consume_context).
     ///
     /// Context will be forwarded from the LaunchBuilder if it is provided.
     ///
     /// ```rust, no_run
     /// #![allow(non_snake_case)]
-    /// use dioxus::prelude::*;
+    /// use aether::prelude::*;
     ///
     /// fn main() {
     ///     // Hydrate the application on the client
     ///     #[cfg(not(feature = "server"))]
-    ///     dioxus::launch(app);
+    ///     aether::launch(app);
     ///
     ///     // Run a custom server with axum on the server
     ///     #[cfg(feature = "server")]
-    ///     dioxus_server::serve(|| async move {
-    ///         use dioxus_server::{axum, ServeConfig, DioxusRouterExt};
+    ///     aether_server::serve(|| async move {
+    ///         use aether_server::{axum, ServeConfig, AetherRouterExt};
     ///
     ///         let config = ServeConfig::default()
     ///             // You can provide context to your whole app on the server (including server functions) with the `context_provider` method on the launch builder
@@ -247,7 +247,7 @@ impl ServeConfig {
     ///
     ///         Ok(
     ///             axum::Router::new()
-    ///                 .serve_dioxus_application(config, app)
+    ///                 .serve_aether_application(config, app)
     ///         )
     ///     });
     /// }
@@ -273,11 +273,11 @@ impl ServeConfig {
     /// Set the streaming mode for the server. By default, streaming is disabled.
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # fn app() -> Element { unimplemented!() }
-    /// dioxus::LaunchBuilder::new()
+    /// aether::LaunchBuilder::new()
     ///     .with_context(server_only! {
-    ///         dioxus::server::ServeConfig::builder().streaming_mode(dioxus::server::StreamingMode::OutOfOrder)
+    ///         aether::server::ServeConfig::builder().streaming_mode(aether::server::StreamingMode::OutOfOrder)
     ///     })
     ///     .launch(app);
     /// ```
@@ -291,11 +291,11 @@ impl ServeConfig {
     /// It is equivalent to calling `streaming_mode(StreamingMode::OutOfOrder)`
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # fn app() -> Element { unimplemented!() }
-    /// dioxus::LaunchBuilder::new()
+    /// aether::LaunchBuilder::new()
     ///     .with_context(server_only! {
-    ///         dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
+    ///         aether::server::ServeConfig::builder().enable_out_of_order_streaming()
     ///     })
     ///     .launch(app);
     /// ```

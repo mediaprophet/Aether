@@ -1,10 +1,10 @@
-//! Dioxus SSR uses the design of templates to cache as much as possible about the HTML a block of rsx can render.
+//! Aether SSR uses the design of templates to cache as much as possible about the HTML a block of rsx can render.
 //!
 //! The structure of templates can tell us what segments are rendered where and lets us cache segments in the output string.
 //!
 //! For example, in this code, we can cache the whole render:
 //! ```rust, no_run
-//! use dioxus::prelude::*;
+//! use aether::prelude::*;
 //! rsx! {
 //!     div {
 //!         "Hello world"
@@ -19,7 +19,7 @@
 //! If the template is more complex, we can only cache the parts that are static. In this case, we can cache `<div width="100px">` and `</div>`, but not the child text.
 //!
 //! ```rust, no_run
-//! use dioxus::prelude::*;
+//! use aether::prelude::*;
 //! let dynamic = 123;
 //! rsx! {
 //!     div {
@@ -30,7 +30,7 @@
 //!```
 
 use crate::renderer::{BOOL_ATTRS, ssr_attr_name, str_truthy};
-use dioxus_core::{StaticElement, StaticText, VNode, VNodeChild};
+use aether_core::{StaticElement, StaticText, VNode, VNodeChild};
 use std::{fmt::Write, ops::AddAssign};
 
 #[derive(Debug)]
@@ -253,7 +253,7 @@ fn from_template_element(
         // leading newline whenever the content starts with one, so it round-trips.
         // Without this a leading `\n` is silently lost on standalone SSR and
         // desyncs the markerless hydration walk (which reconstructs text-node
-        // offsets by length). See dioxus#5548.
+        // offsets by length). See aether#5548.
         if raw_text_strips_leading_newline(element) {
             writeln!(chain)?;
         }
@@ -313,7 +313,7 @@ fn emit_dynamic_attrs(element: StaticElement<'_>, chain: &mut StringChain) -> bo
 
 /// Whether `element` is a "raw text" element (`pre`, `textarea`, `listing`)
 /// whose first child is static text starting with a newline, so SSR must emit a
-/// compensating leading newline (see the call site and dioxus#5548).
+/// compensating leading newline (see the call site and aether#5548).
 ///
 /// Only static leading text is handled; a dynamic first child whose runtime
 /// value begins with `\n` is not compensated (it would need a render-time check).

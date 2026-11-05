@@ -27,14 +27,14 @@ impl ElementId {
     /// Create an element id from its raw renderer-local index.
     ///
     /// Renderers use this when translating platform event targets back into
-    /// Dioxus element ids.
+    /// Aether element ids.
     pub const fn from_raw(index: usize) -> Self {
         Self(index)
     }
 
     /// Return this element id's raw renderer-local index.
     ///
-    /// Renderers use this to store Dioxus element ids in their backing DOM or
+    /// Renderers use this to store Aether element ids in their backing DOM or
     /// interpreter node maps.
     pub const fn raw(self) -> usize {
         self.0

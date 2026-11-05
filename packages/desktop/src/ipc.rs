@@ -28,7 +28,7 @@ pub enum UserWindowEvent {
 
     /// Handle a hotreload event, basically telling us to update our templates
     #[cfg(all(feature = "devtools", debug_assertions))]
-    HotReloadEvent(dioxus_devtools::DevserverMsg),
+    HotReloadEvent(aether_devtools::DevserverMsg),
 
     // Windows-only drag-n-drop fix events.
     WindowsDragDrop(WindowId),
@@ -41,7 +41,7 @@ pub enum UserWindowEvent {
     /// Request that a given window close, honoring its close behavior and component lifecycle.
     RequestWindowClose(WindowId),
 
-    /// Destroy a native window after its Dioxus owner has released the portal.
+    /// Destroy a native window after its Aether owner has released the portal.
     DestroyWindow(WindowId),
 
     /// Gracefully shutdown the entire app

@@ -1,4 +1,4 @@
-use dioxus_rsx::CallBody;
+use aether_rsx::CallBody;
 use quote::ToTokens;
 
 use prettier_please::PrettyUnparse;

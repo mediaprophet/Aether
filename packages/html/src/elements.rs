@@ -7,13 +7,13 @@
 //
 // This list does not include obsolete, deprecated, experimental, or poorly supported elements.
 
-// Re-export the element-vocabulary root so that any `use dioxus_html::elements::*` (the common
+// Re-export the element-vocabulary root so that any `use aether_html::elements::*` (the common
 // way to bring elements into scope) also brings `html` into scope. `rsx!` lowers a bare element
 // like `div` to the associated const `html::div`, which needs the root type reachable here.
 pub use crate::html;
 
-dioxus_html_internal_macro::define_elements! {
-    core = dioxus_core,
+aether_html_internal_macro::define_elements! {
+    core = aether_core,
     html = crate,
     hot_reload_context = true;
 

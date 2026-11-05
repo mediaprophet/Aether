@@ -1,6 +1,6 @@
-//! # Telemetry for the Dioxus CLI
+//! # Telemetry for the Aether CLI
 //!
-//! Dioxus uses telemetry in the CLI to get insight into metrics like performance, panics, and usage
+//! Aether uses telemetry in the CLI to get insight into metrics like performance, panics, and usage
 //! of various arguments. This data helps us track down bugs and improve quality of the tooling.
 //!
 //! Usage of telemetry in open source products can be controversial. Our goal here is to collect

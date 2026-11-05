@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-server"
+name = "aether-server"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 version = { workspace = true }
 edition = "2024"
-description = "Fullstack utilities for Dioxus: Build fullstack web, desktop, and mobile apps with a single codebase."
+description = "Fullstack utilities for Aether: Build fullstack web, desktop, and mobile apps with a single codebase."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -12,20 +12,20 @@ resolver = "2"
 
 [dependencies]
 
-# Dioxus + SSR
+# Aether + SSR
 subsecond = { workspace =  true }
-dioxus-cli-config = { workspace = true }
-dioxus-devtools = { workspace = true, features = ["serve"] }
-dioxus-history = { workspace = true }
-dioxus-signals = { workspace = true }
-dioxus-hooks = { workspace = true }
-dioxus-logger = { workspace = true }
-dioxus-router = { workspace = true, features = ["streaming"], optional = true }
-dioxus-fullstack-core = { workspace = true, features = ["server"] }
-dioxus-core = { workspace = true }
-dioxus-core-macro = { workspace = true }
-dioxus-document = { workspace = true }
-dioxus-html = { workspace = true }
+aether-cli-config = { workspace = true }
+aether-devtools = { workspace = true, features = ["serve"] }
+aether-history = { workspace = true }
+aether-signals = { workspace = true }
+aether-hooks = { workspace = true }
+aether-logger = { workspace = true }
+aether-router = { workspace = true, features = ["streaming"], optional = true }
+aether-fullstack-core = { workspace = true, features = ["server"] }
+aether-core = { workspace = true }
+aether-core-macro = { workspace = true }
+aether-document = { workspace = true }
+aether-html = { workspace = true }
 generational-box = { workspace = true }
 
 
@@ -33,13 +33,13 @@ axum = { workspace = true, features = ["multipart", "ws", "json", "form", "tokio
 anyhow = { workspace = true }
 dashmap = "6.2.1"
 inventory = { workspace = true }
-dioxus-ssr = { workspace = true }
+aether-ssr = { workspace = true }
 
 hyper-util = { workspace = true, features = ["full"] }
 hyper = { workspace = true }
 
 # Web Integration
-dioxus-interpreter-js = { workspace = true }
+aether-interpreter-js = { workspace = true }
 
 tracing = { workspace = true }
 tracing-futures = { workspace = true }
@@ -86,13 +86,13 @@ tokio = { workspace = true, features = ["rt", "sync", "macros"], optional = true
 tokio = { workspace = true, features = ["rt", "sync", "rt-multi-thread", "macros", "net"] }
 
 [dev-dependencies]
-dioxus = { workspace = true, features = ["fullstack"] }
+aether = { workspace = true, features = ["fullstack"] }
 tokio = { workspace = true, features = ["full"] }
 
 [features]
 default = ["router", "document"]
 document = []
-router = ["dep:dioxus-router"]
+router = ["dep:aether-router"]
 default-tls = []
 rustls = ["dep:rustls", "dep:hyper-rustls"]
 axum-no-default = []

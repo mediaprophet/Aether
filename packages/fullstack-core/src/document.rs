@@ -1,6 +1,6 @@
 //! On the client, we use the [`FullstackWebDocument`] implementation to render the head for any elements that were not rendered on the server.
 
-use dioxus_document::*;
+use aether_document::*;
 
 fn head_element_written_on_server() -> bool {
     crate::transport::head_element_hydration_entry()

@@ -44,14 +44,14 @@ impl Doctor {
         }
 
         // extensions
-        fn has_dioxus_ext(editor_dir: &str) -> anyhow::Result<PathBuf> {
+        fn has_aether_ext(editor_dir: &str) -> anyhow::Result<PathBuf> {
             let home = dirs::home_dir().context("no home dir")?;
             let exts = home.join(editor_dir).join("extensions");
             for dir in exts.read_dir()?.flatten() {
                 if dir
                     .file_name()
                     .to_string_lossy()
-                    .contains("dioxuslabs.dioxus-")
+                    .contains("aetherlabs.aether-")
                 {
                     return Ok(dir.path());
                 }
@@ -61,17 +61,17 @@ impl Doctor {
         }
 
         // Editors
-        let vscode_ext = has_dioxus_ext(".vscode");
+        let vscode_ext = has_aether_ext(".vscode");
         let vscode_ext_msg = match vscode_ext.as_ref() {
             Ok(path) => path.to_string_lossy().to_string(),
             Err(_) => "not found".to_string(),
         };
-        let vscode_insiders_ext = has_dioxus_ext(".vscode-insiders");
+        let vscode_insiders_ext = has_aether_ext(".vscode-insiders");
         let vscode_insiders_ext_msg = match vscode_insiders_ext.as_ref() {
             Ok(path) => path.to_string_lossy().to_string(),
             Err(_) => "not found".to_string(),
         };
-        let cursor_ext = has_dioxus_ext(".cursor");
+        let cursor_ext = has_aether_ext(".cursor");
         let cursor_ext_msg = match cursor_ext.as_ref() {
             Ok(path) => path.to_string_lossy().to_string(),
             Err(_) => "not found".to_string(),
@@ -258,7 +258,7 @@ impl Doctor {
  {HINT_STYLE}{has_aarch64_apple_darwin}{HINT_STYLE:#} aarch64-apple-darwin {HINT_STYLE}(iOS){HINT_STYLE:#}
 
 Get help: {LINK_STYLE}https://discord.gg/XgGxMSkvUM{LINK_STYLE:#}
-More info: {LINK_STYLE}https://dioxuslabs.com/learn/0.7/{LINK_STYLE:#}
+More info: {LINK_STYLE}https://aetherlabs.com/learn/0.7/{LINK_STYLE:#}
 "#
         );
 

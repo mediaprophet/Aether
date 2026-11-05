@@ -1,4 +1,4 @@
-//! Maps unified Dioxus.toml config to platform-specific manifest data.
+//! Maps unified Aether.toml config to platform-specific manifest data.
 //!
 //! This module converts cross-platform declarations (permissions, deep links,
 //! background modes) into platform-specific identifiers:

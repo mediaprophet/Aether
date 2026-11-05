@@ -2,17 +2,17 @@ use std::{fmt::Arguments, marker::PhantomData};
 
 use crate::innerlude::*;
 
-/// Every "Props" used for a component must implement the `Properties` trait. This trait gives some hints to Dioxus
+/// Every "Props" used for a component must implement the `Properties` trait. This trait gives some hints to Aether
 /// on how to memoize the props and some additional optimizations that can be made. We strongly encourage using the
 /// derive macro to implement the `Properties` trait automatically.
 ///
-/// Dioxus requires your props to be 'static, `Clone`, and `PartialEq`. We use the `PartialEq` trait to determine if
+/// Aether requires your props to be 'static, `Clone`, and `PartialEq`. We use the `PartialEq` trait to determine if
 /// the props have changed when we diff the component.
 ///
 /// ## Example
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[derive(Props, PartialEq, Clone)]
 /// struct MyComponentProps {
 ///     data: String
@@ -28,7 +28,7 @@ use crate::innerlude::*;
 /// Or even better, derive your entire props struct with the [`#[crate::component]`] macro:
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[component]
 /// fn MyComponent(data: String) -> Element {
 ///     rsx! {
@@ -122,7 +122,7 @@ impl EmptyBuilder {
 ///
 /// You can derive it automatically for any function with arguments that implement PartialEq with the `#[component]` attribute:
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[component]
 /// fn MyComponent(a: u32, b: u32) -> Element {
 ///     rsx! { "a: {a}, b: {b}" }
@@ -150,7 +150,7 @@ pub trait ComponentFunction<Props, Marker = ()>: Clone + 'static {
 /// This lets handwritten builder code start from the component function directly:
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[component]
 /// fn Greeting(#[props(into)] name: String) -> Element {
 ///     rsx! { "Hello {name}" }

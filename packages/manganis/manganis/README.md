@@ -11,7 +11,7 @@ use manganis::{Asset, asset};
 const STYLE: Asset = asset!("/assets/style.css");
 ```
 
-After cargo builds your app, the asset path is embedded directly in the data section. A tool like the Dioxus CLI can extract this metadata and post-process these assets.
+After cargo builds your app, the asset path is embedded directly in the data section. A tool like the Aether CLI can extract this metadata and post-process these assets.
 
 ```rust, ignore
 use manganis::{ImageFormat, Asset, asset, ImageSize, AssetOptions};

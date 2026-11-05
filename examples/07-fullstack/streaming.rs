@@ -5,7 +5,7 @@
 //! The `T` type parameter is the type of data being sent, and the `E` type parameter is the encoding
 //! used to serialize and deserialize the data.
 //!
-//! Dioxus Fullstack provides several built-in encodings:
+//! Aether Fullstack provides several built-in encodings:
 //! - JsonEncoding: the default, uses JSON for serialization
 //! - CborEncoding: uses CBOR for binary serialization
 //! - PostcardEncoding: uses Postcard for binary serialization
@@ -17,13 +17,13 @@
 //! binary encodings.
 
 use bytes::Bytes;
-use dioxus::{
+use aether::{
     fullstack::{JsonEncoding, Streaming, TextStream},
     prelude::*,
 };
 
 fn main() {
-    dioxus::launch(app)
+    aether::launch(app)
 }
 
 fn app() -> Element {
@@ -39,7 +39,7 @@ fn app() -> Element {
             text_responses.push('\n');
         }
 
-        dioxus::Ok(())
+        aether::Ok(())
     });
 
     let mut start_json_stream = use_action(move || async move {
@@ -50,7 +50,7 @@ fn app() -> Element {
             json_responses.push(dog);
         }
 
-        dioxus::Ok(())
+        aether::Ok(())
     });
 
     rsx! {
@@ -101,7 +101,7 @@ struct Dog {
 
 /// A custom `Streaming<T, E>` endpoint that streams JSON-encoded `Dog` structs to the client.
 ///
-/// Dioxus provides the `JsonEncoding` type which can be used to encode and decode JSON data.
+/// Aether provides the `JsonEncoding` type which can be used to encode and decode JSON data.
 #[get("/api/json_stream")]
 async fn json_stream() -> Result<Streaming<Dog, JsonEncoding>> {
     let (tx, rx) = futures::channel::mpsc::unbounded();

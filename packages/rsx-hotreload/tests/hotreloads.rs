@@ -1,4 +1,4 @@
-use dioxus_rsx_hotreload::diff_rsx;
+use aether_rsx_hotreload::diff_rsx;
 use syn::File;
 
 macro_rules! assert_rsx_changed {

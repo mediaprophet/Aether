@@ -8,7 +8,7 @@ static JAVA_VM: OnceLock<JavaVM> = OnceLock::new();
 /// Set the activity that [`with_activity`] passes to its closure.
 ///
 /// Call this every time an activity is created, since Android re-creates it on configuration
-/// changes such as rotation. `dioxus-desktop` does this for you.
+/// changes such as rotation. `aether-desktop` does this for you.
 pub fn set_activity(activity: GlobalRef) {
     *ACTIVITY.lock().unwrap_or_else(|e| e.into_inner()) = Some(activity);
 }
@@ -30,7 +30,7 @@ pub fn set_activity(activity: GlobalRef) {
 /// # Example
 ///
 /// ```rust,no_run
-/// use dioxus_platform_bridge::android::with_activity;
+/// use aether_platform_bridge::android::with_activity;
 ///
 /// let result = with_activity(|env, activity| {
 ///     // Your JNI operations here

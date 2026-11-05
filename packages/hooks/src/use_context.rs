@@ -1,14 +1,14 @@
-use dioxus_core::{consume_context, provide_context, try_consume_context, use_hook};
+use aether_core::{consume_context, provide_context, try_consume_context, use_hook};
 
 /// Try to consume some context in the tree, returning `None` if it is not found.
 ///
 /// This is a **hook** — the context value is captured once on the first render and cached
-/// for the lifetime of the component. It follows the [rules of hooks](https://dioxuslabs.com/learn/essentials/state/#rules-of-hooks),
+/// for the lifetime of the component. It follows the [rules of hooks](https://aetherlabs.com/learn/essentials/state/#rules-of-hooks),
 /// meaning it must be called unconditionally at the top level of a component.
 ///
 /// If you need to read context from outside a component body (e.g., inside an event handler,
 /// async task, or spawned future), use [`try_consume_context`] instead,
-/// which can be called anywhere the Dioxus runtime is active.
+/// which can be called anywhere the Aether runtime is active.
 #[doc = include_str!("../docs/rules_of_hooks.md")]
 #[doc = include_str!("../docs/moving_state_around.md")]
 #[must_use]
@@ -19,15 +19,15 @@ pub fn try_use_context<T: 'static + Clone>() -> Option<T> {
 /// Consume some context in the tree, panicking if it is not found.
 ///
 /// This is a **hook** — the context value is captured once on the first render and cached
-/// for the lifetime of the component. It follows the [rules of hooks](https://dioxuslabs.com/learn/essentials/state/#rules-of-hooks),
+/// for the lifetime of the component. It follows the [rules of hooks](https://aetherlabs.com/learn/essentials/state/#rules-of-hooks),
 /// meaning it must be called unconditionally at the top level of a component.
 ///
 /// If you need to read context from outside a component body (e.g., inside an event handler,
 /// async task, or spawned future), use [`consume_context`] instead,
-/// which can be called anywhere the Dioxus runtime is active.
+/// which can be called anywhere the Aether runtime is active.
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// # #[derive(Clone, Copy, PartialEq, Debug)]
 /// # enum Theme { Dark, Light }
 /// fn Parent() -> Element {
@@ -55,7 +55,7 @@ pub fn use_context<T: 'static + Clone>() -> T {
 /// drilling, using a context provider with a Signal inside is a good way to provide global/shared
 /// state in your app:
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 ///fn app() -> Element {
 ///    use_context_provider(|| Signal::new(0));
 ///    rsx! { Child {} }

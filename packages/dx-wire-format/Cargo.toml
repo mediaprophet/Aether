@@ -1,10 +1,10 @@
 [package]
-name = "dioxus-dx-wire-format"
+name = "aether-dx-wire-format"
 edition = "2024"
 version.workspace = true
 publish = true
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
-description = "Wire format for the Dioxus CLI"
+description = "Wire format for the Aether CLI"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"

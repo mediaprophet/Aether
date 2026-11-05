@@ -1,4 +1,4 @@
-use dioxus_core::Event;
+use aether_core::Event;
 
 pub type MediaEvent = Event<MediaData>;
 pub struct MediaData {

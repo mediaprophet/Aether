@@ -5,14 +5,14 @@ use crate::{
     platform_override::CommandWithPlatformOverrides,
 };
 use anyhow::{Context, bail};
-use dioxus_core::internal::{
+use aether_core::internal::{
     HotReloadTemplateWithLocation, HotReloadedTemplate, TemplateGlobalKey,
 };
-use dioxus_devtools_types::HotReloadMsg;
-use dioxus_dx_wire_format::BuildStage;
-use dioxus_html::HtmlCtx;
-use dioxus_rsx::CallBody;
-use dioxus_rsx_hotreload::{ChangedRsx, HotReloadResult};
+use aether_devtools_types::HotReloadMsg;
+use aether_dx_wire_format::BuildStage;
+use aether_html::HtmlCtx;
+use aether_rsx::CallBody;
+use aether_rsx_hotreload::{ChangedRsx, HotReloadResult};
 use futures_channel::mpsc::{UnboundedReceiver, UnboundedSender};
 use futures_util::StreamExt;
 use futures_util::future::OptionFuture;
@@ -83,11 +83,11 @@ pub(crate) struct AppServer {
     // File changes that arrived while a build was in progress, to be processed after build completes
     pub(crate) pending_file_changes: Vec<PathBuf>,
 
-    // Field-aware snapshots of Cargo.toml / Dioxus.toml so we can diff edits against the last
+    // Field-aware snapshots of Cargo.toml / Aether.toml so we can diff edits against the last
     // known-good content rather than re-parsing from scratch each time. See
-    // [`AppServer::analyze_cargo_toml_change`] / [`AppServer::analyze_dioxus_toml_change`].
+    // [`AppServer::analyze_cargo_toml_change`] / [`AppServer::analyze_aether_toml_change`].
     pub(crate) cargo_toml_snapshots: HashMap<PathBuf, toml::Value>,
-    pub(crate) dioxus_toml_snapshots: HashMap<PathBuf, toml::Value>,
+    pub(crate) aether_toml_snapshots: HashMap<PathBuf, toml::Value>,
 
     // The original target args used to construct the initial `BuildRequest`s, kept so we can
     // re-derive fresh requests when a config edit invalidates the cached state.
@@ -165,7 +165,7 @@ impl AppServer {
             client: args.platform_args.client.map(|c| c.targets),
         };
         // Hold on to the original target args so we can re-derive `BuildRequest`s when a
-        // Cargo.toml / Dioxus.toml edit invalidates feature resolution, profile flags, or any
+        // Cargo.toml / Aether.toml edit invalidates feature resolution, profile flags, or any
         // other field cooked into a `BuildRequest` at startup. See `recreate_build_requests`.
         let stored_target_args = target_args.clone();
         let BuildTargets { client, server } = target_args.into_targets().await?;
@@ -231,7 +231,7 @@ impl AppServer {
             client_args,
             pending_file_changes: Vec::new(),
             cargo_toml_snapshots: HashMap::new(),
-            dioxus_toml_snapshots: HashMap::new(),
+            aether_toml_snapshots: HashMap::new(),
             target_args: stored_target_args,
         };
 
@@ -249,7 +249,7 @@ impl AppServer {
             runner.load_rsx_filemap();
         }
 
-        // Seed snapshots of every Cargo.toml + Dioxus.toml in the workspace so subsequent
+        // Seed snapshots of every Cargo.toml + Aether.toml in the workspace so subsequent
         // edits diff against the on-disk state at startup, not against an empty table.
         runner.seed_config_snapshots();
 
@@ -408,7 +408,7 @@ impl AppServer {
         let mut assets = Vec::new();
         let mut needs_rust_rebuild = false;
 
-        // Cargo.toml / Dioxus.toml edits change the dependency graph or build inputs in ways
+        // Cargo.toml / Aether.toml edits change the dependency graph or build inputs in ways
         // hotpatch can't reason about — force a from-scratch rebuild instead of `patch_rebuild`
         // when this is true.
         let mut needs_deep_rebuild = false;
@@ -422,9 +422,9 @@ impl AppServer {
                 .and_then(|v| v.to_str())
                 .unwrap_or_default();
 
-            // Cargo.toml / Dioxus.toml — field-aware classification decides between full
+            // Cargo.toml / Aether.toml — field-aware classification decides between full
             // rebuild, "restart required" warning, and ignore-as-cosmetic. See
-            // [`AppServer::analyze_cargo_toml_change`] / [`AppServer::analyze_dioxus_toml_change`].
+            // [`AppServer::analyze_cargo_toml_change`] / [`AppServer::analyze_aether_toml_change`].
             let filename = path
                 .file_name()
                 .and_then(|v| v.to_str())
@@ -438,8 +438,8 @@ impl AppServer {
                     }
                     continue;
                 }
-                "Dioxus.toml" | "dioxus.toml" => {
-                    let outcome = self.analyze_dioxus_toml_change(path);
+                "Aether.toml" | "aether.toml" => {
+                    let outcome = self.analyze_aether_toml_change(path);
                     if self.apply_config_outcome(outcome, path) {
                         needs_rust_rebuild = true;
                         needs_deep_rebuild = true;
@@ -494,7 +494,7 @@ impl AppServer {
                 cached_file.most_recent = Some(new_contents);
 
                 // This assumes the two files are structured similarly. If they're not, we can't diff them
-                let Some(changed_rsx) = dioxus_rsx_hotreload::diff_rsx(&new_file, &old_file) else {
+                let Some(changed_rsx) = aether_rsx_hotreload::diff_rsx(&new_file, &old_file) else {
                     needs_rust_rebuild = true;
                     break;
                 };
@@ -585,10 +585,10 @@ impl AppServer {
         // todo - we need to distinguish between hotpatchable rebuilds and true full rebuilds.
         //        A full rebuild is required when the user modifies static initializers which we haven't wired up yet.
         if needs_rust_rebuild {
-            // Cargo.toml / Dioxus.toml edits invalidate the cached `BuildRequest`. Refresh
+            // Cargo.toml / Aether.toml edits invalidate the cached `BuildRequest`. Refresh
             // `cargo metadata` and re-derive the build requests before kicking off the
             // rebuild, otherwise cargo would re-read Cargo.toml but dx-side state (features,
-            // profile, target dirs, DioxusConfig) would stay frozen at startup. If
+            // profile, target dirs, AetherConfig) would stay frozen at startup. If
             // recreation fails (e.g. mid-edit broken Cargo.toml), keep the existing requests
             // and skip the rebuild — same "user is mid-edit, will fix" behavior we use for
             // parse failures in `analyze_*_change`.
@@ -604,7 +604,7 @@ impl AppServer {
 
             match self.hotreload_mode {
                 // In hotpatch, we can only issue patches if the original build completed.
-                // `force_full_rebuild` is set when a Cargo.toml / Dioxus.toml change rewires the
+                // `force_full_rebuild` is set when a Cargo.toml / Aether.toml change rewires the
                 // dependency graph or build inputs — patch_rebuild can't handle that, so we go
                 // through the fat-rebuild path even when patches are otherwise available.
                 HotReloadMode::Hotpatch
@@ -679,7 +679,7 @@ impl AppServer {
             // todo: move the android file uploading out of hotreload_bundled_asset and
             //
             // Also make sure the builder isn't busy since that might cause issues with hotreloads
-            // https://github.com/DioxusLabs/dioxus/issues/3361
+            // https://github.com/AetherLabs/aether/issues/3361
             if !msg.is_empty() && self.client.can_receive_hotreloads() {
                 use crate::styles::NOTE_STYLE;
                 tracing::info!(dx_src = ?TraceSrc::Dev, "Hotreloading: {NOTE_STYLE}{}{NOTE_STYLE:#}", file);
@@ -1065,7 +1065,7 @@ impl AppServer {
 
         // Assign the runtime asset dir to the runner
         if self.client.build.bundle == BundleFormat::Ios {
-            // xcrun simctl get_app_container booted com.dioxuslabs
+            // xcrun simctl get_app_container booted com.aetherlabs
             let res = Command::new("xcrun")
                 .arg("simctl")
                 .arg("get_app_container")
@@ -1283,7 +1283,7 @@ impl AppServer {
 
     /// Get the directories of every local (non-`.cargo`) crate reachable from `crate_package`
     /// through the dependency graph. Walks transitively so workspace members pulled in via
-    /// intermediate workspace crates (e.g. `dioxus-examples` → `dioxus` → `dioxus-core`) are
+    /// intermediate workspace crates (e.g. `aether-examples` → `aether` → `aether-core`) are
     /// included. Registry/git deps under `.cargo` are skipped and not descended into.
     fn local_dependencies(&self, crate_package: NodeId) -> Vec<PathBuf> {
         let mut paths = vec![];
@@ -1607,7 +1607,7 @@ impl AppServer {
         }
     }
 
-    /// Walk the workspace and load the on-disk contents of every `Cargo.toml` and `Dioxus.toml`
+    /// Walk the workspace and load the on-disk contents of every `Cargo.toml` and `Aether.toml`
     /// into the snapshot maps. Parse failures are silently skipped — the next successful save
     /// will populate the snapshot, and the diff against an empty table will trigger a rebuild
     /// (which is the right behavior since something was previously broken).
@@ -1633,8 +1633,8 @@ impl AppServer {
             }
         }
 
-        // Walk up from the client crate's manifest dir for Dioxus.toml — same search the
-        // `Workspace::load_dioxus_config` method uses.
+        // Walk up from the client crate's manifest dir for Aether.toml — same search the
+        // `Workspace::load_aether_config` method uses.
         let crate_dir = self.client.build.crate_dir();
         let workspace_root = self.workspace.workspace_root();
         let mut current = crate_dir.canonicalize().unwrap_or(crate_dir);
@@ -1642,10 +1642,10 @@ impl AppServer {
             .canonicalize()
             .unwrap_or_else(|_| workspace_root.clone());
         while current.starts_with(&workspace_root) {
-            for name in ["Dioxus.toml", "dioxus.toml"] {
+            for name in ["Aether.toml", "aether.toml"] {
                 let p = current.join(name);
                 if p.is_file() {
-                    self.seed_dioxus_snapshot(&p);
+                    self.seed_aether_snapshot(&p);
                 }
             }
             if !current.pop() {
@@ -1655,9 +1655,9 @@ impl AppServer {
     }
 
     /// Re-run `cargo metadata` and rebuild every `BuildRequest` from scratch so edits to
-    /// `Cargo.toml` / `Dioxus.toml` actually flow into the next compile. Without this, the
+    /// `Cargo.toml` / `Aether.toml` actually flow into the next compile. Without this, the
     /// `BuildRequest` constructed at startup keeps a stale view of features, profile resolution,
-    /// dependency graph, target dirs, and `DioxusConfig` — the `cargo rustc` invocation would
+    /// dependency graph, target dirs, and `AetherConfig` — the `cargo rustc` invocation would
     /// re-read `Cargo.toml` itself but anything dx derives from the workspace metadata stays
     /// frozen at the original snapshot.
     ///
@@ -1706,7 +1706,7 @@ impl AppServer {
         self.file_map.clear();
         self.applied_client_hot_reload_message = Default::default();
 
-        // Tailwind input/output paths come from `application.tailwind_*` in `Dioxus.toml` —
+        // Tailwind input/output paths come from `application.tailwind_*` in `Aether.toml` —
         // restart the watcher so it picks up any change.
         self.tw_watcher.abort();
         self.tw_watcher = TailwindCli::serve(
@@ -1719,7 +1719,7 @@ impl AppServer {
         // subsequent diffs. Without this, formatter passes that touch the file (e.g.
         // `cargo metadata` rewriting trailing whitespace) could trigger another rebuild.
         self.cargo_toml_snapshots.clear();
-        self.dioxus_toml_snapshots.clear();
+        self.aether_toml_snapshots.clear();
         self.seed_config_snapshots();
 
         Ok(())
@@ -1733,9 +1733,9 @@ impl AppServer {
         }
     }
 
-    fn seed_dioxus_snapshot(&mut self, path: &Path) {
+    fn seed_aether_snapshot(&mut self, path: &Path) {
         if let Ok(value) = read_toml_file(path) {
-            self.dioxus_toml_snapshots.insert(path.to_path_buf(), value);
+            self.aether_toml_snapshots.insert(path.to_path_buf(), value);
         }
     }
 
@@ -1769,17 +1769,17 @@ impl AppServer {
         outcome
     }
 
-    fn analyze_dioxus_toml_change(&mut self, path: &Path) -> ConfigChangeOutcome {
+    fn analyze_aether_toml_change(&mut self, path: &Path) -> ConfigChangeOutcome {
         let Ok(new_value) = read_toml_file(path) else {
             return ConfigChangeOutcome::Ignore {
                 note: Some(format!(
-                    "Dioxus.toml parse failed at {}, will retry on next save",
+                    "Aether.toml parse failed at {}, will retry on next save",
                     path.display()
                 )),
             };
         };
         let old_value = self
-            .dioxus_toml_snapshots
+            .aether_toml_snapshots
             .get(path)
             .cloned()
             .unwrap_or_else(|| toml::Value::Table(Default::default()));
@@ -1787,8 +1787,8 @@ impl AppServer {
             active_profile: self.client.build.profile.clone(),
             active_bundle: self.client.build.bundle,
         };
-        let outcome = analyze_dioxus_value(&old_value, &new_value, &ctx);
-        self.dioxus_toml_snapshots
+        let outcome = analyze_aether_value(&old_value, &new_value, &ctx);
+        self.aether_toml_snapshots
             .insert(path.to_path_buf(), new_value);
         outcome
     }
@@ -1920,10 +1920,10 @@ fn format_duration_ms(d: Duration) -> String {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Cargo.toml / Dioxus.toml live-edit classification
+// Cargo.toml / Aether.toml live-edit classification
 //
 // Decides whether an in-flight `dx serve` should respond to an edit of `Cargo.toml` or
-// `Dioxus.toml` with a full rebuild, a "restart required" warning, or by silently ignoring it.
+// `Aether.toml` with a full rebuild, a "restart required" warning, or by silently ignoring it.
 //
 // The classification is field-aware: we parse the file as `toml::Value` and compare a curated
 // set of subtrees. Whitespace, comments, key reordering, and edits to fields outside the curated
@@ -2193,7 +2193,7 @@ fn profile_in_active_chain(
     }
 }
 
-fn analyze_dioxus_value(
+fn analyze_aether_value(
     old: &toml::Value,
     new: &toml::Value,
     ctx: &AnalysisCtx,
@@ -2223,7 +2223,7 @@ fn analyze_dioxus_value(
     for key in app_rebuild_keys {
         if toml_get(old, &["application", key]) != toml_get(new, &["application", key]) {
             outcome = outcome.escalate(ConfigChangeOutcome::FullRebuild {
-                subject: format!("Dioxus.toml [application].{key}"),
+                subject: format!("Aether.toml [application].{key}"),
                 detail: "changed".to_string(),
             });
         }
@@ -2232,7 +2232,7 @@ fn analyze_dioxus_value(
     // ---- [web.app] — title and base_path get baked into HTML / WASM URLs ----
     if toml_get(old, &["web", "app"]) != toml_get(new, &["web", "app"]) {
         outcome = outcome.escalate(ConfigChangeOutcome::FullRebuild {
-            subject: "Dioxus.toml [web.app]".to_string(),
+            subject: "Aether.toml [web.app]".to_string(),
             detail: "changed".to_string(),
         });
     }
@@ -2240,7 +2240,7 @@ fn analyze_dioxus_value(
     // ---- [web.proxy] — only consumed when devserver boots ----
     if toml_get(old, &["web", "proxy"]) != toml_get(new, &["web", "proxy"]) {
         outcome = outcome.escalate(ConfigChangeOutcome::WarnRestart {
-            subject: "Dioxus.toml [web.proxy]".to_string(),
+            subject: "Aether.toml [web.proxy]".to_string(),
             detail: "changed — restart `dx serve` to apply.".to_string(),
         });
     }
@@ -2248,7 +2248,7 @@ fn analyze_dioxus_value(
     // ---- [web.https] — TLS config initialized at boot ----
     if toml_get(old, &["web", "https"]) != toml_get(new, &["web", "https"]) {
         outcome = outcome.escalate(ConfigChangeOutcome::WarnRestart {
-            subject: "Dioxus.toml [web.https]".to_string(),
+            subject: "Aether.toml [web.https]".to_string(),
             detail: "changed — restart `dx serve` to apply.".to_string(),
         });
     }
@@ -2256,7 +2256,7 @@ fn analyze_dioxus_value(
     // ---- [web.watcher] — watcher mounted at startup; can't be re-mounted live (yet) ----
     if toml_get(old, &["web", "watcher"]) != toml_get(new, &["web", "watcher"]) {
         outcome = outcome.escalate(ConfigChangeOutcome::WarnRestart {
-            subject: "Dioxus.toml [web.watcher]".to_string(),
+            subject: "Aether.toml [web.watcher]".to_string(),
             detail: "changed — restart `dx serve` to apply.".to_string(),
         });
     }
@@ -2264,7 +2264,7 @@ fn analyze_dioxus_value(
     // ---- [web.resource] — injected into HTML at build time ----
     if toml_get(old, &["web", "resource"]) != toml_get(new, &["web", "resource"]) {
         outcome = outcome.escalate(ConfigChangeOutcome::FullRebuild {
-            subject: "Dioxus.toml [web.resource]".to_string(),
+            subject: "Aether.toml [web.resource]".to_string(),
             detail: "changed".to_string(),
         });
     }
@@ -2273,7 +2273,7 @@ fn analyze_dioxus_value(
     for section in &["permissions", "deep_links", "background"] {
         if toml_get(old, &[section]) != toml_get(new, &[section]) {
             outcome = outcome.escalate(ConfigChangeOutcome::FullRebuild {
-                subject: format!("Dioxus.toml [{section}]"),
+                subject: format!("Aether.toml [{section}]"),
                 detail: "changed".to_string(),
             });
         }
@@ -2291,7 +2291,7 @@ fn analyze_dioxus_value(
         if toml_get(old, &[section]) != toml_get(new, &[section]) {
             if ctx.active_bundle == fmt {
                 outcome = outcome.escalate(ConfigChangeOutcome::FullRebuild {
-                    subject: format!("Dioxus.toml [{section}]"),
+                    subject: format!("Aether.toml [{section}]"),
                     detail: "changed".to_string(),
                 });
             } else {
@@ -2773,10 +2773,10 @@ opt-level = 0
     }
 
     // ============================================================================
-    // Dioxus.toml — baseline + variants
+    // Aether.toml — baseline + variants
     // ============================================================================
 
-    const DIOXUS_BASELINE: &str = r#"
+    const AETHER_BASELINE: &str = r#"
 [application]
 name = "demo"
 public_dir = "public"
@@ -2800,84 +2800,84 @@ identifier = "com.example.demo.android"
 "#;
 
     #[test]
-    fn dioxus_identical_is_ignore() {
-        let v = parse(DIOXUS_BASELINE);
-        assert_ignore(&analyze_dioxus_value(&v, &v, &ctx_dev_web()));
+    fn aether_identical_is_ignore() {
+        let v = parse(AETHER_BASELINE);
+        assert_ignore(&analyze_aether_value(&v, &v, &ctx_dev_web()));
     }
 
     #[test]
-    fn dioxus_change_app_title_rebuilds() {
-        let modified = DIOXUS_BASELINE.replace(r#"title = "demo""#, r#"title = "renamed""#);
-        assert_rebuild(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+    fn aether_change_app_title_rebuilds() {
+        let modified = AETHER_BASELINE.replace(r#"title = "demo""#, r#"title = "renamed""#);
+        assert_rebuild(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_base_path_rebuilds() {
-        let modified = DIOXUS_BASELINE.replace(
+    fn aether_change_base_path_rebuilds() {
+        let modified = AETHER_BASELINE.replace(
             r#"title = "demo""#,
             "title = \"demo\"\nbase_path = \"/app\"",
         );
-        assert_rebuild(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_rebuild(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_public_dir_rebuilds() {
+    fn aether_change_public_dir_rebuilds() {
         let modified =
-            DIOXUS_BASELINE.replace(r#"public_dir = "public""#, r#"public_dir = "static""#);
-        assert_rebuild(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+            AETHER_BASELINE.replace(r#"public_dir = "public""#, r#"public_dir = "static""#);
+        assert_rebuild(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_tailwind_input_rebuilds() {
-        let modified = DIOXUS_BASELINE.replace(
+    fn aether_change_tailwind_input_rebuilds() {
+        let modified = AETHER_BASELINE.replace(
             r#"public_dir = "public""#,
             r#"public_dir = "public"
 tailwind_input = "src/input.css""#,
         );
-        assert_rebuild(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_rebuild(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_add_proxy_warns_restart() {
+    fn aether_add_proxy_warns_restart() {
         let modified = format!(
-            r#"{DIOXUS_BASELINE}
+            r#"{AETHER_BASELINE}
 [[web.proxy]]
 backend = "http://localhost:9999/api"
 "#
         );
-        assert_warn(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_warn(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_proxy_backend_warns_restart() {
+    fn aether_change_proxy_backend_warns_restart() {
         let baseline = format!(
-            r#"{DIOXUS_BASELINE}
+            r#"{AETHER_BASELINE}
 [[web.proxy]]
 backend = "http://localhost:9999/api"
 "#
         );
         let modified = baseline.replace("9999", "8888");
-        assert_warn(&analyze_dioxus_value(
+        assert_warn(&analyze_aether_value(
             &parse(&baseline),
             &parse(&modified),
             &ctx_dev_web(),
@@ -2885,125 +2885,125 @@ backend = "http://localhost:9999/api"
     }
 
     #[test]
-    fn dioxus_enable_https_warns_restart() {
+    fn aether_enable_https_warns_restart() {
         let modified = format!(
-            r#"{DIOXUS_BASELINE}
+            r#"{AETHER_BASELINE}
 [web.https]
 enabled = true
 "#
         );
-        assert_warn(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_warn(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_watcher_paths_warns_restart() {
+    fn aether_change_watcher_paths_warns_restart() {
         let modified =
-            DIOXUS_BASELINE.replace(r#"watch_path = ["src"]"#, r#"watch_path = ["src", "lib"]"#);
-        assert_warn(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+            AETHER_BASELINE.replace(r#"watch_path = ["src"]"#, r#"watch_path = ["src", "lib"]"#);
+        assert_warn(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_add_dev_resource_script_rebuilds() {
+    fn aether_add_dev_resource_script_rebuilds() {
         let modified = format!(
-            r#"{DIOXUS_BASELINE}
+            r#"{AETHER_BASELINE}
 [web.resource.dev]
 script = ["http://example.com/x.js"]
 "#
         );
-        assert_rebuild(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_rebuild(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_bundle_identifier_ignored() {
-        let modified = DIOXUS_BASELINE.replace(
+    fn aether_change_bundle_identifier_ignored() {
+        let modified = AETHER_BASELINE.replace(
             r#"identifier = "com.example.demo""#,
             r#"identifier = "com.example.renamed""#,
         );
-        assert_ignore(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_ignore(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_components_section_ignored() {
+    fn aether_change_components_section_ignored() {
         let modified = format!(
-            r#"{DIOXUS_BASELINE}
+            r#"{AETHER_BASELINE}
 [components]
 git = "https://example.com"
 "#
         );
-        assert_ignore(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_ignore(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_wasm_opt_level_ignored() {
+    fn aether_change_wasm_opt_level_ignored() {
         let modified = format!(
-            r#"{DIOXUS_BASELINE}
+            r#"{AETHER_BASELINE}
 [web.wasm_opt]
 level = "3"
 "#
         );
-        assert_ignore(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_ignore(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_pre_compress_ignored() {
+    fn aether_change_pre_compress_ignored() {
         let modified = format!(
-            r#"{DIOXUS_BASELINE}
+            r#"{AETHER_BASELINE}
 [web]
 pre_compress = true
 "#
         );
-        assert_ignore(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_ignore(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_change_ios_identifier_when_active_rebuilds() {
-        let modified = DIOXUS_BASELINE.replace(
+    fn aether_change_ios_identifier_when_active_rebuilds() {
+        let modified = AETHER_BASELINE.replace(
             r#"identifier = "com.example.demo.ios""#,
             r#"identifier = "com.example.renamed.ios""#,
         );
-        assert_rebuild(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_rebuild(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_release_ios(),
         ));
     }
 
     #[test]
-    fn dioxus_change_ios_identifier_when_web_active_ignored() {
-        let modified = DIOXUS_BASELINE.replace(
+    fn aether_change_ios_identifier_when_web_active_ignored() {
+        let modified = AETHER_BASELINE.replace(
             r#"identifier = "com.example.demo.ios""#,
             r#"identifier = "com.example.renamed.ios""#,
         );
         let outcome =
-            analyze_dioxus_value(&parse(DIOXUS_BASELINE), &parse(&modified), &ctx_dev_web());
+            analyze_aether_value(&parse(AETHER_BASELINE), &parse(&modified), &ctx_dev_web());
         assert_ignore(&outcome);
         if let ConfigChangeOutcome::Ignore { note: Some(n) } = &outcome {
             assert!(n.contains("[ios]"));
@@ -3013,22 +3013,22 @@ pre_compress = true
     }
 
     #[test]
-    fn dioxus_add_permission_rebuilds() {
+    fn aether_add_permission_rebuilds() {
         let modified = format!(
-            r#"{DIOXUS_BASELINE}
+            r#"{AETHER_BASELINE}
 [permissions]
 camera = {{ description = "need camera" }}
 "#
         );
-        assert_rebuild(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_rebuild(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(&modified),
             &ctx_dev_web(),
         ));
     }
 
     #[test]
-    fn dioxus_reorder_keys_ignored() {
+    fn aether_reorder_keys_ignored() {
         let reordered = r#"
 [android]
 identifier = "com.example.demo.android"
@@ -3051,8 +3051,8 @@ title = "demo"
 public_dir = "public"
 name = "demo"
 "#;
-        assert_ignore(&analyze_dioxus_value(
-            &parse(DIOXUS_BASELINE),
+        assert_ignore(&analyze_aether_value(
+            &parse(AETHER_BASELINE),
             &parse(reordered),
             &ctx_dev_web(),
         ));

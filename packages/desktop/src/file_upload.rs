@@ -5,7 +5,7 @@ use std::{any::Any, collections::HashMap};
 #[cfg(feature = "tokio_runtime")]
 use tokio::{fs::File, io::AsyncReadExt};
 
-use dioxus_html::{
+use aether_html::{
     FileData, FormValue, HasDataTransferData, HasDragData, HasFileData, HasFormData, HasMouseData,
     NativeFileData, SerializedDataTransfer, SerializedFormData, SerializedFormObject,
     SerializedMouseData, SerializedPointInteraction,
@@ -344,8 +344,8 @@ impl HasFileData for DesktopFileDragEvent {
 }
 
 impl HasDataTransferData for DesktopFileDragEvent {
-    fn data_transfer(&self) -> dioxus_html::DataTransfer {
-        dioxus_html::DataTransfer::new(self.data_transfer.clone())
+    fn data_transfer(&self) -> aether_html::DataTransfer {
+        aether_html::DataTransfer::new(self.data_transfer.clone())
     }
 }
 
@@ -386,7 +386,7 @@ impl InteractionElementOffset for DesktopFileDragEvent {
 }
 
 impl ModifiersInteraction for DesktopFileDragEvent {
-    fn modifiers(&self) -> dioxus_html::Modifiers {
+    fn modifiers(&self) -> aether_html::Modifiers {
         self.mouse.modifiers()
     }
 }
@@ -426,7 +426,7 @@ impl NativeFileData for DesktopFileData {
         &self,
     ) -> std::pin::Pin<
         Box<
-            dyn std::future::Future<Output = Result<bytes::Bytes, dioxus_core::CapturedError>>
+            dyn std::future::Future<Output = Result<bytes::Bytes, aether_core::CapturedError>>
                 + 'static,
         >,
     > {
@@ -437,7 +437,7 @@ impl NativeFileData for DesktopFileData {
     fn read_string(
         &self,
     ) -> std::pin::Pin<
-        Box<dyn std::future::Future<Output = Result<String, dioxus_core::CapturedError>> + 'static>,
+        Box<dyn std::future::Future<Output = Result<String, aether_core::CapturedError>> + 'static>,
     > {
         let path = self.0.clone();
         Box::pin(async move { Ok(std::fs::read_to_string(&path)?) })
@@ -455,7 +455,7 @@ impl NativeFileData for DesktopFileData {
         &self,
     ) -> std::pin::Pin<
         Box<
-            dyn futures_util::Stream<Item = Result<bytes::Bytes, dioxus_core::CapturedError>>
+            dyn futures_util::Stream<Item = Result<bytes::Bytes, aether_core::CapturedError>>
                 + 'static
                 + Send,
         >,
@@ -468,7 +468,7 @@ impl NativeFileData for DesktopFileData {
 
     fn content_type(&self) -> Option<String> {
         Some(
-            dioxus_asset_resolver::native::get_mime_from_ext(
+            aether_asset_resolver::native::get_mime_from_ext(
                 self.0.extension().and_then(|ext| ext.to_str()),
             )
             .to_string(),

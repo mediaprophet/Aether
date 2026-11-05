@@ -1,7 +1,7 @@
 use std::ops::DerefMut;
 
 use crate::{MappedStore, store::Store};
-use dioxus_signals::{Readable, ReadableExt};
+use aether_signals::{Readable, ReadableExt};
 
 impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, Lens> {
     /// Checks if the `Option` is `Some`. This will only track the shallow state of the `Option`. It will
@@ -9,7 +9,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42));
     /// assert!(store.is_some());
     /// ```
@@ -23,7 +23,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42));
     /// assert!(store.is_some_and(|v| *v == 42));
     /// ```
@@ -43,7 +43,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| None::<i32>);
     /// assert!(store.is_none());
     /// ```
@@ -57,7 +57,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42));
     /// assert!(store.is_none_or(|v| *v == 42));
     /// ```
@@ -77,7 +77,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42));
     /// let transposed = store.transpose();
     /// match transposed {
@@ -106,7 +106,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42));
     /// let unwrapped = store.unwrap();
     /// assert_eq!(unwrapped(), 42);
@@ -121,7 +121,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42));
     /// let unwrapped = store.expect("the answer to life the universe and everything");
     /// assert_eq!(unwrapped(), 42);
@@ -134,8 +134,8 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus::prelude::*;
-    /// use dioxus_stores::*;
+    /// use aether::prelude::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42));
     /// let slice = store.as_slice();
     /// assert_eq!(&*slice.read(), [42]);
@@ -151,7 +151,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(Box::new(42)));
     /// let derefed = store.as_deref().unwrap();
     /// assert_eq!(derefed(), 42);
@@ -186,7 +186,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42));
     /// let option = store.filter(|&v| v > 40);
     /// let value = option.unwrap();
@@ -213,7 +213,7 @@ impl<Lens: Readable<Target = Option<T>> + 'static, T: 'static> Store<Option<T>, 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Some(42)).inspect(|v| println!("{v}"));
     /// ```
     pub fn inspect(self, f: impl FnOnce(&T)) -> Self {

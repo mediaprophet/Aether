@@ -1,7 +1,7 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 /// Make sure that rsx! handles conditional attributes with one formatted branch correctly
-/// Regression test for https://github.com/DioxusLabs/dioxus/issues/2997. There are no assertions in
+/// Regression test for https://github.com/AetherLabs/aether/issues/2997. There are no assertions in
 /// this test as it primarily checks that the RSX can be compiled correctly.
 #[test]
 fn partially_formatted_conditional_attribute() {
@@ -13,7 +13,7 @@ fn partially_formatted_conditional_attribute() {
     };
 
     // And make sure it works if one of those branches is an expression
-    // Regression test for https://github.com/DioxusLabs/dioxus/issues/3146
+    // Regression test for https://github.com/AetherLabs/aether/issues/3146
     let opt = "button";
 
     _ = rsx! {

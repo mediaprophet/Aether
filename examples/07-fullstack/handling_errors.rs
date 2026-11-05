@@ -1,6 +1,6 @@
 //! An example of handling errors from server functions.
 //!
-//! This example showcases a few important error handling patterns when using Dioxus Fullstack.
+//! This example showcases a few important error handling patterns when using Aether Fullstack.
 //!
 //! Run with:
 //!
@@ -22,12 +22,12 @@
 //!
 //! Try running requests against the endpoints directly with `curl` or `postman` to see the actual HTTP responses!
 
-use dioxus::fullstack::{AsStatusCode, Json, StatusCode};
-use dioxus::prelude::*;
+use aether::fullstack::{AsStatusCode, Json, StatusCode};
+use aether::prelude::*;
 use serde::{Deserialize, Serialize};
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         let mut dog_data = use_action(get_dog_data);
         let mut dog_data_err = use_action(get_dog_data_err);
         let mut ip_data = use_action(get_ip_data);

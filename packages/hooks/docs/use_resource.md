@@ -3,7 +3,7 @@
 ## Example
 
 ```rust
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 async fn get_weather(location: &WeatherLocation) -> Result<String, String> {
     Ok("Sunny".to_string())
@@ -51,7 +51,7 @@ fn WeatherElement(weather: String) -> Element {
 `use_resource` is reactive which just means that it will rerun when you write to any signals you read inside the future. This means that any time you change something the future depends on, the resource automatically knows to rerun. Lets take a look at some examples:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // Create a new count signal
 let mut count = use_signal(|| 1);
 // Create a new resource that doubles the value of count
@@ -114,7 +114,7 @@ println!("{:?}", double_count.read()); // Prints "Some(8)"
 `use_resource` can determine dependencies automatically with any reactive value ([`Signal`]s, [`ReadSignal`]s, [`Memo`]s, [`Resource`]s, etc). If you need to rerun the future when a normal rust value changes, you can add it as a dependency with the [`crate::use_reactive()`] hook:
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # async fn sleep(delay: u32) {}
 #[component]
 fn Comp(count: u32) -> Element {

@@ -1,14 +1,14 @@
 import {
-  DioxusChannel,
+  AetherChannel,
   Channel,
-  WeakDioxusChannel,
+  WeakAetherChannel,
 } from "../../../document/src/ts/eval";
 
 globalThis.__nextChannelId = 0;
 globalThis.__channels = [];
 
-export { WeakDioxusChannel };
-export class WebDioxusChannel extends DioxusChannel {
+export { WeakAetherChannel };
+export class WebAetherChannel extends AetherChannel {
   js_to_rust: Channel;
   rust_to_js: Channel;
   owner: any;
@@ -26,8 +26,8 @@ export class WebDioxusChannel extends DioxusChannel {
   }
 
   // Return a weak reference to this channel
-  weak(): WeakDioxusChannel {
-    return new WeakDioxusChannel(this);
+  weak(): WeakAetherChannel {
+    return new WeakAetherChannel(this);
   }
 
   // Receive message from Rust

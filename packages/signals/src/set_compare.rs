@@ -1,7 +1,7 @@
 use crate::{ReadableExt, write::WritableExt};
 use std::hash::Hash;
 
-use dioxus_core::ReactiveContext;
+use aether_core::ReactiveContext;
 use futures_util::StreamExt;
 use generational_box::{Storage, UnsyncStorage};
 
@@ -52,7 +52,7 @@ impl<R: Eq + Hash + 'static, S: Storage<SignalData<bool>> + 'static> SetCompare<
             *previous = Some(current);
         };
         let (rc, mut changed) = ReactiveContext::new();
-        dioxus_core::spawn(async move {
+        aether_core::spawn(async move {
             loop {
                 // Recompute the value
                 rc.reset_and_run_in(&mut recompute);

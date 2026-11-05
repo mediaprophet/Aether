@@ -1,4 +1,4 @@
-//! A "sketch" of how to integrate a Dioxus Native app to into a wider application
+//! A "sketch" of how to integrate a Aether Native app to into a wider application
 //! by rendering the UI to a texture and driving it with your own event loop
 //!
 //! (this example is not really intended to be run as-is, and requires you to fill
@@ -14,8 +14,8 @@ use blitz_traits::{
     },
     shell::{ColorScheme, Viewport},
 };
-use dioxus::prelude::*;
-use dioxus_native_dom::DioxusDocument;
+use aether::prelude::*;
+use aether_native_dom::AetherDocument;
 use pollster::FutureExt as _;
 use std::sync::Arc;
 use std::task::Context;
@@ -31,7 +31,7 @@ const WIDTH: u32 = 800;
 const HEIGHT: u32 = 600;
 const COLOR_SCHEME: ColorScheme = ColorScheme::Light;
 
-// Example Dioxus app.
+// Example Aether app.
 fn app() -> Element {
     rsx! {
         div { "Hello, world!" }
@@ -50,10 +50,10 @@ fn main() {
         // This should wake up and "poll" your event loop
     }));
 
-    // Create the dioxus virtual dom and the dioxus-native document
+    // Create the aether virtual dom and the aether-native document
     // It is important to set the width, height, and scale factor on the document as these are used for layout.
     let vdom = VirtualDom::new(app);
-    let mut dioxus_doc = DioxusDocument::new(
+    let mut aether_doc = AetherDocument::new(
         vdom,
         DocumentConfig {
             viewport: Some(Viewport::new(WIDTH, HEIGHT, SCALE_FACTOR, COLOR_SCHEME)),
@@ -104,7 +104,7 @@ fn main() {
     // =============
 
     // Poll the vdom
-    dioxus_doc.poll(Some(Context::from_waker(&waker)));
+    aether_doc.poll(Some(Context::from_waker(&waker)));
 
     // Create a `vello::Scene` to paint into
     let mut scene = Scene::new();
@@ -116,7 +116,7 @@ fn main() {
     // (i.e. to render a custom renderer instead of Vello)
     paint_scene(
         &mut VelloScenePainter::new(&mut scene),
-        &mut dioxus_doc.inner_mut(),
+        &mut aether_doc.inner_mut(),
         SCALE_FACTOR as f64,
         WIDTH,
         HEIGHT,
@@ -164,7 +164,7 @@ fn main() {
         element: Point::default(),
         active_pointers: Arc::new(AtomicRefCell::new(Vec::new())),
     });
-    dioxus_doc.handle_ui_event(event);
+    aether_doc.handle_ui_event(event);
 
     // Trigger a poll via your event loop (or wait for next frame)
 }

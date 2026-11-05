@@ -1,9 +1,9 @@
 use super::*;
 use crate::{Result, StructuredOutput};
 use anyhow::bail;
-use dioxus_rsx::{BodyNode, CallBody, TemplateBody};
+use aether_rsx::{BodyNode, CallBody, TemplateBody};
 
-/// Translate some source file into Dioxus code
+/// Translate some source file into Aether code
 #[derive(Clone, Debug, Parser)]
 pub(crate) struct Translate {
     /// Activate debug mode
@@ -49,20 +49,20 @@ impl Translate {
 }
 
 pub fn convert_html_to_formatted_rsx(dom: &Dom, component: bool) -> String {
-    let callbody = dioxus_rsx_rosetta::rsx_from_html(dom);
+    let callbody = aether_rsx_rosetta::rsx_from_html(dom);
 
     match component {
         true => write_callbody_with_icon_section(callbody),
-        false => dioxus_autofmt::write_block_out(&callbody).unwrap(),
+        false => aether_autofmt::write_block_out(&callbody).unwrap(),
     }
 }
 
 fn write_callbody_with_icon_section(mut callbody: CallBody) -> String {
     let mut svgs = vec![];
 
-    dioxus_rsx_rosetta::collect_svgs(&mut callbody.body_mut().roots, &mut svgs);
+    aether_rsx_rosetta::collect_svgs(&mut callbody.body_mut().roots, &mut svgs);
 
-    let mut out = write_component_body(dioxus_autofmt::write_block_out(&callbody).unwrap());
+    let mut out = write_component_body(aether_autofmt::write_block_out(&callbody).unwrap());
 
     if !svgs.is_empty() {
         write_svg_section(&mut out, svgs);
@@ -83,7 +83,7 @@ fn write_svg_section(out: &mut String, svgs: Vec<BodyNode>) {
     out.push_str("\n    use super::*;");
     for (idx, icon) in svgs.into_iter().enumerate() {
         let raw =
-            dioxus_autofmt::write_block_out(&CallBody::new(TemplateBody::new(vec![icon]))).unwrap();
+            aether_autofmt::write_block_out(&CallBody::new(TemplateBody::new(vec![icon]))).unwrap();
         out.push_str("\n\n    pub(crate) fn icon_");
         out.push_str(&idx.to_string());
         out.push_str("() -> Element {\n        rsx! {");

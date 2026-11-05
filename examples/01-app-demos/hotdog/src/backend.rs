@@ -1,5 +1,5 @@
 use anyhow::Result;
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[cfg(feature = "server")]
 thread_local! {

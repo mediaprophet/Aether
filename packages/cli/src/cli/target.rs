@@ -89,7 +89,7 @@ pub(crate) struct TargetArgs {
     #[serde(default)]
     pub(crate) skip_assets: bool,
 
-    /// Inject scripts to load the wasm and js files for your dioxus app if they are not already present [default: true]
+    /// Inject scripts to load the wasm and js files for your aether app if they are not already present [default: true]
     #[clap(long, default_value_t = true, help_heading = HELP_HEADING, num_args = 0..=1)]
     pub(crate) inject_loading_scripts: bool,
 
@@ -120,7 +120,7 @@ pub(crate) struct TargetArgs {
     pub(crate) device: Option<String>,
 
     /// The base path the build will fetch assets relative to. This will override the
-    /// base path set in the `dioxus` config.
+    /// base path set in the `aether` config.
     #[clap(long, help_heading = HELP_HEADING)]
     pub(crate) base_path: Option<String>,
 

@@ -1,8 +1,8 @@
 #![allow(clippy::unnecessary_operation)]
 #![allow(clippy::no_effect)]
 
-use dioxus_core::{Runtime, Subscribers};
-use dioxus_core::{ScopeId, current_owner, current_scope_id};
+use aether_core::{Runtime, Subscribers};
+use aether_core::{ScopeId, current_owner, current_scope_id};
 use generational_box::{
     AnyStorage, BorrowResult, GenerationalBox, GenerationalBoxId, Storage, UnsyncStorage,
 };

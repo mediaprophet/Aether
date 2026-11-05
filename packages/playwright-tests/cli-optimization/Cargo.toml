@@ -1,13 +1,13 @@
 [package]
-name = "dioxus-cli-optimization-test"
+name = "aether-cli-optimization-test"
 version = "0.0.1"
 edition = "2024"
-description = "Playwright test for Dioxus CLI optimization"
+description = "Playwright test for Aether CLI optimization"
 license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [dependencies]
-dioxus = { workspace = true, features = ["web"] }
+aether = { workspace = true, features = ["web"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json.workspace = true
 

@@ -1,4 +1,4 @@
-//! A websocket chat demo using Dioxus' built-in websocket support.
+//! A websocket chat demo using Aether' built-in websocket support.
 //!
 //! We setup an endpoint at `/api/chat` that accepts a `name` and `user_id` query parameter.
 //! Each client connects to that endpoint, and we use a `tokio::broadcast` channel
@@ -7,13 +7,13 @@
 //! In practice, you'd use a distributed messaging system (Redis PubSub / Kafka / etc) to coordinate
 //! between multiple server instances and an additional database to persist chat history.
 
-use dioxus::fullstack::{WebSocketOptions, Websocket, use_websocket};
-use dioxus::prelude::*;
+use aether::fullstack::{WebSocketOptions, Websocket, use_websocket};
+use aether::prelude::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

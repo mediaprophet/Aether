@@ -1,21 +1,21 @@
 [package]
-name = "dioxus-ssr"
+name = "aether-ssr"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Dioxus render-to-string"
+description = "Aether render-to-string"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "ssr"]
 
 [dependencies]
-dioxus-core = { workspace = true, features = ["serialize"] }
-dioxus-core-types = { workspace = true }
+aether-core = { workspace = true, features = ["serialize"] }
+aether-core-types = { workspace = true }
 askama_escape = { workspace = true }
 rustc-hash = { workspace = true }
 
 [dev-dependencies]
-dioxus = { workspace = true }
+aether = { workspace = true }
 
 [package.metadata.docs.rs]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]

@@ -1,5 +1,5 @@
 use crate::WebFileData;
-use dioxus_html::{FileData, NativeDataTransfer};
+use aether_html::{FileData, NativeDataTransfer};
 
 /// A wrapper around the web_sys::DataTransfer to implement NativeDataTransfer
 #[derive(Clone)]

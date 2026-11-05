@@ -3,10 +3,10 @@
 #![allow(clippy::needless_return)]
 
 pub use client::{get_server_url, set_server_url};
-pub use dioxus_fullstack_core::*;
+pub use aether_fullstack_core::*;
 
 #[doc(inline)]
-pub use dioxus_fullstack_macro::*;
+pub use aether_fullstack_macro::*;
 
 pub use axum_core;
 pub use headers;
@@ -63,7 +63,7 @@ pub mod payloads {
     use axum::extract::FromRequest;
     use axum::response::{IntoResponse, IntoResponseParts, ResponseParts};
     use bytes::Bytes;
-    use dioxus_fullstack_core::ServerFnError;
+    use aether_fullstack_core::ServerFnError;
     use futures::Stream;
     use headers::Header;
     use http::{HeaderValue, header::InvalidHeaderValue};

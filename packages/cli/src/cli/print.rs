@@ -7,12 +7,12 @@ use anyhow::Context;
 /// Perform a system analysis to verify the system install is working correctly.
 #[derive(Clone, Debug, Subcommand)]
 pub(crate) enum Print {
-    /// Print the cargo args dioxus uses to build the server app.
+    /// Print the cargo args aether uses to build the server app.
     /// Environment variables will be set with the `env` command.
     #[clap(name = "client-args")]
     ClientArgs(PrintCargoArgs),
 
-    /// Print the cargo args dioxus uses to build the client app.
+    /// Print the cargo args aether uses to build the client app.
     /// Environment variables will be set with the `env` command.
     #[clap(name = "server-args")]
     ServerArgs(PrintCargoArgs),

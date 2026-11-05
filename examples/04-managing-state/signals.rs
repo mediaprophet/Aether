@@ -6,11 +6,11 @@
 //! Most signals implement Into<ReadSignal<T>>, making ReadSignal a good default type when building new
 //! library components that don't need to modify their values.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use futures_timer::Delay;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

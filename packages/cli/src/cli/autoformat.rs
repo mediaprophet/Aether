@@ -1,7 +1,7 @@
 use super::{check::collect_rs_files, *};
 use crate::Workspace;
 use anyhow::{Context, bail};
-use dioxus_autofmt::{IndentOptions, IndentType};
+use aether_autofmt::{IndentOptions, IndentType};
 use rayon::prelude::*;
 use std::{borrow::Cow, fs, path::Path};
 
@@ -55,7 +55,7 @@ impl Autoformat {
             // Format raw text.
             let indent = indentation_for(".", self.split_line_attributes)?;
             let formatted =
-                dioxus_autofmt::fmt_block(&raw, 0, indent).context("error formatting codeblock")?;
+                aether_autofmt::fmt_block(&raw, 0, indent).context("error formatting codeblock")?;
             println!("{}", formatted);
         } else {
             // Default to formatting the project.
@@ -103,9 +103,9 @@ fn refactor_file(
 
     let parsed = syn::parse_file(&s).context("failed to parse file")?;
     let edits =
-        dioxus_autofmt::try_fmt_file(&s, &parsed, indent).context("failed to format file")?;
+        aether_autofmt::try_fmt_file(&s, &parsed, indent).context("failed to format file")?;
 
-    let out = dioxus_autofmt::apply_formats(&s, edits);
+    let out = aether_autofmt::apply_formats(&s, edits);
 
     if file == "-" {
         print!("{out}");
@@ -134,7 +134,7 @@ fn format_file(
     }
 
     let parsed = syn::parse_file(&contents).context("Failed to parse file")?;
-    let edits = dioxus_autofmt::try_fmt_file(&contents, &parsed, indent)
+    let edits = aether_autofmt::try_fmt_file(&contents, &parsed, indent)
         .context("Failed to format file")?;
     let len = edits.len();
 
@@ -143,7 +143,7 @@ fn format_file(
     }
 
     if if_write {
-        let out = dioxus_autofmt::apply_formats(&contents, edits);
+        let out = aether_autofmt::apply_formats(&contents, edits);
         fs::write(path, out)?;
     }
 

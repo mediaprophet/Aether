@@ -1,6 +1,6 @@
 #![allow(clippy::needless_return)]
 
-use dioxus_core::CapturedError;
+use aether_core::CapturedError;
 use std::{hint::black_box, prelude::rust_2024::Future, sync::atomic::AtomicBool};
 
 /// `Lazy` is a thread-safe, lazily-initialized global variable.
@@ -58,7 +58,7 @@ impl<T: Send + Sync + 'static> Lazy<T> {
 
     /// Set the value of the `Lazy` instance.
     ///
-    /// This should only be called once during the server setup phase, typically inside `dioxus::serve`.
+    /// This should only be called once during the server setup phase, typically inside `aether::serve`.
     /// Future calls to this method will return an error containing the provided value.
     pub fn set(&self, pool: T) -> Result<(), CapturedError> {
         let res = self.value.set(pool);

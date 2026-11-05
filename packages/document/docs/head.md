@@ -1,6 +1,6 @@
 # Modifying the Head
 
-Dioxus includes a series of components that render into the head of the page:
+Aether includes a series of components that render into the head of the page:
 
 - [Title]
 - [Meta]
@@ -21,14 +21,14 @@ Components that render into the head of the page do have a few key limitations:
 ## Example
 
 ```rust, no_run
-# use dioxus::prelude::*;
-fn RedirectToDioxusHomepageWithoutJS() -> Element {
+# use aether::prelude::*;
+fn RedirectToAetherHomepageWithoutJS() -> Element {
     rsx! {
         // You can use the meta component to render a meta tag into the head of the page
-        // This meta tag will redirect the user to the dioxuslabs homepage in 10 seconds
+        // This meta tag will redirect the user to the aetherlabs homepage in 10 seconds
         document::Meta {
             http_equiv: "refresh",
-            content: "10;url=https://dioxuslabs.com",
+            content: "10;url=https://aetherlabs.com",
         }
     }
 }
@@ -36,10 +36,10 @@ fn RedirectToDioxusHomepageWithoutJS() -> Element {
 
 ## Overcoming Ordering Issues
 
-Since Dioxus does not guarantee head element ordering, one can use es6 imports as a more predictable way to handle dependencies.
+Since Aether does not guarantee head element ordering, one can use es6 imports as a more predictable way to handle dependencies.
 
 ```rust, ignore
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 static HIGHLIGHT: Asset = asset!("/assets/highlight/es/highlight.min.js");
 static RUST: Asset = asset!("/assets/highlight/es/languages/rust.min.js");
 static STYLE: Asset = asset!("/assets/highlight/styles/atom-one-dark.css");
@@ -71,7 +71,7 @@ Head components are compatible with fullstack rendering, but only head component
 If you have any important metadata that you want to render into the head, make sure to render it outside of any pending suspense boundaries.
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # #[component]
 # fn LoadData(children: Element) -> Element { unimplemented!() }
 fn App() -> Element {

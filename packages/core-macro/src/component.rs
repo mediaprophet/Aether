@@ -30,7 +30,7 @@ impl ComponentBody {
 
 impl ToTokens for ComponentBody {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        // https://github.com/DioxusLabs/dioxus/issues/1938
+        // https://github.com/AetherLabs/aether/issues/1938
         // If there's only one input and the input is `props: Props`, we don't need to generate a props struct
         // Just attach the non_snake_case attribute to the function
         // eventually we'll dump this metadata into devtooling that lets us find all these components
@@ -190,7 +190,7 @@ impl ComponentBody {
                 #block
             }
 
-            dioxus_config_macros::maybe_wasm_split! {
+            aether_config_macros::maybe_wasm_split! {
                 if wasm_split {
                     {
                         static __MODULE: wasm_split::LazyLoader<#props_ty, #out_ty> =
@@ -460,7 +460,7 @@ fn validate_component_fn(item_fn: &ItemFn) -> Result<()> {
     if item_fn.sig.output == ReturnType::Default {
         return Err(Error::new(
             item_fn.sig.output.span(),
-            "Must return a <dioxus_core::Element>".to_string(),
+            "Must return a <aether_core::Element>".to_string(),
         ));
     }
 

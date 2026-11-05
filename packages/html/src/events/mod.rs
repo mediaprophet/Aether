@@ -63,31 +63,31 @@ where
     Data: for<'a> From<&'a PlatformEventData> + 'static,
 {
     /// Convert this handler into a platform event listener.
-    fn into_platform_listener(self) -> ::dioxus_core::ListenerCallback<PlatformEventData>;
+    fn into_platform_listener(self) -> ::aether_core::ListenerCallback<PlatformEventData>;
 }
 
 impl<Data, Function, Spawn, Marker> EventHandlerValue<Data, EventClosureMarker<Marker>> for Function
 where
     Data: for<'a> From<&'a PlatformEventData> + 'static,
-    Function: FnMut(::dioxus_core::Event<Data>) -> Spawn + 'static,
-    Spawn: ::dioxus_core::SpawnIfAsync<Marker> + 'static,
+    Function: FnMut(::aether_core::Event<Data>) -> Spawn + 'static,
+    Spawn: ::aether_core::SpawnIfAsync<Marker> + 'static,
 {
-    fn into_platform_listener(mut self) -> ::dioxus_core::ListenerCallback<PlatformEventData> {
-        ::dioxus_core::ListenerCallback::new(
-            move |event: ::dioxus_core::Event<PlatformEventData>| {
+    fn into_platform_listener(mut self) -> ::aether_core::ListenerCallback<PlatformEventData> {
+        ::aether_core::ListenerCallback::new(
+            move |event: ::aether_core::Event<PlatformEventData>| {
                 self(event.map(|data| Data::from(data)))
             },
         )
     }
 }
 
-impl<Data> EventHandlerValue<Data, EventListenerMarker> for ::dioxus_core::ListenerCallback<Data>
+impl<Data> EventHandlerValue<Data, EventListenerMarker> for ::aether_core::ListenerCallback<Data>
 where
     Data: for<'a> From<&'a PlatformEventData> + 'static,
 {
-    fn into_platform_listener(self) -> ::dioxus_core::ListenerCallback<PlatformEventData> {
-        ::dioxus_core::ListenerCallback::new(
-            move |event: ::dioxus_core::Event<PlatformEventData>| {
+    fn into_platform_listener(self) -> ::aether_core::ListenerCallback<PlatformEventData> {
+        ::aether_core::ListenerCallback::new(
+            move |event: ::aether_core::Event<PlatformEventData>| {
                 self.call(event.map(|data| Data::from(data)).into_any());
             },
         )
@@ -95,13 +95,13 @@ where
 }
 
 impl<Data> EventHandlerValue<Data, EventCallbackMarker>
-    for ::dioxus_core::Callback<::dioxus_core::Event<Data>>
+    for ::aether_core::Callback<::aether_core::Event<Data>>
 where
     Data: for<'a> From<&'a PlatformEventData> + 'static,
 {
-    fn into_platform_listener(self) -> ::dioxus_core::ListenerCallback<PlatformEventData> {
-        ::dioxus_core::ListenerCallback::new(
-            move |event: ::dioxus_core::Event<PlatformEventData>| {
+    fn into_platform_listener(self) -> ::aether_core::ListenerCallback<PlatformEventData> {
+        ::aether_core::ListenerCallback::new(
+            move |event: ::aether_core::Event<PlatformEventData>| {
                 self.call(event.map(|data| Data::from(data)));
             },
         )
@@ -111,13 +111,13 @@ where
 pub(crate) fn event_attribute<Data, Marker>(
     name: &'static str,
     event_handler: impl EventHandlerValue<Data, Marker>,
-) -> ::dioxus_core::Attribute
+) -> ::aether_core::Attribute
 where
     Data: for<'a> From<&'a PlatformEventData> + 'static,
 {
-    ::dioxus_core::Attribute::new(
+    ::aether_core::Attribute::new(
         name,
-        ::dioxus_core::AttributeValue::Listener(event_handler.into_platform_listener().erase()),
+        ::aether_core::AttributeValue::Listener(event_handler.into_platform_listener().erase()),
         None,
         false,
     )

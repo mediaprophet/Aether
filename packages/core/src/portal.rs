@@ -175,7 +175,7 @@ impl<RenderFn, ComponentMarker>
 /// A portal changes where renderer mutations for its children are written. It does not change
 /// component ownership, context, or event propagation. Children rendered through a portal can still
 /// consume context from their logical ancestors, and events from the portal target bubble through
-/// the same Dioxus component tree.
+/// the same Aether component tree.
 ///
 /// Each render target has its own [`ElementId`] arena. Hosts create targets with
 /// [`Runtime::create_render_target`] and serve them with a [`MultiWriter`]. A single
@@ -186,7 +186,7 @@ impl<RenderFn, ComponentMarker>
 /// ## Example
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[component]
 /// fn App(target: RenderTargetId) -> Element {
 ///     rsx! {

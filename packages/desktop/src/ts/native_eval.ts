@@ -1,18 +1,18 @@
 import {
   Channel,
-  DioxusChannel,
-  WeakDioxusChannel,
+  AetherChannel,
+  WeakAetherChannel,
 } from "../../../document/src/ts/eval";
 
-// In dioxus desktop, eval needs to use the window object to store global state because we evaluate separate snippets of javascript in the browser
+// In aether desktop, eval needs to use the window object to store global state because we evaluate separate snippets of javascript in the browser
 declare global {
   interface Window {
-    __msg_queues: WeakDioxusChannel[];
+    __msg_queues: WeakAetherChannel[];
     finalizationRegistry: FinalizationRegistry<{ id: number }>;
 
-    getQuery(request_id: number): WeakDioxusChannel;
+    getQuery(request_id: number): WeakAetherChannel;
 
-    createQuery(request_id: number): NativeDioxusChannel;
+    createQuery(request_id: number): NativeAetherChannel;
   }
 }
 
@@ -28,7 +28,7 @@ class QueryParams {
 }
 
 window.__msg_queues = window.__msg_queues || [];
-// In dioxus desktop, eval is copy so we cannot run a drop handler. Instead, the drop handler is run after the channel is garbage collected in the javascript side
+// In aether desktop, eval is copy so we cannot run a drop handler. Instead, the drop handler is run after the channel is garbage collected in the javascript side
 window.finalizationRegistry =
   window.finalizationRegistry ||
   new FinalizationRegistry(({ id }) => {
@@ -42,16 +42,16 @@ window.finalizationRegistry =
   });
 
 // Get a query from the global state
-window.getQuery = function (request_id: number): WeakDioxusChannel {
+window.getQuery = function (request_id: number): WeakAetherChannel {
   return window.__msg_queues[request_id];
 };
 
 // Create a new query (and insert it into the global state)
-window.createQuery = function (request_id: number): NativeDioxusChannel {
-  return new NativeDioxusChannel(request_id);
+window.createQuery = function (request_id: number): NativeAetherChannel {
+  return new NativeAetherChannel(request_id);
 };
 
-export class NativeDioxusChannel extends DioxusChannel {
+export class NativeAetherChannel extends AetherChannel {
   rust_to_js: Channel;
   request_id: number;
 

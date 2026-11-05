@@ -2,13 +2,13 @@
 
 use std::{sync::atomic::AtomicUsize, time::Duration};
 
-use dioxus::prelude::*;
-use dioxus_core::{generation, needs_update, spawn_forever};
+use aether::prelude::*;
+use aether_core::{generation, needs_update, spawn_forever};
 
 async fn run_vdom(app: fn() -> Element) {
     let mut dom = VirtualDom::new(app);
 
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
     tokio::select! {
         _ = dom.wait_for_work() => {}
@@ -78,8 +78,8 @@ async fn spawn_forever_persists() {
 
     let mut dom = VirtualDom::new(app);
 
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
-    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
+    dom.render_immediate(&mut aether_core::NoOpMutations);
 
     tokio::select! {
         _ = dom.wait_for_work() => {}

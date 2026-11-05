@@ -4,10 +4,10 @@
 //! a field on a struct signal, call `.write()` and the guard derefs to the inner value.
 //! Any read of the signal in the UI will re-render when you drop the write guard.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 #[derive(Clone)]

@@ -158,17 +158,17 @@ impl DiffState<'_, '_, '_, '_> {
         new_children: FragmentMountWriter,
         fallback_site: Option<InsertionSite>,
     ) {
-        dioxus_debug_assert!(
+        aether_debug_assert!(
             new_children.len() == new.len(),
             "fragment child writer range must match the new child list"
         );
         let new_is_keyed = new[0].key().is_some();
         let old_is_keyed = old[0].key().is_some();
-        dioxus_debug_assert!(
+        aether_debug_assert!(
             new.iter().all(|n| n.key().is_some() == new_is_keyed),
             "all siblings must be keyed or all siblings must be non-keyed"
         );
-        dioxus_debug_assert!(
+        aether_debug_assert!(
             old.iter().all(|o| o.key().is_some() == old_is_keyed),
             "all siblings must be keyed or all siblings must be non-keyed"
         );
@@ -193,8 +193,8 @@ impl DiffState<'_, '_, '_, '_> {
         fallback_site: Option<InsertionSite>,
     ) {
         // Handled these cases in `diff_children` before calling this function.
-        dioxus_debug_assert!(!new.is_empty());
-        dioxus_debug_assert!(!old.is_empty());
+        aether_debug_assert!(!new.is_empty());
+        aether_debug_assert!(!old.is_empty());
 
         let paired = old.len().min(new.len());
         let mut plan = FragmentPlacementPlan::new(new.len());
@@ -243,13 +243,13 @@ impl DiffState<'_, '_, '_, '_> {
                 let mut keys = rustc_hash::FxHashSet::default();
                 for child in children {
                     let key = child.key();
-                    dioxus_debug_assert!(
+                    aether_debug_assert!(
                         key.is_some(),
                         "if any sibling is keyed, all siblings must be keyed"
                     );
                     keys.insert(key);
                 }
-                dioxus_debug_assert!(
+                aether_debug_assert!(
                     children.len() == keys.len(),
                     "keyed siblings must each have a unique key"
                 );

@@ -13,7 +13,7 @@ A dev container in the most simple context allows one to create a consistent dev
 
 ### Locally
 
-To use this dev container locally, make sure Docker is installed and in VSCode install the `ms-vscode-remote.remote-containers` extension. Then from the root of Dioxus you can type `Ctrl + Shift + P`, then choose `Dev Containers: Rebuild and Reopen in Devcontainer`.
+To use this dev container locally, make sure Docker is installed and in VSCode install the `ms-vscode-remote.remote-containers` extension. Then from the root of Aether you can type `Ctrl + Shift + P`, then choose `Dev Containers: Rebuild and Reopen in Devcontainer`.
 
 ### Codespaces
 

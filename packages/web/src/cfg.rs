@@ -1,16 +1,16 @@
 use std::rc::Rc;
 
-use dioxus_core::LaunchConfig;
+use aether_core::LaunchConfig;
 use wasm_bindgen::JsCast as _;
 
-///  Configuration for the WebSys renderer for the Dioxus VirtualDOM.
+///  Configuration for the WebSys renderer for the Aether VirtualDOM.
 ///
 /// This struct helps configure the specifics of hydration and render destination for WebSys.
 ///
 /// # Example
 ///
 /// ```rust, ignore
-/// dioxus_web::launch(App, Config::new().hydrate(true).root_name("myroot"))
+/// aether_web::launch(App, Config::new().hydrate(true).root_name("myroot"))
 /// ```
 pub struct Config {
     pub(crate) hydrate: bool,
@@ -18,7 +18,7 @@ pub struct Config {
     pub(crate) panic_hook: bool,
     pub(crate) root: ConfigRoot,
     #[cfg(feature = "document")]
-    pub(crate) history: Option<Rc<dyn dioxus_history::History>>,
+    pub(crate) history: Option<Rc<dyn aether_history::History>>,
 }
 
 impl LaunchConfig for Config {}
@@ -39,16 +39,16 @@ impl Config {
     #[cfg(feature = "hydrate")]
     /// Enable SSR hydration
     ///
-    /// This enables Dioxus to pick up work from a pre-rendered HTML file. Hydration will completely skip over any async
+    /// This enables Aether to pick up work from a pre-rendered HTML file. Hydration will completely skip over any async
     /// work and suspended nodes.
     ///
-    /// Dioxus will load up all the elements with the `dio_el` data attribute into memory when the page is loaded.
+    /// Aether will load up all the elements with the `dio_el` data attribute into memory when the page is loaded.
     pub fn hydrate(mut self, f: bool) -> Self {
         self.hydrate = f;
         self
     }
 
-    /// Set the name of the element that Dioxus will use as the root.
+    /// Set the name of the element that Aether will use as the root.
     ///
     /// This is akin to calling React.render() on the element with the specified name.
     /// Note that this only works on the current document, i.e. `window.document`.
@@ -58,7 +58,7 @@ impl Config {
         self
     }
 
-    /// Set the element that Dioxus will use as root.
+    /// Set the element that Aether will use as root.
     ///
     /// This is akin to calling React.render() on the given element.
     pub fn rootelement(mut self, elem: web_sys::Element) -> Self {
@@ -66,7 +66,7 @@ impl Config {
         self
     }
 
-    /// Set the node that Dioxus will use as root.
+    /// Set the node that Aether will use as root.
     ///
     /// This is akin to calling React.render() on the given element.
     pub fn rootnode(mut self, node: web_sys::Node) -> Self {
@@ -76,13 +76,13 @@ impl Config {
 
     /// Set the history provider for the application.
     ///
-    /// `dioxus-web` provides two history providers:
-    /// - `dioxus_history::WebHistory`: A history provider that uses the browser history API.
-    /// - `dioxus_history::HashHistory`: A history provider that uses the `#` url fragment.
+    /// `aether-web` provides two history providers:
+    /// - `aether_history::WebHistory`: A history provider that uses the browser history API.
+    /// - `aether_history::HashHistory`: A history provider that uses the `#` url fragment.
     ///
-    /// By default, `dioxus-web` uses the `WebHistory` provider, but this method can be used to configure
+    /// By default, `aether-web` uses the `WebHistory` provider, but this method can be used to configure
     /// a different history provider.
-    pub fn history(mut self, history: Rc<dyn dioxus_history::History>) -> Self {
+    pub fn history(mut self, history: Rc<dyn aether_history::History>) -> Self {
         #[cfg(feature = "document")]
         {
             self.history = Some(history);

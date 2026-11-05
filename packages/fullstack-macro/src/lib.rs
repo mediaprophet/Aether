@@ -25,7 +25,7 @@ use syn::{LitBool, LitInt, Pat, PatType, spanned::Spanned};
 /// ## Usage
 ///
 /// ```rust,ignore
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// # #[derive(serde::Deserialize, serde::Serialize)]
 /// # struct BlogPost;
 /// # async fn load_posts(category: &str) -> Result<Vec<BlogPost>> { unimplemented!() }
@@ -45,7 +45,7 @@ use syn::{LitBool, LitInt, Pat, PatType, spanned::Spanned};
 ///   Example: `endpoint = "/my_api/my_serverfn"`.
 /// - `input`: the encoding for the arguments, defaults to `Json<T>`
 ///     - You may customize the encoding of the arguments by specifying a different type for `input`.
-///     - Any axum `IntoRequest` extractor can be used here, and dioxus provides
+///     - Any axum `IntoRequest` extractor can be used here, and aether provides
 ///       - `Json<T>`: The default axum `Json` extractor that decodes JSON-encoded request bodies.
 ///       - `Cbor<T>`: A custom axum `Cbor` extractor that decodes CBOR-encoded request bodies.
 ///       - `MessagePack<T>`: A custom axum `MessagePack` extractor that decodes MessagePack-encoded request bodies.
@@ -78,7 +78,7 @@ use syn::{LitBool, LitInt, Pat, PatType, spanned::Spanned};
 /// You can add a tower [`Layer`](https://docs.rs/tower/latest/tower/trait.Layer.html) to your server function with the middleware attribute:
 ///
 /// ```rust,ignore
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[server]
 /// // The TraceLayer will log all requests to the console
 /// #[middleware(tower_http::timeout::TimeoutLayer::new(std::time::Duration::from_secs(5)))]
@@ -122,7 +122,7 @@ pub fn server(attr: proc_macro::TokenStream, mut item: TokenStream) -> TokenStre
             if let Some(name) = args.struct_name {
                 tokens.extend(quote! {
                     const _: () = {
-                        #[deprecated(note = "Dioxus server functions no longer generate a struct for the server function. The function itself is used directly.")]
+                        #[deprecated(note = "Aether server functions no longer generate a struct for the server function. The function itself is used directly.")]
                         struct #name;
                         fn ___assert_deprecated() {
                             let _ = #name;
@@ -274,7 +274,7 @@ fn route_impl_with_route(
         .iter()
         .filter(|attr| attr.path().is_ident("doc"));
 
-    let __axum = quote! { dioxus_server::axum };
+    let __axum = quote! { aether_server::axum };
 
     let output_type = match &function.sig.output {
         syn::ReturnType::Default => parse_quote! { () },
@@ -394,7 +394,7 @@ fn route_impl_with_route(
                     None => "CARGO_MANIFEST_DIR",
                 };
                 quote! {
-                    dioxus_fullstack::xxhash_rust::const_xxh64::xxh64(
+                    aether_fullstack::xxhash_rust::const_xxh64::xxh64(
                         concat!(env!(#key_env_var), ":", module_path!()).as_bytes(),
                         0
                     )
@@ -406,7 +406,7 @@ fn route_impl_with_route(
         };
 
         quote! {
-            dioxus_fullstack::const_format::concatcp!(#prefix, #route_lit, #hash)
+            aether_fullstack::const_format::concatcp!(#prefix, #route_lit, #hash)
         }
     };
 
@@ -444,27 +444,27 @@ fn route_impl_with_route(
             unexpected_cfgs,
             reason = "
 ==========================================================================================
-  Using Dioxus Server Functions requires a `server` feature flag in your `Cargo.toml`.
+  Using Aether Server Functions requires a `server` feature flag in your `Cargo.toml`.
   Please add the following to your `Cargo.toml`:
 
   ```toml
   [features]
-  server = [\"dioxus/server\"]
+  server = [\"aether/server\"]
   ```
 
   To enable better Rust-Analyzer support, you can make `server` a default feature:
   ```toml
   [features]
   default = [\"web\", \"server\"]
-  web = [\"dioxus/web\"]
-  server = [\"dioxus/server\"]
+  web = [\"aether/web\"]
+  server = [\"aether/server\"]
   ```
 ==========================================================================================
         "
         )]
         #vis async fn #fn_on_server_name #impl_generics( #outer_inputs ) -> #out_ty #where_clause {
-            use dioxus_fullstack::serde as serde;
-            use dioxus_fullstack::{
+            use aether_fullstack::serde as serde;
+            use aether_fullstack::{
                 // concrete types
                 ServerFnEncoder, ServerFnDecoder, FullstackContext,
 
@@ -482,17 +482,17 @@ fn route_impl_with_route(
             const __ENDPOINT_PATH: &str = #endpoint_path;
 
             {
-                _ = dioxus_fullstack::assert_is_result::<#out_ty>();
+                _ = aether_fullstack::assert_is_result::<#out_ty>();
 
                 let verify_token = (&&&&&&&&&&&&&&ServerFnEncoder::<___Body_Serialize___<#(#body_json_types,)*>, (#(#body_json_types,)*)>::new())
                     .verify_can_serialize();
 
-                dioxus_fullstack::assert_can_encode(verify_token);
+                aether_fullstack::assert_can_encode(verify_token);
 
                 let decode_token = (&&&&&ServerFnDecoder::<#out_ty>::new())
                     .verify_can_deserialize();
 
-                dioxus_fullstack::assert_can_decode(decode_token);
+                aether_fullstack::assert_can_decode(decode_token);
             };
 
 
@@ -501,8 +501,8 @@ fn route_impl_with_route(
             #[allow(clippy::unused_unit)]
             #[cfg(not(feature = "server"))]
             {
-                let client = dioxus_fullstack::ClientRequest::new(
-                    dioxus_fullstack::http::Method::#method_ident,
+                let client = aether_fullstack::ClientRequest::new(
+                    aether_fullstack::http::Method::#method_ident,
                     #query_endpoint,
                     &#query_tokens,
                 );
@@ -548,19 +548,19 @@ fn route_impl_with_route(
                     })
                 }
 
-                dioxus_server::inventory::submit! {
-                    dioxus_server::ServerFunction::new(
-                        dioxus_server::http::Method::#method_ident,
+                aether_server::inventory::submit! {
+                    aether_server::ServerFunction::new(
+                        aether_server::http::Method::#method_ident,
                         __ENDPOINT_PATH,
                         || {
-                            dioxus_server::ServerFunction::make_handler(dioxus_server::http::Method::#method_ident, __inner__function__ #ty_generics)
+                            aether_server::ServerFunction::make_handler(aether_server::http::Method::#method_ident, __inner__function__ #ty_generics)
                                 #(#middleware_layers)*
                         }
                     )
                 }
 
                 // Extract the server arguments from the context if needed.
-                let (#(#server_names,)*) = dioxus_fullstack::FullstackContext::extract::<(#(#server_types,)*), _>().await?;
+                let (#(#server_names,)*) = aether_fullstack::FullstackContext::extract::<(#(#server_types,)*), _>().await?;
 
                 // Call the function directly
                 return #fn_on_server_name #ty_generics(
@@ -767,12 +767,12 @@ impl CompiledRoute {
                 .filter_map(|(_slash, path_param)| path_param.capture());
             let idents = path_iter.clone().map(|item| item.0);
             parse_quote! {
-                dioxus_server::axum::extract::Path((#(#idents,)*))
+                aether_server::axum::extract::Path((#(#idents,)*))
             }
         });
 
         out.push(parse_quote!(
-            dioxus_fullstack::payloads::Query(#query_tokens)
+            aether_fullstack::payloads::Query(#query_tokens)
         ));
 
         out

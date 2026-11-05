@@ -1,8 +1,8 @@
 use std::{cell::Cell, collections::BTreeMap};
 
-use dioxus::prelude::*;
-use dioxus_core::{Portal, RenderTargetId, VirtualDom};
-use dioxus_renderer_oracle::{RendererOracle, SnapshotNode};
+use aether::prelude::*;
+use aether_core::{Portal, RenderTargetId, VirtualDom};
+use aether_renderer_oracle::{RendererOracle, SnapshotNode};
 
 /// All text content in a render target's snapshot, in document order.
 fn all_text(nodes: &[SnapshotNode]) -> Vec<String> {
@@ -78,7 +78,7 @@ fn portal_retarget_keeps_clean_stacks_with_shared_sibling() {
 
     // Retarget the portal (ROOT -> inner) and recreate the sibling.
     ORDER.with(|o| o.set(1));
-    dom.mark_dirty(dioxus_core::ScopeId::APP);
+    dom.mark_dirty(aether_core::ScopeId::APP);
     dom.render_immediate(&mut writer);
     assert!(writer.get(&RenderTargetId::ROOT).unwrap().is_stack_clean());
     assert!(writer.get(&inner).unwrap().is_stack_clean());
@@ -104,7 +104,7 @@ fn portal_retarget_keeps_clean_stacks_with_shared_sibling() {
     // Recreate the sibling again *after* the retarget so its placement scan
     // reads the portal scope's (post-retarget) mount.
     ORDER.with(|o| o.set(2));
-    dom.mark_dirty(dioxus_core::ScopeId::APP);
+    dom.mark_dirty(aether_core::ScopeId::APP);
     dom.render_immediate(&mut writer);
 
     writer

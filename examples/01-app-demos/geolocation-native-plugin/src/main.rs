@@ -1,4 +1,4 @@
-//! A simple Dioxus app demonstrating how to build a native plugin using manganis.
+//! A simple Aether app demonstrating how to build a native plugin using manganis.
 //!
 //! This example shows how to use the `#[manganis::ffi]` macro to automatically generate
 //! FFI bindings between Rust and native platforms (Swift/Kotlin).
@@ -6,7 +6,7 @@
 //! It also demonstrates how to use the widget!() macro to bundle a Widget Extension
 //! for Live Activities on iOS.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 // Import the local plugin module
 mod plugin;
@@ -15,7 +15,7 @@ use plugin::LiveActivityResult;
 use plugin::{Geolocation, PermissionState, PermissionStatus, Position, PositionOptions};
 
 fn main() {
-    dioxus::launch(App);
+    aether::launch(App);
 }
 
 #[component]
@@ -86,7 +86,7 @@ fn App() -> Element {
             header { class: "hero",
                 div { class: "hero__copy",
                     h1 { "Geolocation plugin demo" }
-                    p { "One-shot location fetching through the Dioxus geolocation plugin.
+                    p { "One-shot location fetching through the Aether geolocation plugin.
                         Measure permissions, request access, and inspect the last fix received from the device." }
                 }
             }

@@ -1,10 +1,10 @@
-use dioxus_core::ScopeId;
-use dioxus_core::queue_effect;
-use dioxus_core::{Runtime, provide_context};
-use dioxus_document::{
+use aether_core::ScopeId;
+use aether_core::queue_effect;
+use aether_core::{Runtime, provide_context};
+use aether_document::{
     Document, Eval, EvalError, Evaluator, LinkProps, MetaProps, ScriptProps, StyleProps,
 };
-use dioxus_history::History;
+use aether_history::History;
 use futures_util::FutureExt;
 use generational_box::{AnyStorage, GenerationalBox, UnsyncStorage};
 use js_sys::Function;
@@ -34,41 +34,41 @@ impl JSOwner {
 
 #[wasm_bindgen::prelude::wasm_bindgen(module = "/src/js/eval.js")]
 extern "C" {
-    pub type WeakDioxusChannel;
+    pub type WeakAetherChannel;
 
     #[wasm_bindgen(method, js_name = "rustSend")]
-    pub fn rust_send(this: &WeakDioxusChannel, value: wasm_bindgen::JsValue);
+    pub fn rust_send(this: &WeakAetherChannel, value: wasm_bindgen::JsValue);
 
     #[wasm_bindgen(method, js_name = "rustRecv")]
-    pub async fn rust_recv(this: &WeakDioxusChannel) -> wasm_bindgen::JsValue;
+    pub async fn rust_recv(this: &WeakAetherChannel) -> wasm_bindgen::JsValue;
 }
 
 #[wasm_bindgen::prelude::wasm_bindgen(module = "/src/js/eval.js")]
 extern "C" {
-    pub type WebDioxusChannel;
+    pub type WebAetherChannel;
 
     #[wasm_bindgen(constructor)]
-    pub fn new(owner: JSOwner) -> WebDioxusChannel;
+    pub fn new(owner: JSOwner) -> WebAetherChannel;
 
     #[wasm_bindgen(method, js_name = "rustSend")]
-    pub fn rust_send(this: &WebDioxusChannel, value: wasm_bindgen::JsValue);
+    pub fn rust_send(this: &WebAetherChannel, value: wasm_bindgen::JsValue);
 
     #[wasm_bindgen(method, js_name = "rustRecv")]
-    pub async fn rust_recv(this: &WebDioxusChannel) -> wasm_bindgen::JsValue;
+    pub async fn rust_recv(this: &WebAetherChannel) -> wasm_bindgen::JsValue;
 
     #[wasm_bindgen(method)]
-    pub fn send(this: &WebDioxusChannel, value: wasm_bindgen::JsValue);
+    pub fn send(this: &WebAetherChannel, value: wasm_bindgen::JsValue);
 
     #[wasm_bindgen(method)]
-    pub async fn recv(this: &WebDioxusChannel) -> wasm_bindgen::JsValue;
+    pub async fn recv(this: &WebAetherChannel) -> wasm_bindgen::JsValue;
 
     #[wasm_bindgen(method)]
-    pub fn weak(this: &WebDioxusChannel) -> WeakDioxusChannel;
+    pub fn weak(this: &WebAetherChannel) -> WeakAetherChannel;
 
 }
 
 fn init_document_with(document: impl FnOnce(), history: impl FnOnce()) {
-    use dioxus_core::has_context;
+    use aether_core::has_context;
     Runtime::current().in_scope(ScopeId::ROOT, || {
         if has_context::<Rc<dyn Document>>().is_none() {
             document();
@@ -79,12 +79,12 @@ fn init_document_with(document: impl FnOnce(), history: impl FnOnce()) {
     })
 }
 
-/// Provides the Document through [`dioxus_core::provide_context`].
+/// Provides the Document through [`aether_core::provide_context`].
 pub fn init_document() {
     // If hydrate is enabled, we add the FullstackWebDocument with the initial hydration data
     #[cfg(not(feature = "hydrate"))]
     {
-        use dioxus_history::provide_history_context;
+        use aether_history::provide_history_context;
 
         init_document_with(
             || {
@@ -99,7 +99,7 @@ pub fn init_document() {
 
 #[cfg(feature = "hydrate")]
 pub fn init_fullstack_document() {
-    use dioxus_fullstack_core::{
+    use aether_fullstack_core::{
         document::FullstackWebDocument, history::provide_fullstack_history_context,
     };
 
@@ -190,7 +190,7 @@ const PROMISE_WRAPPER: &str = r#"
     return (async function(){
         {JS_CODE}
 
-        dioxus.close();
+        aether.close();
     })();
 "#;
 
@@ -198,7 +198,7 @@ type NextPoll = Pin<Box<dyn Future<Output = Result<serde_json::Value, EvalError>
 
 /// Represents a web-target's JavaScript evaluator.
 struct WebEvaluator {
-    channels: WeakDioxusChannel,
+    channels: WeakAetherChannel,
     next_future: Option<NextPoll>,
     result: Pin<Box<dyn Future<Output = result::Result<Value, EvalError>>>>,
 }
@@ -208,16 +208,16 @@ impl WebEvaluator {
     fn create(js: String) -> GenerationalBox<Box<dyn Evaluator>> {
         let owner = UnsyncStorage::owner();
 
-        // add the drop handler to DioxusChannel so that it gets dropped when the channel is dropped in js
-        let channels = WebDioxusChannel::new(JSOwner::new(owner.clone()));
+        // add the drop handler to AetherChannel so that it gets dropped when the channel is dropped in js
+        let channels = WebAetherChannel::new(JSOwner::new(owner.clone()));
 
-        // The Rust side of the channel is a weak reference to the DioxusChannel
+        // The Rust side of the channel is a weak reference to the AetherChannel
         let weak_channels = channels.weak();
 
         // Wrap the evaluated JS in a promise so that wasm can continue running (send/receive data from js)
         let code = PROMISE_WRAPPER.replace("{JS_CODE}", &js);
 
-        let result = match Function::new_with_args("dioxus", &code).call1(&JsValue::NULL, &channels)
+        let result = match Function::new_with_args("aether", &code).call1(&JsValue::NULL, &channels)
         {
             Ok(result) => {
                 let future = js_sys::Promise::resolve(&result);
@@ -283,7 +283,7 @@ impl Evaluator for WebEvaluator {
         context: &mut std::task::Context<'_>,
     ) -> std::task::Poll<Result<serde_json::Value, EvalError>> {
         if self.next_future.is_none() {
-            let channels: WebDioxusChannel = self.channels.clone().into();
+            let channels: WebAetherChannel = self.channels.clone().into();
             let pinned = Box::pin(async move {
                 let fut = channels.rust_recv();
                 let data = fut.await;

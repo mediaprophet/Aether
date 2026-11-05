@@ -32,10 +32,10 @@ export class Channel {
   }
 }
 
-export class WeakDioxusChannel {
-  inner: WeakRef<DioxusChannel>;
+export class WeakAetherChannel {
+  inner: WeakRef<AetherChannel>;
 
-  constructor(channel: DioxusChannel) {
+  constructor(channel: AetherChannel) {
     this.inner = new WeakRef(channel);
   }
 
@@ -56,10 +56,10 @@ export class WeakDioxusChannel {
   }
 }
 
-export abstract class DioxusChannel {
+export abstract class AetherChannel {
   // Return a weak reference to this channel
-  weak(): WeakDioxusChannel {
-    return new WeakDioxusChannel(this);
+  weak(): WeakAetherChannel {
+    return new WeakAetherChannel(this);
   }
 
   // Send data from rust to javascript

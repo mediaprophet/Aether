@@ -1,41 +1,41 @@
-# Dioxus Fullstack
+# Aether Fullstack
 
 [![Crates.io][crates-badge]][crates-url]
 [![MIT licensed][mit-badge]][mit-url]
 [![Build Status][actions-badge]][actions-url]
 [![Discord chat][discord-badge]][discord-url]
 
-[crates-badge]: https://img.shields.io/crates/v/dioxus-fullstack.svg
-[crates-url]: https://crates.io/crates/dioxus-fullstack
+[crates-badge]: https://img.shields.io/crates/v/aether-fullstack.svg
+[crates-url]: https://crates.io/crates/aether-fullstack
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[mit-url]: https://github.com/dioxuslabs/dioxus/blob/main/LICENSE-MIT
-[actions-badge]: https://github.com/dioxuslabs/dioxus/actions/workflows/main.yml/badge.svg
-[actions-url]: https://github.com/dioxuslabs/dioxus/actions?query=workflow%3ACI+branch%3Amaster
+[mit-url]: https://github.com/aetherlabs/aether/blob/main/LICENSE-MIT
+[actions-badge]: https://github.com/aetherlabs/aether/actions/workflows/main.yml/badge.svg
+[actions-url]: https://github.com/aetherlabs/aether/actions?query=workflow%3ACI+branch%3Amaster
 [discord-badge]: https://img.shields.io/discord/899851952891002890.svg?logo=discord&style=flat-square
 [discord-url]: https://discord.gg/XgGxMSkvUM
 
-[Website](https://dioxuslabs.com) |
-[Guides](https://dioxuslabs.com/learn/0.7/) |
-[API Docs](https://docs.rs/dioxus-fullstack/latest/dioxus_fullstack/) |
+[Website](https://aetherlabs.com) |
+[Guides](https://aetherlabs.com/learn/0.7/) |
+[API Docs](https://docs.rs/aether-fullstack/latest/aether_fullstack/) |
 [Chat](https://discord.gg/XgGxMSkvUM)
 
-Fullstack utilities for the [`Dioxus`](https://dioxuslabs.com) framework.
+Fullstack utilities for the [`Aether`](https://aetherlabs.com) framework.
 
 # Features
 
-- Integrates with the [Axum](./examples/axum-hello-world/src/main.rs) server framework with utilities for serving and rendering Dioxus applications.
+- Integrates with the [Axum](./examples/axum-hello-world/src/main.rs) server framework with utilities for serving and rendering Aether applications.
 - Server functions allow you to call code on the server from the client as if it were a normal function.
-- Instant RSX Hot reloading with [`dioxus-hot-reload`](https://crates.io/crates/dioxus-hot-reload).
+- Instant RSX Hot reloading with [`aether-hot-reload`](https://crates.io/crates/aether-hot-reload).
 - Passing root props from the server to the client.
 
 # Example
-Quickly build fullstack Rust apps with axum and dioxus.
+Quickly build fullstack Rust apps with axum and aether.
 
 ```rust, no_run
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         let mut meaning = use_action(|| get_meaning("life the universe and everything".into()));
 
         rsx! {
@@ -53,43 +53,43 @@ async fn get_meaning(of: String) -> Result<Option<u32>> {
 
 ## Axum Integration
 
-If you have an existing Axum router or you need more control over the server, you can use the [`DioxusRouterExt`](https://docs.rs/dioxus-fullstack/0.6.0-alpha.2/dioxus_fullstack/prelude/trait.DioxusRouterExt.html) trait to integrate with your existing Axum router.
+If you have an existing Axum router or you need more control over the server, you can use the [`AetherRouterExt`](https://docs.rs/aether-fullstack/0.6.0-alpha.2/aether_fullstack/prelude/trait.AetherRouterExt.html) trait to integrate with your existing Axum router.
 
 First, make sure your `axum` dependency is optional and enabled by the server feature flag. Axum cannot be compiled to wasm, so if it is enabled by default, it will cause a compile error:
 
 ```toml
 [dependencies]
-dioxus = { version = "*", features = ["fullstack"] }
+aether = { version = "*", features = ["fullstack"] }
 axum = { version = "0.8.0", optional = true }
 tokio = { version = "1.0", features = ["full"], optional = true }
-dioxus-cli-config = { version = "*", optional = true }
+aether-cli-config = { version = "*", optional = true }
 
 [features]
-server = ["dioxus/server", "dep:axum", "dep:tokio", "dioxus-cli-config"]
-web = ["dioxus/web"]
+server = ["aether/server", "dep:axum", "dep:tokio", "aether-cli-config"]
+web = ["aether/web"]
 ```
 
-Then we can set up dioxus with the axum server:
+Then we can set up aether with the axum server:
 
 ```rust, no_run
 #![allow(non_snake_case)]
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 // The entry point for the server
 #[cfg(feature = "server")]
 #[tokio::main]
 async fn main() {
-    use dioxus_server::DioxusRouterExt;
+    use aether_server::AetherRouterExt;
 
     // Get the address the server should run on. If the CLI is running, the CLI proxies fullstack into the main address
     // and we use the generated address the CLI gives us
-    let address = dioxus::cli_config::fullstack_address_or_localhost();
+    let address = aether::cli_config::fullstack_address_or_localhost();
 
     // Set up the axum router
     let router = axum::Router::new()
-        // You can add a dioxus application to the router with the `serve_dioxus_application` method
+        // You can add a aether application to the router with the `serve_aether_application` method
         // This will add a fallback route to the router that will serve your component and server functions
-        .serve_dioxus_application(dioxus_server::ServeConfig::new(), App);
+        .serve_aether_application(aether_server::ServeConfig::new(), App);
 
     // Finally, we can launch the server
     let router = router.into_make_service();
@@ -100,7 +100,7 @@ async fn main() {
 // For any other platform, we just launch the app
 #[cfg(not(feature = "server"))]
 fn main() {
-    dioxus::launch(App);
+    aether::launch(App);
 }
 
 #[component]
@@ -128,19 +128,19 @@ async fn get_meaning(of: String) -> ServerFnResult<Option<u32>> {
 
 ## Getting Started
 
-To get started with full stack Dioxus, check out our [getting started guide](https://dioxuslabs.com/learn/0.7/getting_started), or the [full stack examples](https://github.com/DioxusLabs/dioxus/tree/master/examples).
+To get started with full stack Aether, check out our [getting started guide](https://aetherlabs.com/learn/0.7/getting_started), or the [full stack examples](https://github.com/AetherLabs/aether/tree/master/examples).
 
 ## Contributing
 
-- Report issues on our [issue tracker](https://github.com/dioxuslabs/dioxus/issues).
+- Report issues on our [issue tracker](https://github.com/aetherlabs/aether/issues).
 - Join the discord and ask questions!
 
 ## License
 
 This project is licensed under the [MIT license].
 
-[mit license]: https://github.com/dioxuslabs/dioxus/blob/main/LICENSE-MIT
+[mit license]: https://github.com/aetherlabs/aether/blob/main/LICENSE-MIT
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in Dioxus by you shall be licensed as MIT without any additional
+for inclusion in Aether by you shall be licensed as MIT without any additional
 terms or conditions.

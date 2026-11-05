@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-stores"
+name = "aether-stores"
 version = { workspace = true }
 edition = "2024"
 repository = "https://github.com/mediaprophet/Aether"
@@ -7,22 +7,22 @@ homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "liveview"]
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 license = "CC-BY-NC-ND-4.0"
-description = "Server function macros for Dioxus"
+description = "Server function macros for Aether"
 
 [dependencies]
-dioxus-core = { workspace = true }
-dioxus-signals = { workspace = true }
-dioxus-stores-macro = { workspace = true, optional = true }
+aether-core = { workspace = true }
+aether-signals = { workspace = true }
+aether-stores-macro = { workspace = true, optional = true }
 generational-box.workspace = true
 
 [dev-dependencies]
-dioxus = { workspace = true }
+aether = { workspace = true }
 trybuild = { workspace = true }
-dioxus-stores-visibility-helper = { path = "tests/visibility-helper" }
+aether-stores-visibility-helper = { path = "tests/visibility-helper" }
 
 [features]
 default = ["macro"]
-macro = ["dep:dioxus-stores-macro"]
+macro = ["dep:aether-stores-macro"]
 large-path = []
 
 [package.metadata.docs.rs]

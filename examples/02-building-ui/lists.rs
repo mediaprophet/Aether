@@ -1,13 +1,13 @@
 //! Rendering lists.
 //!
 //! Use a `for` loop inside `rsx!` to render a list from an iterator. When list items can
-//! be reordered, added, or removed, provide a stable `key` so Dioxus can efficiently
+//! be reordered, added, or removed, provide a stable `key` so Aether can efficiently
 //! reuse existing elements rather than re-rendering them all.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

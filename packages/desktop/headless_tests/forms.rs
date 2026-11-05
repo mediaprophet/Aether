@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_desktop::DesktopContext;
-use dioxus_document::eval;
+use aether::prelude::*;
+use aether_desktop::DesktopContext;
+use aether_document::eval;
 
 #[path = "./utils.rs"]
 mod utils;

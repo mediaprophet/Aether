@@ -1,6 +1,6 @@
 //! Convert a serialized event to an event trigger
 
-use dioxus_html::*;
+use aether_html::*;
 
 use crate::element::LiveviewElement;
 

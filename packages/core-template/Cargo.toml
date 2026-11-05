@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-core-template"
+name = "aether-core-template"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Static template representation and const builder for Dioxus."
+description = "Static template representation and const builder for Aether."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -11,7 +11,7 @@ keywords = ["dom", "ui", "gui", "react"]
 rust-version = "1.85.0"
 
 [dependencies]
-dioxus-const-vec = { workspace = true }
+aether-const-vec = { workspace = true }
 serde = { workspace = true, optional = true, features = ["derive"] }
 xxhash-rust = { workspace = true, features = ["const_xxh64"] }
 

@@ -1,4 +1,4 @@
-use dioxus_html::{
+use aether_html::{
     HasMouseData, HasWheelData, InteractionElementOffset, InteractionLocation, Modifiers,
     ModifiersInteraction, PointerInteraction,
     geometry::{ClientPoint, ElementPoint, PagePoint, ScreenPoint},
@@ -9,8 +9,8 @@ use web_sys::WheelEvent;
 use super::{Synthetic, WebEventExt};
 
 impl HasWheelData for Synthetic<WheelEvent> {
-    fn delta(&self) -> dioxus_html::geometry::WheelDelta {
-        dioxus_html::geometry::WheelDelta::from_web_attributes(
+    fn delta(&self) -> aether_html::geometry::WheelDelta {
+        aether_html::geometry::WheelDelta::from_web_attributes(
             self.event.delta_mode(),
             self.event.delta_x(),
             self.event.delta_y(),
@@ -71,7 +71,7 @@ impl ModifiersInteraction for Synthetic<WheelEvent> {
 }
 
 impl PointerInteraction for Synthetic<WheelEvent> {
-    fn held_buttons(&self) -> dioxus_html::input_data::MouseButtonSet {
+    fn held_buttons(&self) -> aether_html::input_data::MouseButtonSet {
         decode_mouse_button_set(self.event.buttons())
     }
 
@@ -80,7 +80,7 @@ impl PointerInteraction for Synthetic<WheelEvent> {
     }
 }
 
-impl WebEventExt for dioxus_html::WheelData {
+impl WebEventExt for aether_html::WheelData {
     type WebEvent = web_sys::WheelEvent;
 
     #[inline(always)]

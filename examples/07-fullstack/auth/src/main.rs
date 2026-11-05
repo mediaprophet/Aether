@@ -1,10 +1,10 @@
-//! This example showcases how to use the `axum-session-auth` crate with Dioxus fullstack.
+//! This example showcases how to use the `axum-session-auth` crate with Aether fullstack.
 //! We add the `auth::Session` extractor to our server functions to get access to the current user session.
 //!
-//! To initialize the axum router, we use `dioxus::serve` to spawn a custom axum server that creates
+//! To initialize the axum router, we use `aether::serve` to spawn a custom axum server that creates
 //! our database, session store, and authentication layer.
 //!
-//! The `.serve_dioxus_application` method is used to mount our Dioxus app as a fallback service to
+//! The `.serve_aether_application` method is used to mount our Aether app as a fallback service to
 //! handle HTML rendering and static assets.
 //!
 //! We easily share the "permissions" between the server and client by using a `HashSet<String>`
@@ -12,7 +12,7 @@
 
 use std::collections::HashSet;
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[cfg(feature = "server")]
 mod auth;
@@ -20,16 +20,16 @@ mod auth;
 fn main() {
     // On the client, we simply launch the app as normal, taking over the main thread
     #[cfg(not(feature = "server"))]
-    dioxus::launch(app);
+    aether::launch(app);
 
-    // On the server, we can use `dioxus::serve` to create a server that serves our app.
+    // On the server, we can use `aether::serve` to create a server that serves our app.
     //
     // The `serve` function takes a closure that returns a `Future` which resolves to an `axum::Router`.
     //
-    // We return a `Router` such that dioxus sets up logging, hot-reloading, devtools, and wires up the
+    // We return a `Router` such that aether sets up logging, hot-reloading, devtools, and wires up the
     // IP and PORT environment variables to our server.
     #[cfg(feature = "server")]
-    dioxus::serve(|| async {
+    aether::serve(|| async {
         use crate::auth::*;
         use axum_session::{SessionConfig, SessionLayer, SessionStore};
         use axum_session_auth::AuthConfig;
@@ -58,8 +58,8 @@ fn main() {
         db.execute(r#"INSERT INTO user_permissions (user_id, token) SELECT 2, 'Category::View'"#)
             .await?;
 
-        // Create an axum router that dioxus will attach the app to
-        Ok(dioxus::server::router(app)
+        // Create an axum router that aether will attach the app to
+        Ok(aether::server::router(app)
             .layer(
                 AuthLayer::new(Some(db.clone()))
                     .with_config(AuthConfig::<i64>::default().with_anonymous_user_id(Some(1))),

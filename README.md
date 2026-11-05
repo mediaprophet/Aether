@@ -163,7 +163,7 @@ cargo check -p aether-web --target wasm32-unknown-unknown
 ## Upstream & Attribution
 
 Aether is an independent project founded and maintained by Timothy Charles Holborn.
-Its starting source was a fork of the Dioxus `0.8.0-alpha.3` snapshot under the MIT and Apache-2.0 licenses. Some foundational VirtualDOM, reactive signal, RSX macro, and renderer components originated in that snapshot, authored by the Dioxus developers and contributors. Those upstream license texts and notices are preserved in [`upstream-licenses/`](upstream-licenses/).
+Its starting source was a fork of the Aether `0.8.0-alpha.3` snapshot under the MIT and Apache-2.0 licenses. Some foundational VirtualDOM, reactive signal, RSX macro, and renderer components originated in that snapshot, authored by the Aether developers and contributors. Those upstream license texts and notices are preserved in [`upstream-licenses/`](upstream-licenses/).
 
 ## Intellectual Property & Licensing Notice
 

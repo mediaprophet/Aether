@@ -187,7 +187,7 @@ fn get_asset_root() -> PathBuf {
             .map(|root| root.join("lib"))
         {
             // Try the product name from the compile-time env var first
-            if let Some(product_name) = dioxus_cli_config::product_name() {
+            if let Some(product_name) = aether_cli_config::product_name() {
                 let path = lib_dir.join(&product_name);
                 if path.exists() {
                     return path;
@@ -195,7 +195,7 @@ fn get_asset_root() -> PathBuf {
             }
 
             // Fall back to scanning lib/ for a directory containing an `assets/` subfolder.
-            // This handles debug builds where DIOXUS_PRODUCT_NAME isn't baked in.
+            // This handles debug builds where AETHER_PRODUCT_NAME isn't baked in.
             if let Ok(entries) = std::fs::read_dir(&lib_dir) {
                 for entry in entries.flatten() {
                     let path = entry.path();
@@ -250,7 +250,7 @@ pub fn get_mime_from_ext(ext: Option<&str>) -> &'static str {
         Some("jsonld") => "application/ld+json",
         Some("rtf") => "application/rtf",
         Some("mp4") => "video/mp4",
-        // Assume HTML when a TLD is found for eg. `dioxus:://dioxuslabs.app` | `dioxus://hello.com`
+        // Assume HTML when a TLD is found for eg. `aether:://aetherlabs.app` | `aether://hello.com`
         Some(_) => "text/html; charset=utf-8",
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
         // using octet stream according to this:
@@ -267,7 +267,7 @@ pub(crate) fn to_java_load_asset(filepath: &str) -> Option<Vec<u8>> {
     // in debug mode, the asset might be under `/data/local/tmp/dx/` - attempt to read it from there if it exists
     #[cfg(debug_assertions)]
     {
-        let path = dioxus_cli_config::android_session_cache_dir().join(normalized);
+        let path = aether_cli_config::android_session_cache_dir().join(normalized);
         if path.exists() {
             return std::fs::read(path).ok();
         }

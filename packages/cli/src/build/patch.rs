@@ -65,7 +65,7 @@ pub enum PatchError {
 /// module with every symbol in it, it can be quite large (hundreds of MB), so storing this here lets
 /// us avoid re-parsing the module every time we want to patch it.
 ///
-/// On the Dioxus Docsite, it dropped the patch time from 3s to 1.1s (!)
+/// On the Aether Docsite, it dropped the patch time from 3s to 1.1s (!)
 #[derive(Default)]
 pub struct HotpatchModuleCache {
     pub path: PathBuf,
@@ -1578,7 +1578,7 @@ fn bindgen_symbol_catch() {
     assert!(name_is_bindgen_symbol(symbol));
 
     // v0 describe impl where a backref (NtB5_) compresses the wasm_bindgen::describe path away
-    let symbol = "_RNvXNvNtNtCs9jB4f2OZCsR_7web_sys8features8gen_Node4NodeENtB5_12WasmDescribe8describeCs3X5Dvr2wWzv_21dioxus_interpreter_js";
+    let symbol = "_RNvXNvNtNtCs9jB4f2OZCsR_7web_sys8features8gen_Node4NodeENtB5_12WasmDescribe8describeCs3X5Dvr2wWzv_21aether_interpreter_js";
     assert!(name_is_bindgen_symbol(symbol));
 
     // v0 `<T as WasmDescribeVector>::describe_vector` impl (legacy mangling matches these via
@@ -1587,7 +1587,7 @@ fn bindgen_symbol_catch() {
     assert!(name_is_bindgen_symbol(symbol));
 
     // v0 describe_vector impl in a downstream crate with the trait path backref-compressed
-    let symbol = "_RNvXsf_NtCs4ofacjxbDm2_10dioxus_web8documentNtB5_7JSOwnerNtNtCs9tRDgkfeYnK_12wasm_bindgen8describe18WasmDescribeVector15describe_vector";
+    let symbol = "_RNvXsf_NtCs4ofacjxbDm2_10aether_web8documentNtB5_7JSOwnerNtNtCs9tRDgkfeYnK_12wasm_bindgen8describe18WasmDescribeVector15describe_vector";
     assert!(name_is_bindgen_symbol(symbol));
 
     // v0 closure describe_invoke (WasmClosure trait path is backref-compressed to `NtNtBc_`)
@@ -1624,10 +1624,10 @@ fn wbg_cast_symbol_catch() {
 
     // v0 mangling: `__rt` encodes as `4___rt` (length 4, `_` separator, then `__rt`)
     assert!(name_is_wbg_cast_symbol(
-        "_RINvNtCsa7akE1TfegA_12wasm_bindgen4___rt8wbg_castINtB4_7closure12OwnedClosureDINtNtNtCs9WN6KVdqFxk_4core3ops8function5FnMutTNtNtNtCs5qlPUvWaqlJ_7web_sys8features14gen_MouseEvent10MouseEventEEp6OutputuEL_Kb1_ENtBO_9JsClosureECsjFep1nV9Dzo_32dioxus_playwright_web_patch_test"
+        "_RINvNtCsa7akE1TfegA_12wasm_bindgen4___rt8wbg_castINtB4_7closure12OwnedClosureDINtNtNtCs9WN6KVdqFxk_4core3ops8function5FnMutTNtNtNtCs5qlPUvWaqlJ_7web_sys8features14gen_MouseEvent10MouseEventEEp6OutputuEL_Kb1_ENtBO_9JsClosureECsjFep1nV9Dzo_32aether_playwright_web_patch_test"
     ));
     assert!(!name_is_wbg_cast_symbol(
-        "_RINvNvNtCsa7akE1TfegA_12wasm_bindgen4___rt8wbg_cast17breaks_if_inlinedINtNtB6_7closure12OwnedClosureDINtNtNtCs9WN6KVdqFxk_4core3ops8function5FnMutTNtNtNtCs5qlPUvWaqlJ_7web_sys8features14gen_MouseEvent10MouseEventEEp6OutputuEL_Kb1_ENtB19_9JsClosureECsjFep1nV9Dzo_32dioxus_playwright_web_patch_test"
+        "_RINvNvNtCsa7akE1TfegA_12wasm_bindgen4___rt8wbg_cast17breaks_if_inlinedINtNtB6_7closure12OwnedClosureDINtNtNtCs9WN6KVdqFxk_4core3ops8function5FnMutTNtNtNtCs5qlPUvWaqlJ_7web_sys8features14gen_MouseEvent10MouseEventEEp6OutputuEL_Kb1_ENtB19_9JsClosureECsjFep1nV9Dzo_32aether_playwright_web_patch_test"
     ));
 }
 

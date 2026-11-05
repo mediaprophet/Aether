@@ -11,7 +11,7 @@ mod component;
 mod props;
 mod utils;
 
-use dioxus_rsx as rsx;
+use aether_rsx as rsx;
 
 #[doc = include_str!("../docs/props.md")]
 #[proc_macro_derive(Props, attributes(props))]

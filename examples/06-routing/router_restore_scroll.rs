@@ -1,7 +1,7 @@
 use std::rc::Rc;
 
-use dioxus::html::geometry::PixelsVector2D;
-use dioxus::prelude::*;
+use aether::html::geometry::PixelsVector2D;
+use aether::prelude::*;
 
 #[derive(Clone, Routable, Debug, PartialEq)]
 enum Route {
@@ -12,7 +12,7 @@ enum Route {
 }
 
 fn main() {
-    dioxus::launch(App);
+    aether::launch(App);
 }
 
 #[component]

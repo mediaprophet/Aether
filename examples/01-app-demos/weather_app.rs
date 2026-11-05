@@ -1,11 +1,11 @@
 #![allow(non_snake_case)]
 
-use dioxus::{fullstack::Loading, prelude::*};
+use aether::{fullstack::Loading, prelude::*};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

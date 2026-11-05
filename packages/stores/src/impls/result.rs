@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 
 use crate::{MappedStore, store::Store};
-use dioxus_signals::{Readable, ReadableExt, Writable};
+use aether_signals::{Readable, ReadableExt, Writable};
 
 impl<Lens, T, E> Store<Result<T, E>, Lens>
 where
@@ -14,7 +14,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Ok::<u32, ()>(42));
     /// assert!(store.is_ok());
     /// ```
@@ -28,7 +28,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Ok::<u32, ()>(42));
     /// assert!(store.is_ok_and(|v| *v == 42));
     /// ```
@@ -48,7 +48,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Err::<(), u32>(42));
     /// assert!(store.is_err());
     /// ```
@@ -62,7 +62,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Err::<(), u32>(42));
     /// assert!(store.is_err_and(|v| *v == 42));
     /// ```
@@ -83,7 +83,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Ok::<u32, ()>(42));
     /// match store.ok() {
     ///     Some(ok_store) => assert_eq!(ok_store(), 42),
@@ -111,7 +111,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Err::<(), u32>(42));
     /// match store.err() {
     ///     Some(err_store) => assert_eq!(err_store(), 42),
@@ -141,7 +141,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Ok::<u32, ()>(42));
     /// match store.transpose() {
     ///     Ok(ok_store) => assert_eq!(ok_store(), 42),
@@ -181,7 +181,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Ok::<u32, ()>(42));
     /// let unwrapped = store.unwrap();
     /// assert_eq!(unwrapped(), 42);
@@ -200,7 +200,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Ok::<u32, ()>(42));
     /// let unwrapped = store.expect("Expected Ok");
     /// assert_eq!(unwrapped(), 42);
@@ -218,7 +218,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Err::<(), u32>(42));
     /// let unwrapped_err = store.unwrap_err();
     /// assert_eq!(unwrapped_err(), 42);
@@ -237,7 +237,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Err::<(), u32>(42));
     /// let unwrapped_err = store.expect_err("Expected Err");
     /// assert_eq!(unwrapped_err(), 42);
@@ -255,7 +255,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Ok::<u32, ()>(42)).inspect(|v| println!("{v}"));
     /// ```
     pub fn inspect(self, f: impl FnOnce(&T)) -> Self
@@ -278,7 +278,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Err::<(), u32>(42)).inspect_err(|v| println!("{v}"));
     /// ```
     pub fn inspect_err(self, f: impl FnOnce(&E)) -> Self
@@ -301,7 +301,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Ok::<Box<u32>, ()>(Box::new(42)));
     /// let derefed = store.as_deref().unwrap();
     /// assert_eq!(derefed(), 42);

@@ -5,13 +5,13 @@
 //!
 //! This lets you do things like backgrounding tasks, pausing animations, or changing the UI when the window is focused or not.
 
-use dioxus::desktop::tao::event::Event as WryEvent;
-use dioxus::desktop::tao::event::WindowEvent;
-use dioxus::desktop::use_wry_event_handler;
-use dioxus::prelude::*;
+use aether::desktop::tao::event::Event as WryEvent;
+use aether::desktop::tao::event::WindowEvent;
+use aether::desktop::use_wry_event_handler;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

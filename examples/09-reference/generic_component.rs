@@ -1,13 +1,13 @@
-//! This example demonstrates how to create a generic component in Dioxus.
+//! This example demonstrates how to create a generic component in Aether.
 //!
 //! Generic components can be useful when you want to create a component that renders differently depending on the type
 //! of data it receives. In this particular example, we're just using a type that implements `Display` and `PartialEq`,
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use std::fmt::Display;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

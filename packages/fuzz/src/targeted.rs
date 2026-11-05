@@ -2,7 +2,7 @@
 //!
 //! Each recipe replays as a test, and can be exported as postcard-encoded
 //! corpus seeds via the `write_targeted_seeds_to_corpus` test (gated on
-//! `DIOXUS_FUZZ_WRITE_SEEDS=1`).
+//! `AETHER_FUZZ_WRITE_SEEDS=1`).
 
 use crate::case::{FuzzCase, encode_case};
 use crate::harness::{Harness, apply_step};
@@ -64,12 +64,12 @@ fn replay_case_strict(name: &str, case: &FuzzCase) {
 
 /// Replay the entire on-disk libfuzzer corpus through the diff oracle in-process
 /// so a coverage build exercises every diff path the fuzzer has explored, not
-/// just the curated regression cases above. Gated on `DIOXUS_FUZZ_REPLAY_CORPUS=1`
+/// just the curated regression cases above. Gated on `AETHER_FUZZ_REPLAY_CORPUS=1`
 /// because replaying the full corpus is slow; enable it for coverage runs:
-///   `DIOXUS_FUZZ_REPLAY_CORPUS=1 cargo llvm-cov ... -p dioxus-vdom-fuzz`
+///   `AETHER_FUZZ_REPLAY_CORPUS=1 cargo llvm-cov ... -p aether-vdom-fuzz`
 #[test]
 fn replay_corpus_for_coverage() {
-    if std::env::var_os("DIOXUS_FUZZ_REPLAY_CORPUS").is_none() {
+    if std::env::var_os("AETHER_FUZZ_REPLAY_CORPUS").is_none() {
         return;
     }
     let corpus_dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -98,12 +98,12 @@ fn replay_corpus_for_coverage() {
 /// here also contribute to the coverage-measured fuzz binary, not just
 /// the in-process replay test.
 ///
-/// Gated on `DIOXUS_FUZZ_WRITE_SEEDS=1` so a normal `cargo test` doesn't
+/// Gated on `AETHER_FUZZ_WRITE_SEEDS=1` so a normal `cargo test` doesn't
 /// mutate corpus state. Run with:
-///   `DIOXUS_FUZZ_WRITE_SEEDS=1 cargo test -p dioxus-vdom-fuzz --lib write_targeted_seeds_to_corpus -- --nocapture`
+///   `AETHER_FUZZ_WRITE_SEEDS=1 cargo test -p aether-vdom-fuzz --lib write_targeted_seeds_to_corpus -- --nocapture`
 #[test]
 fn write_targeted_seeds_to_corpus() {
-    if std::env::var_os("DIOXUS_FUZZ_WRITE_SEEDS").is_none() {
+    if std::env::var_os("AETHER_FUZZ_WRITE_SEEDS").is_none() {
         return;
     }
     let corpus_dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))

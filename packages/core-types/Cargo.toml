@@ -1,12 +1,12 @@
 [package]
-name = "dioxus-core-types"
+name = "aether-core-types"
 edition = "2024"
 version.workspace = true
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
-description = "CLI Configuration for dioxus-cli"
+description = "CLI Configuration for aether-cli"
 keywords = ["dom", "ui", "gui", "react", ]
 
 

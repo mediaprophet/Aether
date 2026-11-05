@@ -1,17 +1,17 @@
 //! This example showcases how to use the ErrorBoundary component to handle errors in your app.
 //!
 //! The ErrorBoundary component is a special component that can be used to catch panics and other errors that occur.
-//! By default, Dioxus will catch panics during rendering, async, and handlers, and bubble them up to the nearest
+//! By default, Aether will catch panics during rendering, async, and handlers, and bubble them up to the nearest
 //! error boundary. If no error boundary is present, it will be caught by the root error boundary and the app will
 //! render the error message as just a string.
 //!
 //! NOTE: In wasm, panics can currently not be caught by the error boundary. This is a limitation of WASM in rust.
 #![allow(non_snake_case)]
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(|| rsx! { Router::<Route> {} });
+    aether::launch(|| rsx! { Router::<Route> {} });
 }
 
 /// You can use an ErrorBoundary to catch errors in children and display a warning
@@ -99,7 +99,7 @@ fn ParseNumberWithShow() -> Element {
     }
 }
 
-// On desktop, dioxus will catch panics in components and insert an error automatically
+// On desktop, aether will catch panics in components and insert an error automatically
 fn Panic() -> Element {
     rsx! {
         GoBackButton { "Home" }

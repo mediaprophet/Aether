@@ -6,7 +6,7 @@ use crate::{
     properties::ComponentFunction,
     view::ViewExt,
 };
-use dioxus_core_types::DioxusFormattable;
+use aether_core_types::AetherFormattable;
 
 use std::ops::Deref;
 use std::rc::Rc;
@@ -327,7 +327,7 @@ impl Deref for MountedVNode<'_> {
 pub enum DynamicNode {
     /// A component node
     ///
-    /// Most of the time, Dioxus will actually know which component this is as compile time, but the props and
+    /// Most of the time, Aether will actually know which component this is as compile time, but the props and
     /// assigned scope are dynamic.
     ///
     /// The actual VComponent can be dynamic between two VNodes, though, allowing implementations to swap
@@ -496,7 +496,7 @@ pub struct Attribute {
 
     /// The namespace of the attribute.
     ///
-    /// Doesn’t exist in the html spec. Used in Dioxus to denote “style” tags and other attribute groups.
+    /// Doesn’t exist in the html spec. Used in Aether to denote “style” tags and other attribute groups.
     pub namespace: Option<&'static str>,
 
     /// An indication of we should always try and set the attribute. Used in controlled components to ensure changes are propagated
@@ -506,7 +506,7 @@ pub struct Attribute {
 impl Attribute {
     /// Create a new [`Attribute`] from a name, value, namespace, and volatile bool
     ///
-    /// "Volatile" refers to whether or not Dioxus should always override the value. This helps prevent the UI in
+    /// "Volatile" refers to whether or not Aether should always override the value. This helps prevent the UI in
     /// some renderers stay in sync with the VirtualDom's understanding of the world
     pub fn new<T>(
         name: &'static str,
@@ -523,7 +523,7 @@ impl Attribute {
     }
 }
 
-/// Any of the built-in values that the Dioxus VirtualDom supports as dynamic attributes on elements
+/// Any of the built-in values that the Aether VirtualDom supports as dynamic attributes on elements
 ///
 /// These are built-in to be faster during the diffing process. To use a custom value, use the [`AttributeValue::Any`]
 /// variant.
@@ -928,7 +928,7 @@ impl<T: ToOwned<Owned = R>, R: IntoAttributeValue> IntoAttributeValue for &T {
 pub struct AnyFmtMarker;
 impl<T> IntoAttributeValue<AnyFmtMarker> for T
 where
-    T: DioxusFormattable,
+    T: AetherFormattable,
 {
     fn into_value(self) -> AttributeValue {
         AttributeValue::Text(self.format().to_string())

@@ -1,5 +1,5 @@
-# dioxus-fullstack
+# aether-fullstack
 
-- wraps dioxus-server
+- wraps aether-server
 - exposes rpc system
 

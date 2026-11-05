@@ -1,6 +1,6 @@
 use crate::renderer::RendererOracle;
 use crate::snapshot::{SnapshotAttr, SnapshotNode, attr_key, attr_to_string};
-use dioxus_core::{
+use aether_core::{
     Attribute, AttributeValue, DynamicNode, DynamicNodeSlot, Element, MountedVNode, VNodeChild,
     VirtualDom,
 };
@@ -19,7 +19,7 @@ pub(crate) fn vdom_snapshot(vdom: &VirtualDom) -> Vec<SnapshotNode> {
     vnode_snapshot(vdom, vdom.base_scope().try_mounted_root_node().unwrap())
 }
 
-/// Assert that an immediate render emits no Dioxus mutations.
+/// Assert that an immediate render emits no Aether mutations.
 #[cfg(test)]
 pub(crate) fn assert_no_mutations(vdom: &mut VirtualDom) {
     let mutations = vdom.render_immediate_to_vec();

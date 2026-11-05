@@ -1,6 +1,6 @@
 use super::WebEventExt;
 use crate::WebFileData;
-use dioxus_html::{FileData, FormValue, HasFileData, HasFormData};
+use aether_html::{FileData, FormValue, HasFileData, HasFormData};
 use js_sys::Array;
 use std::any::Any;
 use wasm_bindgen::{JsCast, prelude::wasm_bindgen};
@@ -11,7 +11,7 @@ pub(crate) struct WebFormData {
     event: Event,
 }
 
-impl WebEventExt for dioxus_html::FormData {
+impl WebEventExt for aether_html::FormData {
     type WebEvent = Event;
 
     #[inline(always)]

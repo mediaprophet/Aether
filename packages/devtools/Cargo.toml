@@ -1,19 +1,19 @@
 [package]
-name = "dioxus-devtools"
+name = "aether-devtools"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 version = { workspace = true }
 edition = "2024"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
-description = "Hot reloading utilities for Dioxus"
+description = "Hot reloading utilities for Aether"
 keywords = ["dom", "ui", "gui", "react", "hot-reloading"]
 
 [dependencies]
-dioxus-signals = { workspace = true }
-dioxus-core = { workspace = true, features = ["serialize"] }
-dioxus-devtools-types = { workspace = true }
-dioxus-cli-config = { workspace = true }
+aether-signals = { workspace = true }
+aether-core = { workspace = true, features = ["serialize"] }
+aether-devtools-types = { workspace = true }
+aether-cli-config = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 subsecond = { workspace = true }

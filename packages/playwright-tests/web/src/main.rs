@@ -1,6 +1,6 @@
 // This test is used by playwright configured in the root of the repo
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use wasm_bindgen::prelude::*;
 
 fn app() -> Element {
@@ -25,22 +25,22 @@ fn app() -> Element {
         button {
             class: "eval-button",
             onclick: move |_| async move {
-                // Make sure normal return values work. Regression test for https://github.com/DioxusLabs/dioxus/issues/3655
+                // Make sure normal return values work. Regression test for https://github.com/AetherLabs/aether/issues/3655
                 let eval = document::eval(r#"return "hello world";"#);
 
                 let result = eval.await.unwrap();
                 assert_eq!(result, "hello world");
 
-                // Make sure dioxus.send/dioxus.recv works
+                // Make sure aether.send/aether.recv works
                 let mut eval = document::eval(
                     r#"
-                        window.document.title = 'Hello from Dioxus Eval!';
+                        window.document.title = 'Hello from Aether Eval!';
                         // Receive and multiply 10 numbers
                         for (let i = 0; i < 10; i++) {
-                            let value = await dioxus.recv();
-                            dioxus.send(value*2);
+                            let value = await aether.recv();
+                            aether.send(value*2);
                         }
-                        dioxus.send("returned eval value");
+                        aether.send("returned eval value");
                     "#,
                 );
 
@@ -74,7 +74,7 @@ fn PreventDefault() -> Element {
     rsx! {
         a {
             class: "prevent-default",
-            href: "https://github.com/DioxusLabs/dioxus/tree/main/packages/playwright-tests/web",
+            href: "https://github.com/AetherLabs/aether/tree/main/packages/playwright-tests/web",
             onclick: move |evt| {
                 evt.prevent_default();
                 text.set("Psych!".to_string());
@@ -115,7 +115,7 @@ fn WebSysClosure() -> Element {
 
         // Make sure passing the runtime into the closure works
         let callback = Callback::new(|_| {
-            assert!(!dioxus::dioxus_core::Runtime::current().vdom_is_rendering());
+            assert!(!aether::aether_core::Runtime::current().vdom_is_rendering());
             *TRIGGERED.write() = true;
         });
         let closure: Closure<dyn Fn()> = Closure::new({
@@ -145,7 +145,7 @@ fn WebSysClosure() -> Element {
 #[component]
 fn DocumentElements() -> Element {
     rsx! {
-        document::Meta { id: "meta-head", name: "testing", data: "dioxus-meta-element" }
+        document::Meta { id: "meta-head", name: "testing", data: "aether-meta-element" }
         document::Link {
             id: "link-head",
             rel: "stylesheet",
@@ -156,7 +156,7 @@ fn DocumentElements() -> Element {
         document::Style { id: "style-head", "body {{ font-family: 'Roboto'; }}" }
 
         // Test that links with same href but different rel are NOT deduplicated
-        // See https://github.com/DioxusLabs/dioxus/issues/5070
+        // See https://github.com/AetherLabs/aether/issues/5070
         document::Link {
             id: "dedup-preload",
             rel: "preload",
@@ -183,7 +183,7 @@ fn DocumentElements() -> Element {
     }
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/3887
+// Regression test for https://github.com/AetherLabs/aether/issues/3887
 #[component]
 fn MergeStyles() -> Element {
     let px = 100;
@@ -198,7 +198,7 @@ fn MergeStyles() -> Element {
 }
 
 // Select elements have odd default behavior when you set the multiple attribute after mounting the element
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/3185
+// Regression test for https://github.com/AetherLabs/aether/issues/3185
 #[component]
 fn SelectMultiple() -> Element {
     rsx! {
@@ -221,6 +221,6 @@ fn SelectMultiple() -> Element {
 }
 
 fn main() {
-    dioxus::logger::init(tracing::Level::TRACE).expect("failed to initialize logger");
-    dioxus::launch(app);
+    aether::logger::init(tracing::Level::TRACE).expect("failed to initialize logger");
+    aether::launch(app);
 }

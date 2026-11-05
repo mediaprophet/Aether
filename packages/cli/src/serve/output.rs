@@ -378,7 +378,7 @@ impl Output {
 
     /// Push a message from the websocket to the logs
     pub fn push_ws_message(&mut self, bundle: BundleFormat, message: &axum::extract::ws::Message) {
-        use dioxus_devtools_types::ClientMsg;
+        use aether_devtools_types::ClientMsg;
 
         // We can only handle text messages from the websocket...
         let axum::extract::ws::Message::Text(text) = message else {
@@ -821,11 +821,11 @@ impl Output {
         let links_list: [_; 2] =
             Layout::vertical([Constraint::Length(1), Constraint::Length(1)]).areas(bottom);
 
-        if state.runner.client.build.using_dioxus_explicitly {
+        if state.runner.client.build.using_aether_explicitly {
             frame.render_widget(
                 Paragraph::new(Line::from(vec![
                     "Read the docs: ".gray(),
-                    "https://dioxuslabs.com/learn/0.7/".blue(),
+                    "https://aetherlabs.com/learn/0.7/".blue(),
                 ])),
                 links_list[0],
             );
@@ -833,7 +833,7 @@ impl Output {
             frame.render_widget(
                 Paragraph::new(Line::from(vec![
                     "Video tutorials: ".gray(),
-                    "https://youtube.com/@DioxusLabs".blue(),
+                    "https://youtube.com/@AetherLabs".blue(),
                 ])),
                 links_list[1],
             );

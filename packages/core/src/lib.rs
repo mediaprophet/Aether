@@ -9,16 +9,16 @@
 // don't drag the coverage metric down. Stable builds see no effect.
 #![cfg_attr(coverage_nightly, feature(coverage_attribute))]
 
-// Lets the `Props`/`component` derive macros refer to this crate as `dioxus_core::` even when they
-// are expanded *inside* `dioxus-core` itself (e.g. for `ErrorBoundary`/`Fragment`), so those
+// Lets the `Props`/`component` derive macros refer to this crate as `aether_core::` even when they
+// are expanded *inside* `aether-core` itself (e.g. for `ErrorBoundary`/`Fragment`), so those
 // components can use the derive instead of hand-written builders.
-extern crate self as dioxus_core;
+extern crate self as aether_core;
 
 // Debug assertions document internal invariants, but the standard
 // `debug_assert*` macros leave unreachable `cfg!(debug_assertions)` branches in
 // coverage builds. These compile away completely under `coverage_nightly` so the
 // fuzzer coverage report tracks reachable runtime behavior.
-macro_rules! dioxus_debug_assert {
+macro_rules! aether_debug_assert {
     ($($arg:tt)*) => {{
         #[cfg(all(debug_assertions, not(coverage_nightly)))]
         {
@@ -85,7 +85,7 @@ pub mod internal {
 
     pub use crate::properties::{CanPartialEq, NonPartialEq, RequiredProp, Set};
 
-    pub use dioxus_core_template::{TemplateRawTree, TemplateStorage};
+    pub use aether_core_template::{TemplateRawTree, TemplateStorage};
 
     pub use generational_box;
 }
@@ -115,7 +115,7 @@ pub(crate) mod innerlude {
 
     pub use anyhow::Context as AnyhowContext;
     pub use anyhow::anyhow;
-    pub use dioxus_core_template::Template;
+    pub use aether_core_template::Template;
     // pub use anyhow::Error as AnyhowError;
     // pub type Error = CapturedError;
 
@@ -154,20 +154,20 @@ pub use diff::template::{
     DynamicAnchor, DynamicAttrSlot, DynamicNodeSlot, StaticElement, StaticText, VNodeChild,
 };
 
-/// Equivalent to `Ok::<_, dioxus::CapturedError>(value)`.
+/// Equivalent to `Ok::<_, aether::CapturedError>(value)`.
 ///
-/// This simplifies creation of an `dioxus::Result` in places where type
+/// This simplifies creation of an `aether::Result` in places where type
 /// inference cannot deduce the `E` type of the result &mdash; without needing
-/// to write`Ok::<_, dioxus::CapturedError>(value)`.
+/// to write`Ok::<_, aether::CapturedError>(value)`.
 ///
-/// One might think that `dioxus::Result::Ok(value)` would work in such cases
+/// One might think that `aether::Result::Ok(value)` would work in such cases
 /// but it does not.
 ///
 /// ```console
 /// error[E0282]: type annotations needed for `std::result::Result<i32, E>`
 ///   --> src/main.rs:11:13
 ///    |
-/// 11 |     let _ = dioxus::Result::Ok(1);
+/// 11 |     let _ = aether::Result::Ok(1);
 ///    |         -   ^^^^^^^^^^^^^^^^^^ cannot infer type for type parameter `E` declared on the enum `Result`
 ///    |         |
 ///    |         consider giving this pattern the explicit type `std::result::Result<i32, E>`, where the type parameter `E` is specified

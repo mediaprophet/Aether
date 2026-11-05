@@ -1,21 +1,21 @@
 [package]
-name = "dioxus-html"
+name = "aether-html"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "HTML Element pack for Dioxus - a concurrent renderer-agnostic Virtual DOM for interactive user experiences"
+description = "HTML Element pack for Aether - a concurrent renderer-agnostic Virtual DOM for interactive user experiences"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react"]
 
 [dependencies]
-dioxus-core = { workspace = true }
-dioxus-core-macro = { workspace = true }
-dioxus-core-types = { workspace = true }
-dioxus-rsx = { workspace = true, optional = true }
-dioxus-html-internal-macro = { workspace = true }
-dioxus-hooks = { workspace = true }
+aether-core = { workspace = true }
+aether-core-macro = { workspace = true }
+aether-core-types = { workspace = true }
+aether-rsx = { workspace = true, optional = true }
+aether-html-internal-macro = { workspace = true }
+aether-hooks = { workspace = true }
 generational-box = { workspace = true }
 serde = { workspace = true, features = ["derive"], optional = true }
 serde_repr = { workspace = true, optional = true }
@@ -37,8 +37,8 @@ lazy-js-bundle = { workspace = true }
 
 [dev-dependencies]
 serde_json = { workspace = true }
-dioxus = { workspace = true }
-dioxus-web = { workspace = true }
+aether = { workspace = true }
+aether-web = { workspace = true }
 tokio = { workspace = true, features = ["time"] }
 manganis = { workspace = true }
 
@@ -50,10 +50,10 @@ serialize = [
     "dep:serde_repr",
     "euclid/serde",
     "keyboard-types/serde",
-    "dioxus-core/serialize",
+    "aether-core/serialize",
     "bytes/serde"
 ]
-hot-reload-context = ["dep:dioxus-rsx"]
+hot-reload-context = ["dep:aether-rsx"]
 html-to-rsx = []
 
 [package.metadata.docs.rs]

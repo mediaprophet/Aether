@@ -1,9 +1,9 @@
-// Regression test for https://github.com/DioxusLabs/dioxus/pull/3480
+// Regression test for https://github.com/AetherLabs/aether/pull/3480
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(App);
+    aether::launch(App);
 }
 
 #[component]

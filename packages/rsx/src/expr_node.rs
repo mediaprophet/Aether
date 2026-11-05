@@ -43,7 +43,7 @@ impl ToTokens for ExprNode {
         tokens.append_all(quote! {
             {
                 #[allow(unused_braces)]
-                let ___nodes = dioxus_core::IntoDynNode::into_dyn_node(#expr);
+                let ___nodes = aether_core::IntoDynNode::into_dyn_node(#expr);
                 ___nodes
             }
         })

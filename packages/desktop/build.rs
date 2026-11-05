@@ -7,12 +7,12 @@ fn check_gnu() {
         && !cfg!(feature = "gnu")
     {
         println!(
-            "cargo:warning=GNU windows targets have some limitations within Wry. Using the MSVC windows toolchain is recommended. If you would like to use continue using GNU, you can read https://github.com/wravery/webview2-rs#cross-compilation and disable this warning by adding the gnu feature to dioxus-desktop in your Cargo.toml"
+            "cargo:warning=GNU windows targets have some limitations within Wry. Using the MSVC windows toolchain is recommended. If you would like to use continue using GNU, you can read https://github.com/wravery/webview2-rs#cross-compilation and disable this warning by adding the gnu feature to aether-desktop in your Cargo.toml"
         )
     }
 
     // To prepare for a release, we add extra examples to desktop for doc scraping and copy assets from the workspace to make those examples compile
-    if option_env!("DIOXUS_RELEASE").is_some() {
+    if option_env!("AETHER_RELEASE").is_some() {
         // Append EXAMPLES_TOML to the cargo.toml
         let cargo_toml = std::fs::OpenOptions::new()
             .append(true)

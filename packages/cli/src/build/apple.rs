@@ -300,7 +300,7 @@ impl BuildRequest {
                 .await
                 .context("Failed to auto-provision entitlements for Apple codesigning.")?;
 
-            // Enrich with entitlements from Dioxus.toml config
+            // Enrich with entitlements from Aether.toml config
             let entitlements_xml = self.enrich_entitlements_from_config(entitlements_xml)?;
 
             let entitlements_temp_file = tempfile::NamedTempFile::new()?;
@@ -389,7 +389,7 @@ impl BuildRequest {
         Ok(app_dev_name.to_string())
     }
 
-    /// Enrich auto-provisioned entitlements XML with config from Dioxus.toml.
+    /// Enrich auto-provisioned entitlements XML with config from Aether.toml.
     ///
     /// Injects entitlements from `[ios.entitlements]` or `[macos.entitlements]` sections
     /// and associated domains from `[deep_links]` into the base entitlements XML.
@@ -795,7 +795,7 @@ We checked the folders:
                      Your provisioning profiles are in: {}\n\
                      \n\
                      To fix this, either:\n  \
-                     1. Set `bundle.identifier` in Dioxus.toml to match an existing profile\n  \
+                     1. Set `bundle.identifier` in Aether.toml to match an existing profile\n  \
                      2. Create a wildcard provisioning profile in your Apple Developer account\n  \
                      3. Open the project in Xcode and let it auto-provision\n\
                      \n\
@@ -954,7 +954,7 @@ We checked the folders:
         Ok(())
     }
 
-    /// Compile and install Apple Widget Extensions from Dioxus.toml config.
+    /// Compile and install Apple Widget Extensions from Aether.toml config.
     ///
     /// This processes widget extensions declared in `[[ios.widget_extensions]]` by:
     /// 1. Compiling the Swift package as a Widget Extension executable
@@ -1208,9 +1208,9 @@ async fn compile_swift_sources(
     let (_primary_name, primary_dylib) = all_dylibs.remove(0);
 
     // Create the framework bundle from the dylib
-    // Use "DioxusSwiftPlugins" as the umbrella framework name
-    let framework_name = "DioxusSwiftPlugins";
-    let bundle_identifier = "com.dioxus.swift.plugins";
+    // Use "AetherSwiftPlugins" as the umbrella framework name
+    let framework_name = "AetherSwiftPlugins";
+    let bundle_identifier = "com.aether.swift.plugins";
 
     let framework_path = create_framework_bundle(
         &primary_dylib,
@@ -1228,7 +1228,7 @@ async fn compile_swift_sources(
             &name,
             build_dir,
             target_triple,
-            &format!("com.dioxus.swift.{}", name.to_lowercase()),
+            &format!("com.aether.swift.{}", name.to_lowercase()),
         )
         .await?;
         tracing::debug!(

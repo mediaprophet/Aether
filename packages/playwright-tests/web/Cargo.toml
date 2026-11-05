@@ -1,13 +1,13 @@
 [package]
-name = "dioxus-playwright-web-test"
+name = "aether-playwright-web-test"
 version = "0.0.1"
 edition = "2024"
-description = "Playwright test for Dioxus Web"
+description = "Playwright test for Aether Web"
 license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [dependencies]
-dioxus = { workspace = true, features = ["web"]}
+aether = { workspace = true, features = ["web"]}
 serde_json = { workspace = true }
 tracing = { workspace = true }
 wasm-bindgen = { workspace = true }

@@ -4,13 +4,13 @@
 //! dx serve --platform web
 //! ```
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::new()
+    aether::LaunchBuilder::new()
         .with_cfg(server_only!(
             ServeConfig::builder().incremental(
-                dioxus::server::IncrementalRendererConfig::default()
+                aether::server::IncrementalRendererConfig::default()
                     .invalidate_after(std::time::Duration::from_secs(120)),
             )
         ))

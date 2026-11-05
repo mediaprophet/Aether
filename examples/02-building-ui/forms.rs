@@ -5,11 +5,11 @@
 //! values map by hand — just define a struct whose fields match the `name` attributes,
 //! derive `Deserialize`, and you're done.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use serde::Deserialize;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 // Field names must match the `name` attribute on each input

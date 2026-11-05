@@ -123,7 +123,7 @@ pub(crate) fn resolve_asset_options(source: &Path, options: &AssetVariant) -> Re
         AssetVariant::Unknown => resolve_unknown_asset_options(source),
         _ => {
             tracing::warn!(
-                "Unknown asset options... you may need to update the Dioxus CLI. Defaulting to a generic file: {:?}",
+                "Unknown asset options... you may need to update the Aether CLI. Defaulting to a generic file: {:?}",
                 options
             );
             resolve_unknown_asset_options(source)

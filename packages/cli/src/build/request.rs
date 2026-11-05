@@ -1,7 +1,7 @@
 //! # [`BuildRequest`] - the core of the build process
 //!
 //! The [`BuildRequest`] object is the core of the build process. It contains all the resolved arguments
-//! flowing in from the CLI, dioxus.toml, env vars, and the workspace.
+//! flowing in from the CLI, aether.toml, env vars, and the workspace.
 //!
 //! Every BuildRequest is tied to a given workspace and BuildArgs. For simplicity's sake, the BuildArgs
 //! struct is used to represent the CLI arguments and all other configuration is basically just
@@ -125,7 +125,7 @@
 //! root().join(bundled)
 //! ```
 //!
-//! Every dioxus app can have an optional server executable which will influence the final bundle.
+//! Every aether app can have an optional server executable which will influence the final bundle.
 //! This is built in parallel with the app executable during the `build` phase and the progres/status
 //! of the build is aggregated.
 //!
@@ -195,7 +195,7 @@
 
 use super::HotpatchModuleCache;
 use crate::{
-    AndroidTools, BuildContext, BuildId, BundleFormat, DX_RUSTC_WRAPPER_ENV_VAR, DioxusConfig,
+    AndroidTools, BuildContext, BuildId, BundleFormat, DX_RUSTC_WRAPPER_ENV_VAR, AetherConfig,
     LinkAction, Platform, Renderer, Result, RustcArgs, TargetArgs, Workspace,
 };
 use crate::{
@@ -206,8 +206,8 @@ use anyhow::{Context, bail};
 use cargo_metadata::diagnostic::Diagnostic;
 use cargo_toml::{DebugSetting, Profile, Profiles, StripSetting};
 use depinfo::RustcDepInfo;
-use dioxus_cli_config::PRODUCT_NAME_ENV;
-use dioxus_cli_config::{APP_TITLE_ENV, ASSET_ROOT_ENV};
+use aether_cli_config::PRODUCT_NAME_ENV;
+use aether_cli_config::{APP_TITLE_ENV, ASSET_ROOT_ENV};
 use krates::{NodeId, cm::TargetKind};
 use manganis::BundledAsset;
 use rayon::prelude::{IntoParallelRefIterator, ParallelIterator};
@@ -242,7 +242,7 @@ use tokio::{io::AsyncBufReadExt, process::Command};
 #[derive(Clone)]
 pub(crate) struct BuildRequest {
     pub(crate) workspace: Arc<Workspace>,
-    pub(crate) config: DioxusConfig,
+    pub(crate) config: AetherConfig,
     pub(crate) crate_package: NodeId,
     pub(crate) crate_target: krates::cm::Target,
     pub(crate) profile: String,
@@ -266,7 +266,7 @@ pub(crate) struct BuildRequest {
     pub(crate) inject_loading_scripts: bool,
     pub(crate) custom_linker: Option<PathBuf>,
     pub(crate) base_path: Option<String>,
-    pub(crate) using_dioxus_explicitly: bool,
+    pub(crate) using_aether_explicitly: bool,
     pub(crate) apple_entitlements: Option<PathBuf>,
     pub(crate) apple_team_id: Option<String>,
     pub(crate) session_cache_dir: PathBuf,
@@ -344,7 +344,7 @@ impl BuildRequest {
     /// This method consolidates various inputs into a single source of truth. It combines:
     /// - Command-line arguments provided by the user.
     /// - The crate's `Cargo.toml`.
-    /// - The `dioxus.toml` configuration file.
+    /// - The `aether.toml` configuration file.
     /// - User-specific CLI settings.
     /// - The workspace metadata.
     /// - Host-specific details (e.g., Android tools, installed frameworks).
@@ -421,17 +421,17 @@ impl BuildRequest {
                     let binaries = target_of_kind(&TargetKind::Bin);
                     format!("Failed to find binary {bin}. \nAvailable binaries are:\n{binaries}")
                 } else {
-                    format!("Failed to find target {target_name}. \nIt looks like you are trying to build dioxus in a library crate. \
+                    format!("Failed to find target {target_name}. \nIt looks like you are trying to build aether in a library crate. \
                     You either need to run dx from inside a binary crate or build a specific example with the `--example` flag. \
                     Available examples are:\n{}", target_of_kind(&TargetKind::Example))
                 }
             })?
             .clone();
 
-        // Load config from Dioxus.toml and/or inline config in the target's source file.
-        // Inline config in doc comments takes precedence over Dioxus.toml.
+        // Load config from Aether.toml and/or inline config in the target's source file.
+        // Inline config in doc comments takes precedence over Aether.toml.
         let config = workspace
-            .load_dioxus_config(crate_package, Some(crate_target.src_path.as_std_path()))?
+            .load_aether_config(crate_package, Some(crate_target.src_path.as_std_path()))?
             .unwrap_or_default();
 
         // We usually use the simulator unless --device is passed *or* a device is detected by probing.
@@ -439,10 +439,10 @@ impl BuildRequest {
         // Tools like xcrun/adb can detect devices
         let device = args.device.clone();
 
-        let using_dioxus_explicitly = main_package
+        let using_aether_explicitly = main_package
             .dependencies
             .iter()
-            .any(|dep| dep.name == "dioxus");
+            .any(|dep| dep.name == "aether");
 
         /*
         Determine which features, triple, profile, etc to pass to the build.
@@ -458,9 +458,9 @@ impl BuildRequest {
         We call this "no-default-features-stripped."
 
         There are a few cases where the user doesn't need to pass a platform.
-        - they selected one via `dioxus = { features = ["web"] }`
+        - they selected one via `aether = { features = ["web"] }`
         - they have a single platform in their default features `default = ["web"]`
-        - there is only a single non-server renderer as a feature `web = ["dioxus/web"], server = ["dioxus/server"]`
+        - there is only a single non-server renderer as a feature `web = ["aether/web"], server = ["aether/server"]`
         - they compose the super triple via triple + bundleformat + features
 
         Note that we only use the names of the features to correspond with the platform.
@@ -493,9 +493,9 @@ impl BuildRequest {
         let mut platform = args.platform;
 
         // the crate might be selecting renderers but the user also passes a renderer. this is weird
-        // ie dioxus = { features = ["web"] } but also --platform desktop
+        // ie aether = { features = ["web"] } but also --platform desktop
         // anyways, we collect it here in the event we need it if platform is not specified.
-        let dioxus_direct_renderer = Self::renderer_enabled_by_dioxus_dependency(main_package);
+        let aether_direct_renderer = Self::renderer_enabled_by_aether_dependency(main_package);
         let known_features_as_renderers = Self::features_that_enable_renderers(main_package);
 
         // The crate might enable multiple platforms or no platforms at
@@ -507,12 +507,12 @@ impl BuildRequest {
         };
 
         // Try the easy autodetects.
-        // - if the user has `dioxus = { features = ["web"] }`
-        // - if the `default =["web"]` or `default = ["dioxus/web"]`
-        // - if there's only one non-server platform ie `web = ["dioxus/web"], server = ["dioxus/server"]`
-        // Only do this if we're explicitly using dioxus
-        if matches!(platform, Platform::Unknown) && using_dioxus_explicitly {
-            let auto = dioxus_direct_renderer
+        // - if the user has `aether = { features = ["web"] }`
+        // - if the `default =["web"]` or `default = ["aether/web"]`
+        // - if there's only one non-server platform ie `web = ["aether/web"], server = ["aether/server"]`
+        // Only do this if we're explicitly using aether
+        if matches!(platform, Platform::Unknown) && using_aether_explicitly {
+            let auto = aether_direct_renderer
                 .or_else(|| {
                     if enabled_renderers.len() == 1 {
                         Some(enabled_renderers[0].clone())
@@ -552,7 +552,7 @@ impl BuildRequest {
 
             if let Some((direct, feature)) = auto {
                 match direct {
-                    _ if feature == "mobile" || feature == "dioxus/mobile" => {
+                    _ if feature == "mobile" || feature == "aether/mobile" => {
                         bail!(
                             "Could not autodetect mobile platform. Use --ios or --android instead."
                         );
@@ -685,15 +685,15 @@ impl BuildRequest {
             features.sort();
         }
 
-        // The triple will be the triple passed or the host if using dioxus.
-        let triple = if using_dioxus_explicitly {
+        // The triple will be the triple passed or the host if using aether.
+        let triple = if using_aether_explicitly {
             triple.context("Could not automatically detect target triple. Make sure to specify the platform (ie --web or --desktop) or the triple directly.")?
         } else {
             triple.unwrap_or(Triple::host())
         };
 
         // The bundle format will be the bundle format passed or the host.
-        let bundle = if using_dioxus_explicitly {
+        let bundle = if using_aether_explicitly {
             bundle_format.context("Could not automatically detect bundle format")?
         } else {
             bundle_format.unwrap_or(BundleFormat::host())
@@ -711,7 +711,7 @@ impl BuildRequest {
 
         // Set the profile of the build if it's not already set
         // This is mostly used for isolation of builds (preventing thrashing) but also useful to have multiple performance profiles
-        // We might want to move some of these profiles into dioxus.toml and make them "virtual".
+        // We might want to move some of these profiles into aether.toml and make them "virtual".
         let profile = match args.profile.clone() {
             Some(profile) => profile,
             None => bundle.profile_name(args.release),
@@ -908,7 +908,7 @@ impl BuildRequest {
             package,
             main_target,
             rustflags,
-            using_dioxus_explicitly,
+            using_aether_explicitly,
             should_codesign,
             session_cache_dir,
             skip_assets: args.skip_assets,
@@ -960,7 +960,7 @@ impl BuildRequest {
         // Compile the Windows resource (.res) so it's ready to be linked in later
         if matches!(self.triple.operating_system, OperatingSystem::Windows) {
             if let Err(err) = self.write_winres() {
-                if self.using_dioxus_explicitly {
+                if self.using_aether_explicitly {
                     tracing::warn!("Application may not have an icon: {err}");
                 }
             }
@@ -1097,7 +1097,7 @@ impl BuildRequest {
 
                     // These outputs look something like:
                     //
-                    // { "artifact":"target/debug/deps/libdioxus_core-4f2a0b3c1e5f8b7c.rlib", "emit":"link" }
+                    // { "artifact":"target/debug/deps/libaether_core-4f2a0b3c1e5f8b7c.rlib", "emit":"link" }
                     //
                     // There are other outputs like depinfo that we might be interested in the future.
                     if let Ok(artifact) = serde_json::from_str::<RustcArtifact>(&line) {
@@ -1429,7 +1429,7 @@ impl BuildRequest {
     /// Collect assets and plugin metadata from the final executable in one pass
     ///
     /// This method extracts assets and FFI plugin metadata (Android/Swift) from the
-    /// binary. Permissions are now read from Dioxus.toml, not extracted from the binary.
+    /// binary. Permissions are now read from Aether.toml, not extracted from the binary.
     pub async fn collect_assets_and_metadata(
         &self,
         exe: &Path,
@@ -2096,7 +2096,7 @@ impl BuildRequest {
                 .context("Failed to embed Swift standard libraries")?;
         }
 
-        // Compile and install Apple Widget Extensions from Dioxus.toml config
+        // Compile and install Apple Widget Extensions from Aether.toml config
         if matches!(self.bundle, BundleFormat::Ios | BundleFormat::MacOS)
             && !self.config.ios.widget_extensions.is_empty()
         {
@@ -2613,7 +2613,7 @@ impl BuildRequest {
             },
 
             // from the apk spec, the root exe is a shared library
-            // defaults to "main" (libmain.so) per NativeActivity convention, overridable in Dioxus.toml
+            // defaults to "main" (libmain.so) per NativeActivity convention, overridable in Aether.toml
             BundleFormat::Android => {
                 let lib_name = self.android_lib_name();
                 format!("lib{lib_name}.so")
@@ -2678,7 +2678,7 @@ impl BuildRequest {
         self.session_cache_dir().join("windows_command.txt")
     }
 
-    /// Get the outdir specified by the Dioxus.toml, relative to the crate directory.
+    /// Get the outdir specified by the Aether.toml, relative to the crate directory.
     /// We don't support workspaces yet since that would cause a collision of bundles per project.
     pub(crate) fn crate_out_dir(&self) -> Option<PathBuf> {
         self.config
@@ -2690,7 +2690,7 @@ impl BuildRequest {
 
     /// Compose an out directory. Represents the typical "dist" directory that
     /// is "distributed" after building an application (configurable in the
-    /// `Dioxus.toml`).
+    /// `Aether.toml`).
     fn internal_out_dir(&self) -> PathBuf {
         let dir = self.target_dir.join("dx");
         std::fs::create_dir_all(&dir).unwrap();
@@ -2800,7 +2800,7 @@ impl BuildRequest {
 
     /// Does the app specify:
     ///
-    /// - Dioxus with "fullstack" enabled? (access to serverfns, etc)
+    /// - Aether with "fullstack" enabled? (access to serverfns, etc)
     /// - An explicit "fullstack" feature that enables said feature?
     ///
     /// Note that we don't detect if dependencies enable it transitively since we want to be explicit about it.
@@ -2808,40 +2808,40 @@ impl BuildRequest {
     /// The intention here is to detect if "fullstack" is enabled in the target's features list:
     /// ```toml
     /// [dependencies]
-    /// dioxus = { version = "0.4", features = ["fullstack"] }
+    /// aether = { version = "0.4", features = ["fullstack"] }
     /// ```
     ///
     /// or as an explicit feature in default:
     /// ```toml
     /// [features]
-    /// default = ["dioxus/fullstack"]
+    /// default = ["aether/fullstack"]
     /// ```
     ///
-    /// or as a default feature that enables the dioxus feature:
+    /// or as a default feature that enables the aether feature:
     /// ```toml
     /// [features]
     /// default = ["fullstack"]
-    /// fullstack = ["dioxus/fullstack"]
+    /// fullstack = ["aether/fullstack"]
     /// ```
     ///
-    /// or as an explicit feature (that enables the dioxus feature):
+    /// or as an explicit feature (that enables the aether feature):
     /// ```
     /// dx serve app --features "fullstack"
     /// ```
     pub(crate) fn fullstack_feature_enabled(&self) -> bool {
-        let dioxus_dep = self
+        let aether_dep = self
             .package()
             .dependencies
             .iter()
-            .find(|dep| dep.name == "dioxus");
+            .find(|dep| dep.name == "aether");
 
-        // If we don't have a dioxus dependency, we can't be fullstack. This shouldn't impact non-dioxus projects
-        let Some(dioxus_dep) = dioxus_dep else {
+        // If we don't have a aether dependency, we can't be fullstack. This shouldn't impact non-aether projects
+        let Some(aether_dep) = aether_dep else {
             return false;
         };
 
-        // Check if the dioxus dependency has the "fullstack" feature enabled
-        if dioxus_dep.features.iter().any(|f| f == "fullstack") {
+        // Check if the aether dependency has the "fullstack" feature enabled
+        if aether_dep.features.iter().any(|f| f == "fullstack") {
             return true;
         }
 
@@ -2850,7 +2850,7 @@ impl BuildRequest {
             .package()
             .features
             .iter()
-            .filter(|(_name, list)| list.iter().any(|f| f == "dioxus/fullstack"));
+            .filter(|(_name, list)| list.iter().any(|f| f == "aether/fullstack"));
 
         for (name, _list) in transitive {
             if self.features.contains(name) {
@@ -3133,7 +3133,7 @@ impl BuildRequest {
             // Add the profile definition first.
             args.push(format!(r#"profile.{profile}.inherits="{inherits}""#));
 
-            // The default dioxus experience is to lightly optimize the web build, both in debug and release
+            // The default aether experience is to lightly optimize the web build, both in debug and release
             // Note that typically in release builds, you would strip debuginfo, but we actually choose to do
             // that with wasm-opt tooling instead.
             if matches!(self.bundle, BundleFormat::Web) {

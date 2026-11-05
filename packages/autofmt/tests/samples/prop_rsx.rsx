@@ -8,7 +8,7 @@ fn AvailablePlatforms() -> Element {
                             "One codebase, every platform."
                         }
                         p { class: "text-xl text-gray-600 dark:text-gray-400 pb-4 max-w-screen-sm",
-                            "Dioxus is a React-inspired library for Rust focused on developer experience. Build fast, beautiful, and fully-featured apps for every platform in less time."
+                            "Aether is a React-inspired library for Rust focused on developer experience. Build fast, beautiful, and fully-featured apps for every platform in less time."
                         }
                     }
                     snippets::Snippets {}
@@ -120,10 +120,10 @@ fn DeveloperExperience() -> Element {
                         }
                         div { class: "flex flex-row",
                             p { class: "text-xl text-gray-600 dark:text-gray-400 pb-4 max-w-screen-sm w-1/2",
-                                "Dioxus is a React-inspired library for Rust that empowers you to quickly build fast, beautiful, and fully-featured apps for every platform."
+                                "Aether is a React-inspired library for Rust that empowers you to quickly build fast, beautiful, and fully-featured apps for every platform."
                             }
                             p { class: "text-xl text-gray-600 dark:text-gray-400 pb-4 max-w-screen-sm w-1/2",
-                                "Dioxus is a React-inspired library for Rust that empowers you to quickly build fast, beautiful, and fully-featured apps for every platform."
+                                "Aether is a React-inspired library for Rust that empowers you to quickly build fast, beautiful, and fully-featured apps for every platform."
                             }
                         }
                     }
@@ -206,11 +206,11 @@ fn Stats() -> Element {
                 }
             }
 
-            a { href: "https://github.com/dioxuslabs/dioxus/graphs/contributors",
+            a { href: "https://github.com/aetherlabs/aether/graphs/contributors",
                 img {
-                    src: "https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=52&columns=13",
+                    src: "https://contrib.rocks/image?repo=aetherlabs/aether&max=52&columns=13",
                     class: "mx-auto pb-12",
-                    alt: "Dioxus Contributors",
+                    alt: "Aether Contributors",
                 }
             }
         }

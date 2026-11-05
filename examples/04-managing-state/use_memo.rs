@@ -5,10 +5,10 @@
 //! on every render, and without introducing another `use_signal` that you have to keep
 //! in sync manually.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

@@ -1,6 +1,6 @@
 # Geolocation demo
 
-A minimal Dioxus application that implements a native plugin.
+A minimal Aether application that implements a native plugin.
 
 The plugin demonstrated here makes it possible to access the user's geolocation. It does a few things:
 

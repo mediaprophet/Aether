@@ -1,4 +1,4 @@
-use dioxus_html::HasCompositionData;
+use aether_html::HasCompositionData;
 use web_sys::CompositionEvent;
 
 use super::{Synthetic, WebEventExt};
@@ -13,7 +13,7 @@ impl HasCompositionData for Synthetic<CompositionEvent> {
     }
 }
 
-impl WebEventExt for dioxus_html::CompositionData {
+impl WebEventExt for aether_html::CompositionData {
     type WebEvent = web_sys::CompositionEvent;
 
     #[inline(always)]

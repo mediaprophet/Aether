@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.dioxus.geolocation"
+    namespace = "com.aether.geolocation"
     compileSdk = 34
 
     defaultConfig {

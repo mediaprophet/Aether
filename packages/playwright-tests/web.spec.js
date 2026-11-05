@@ -88,7 +88,7 @@ test("eval", async ({ page }) => {
   await button.click();
 
   // Check that the title changed.
-  await expect(page).toHaveTitle("Hello from Dioxus Eval!");
+  await expect(page).toHaveTitle("Hello from Aether Eval!");
 
   // Check that the div has the eval value.
   await expect(div).toHaveText("returned eval value");
@@ -130,7 +130,7 @@ test("document elements", async ({ page }) => {
   // wait until the meta element is mounted
   const meta = page.locator("meta#meta-head[name='testing']");
   await meta.waitFor({ state: "attached" });
-  await expect(meta).toHaveAttribute("data", "dioxus-meta-element");
+  await expect(meta).toHaveAttribute("data", "aether-meta-element");
 
   const link = page.locator("link#link-head[rel='stylesheet']");
   await link.waitFor({ state: "attached" });

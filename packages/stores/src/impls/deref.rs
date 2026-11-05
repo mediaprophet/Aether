@@ -1,7 +1,7 @@
 use std::ops::DerefMut;
 
 use crate::{MappedStore, store::Store};
-use dioxus_signals::Readable;
+use aether_signals::Readable;
 
 impl<Lens, T> Store<T, Lens>
 where
@@ -14,7 +14,7 @@ where
     /// # Example
     ///
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| Box::new(vec![1, 2, 3]));
     /// let deref_store = store.deref();
     /// // The dereferenced store can access the store methods of the underlying type.

@@ -4,8 +4,8 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 fn main() {
-    println!("cargo:rerun-if-env-changed=DIOXUS_CLI_GIT_SHA");
-    println!("cargo:rerun-if-env-changed=DIOXUS_CLI_GIT_SHA_SHORT");
+    println!("cargo:rerun-if-env-changed=AETHER_CLI_GIT_SHA");
+    println!("cargo:rerun-if-env-changed=AETHER_CLI_GIT_SHA_SHORT");
 
     let manifest_dir = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap());
     let git_dir = find_git_dir(&manifest_dir);
@@ -22,18 +22,18 @@ fn main() {
     }
     emit_rerun(&manifest_dir.join(".cargo_vcs_info.json"));
 
-    let full_hash = env_nonempty("DIOXUS_CLI_GIT_SHA")
+    let full_hash = env_nonempty("AETHER_CLI_GIT_SHA")
         .or_else(|| git_dir.as_deref().and_then(read_head_sha))
         .or_else(|| read_cargo_vcs_info(&manifest_dir))
         .or_else(|| git_cli_sha(&manifest_dir));
 
     if let Some(full_hash) = full_hash {
         let full_hash = full_hash.trim();
-        println!("cargo:rustc-env=DIOXUS_CLI_GIT_SHA={full_hash}");
+        println!("cargo:rustc-env=AETHER_CLI_GIT_SHA={full_hash}");
 
-        let short_hash = env_nonempty("DIOXUS_CLI_GIT_SHA_SHORT")
+        let short_hash = env_nonempty("AETHER_CLI_GIT_SHA_SHORT")
             .unwrap_or_else(|| full_hash.chars().take(7).collect());
-        println!("cargo:rustc-env=DIOXUS_CLI_GIT_SHA_SHORT={short_hash}");
+        println!("cargo:rustc-env=AETHER_CLI_GIT_SHA_SHORT={short_hash}");
     }
 }
 

@@ -8,14 +8,14 @@
 //!    that points at it. This avoids the network round-trip and makes the font available
 //!    offline.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 // A local font, bundled into the app. The asset macro fingerprints and copies the file
 // into the final build; at runtime `INTER` formats to the public URL.
 const INTER: Asset = asset!("/examples/assets/Inter-Regular.woff2");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

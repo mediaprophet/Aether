@@ -1,13 +1,13 @@
-# Dioxus PWA example
+# Aether PWA example
 
-This is a basic example of a progressive web app (PWA) using Dioxus and Dioxus CLI.
+This is a basic example of a progressive web app (PWA) using Aether and Aether CLI.
 Currently PWA functionality requires the use of a service worker and manifest file, so this isn't 100% Rust yet.
 
 It is also very much usable as a template for your projects, if you're aiming to create a PWA.
 
 ## Try the example
 
-Make sure you have Dioxus CLI installed (if you're unsure, run `cargo install dioxus-cli --locked`).
+Make sure you have Aether CLI installed (if you're unsure, run `cargo install aether-cli --locked`).
 
 You can run `dx serve` in this directory to start the web server locally, or run
 `dx build --release` to build the project so you can deploy it on a separate web-server.
@@ -16,7 +16,7 @@ You can run `dx serve` in this directory to start the web server locally, or run
 
 ```
 ├── Cargo.toml
-├── Dioxus.toml
+├── Aether.toml
 ├── index.html // Custom HTML is needed for this, to load the SW and manifest.
 ├── LICENSE
 ├── public

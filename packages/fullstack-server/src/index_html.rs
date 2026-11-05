@@ -14,7 +14,7 @@ use std::path::Path;
 /// - `post_main`: The content following the main application container (e.g., `<div id="main">`).
 /// - `after_closing_body_tag`: The content following the closing `</body>` tag.
 ///
-/// These fields are not explicitly exposed as part of the API, but are critical for dioxus-fullstack
+/// These fields are not explicitly exposed as part of the API, but are critical for aether-fullstack
 /// to properly inject server-rendered content and client-side bootstrapping scripts into the HTML.
 ///
 /// The simplest HTML document that satisfies this structure is:

@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_core::{ScopeId, consume_context_from_scope, current_scope_id, generation};
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_core::{ScopeId, consume_context_from_scope, current_scope_id, generation};
+use aether_renderer_oracle::RendererOracle;
 use std::cell::Cell;
 
 #[test]

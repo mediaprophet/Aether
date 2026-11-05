@@ -27,7 +27,7 @@ macro_rules! with_html_event_groups {
                     /// the text being inserted.
                     ///
                     /// ```rust
-                    /// use dioxus::prelude::*;
+                    /// use aether::prelude::*;
                     ///
                     /// fn App() -> Element {
                     ///     rsx! {
@@ -103,7 +103,7 @@ macro_rules! with_html_event_groups {
                     /// 1) Controlled inputs directly update the value of the input element as the user interacts with the element
                     ///
                     /// ```rust
-                    /// use dioxus::prelude::*;
+                    /// use aether::prelude::*;
                     ///
                     /// fn App() -> Element {
                     ///     let mut value = use_signal(|| "hello world".to_string());
@@ -124,7 +124,7 @@ macro_rules! with_html_event_groups {
                     /// 2) Uncontrolled inputs just read the value of the input element as it changes
                     ///
                     /// ```rust
-                    /// use dioxus::prelude::*;
+                    /// use aether::prelude::*;
                     ///
                     /// fn App() -> Element {
                     ///     rsx! {
@@ -191,12 +191,12 @@ macro_rules! with_html_event_groups {
                     #[doc(alias = "useRef")]
                     /// The onmounted event is fired when the element is first added to the DOM. This event gives you a [`MountedData`] object and lets you interact with the raw DOM element.
                     ///
-                    /// This event is fired once per element. If you need to access the element multiple times, you can store the [`MountedData`] object in a [`use_signal`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) hook and use it as needed.
+                    /// This event is fired once per element. If you need to access the element multiple times, you can store the [`MountedData`] object in a [`use_signal`](https://docs.rs/aether-hooks/latest/aether_hooks/fn.use_signal.html) hook and use it as needed.
                     ///
                     /// # Examples
                     ///
                     /// ```rust, no_run
-                    /// # use dioxus::prelude::*;
+                    /// # use aether::prelude::*;
                     /// fn App() -> Element {
                     ///     let mut header_element = use_signal(|| None);
                     ///
@@ -229,8 +229,8 @@ macro_rules! with_html_event_groups {
                     /// The `MountedData` struct contains cross platform APIs that work on the desktop, mobile, liveview and web platforms. For the web platform, you can also downcast the `MountedData` event to the `web-sys::Element` type for more web specific APIs:
                     ///
                     /// ```rust, ignore
-                    /// use dioxus::prelude::*;
-                    /// use dioxus_web::WebEventExt; // provides [`as_web_event()`] method
+                    /// use aether::prelude::*;
+                    /// use aether_web::WebEventExt; // provides [`as_web_event()`] method
                     ///
                     /// fn App() -> Element {
                     ///     rsx! {
@@ -465,7 +465,7 @@ macro_rules! expand_html_event_listeners {
             )*
         }
     ) => {
-        dioxus_html_internal_macro::impl_event_extensions! {
+        aether_html_internal_macro::impl_event_extensions! {
             $(
                 $(
                     $( #[$attr] )*

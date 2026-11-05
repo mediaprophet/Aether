@@ -3,7 +3,7 @@
 /// todo: this should not be in this crate, but this crate is a "root" crate and
 /// has zero-deps, meaning it gets compiled before anything else.
 ///
-/// This function being here means we can use it in the interpreter without pulling in dioxus-html,
+/// This function being here means we can use it in the interpreter without pulling in aether-html,
 /// drastically shortening the crate graph and thus compile times
 ///
 /// The real solution to this problem is that events need to mark themselves as "bubbling" or "not bubbling"

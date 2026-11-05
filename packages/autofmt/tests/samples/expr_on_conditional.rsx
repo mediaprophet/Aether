@@ -1,6 +1,6 @@
 //! A comment about this file
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[component]
 pub fn Sample() -> Element {

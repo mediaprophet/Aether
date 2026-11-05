@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_core::{NoOpMutations, ScopeId, current_scope_id, generation};
-use dioxus_renderer_oracle::{OracleNodeId, RendererOracle};
+use aether::prelude::*;
+use aether_core::{NoOpMutations, ScopeId, current_scope_id, generation};
+use aether_renderer_oracle::{OracleNodeId, RendererOracle};
 use std::cell::{Cell, RefCell};
 
 /// When returning sets of components, we do a light diff of the contents to preserve some react-like functionality
@@ -134,7 +134,7 @@ fn component_replacement_from_empty_output_uses_slot_site() {
     }
 
     fn app() -> Element {
-        let phase = dioxus_core::generation() % 2;
+        let phase = aether_core::generation() % 2;
         let child = if phase == 0 {
             rsx! { empty_child {} }
         } else {

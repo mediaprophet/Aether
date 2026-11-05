@@ -1,5 +1,5 @@
-use dioxus_core::use_hook;
-use dioxus_signals::{ReadSignal, SetCompare};
+use aether_core::use_hook;
+use aether_signals::{ReadSignal, SetCompare};
 use std::hash::Hash;
 
 /// Creates a new SetCompare which efficiently tracks when a value changes to check if it is equal to a set of values.
@@ -7,7 +7,7 @@ use std::hash::Hash;
 /// Generally, you shouldn't need to use this hook. Instead you can use [`crate::use_memo()`]. If you have many values that you need to compare to a single value, this hook will change updates from O(n) to O(1) where n is the number of values you are comparing to.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// fn App() -> Element {
 ///     let mut count = use_signal(|| 0);

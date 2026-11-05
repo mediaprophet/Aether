@@ -9,11 +9,11 @@
 //!
 //! The entire featuresuite of wry and tao is available to you
 
-use dioxus::desktop::{Config, WindowBuilder, window};
-use dioxus::prelude::*;
+use aether::desktop::{Config, WindowBuilder, window};
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::desktop()
+    aether::LaunchBuilder::desktop()
         .with_cfg(
             Config::new().with_window(
                 WindowBuilder::new()
@@ -46,7 +46,7 @@ fn Header() -> Element {
         header { class: "text-gray-400 bg-gray-900 body-font", onmousedown: move |_| window().drag(),
             div { class: "container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center",
                 a { class: "flex title-font font-medium items-center text-white mb-4 md:mb-0",
-                    span { class: "ml-3 text-xl", "Dioxus" }
+                    span { class: "ml-3 text-xl", "Aether" }
                 }
                 nav { class: "md:ml-auto flex flex-wrap items-center text-base justify-center" }
 
@@ -128,7 +128,7 @@ fn SetTitle() -> Element {
             button {
                 class: "inline-flex items-center text-white bg-blue-500 border-0 py-1 px-3 hover:bg-green-700 rounded",
                 onmousedown: |evt| evt.stop_propagation(),
-                onclick: move |_| window().set_title("Dioxus Application"),
+                onclick: move |_| window().set_title("Aether Application"),
                 "Change Title"
             }
         }

@@ -268,7 +268,7 @@ impl DefineElements {
         quote! {
             #[doc(hidden)]
             #[macro_export]
-            macro_rules! __dioxus_html_define_elements_with_detected_gated_attributes {
+            macro_rules! __aether_html_define_elements_with_detected_gated_attributes {
                 (
                     $target_macro:path,
                     core = $core:path,
@@ -339,7 +339,7 @@ impl DefineElements {
             pub struct HtmlCtx;
 
             #[cfg(feature = "hot-reload-context")]
-            impl ::dioxus_core_types::HotReloadingContext for HtmlCtx {
+            impl ::aether_core_types::HotReloadingContext for HtmlCtx {
                 fn map_attribute(
                     element: &str,
                     attribute: &str,
@@ -495,25 +495,25 @@ impl ElementDef {
 
             quote! {
                 #[allow(non_snake_case)]
-                fn #ident<__DioxusAttributeMarker, __DioxusAttributeValue>(
+                fn #ident<__AetherAttributeMarker, __AetherAttributeValue>(
                     self,
-                    value: __DioxusAttributeValue,
-                ) -> <__DioxusAttributeValue as #core::view::IntoAttributeBuilderValue<
+                    value: __AetherAttributeValue,
+                ) -> <__AetherAttributeValue as #core::view::IntoAttributeBuilderValue<
                     Self,
                     #descriptor,
-                    __DioxusAttributeMarker,
+                    __AetherAttributeMarker,
                 >>::Output
                 where
-                    __DioxusAttributeValue: #core::view::IntoAttributeBuilderValue<
+                    __AetherAttributeValue: #core::view::IntoAttributeBuilderValue<
                         Self,
                         #descriptor,
-                        __DioxusAttributeMarker,
+                        __AetherAttributeMarker,
                     >,
                 {
-                    <__DioxusAttributeValue as #core::view::IntoAttributeBuilderValue<
+                    <__AetherAttributeValue as #core::view::IntoAttributeBuilderValue<
                         Self,
                         #descriptor,
-                        __DioxusAttributeMarker,
+                        __AetherAttributeMarker,
                     >>::append_to(value, self)
                 }
             }
@@ -562,8 +562,8 @@ impl ElementDef {
                     #(#methods)*
                 }
 
-                impl<__DioxusAttributes, __DioxusChildren> #extension_name
-                    for #core::view::ElementBuilder<#tag, __DioxusAttributes, __DioxusChildren>
+                impl<__AetherAttributes, __AetherChildren> #extension_name
+                    for #core::view::ElementBuilder<#tag, __AetherAttributes, __AetherChildren>
                 {
                 }
 
@@ -572,9 +572,9 @@ impl ElementDef {
                 /// grants the element's attribute methods.
                 pub trait #spread_marker {}
 
-                impl<__DioxusSpreadTarget> #extension_name for __DioxusSpreadTarget
+                impl<__AetherSpreadTarget> #extension_name for __AetherSpreadTarget
                 where
-                    __DioxusSpreadTarget:
+                    __AetherSpreadTarget:
                         #spread_marker + #core::view::AttributeBuilderTarget,
                 {
                 }

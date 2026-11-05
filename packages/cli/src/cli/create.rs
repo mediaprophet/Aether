@@ -4,12 +4,12 @@ use anyhow::{Context, bail};
 use cargo_generate::{GenerateArgs, TemplatePath, Vcs};
 use std::{fs, path::Path};
 
-pub(crate) static DEFAULT_TEMPLATE: &str = "gh:dioxuslabs/dioxus-template";
+pub(crate) static DEFAULT_TEMPLATE: &str = "gh:aetherlabs/aether-template";
 
 #[derive(Clone, Debug, Default, Deserialize, Parser)]
 #[clap(name = "new")]
 pub struct Create {
-    /// Create a new Dioxus project at PATH
+    /// Create a new Aether project at PATH
     pub path: PathBuf,
 
     /// Project name. Defaults to directory name
@@ -205,8 +205,8 @@ pub(crate) fn post_create(path: &Path, vcs: &Vcs) -> Result<()> {
         tracing::error!(dx_src = ?TraceSrc::Build, "stderr: {}", String::from_utf8_lossy(&output.stderr));
     }
 
-    // 3. Format the `Cargo.toml` and `Dioxus.toml` files.
-    let toml_paths = [path.join("Cargo.toml"), path.join("Dioxus.toml")];
+    // 3. Format the `Cargo.toml` and `Aether.toml` files.
+    let toml_paths = [path.join("Cargo.toml"), path.join("Aether.toml")];
     for toml_path in &toml_paths {
         let Ok(toml) = std::fs::read_to_string(toml_path) else {
             continue;
@@ -276,7 +276,7 @@ pub(crate) async fn check_connectivity() -> Result<()> {
     let client = crate::http_client::client();
     for x in 0..=5 {
         tokio::select! {
-            res = client.head("https://github.com/DioxusLabs/").header("User-Agent", "dioxus-cli").send() => {
+            res = client.head("https://github.com/AetherLabs/").header("User-Agent", "aether-cli").send() => {
                 if res.is_ok() {
                     return Ok(());
                 }
@@ -286,7 +286,7 @@ pub(crate) async fn check_connectivity() -> Result<()> {
         }
         if x == 0 {
             eprintln!(
-                "{GLOW_STYLE}warning{GLOW_STYLE:#}: Waiting for {LINK_STYLE}https://github.com/dioxuslabs{LINK_STYLE:#}..."
+                "{GLOW_STYLE}warning{GLOW_STYLE:#}: Waiting for {LINK_STYLE}https://github.com/aetherlabs{LINK_STYLE:#}..."
             )
         } else {
             eprintln!(
@@ -296,7 +296,7 @@ pub(crate) async fn check_connectivity() -> Result<()> {
     }
 
     bail!(
-        "Error connecting to template repository. Try cloning the template manually or add `dioxus` to a `cargo new` project."
+        "Error connecting to template repository. Try cloning the template manually or add `aether` to a `cargo new` project."
     )
 }
 

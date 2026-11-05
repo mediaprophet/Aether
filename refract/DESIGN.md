@@ -1,6 +1,6 @@
 # Refract: a store/lens-first reactive UI runtime
 
-Refract is a from-scratch exploration of what a Dioxus-like framework looks
+Refract is a from-scratch exploration of what a Aether-like framework looks
 like if the *only* state primitive is a store, and every view of state —
 fields, collection items, memos, resources — is a lens over it. It borrows the
 `Deref`/`DerefMut` dirty-tracking idea from

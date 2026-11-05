@@ -4,10 +4,10 @@
 //! elements — use snake_case in Rust (`background_color`) for the kebab-case CSS property
 //! (`background-color`). You can also set the raw `style:` attribute with a full string.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

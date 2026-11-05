@@ -152,8 +152,8 @@ impl ReactiveContext {
     /// Reset the reactive context and then run the callback in the context. This can be used to create custom reactive hooks like `use_memo`.
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_core::ReactiveContext;
+    /// # use aether::prelude::*;
+    /// # use aether_core::ReactiveContext;
     /// # use futures_util::StreamExt;
     /// fn use_simplified_memo(mut closure: impl FnMut() -> i32 + 'static) -> Signal<i32> {
     ///     use_hook(|| {

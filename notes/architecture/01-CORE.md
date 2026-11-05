@@ -1,6 +1,6 @@
-# Dioxus Core - VirtualDOM Architecture
+# Aether Core - VirtualDOM Architecture
 
-The `dioxus-core` crate is the heart of Dioxus, implementing the virtual DOM, component lifecycle, rendering pipeline, and reactive runtime.
+The `aether-core` crate is the heart of Aether, implementing the virtual DOM, component lifecycle, rendering pipeline, and reactive runtime.
 
 ## VirtualDom Structure
 

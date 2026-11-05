@@ -18,7 +18,7 @@ use axum::{
     response::IntoResponse,
     routing::{get, get_service},
 };
-use dioxus_devtools_types::{DevserverMsg, HotReloadMsg};
+use aether_devtools_types::{DevserverMsg, HotReloadMsg};
 use futures_channel::mpsc::{UnboundedReceiver, UnboundedSender};
 use futures_util::{
     StreamExt, future,
@@ -547,7 +547,7 @@ fn build_devserver_router(
 
     // Setup websocket endpoint - and pass in the extension layer immediately after
     router = router.nest(
-        "/_dioxus",
+        "/_aether",
         Router::new()
             .route(
                 "/",
@@ -649,7 +649,7 @@ fn no_cache(
                     <title>Err 404 - dx is not serving a web app</title>
                 </head>
                 <body>
-                <p>Err 404 - dioxus is not currently serving a web app</p>
+                <p>Err 404 - aether is not currently serving a web app</p>
                 </body>
             </html>
             "#,

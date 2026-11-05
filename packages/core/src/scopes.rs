@@ -42,7 +42,7 @@ impl ScopeId {
     /// # Example
     ///
     /// ```rust, no_run
-    /// use dioxus::prelude::*;
+    /// use aether::prelude::*;
     /// let my_persistent_state = Signal::new_in_scope(String::new(), ScopeId::APP);
     /// ```
     // ScopeId(0) is the root scope wrapper
@@ -58,7 +58,7 @@ impl ScopeId {
     pub const ROOT_SUSPENSE_BOUNDARY: ScopeId = ScopeId(1);
 
     /// The ScopeId of the topmost scope in the tree.
-    /// This will be higher up in the tree than [`ScopeId::APP`] because dioxus inserts a default [`crate::SuspenseBoundary`] and [`crate::ErrorBoundary`] at the root of the tree.
+    /// This will be higher up in the tree than [`ScopeId::APP`] because aether inserts a default [`crate::SuspenseBoundary`] and [`crate::ErrorBoundary`] at the root of the tree.
     // ScopeId(0) is the root scope wrapper
     pub const ROOT: ScopeId = ScopeId(0);
 

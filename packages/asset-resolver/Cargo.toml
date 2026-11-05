@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-asset-resolver"
+name = "aether-asset-resolver"
 edition = "2024"
 version.workspace = true
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
-description = "Cross-platform asset resolver for manganis and dioxus"
+description = "Cross-platform asset resolver for manganis and aether"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -17,7 +17,7 @@ thiserror = { workspace = true }
 http = { workspace = true, optional = true }
 percent-encoding = { workspace = true, optional = true }
 infer = { workspace = true, optional = true }
-dioxus-cli-config = { workspace = true, optional = true }
+aether-cli-config = { workspace = true, optional = true }
 tokio = { workspace = true, features = ["rt"], optional = true }
 
 # browser resolver dependencies
@@ -32,10 +32,10 @@ ndk-sys = { version = "0.6.0" }
 ndk-context = { version = "0.1.1" }
 
 [dev-dependencies]
-dioxus = { workspace = true }
+aether = { workspace = true }
 serde_json = { workspace = true }
 
 [features]
 default = []
 web = ["dep:web-sys", "dep:js-sys", "dep:wasm-bindgen-futures"]
-native = ["dep:http", "dep:percent-encoding", "dep:infer", "dep:dioxus-cli-config", "dep:tokio"]
+native = ["dep:http", "dep:percent-encoding", "dep:infer", "dep:aether-cli-config", "dep:tokio"]

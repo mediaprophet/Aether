@@ -1,17 +1,17 @@
 //! Managing focus
 //!
-//! This example shows how to manage focus in a Dioxus application. We implement a "roulette" that focuses on each input
+//! This example shows how to manage focus in a Aether application. We implement a "roulette" that focuses on each input
 //! in the grid every few milliseconds until the user interacts with the inputs.
 
 use std::rc::Rc;
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use futures_timer::Delay;
 
 const STYLE: Asset = asset!("/examples/assets/roulette.css");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

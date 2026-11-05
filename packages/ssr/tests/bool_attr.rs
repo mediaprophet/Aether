@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[test]
 fn static_boolean_attributes() {
@@ -10,10 +10,10 @@ fn static_boolean_attributes() {
     }
 
     let mut dom = VirtualDom::new(app);
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         r#"<div></div><div hidden="true"></div>"#
     );
 }
@@ -28,10 +28,10 @@ fn dynamic_boolean_attributes() {
     }
 
     let mut dom = VirtualDom::new(app);
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         r#"<div></div><div hidden=true></div>"#
     );
 }

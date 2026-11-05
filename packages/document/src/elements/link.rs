@@ -1,6 +1,6 @@
 use super::*;
 use crate::document;
-use dioxus_core::{VNode, use_hook};
+use aether_core::{VNode, use_hook};
 
 #[non_exhaustive]
 #[derive(Clone, Props, PartialEq)]
@@ -111,16 +111,16 @@ impl LinkProps {
 
 /// Render a [`<link>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/link) tag into the head of the page.
 ///
-/// > The [Link](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html) component in dioxus router and this component are completely different.
+/// > The [Link](https://docs.rs/aether-router/latest/aether_router/components/fn.Link.html) component in aether router and this component are completely different.
 /// > This component links resources in the head of the page, while the router component creates clickable links in the body of the page.
 ///
 /// # Example
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn RedBackground() -> Element {
 ///     rsx! {
 ///         // You can use the meta component to render a meta tag into the head of the page
-///         // This meta tag will redirect the user to the dioxuslabs homepage in 10 seconds
+///         // This meta tag will redirect the user to the aetherlabs homepage in 10 seconds
 ///         document::Link {
 ///             href: asset!("/assets/style.css"),
 ///             rel: "stylesheet",

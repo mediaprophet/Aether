@@ -343,7 +343,7 @@ impl ::core::cmp::PartialEq for SuspenseBoundaryProps {
 /// # Example
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// # fn Article() -> Element { rsx! { "Article" } }
 /// fn App() -> Element {
 ///     rsx! {
@@ -534,7 +534,7 @@ fn suspense_create(
 impl SuspenseBoundaryProps {
     /// Manually rerun the children of this suspense boundary without diffing against the old nodes.
     ///
-    /// This should only be called by dioxus-web after the suspense boundary has been streamed in from the server.
+    /// This should only be called by aether-web after the suspense boundary has been streamed in from the server.
     #[doc(hidden)]
     pub fn resolve_suspense<M: WriteMutations>(
         scope_id: ScopeId,

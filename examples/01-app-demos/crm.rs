@@ -9,13 +9,13 @@
 //! We implement a number of important details here too, like focusing inputs, handling form submits, navigating the router,
 //! platform-specific configuration, and importing 3rd party CSS libraries.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::new()
+    aether::LaunchBuilder::new()
         .with_cfg(desktop!({
-            use dioxus::desktop::{LogicalSize, WindowBuilder};
-            dioxus::desktop::Config::default()
+            use aether::desktop::{LogicalSize, WindowBuilder};
+            aether::desktop::Config::default()
                 .with_window(WindowBuilder::new().with_inner_size(LogicalSize::new(800, 600)))
         }))
         .launch(|| {
@@ -26,7 +26,7 @@ fn main() {
                     crossorigin: "anonymous",
                 }
                 Stylesheet { href: asset!("/examples/assets/crm.css") }
-                h1 { "Dioxus CRM Example" }
+                h1 { "Aether CRM Example" }
                 Router::<Route> {}
             }
         });
@@ -155,7 +155,7 @@ fn Settings() -> Element {
             class: "pure-button pure-button-primary red",
             onclick: move |_| {
                 CLIENTS.write().clear();
-                dioxus::router::router().push(Route::List);
+                aether::router::router().push(Route::List);
             },
             "Remove all Clients"
         }

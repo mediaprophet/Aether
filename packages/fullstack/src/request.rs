@@ -1,4 +1,4 @@
-use dioxus_fullstack_core::{RequestError, ServerFnError};
+use aether_fullstack_core::{RequestError, ServerFnError};
 #[cfg(feature = "server")]
 use headers::Header;
 use http::response::Parts;
@@ -164,7 +164,7 @@ impl<T, E> std::future::Future for ServerFnRequest<Result<T, E>> {
 #[diagnostic::on_unimplemented(
     message = "The return type of a server function must be `Result<T, E>`",
     note = "`T` is either `impl IntoResponse` *or* `impl Serialize`",
-    note = "`E` is either `From<ServerFnError> + Serialize`, `dioxus::CapturedError` or `StatusCode`."
+    note = "`E` is either `From<ServerFnError> + Serialize`, `aether::CapturedError` or `StatusCode`."
 )]
 pub trait AssertIsResult {}
 impl<T, E> AssertIsResult for Result<T, E> {}
@@ -183,7 +183,7 @@ Did you forget to implement `IntoRequest` or `Deserialize` for one of the argume
 
 `IntoRequest` is a trait that allows payloads to be sent to the server function.
 
-> See https://dioxuslabs.com/learn/0.7/essentials/fullstack/server_functions for more details.
+> See https://aetherlabs.com/learn/0.7/essentials/fullstack/server_functions for more details.
 
 "#)]
 pub trait AssertCanEncode {}
@@ -204,7 +204,7 @@ Did you forget to implement `FromResponse` or `DeserializeOwned` for one of the 
 
 `FromResponse` is a trait that allows payloads to be decoded from the server function response.
 
-> See https://dioxuslabs.com/learn/0.7/essentials/fullstack/server_functions for more details.
+> See https://aetherlabs.com/learn/0.7/essentials/fullstack/server_functions for more details.
 
 "#)]
 pub trait AssertCanDecode {}

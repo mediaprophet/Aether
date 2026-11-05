@@ -1,4 +1,4 @@
-use dioxus_stores::*;
+use aether_stores::*;
 
 #[derive(Store)]
 struct Item {

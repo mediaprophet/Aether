@@ -1,13 +1,13 @@
 //! Multiwindow example
 //!
-//! This example shows how to implement a simple multiwindow application using dioxus.
+//! This example shows how to implement a simple multiwindow application using aether.
 //! The app root owns each native window explicitly.
 
-use dioxus::desktop::{Config, WindowBuilder, WindowConfig};
-use dioxus::prelude::*;
+use aether::desktop::{Config, WindowBuilder, WindowConfig};
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::desktop()
+    aether::LaunchBuilder::desktop()
         .with_cfg(Config::new().with_headless_root(true))
         .launch(app);
 }

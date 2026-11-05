@@ -1,7 +1,7 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app)
+    aether::launch(app)
 }
 
 fn app() -> Element {
@@ -22,7 +22,7 @@ fn app() -> Element {
         }
 
         if api_key.peek().is_empty() || prompt.peek().is_empty() || num_images.peek().is_empty() {
-            return dioxus::Ok(ImageResponse::default());
+            return aether::Ok(ImageResponse::default());
         }
 
         let res = reqwest::Client::new()

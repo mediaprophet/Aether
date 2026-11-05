@@ -1,7 +1,7 @@
-use dioxus::html::SerializedHtmlEventConverter;
-use dioxus::prelude::*;
-use dioxus_core::Event;
-use dioxus_renderer_oracle::RendererOracle;
+use aether::html::SerializedHtmlEventConverter;
+use aether::prelude::*;
+use aether_core::Event;
+use aether_renderer_oracle::RendererOracle;
 use std::{any::Any, rc::Rc};
 use tracing_fluent_assertions::{AssertionRegistry, AssertionsLayer};
 use tracing_subscriber::{Registry, layer::SubscriberExt};

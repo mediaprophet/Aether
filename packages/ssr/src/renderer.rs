@@ -1,7 +1,7 @@
 use super::cache::Segment;
 use crate::cache::StringCache;
 
-use dioxus_core::{
+use aether_core::{
     Attribute, AttributeValue, DynamicNode, Element, MountedVNode, ScopeId, Template, VirtualDom,
 };
 use rustc_hash::FxHashMap;
@@ -237,7 +237,7 @@ impl Renderer {
 
 #[test]
 fn to_string_works() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     fn app() -> Element {
         let dynamic = 123;
@@ -273,7 +273,7 @@ fn to_string_works() {
 
 #[test]
 fn empty_for_loop_works() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     fn app() -> Element {
         rsx! {
@@ -296,7 +296,7 @@ fn empty_for_loop_works() {
 
 #[test]
 fn empty_render_works() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     fn app() -> Element {
         rsx! {}
@@ -355,7 +355,7 @@ pub(crate) fn truthy(value: &AttributeValue) -> bool {
     }
 }
 
-/// Translate Dioxus virtual attribute names to their HTML equivalents for SSR.
+/// Translate Aether virtual attribute names to their HTML equivalents for SSR.
 pub(crate) fn ssr_attr_name(name: &str) -> &str {
     match name {
         "initial_value" => "value",

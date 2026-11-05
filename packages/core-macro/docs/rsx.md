@@ -5,7 +5,7 @@ The rsx! macro makes it easy for developers to write jsx-style markup in their c
 You can render elements with rsx! with the element name and then braces surrounding the attributes and children.
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 rsx! {
     div {
         div {}
@@ -16,10 +16,10 @@ rsx! {
 <details>
 <summary>Web Components</summary>
 
-Dioxus will automatically render any elements with `-` as a untyped web component:
+Aether will automatically render any elements with `-` as a untyped web component:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 rsx! {
     div-component {
         div {}
@@ -30,7 +30,7 @@ rsx! {
 You can wrap your web component in a custom component to add type checking:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[component]
 fn MyDivComponent(width: i64) -> Element {
     rsx! {
@@ -48,7 +48,7 @@ fn MyDivComponent(width: i64) -> Element {
 You can add attributes to any element inside the braces. Attributes are key-value pairs separated by a colon.
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let width = 100;
 rsx! {
     div {
@@ -65,7 +65,7 @@ rsx! {
 You can include optional attributes with an unterminated if statement as the value of the attribute:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # let first_boolean = true;
 # let second_boolean = false;
 rsx! {
@@ -84,10 +84,10 @@ rsx! {
 
 ### Raw Attributes
 
-Dioxus defaults to attributes that are type checked as html. If you want to include an attribute that is not included in the html spec, you can use the `raw` attribute surrounded by quotes:
+Aether defaults to attributes that are type checked as html. If you want to include an attribute that is not included in the html spec, you can use the `raw` attribute surrounded by quotes:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 rsx! {
     div {
         // Set the data-count attribute to "1"
@@ -101,7 +101,7 @@ rsx! {
 You can include text in your markup as a string literal:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let name = "World";
 rsx! {
     div {
@@ -117,7 +117,7 @@ rsx! {
 You can render any [`macro@crate::component`]s you created inside your markup just like elements. Components must either start with a capital letter or contain a `_` character.
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[component]
 fn HelloWorld() -> Element {
     rsx! { "hello world!" }
@@ -135,7 +135,7 @@ rsx! {
 You can use if statements to conditionally render children. The body of the for if statement is parsed as rsx markup:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let first_boolean = true;
 let second_boolean = false;
 rsx! {
@@ -156,7 +156,7 @@ rsx! {
 You can also use for loops to iterate over a collection of items. The body of the for loop is parsed as rsx markup:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let numbers = vec![1, 2, 3];
 rsx! {
     for number in numbers {
@@ -169,10 +169,10 @@ rsx! {
 
 ## Raw Expressions
 
-You can include raw expressions inside your markup inside curly braces. Your expression must implement the [`IntoDynNode`](https://docs.rs/dioxus-core/latest/dioxus_core/trait.IntoDynNode.html) trait:
+You can include raw expressions inside your markup inside curly braces. Your expression must implement the [`IntoDynNode`](https://docs.rs/aether-core/latest/aether_core/trait.IntoDynNode.html) trait:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let name = "World";
 rsx! {
     div {

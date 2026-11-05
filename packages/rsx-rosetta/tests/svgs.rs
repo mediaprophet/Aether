@@ -2,7 +2,7 @@ use html_parser::Dom;
 
 #[test]
 fn svgs() {
-    let viewbox = dioxus_html::map_html_attribute_to_rsx("viewBox");
+    let viewbox = aether_html::map_html_attribute_to_rsx("viewBox");
     assert_eq!(viewbox, Some("view_box"));
 
     let html = r###"
@@ -15,9 +15,9 @@ fn svgs() {
 
     let dom = Dom::parse(html).unwrap();
 
-    let body = dioxus_rsx_rosetta::rsx_from_html(&dom);
+    let body = aether_rsx_rosetta::rsx_from_html(&dom);
 
-    let out = dioxus_autofmt::write_block_out(&body).unwrap();
+    let out = aether_autofmt::write_block_out(&body).unwrap();
     pretty_assertions::assert_eq!(
         &out,
         r##"
@@ -47,9 +47,9 @@ fn svgs() {
 
     let dom = Dom::parse(html).unwrap();
 
-    let body = dioxus_rsx_rosetta::rsx_from_html(&dom);
+    let body = aether_rsx_rosetta::rsx_from_html(&dom);
 
-    let out = dioxus_autofmt::write_block_out(&body).unwrap();
+    let out = aether_autofmt::write_block_out(&body).unwrap();
     pretty_assertions::assert_eq!(
         &out,
         r##"

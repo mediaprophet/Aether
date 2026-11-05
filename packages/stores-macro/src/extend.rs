@@ -60,8 +60,8 @@ pub(crate) fn extend_store(args: ExtendArgs, mut input: ItemImpl) -> syn::Result
             )
             .trait_visibility(args.visibility.unwrap_or_else(|| parse_quote!(pub)));
 
-    let immutable_bounds: WherePredicate = parse_quote!(#lens_generic: dioxus_stores::macro_helpers::dioxus_signals::Readable<Target = #item> + ::std::marker::Copy + 'static);
-    let mutable_bounds: WherePredicate = parse_quote!(#lens_generic: dioxus_stores::macro_helpers::dioxus_signals::Writable<Target = #item> + ::std::marker::Copy + 'static);
+    let immutable_bounds: WherePredicate = parse_quote!(#lens_generic: aether_stores::macro_helpers::aether_signals::Readable<Target = #item> + ::std::marker::Copy + 'static);
+    let mutable_bounds: WherePredicate = parse_quote!(#lens_generic: aether_stores::macro_helpers::aether_signals::Writable<Target = #item> + ::std::marker::Copy + 'static);
 
     for impl_item in input.items {
         match impl_item {

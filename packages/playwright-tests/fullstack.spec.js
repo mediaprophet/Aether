@@ -46,7 +46,7 @@ test("document elements", async ({ page }) => {
   // wait until the meta element is mounted
   const meta = page.locator("meta#meta-head[name='testing']");
   await meta.waitFor({ state: "attached" });
-  await expect(meta).toHaveAttribute("data", "dioxus-meta-element");
+  await expect(meta).toHaveAttribute("data", "aether-meta-element");
 
   const link = page.locator("link#link-head[rel='stylesheet']");
   await link.waitFor({ state: "attached" });

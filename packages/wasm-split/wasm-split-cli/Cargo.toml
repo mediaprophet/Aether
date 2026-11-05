@@ -6,7 +6,7 @@ authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 description = "CLI-support for wasm-split - a tool for splitting up large WASM binaries into smaller chunks"
 repository = "https://github.com/mediaprophet/Aether"
 license = "CC-BY-NC-ND-4.0"
-keywords = ["wasm", "cli", "split", "dioxus"]
+keywords = ["wasm", "cli", "split", "aether"]
 rust-version = "1.85.0"
 
 

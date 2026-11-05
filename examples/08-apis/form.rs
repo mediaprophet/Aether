@@ -1,12 +1,12 @@
 //! Forms
 //!
-//! Dioxus forms deviate slightly from html, automatically returning all named inputs
+//! Aether forms deviate slightly from html, automatically returning all named inputs
 //! in the "values" field.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

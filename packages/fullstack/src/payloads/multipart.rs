@@ -5,8 +5,8 @@ use axum::{
     extract::{FromRequest, Request},
     response::{IntoResponse, Response},
 };
-use dioxus_fullstack_core::RequestError;
-use dioxus_html::{FormData, FormEvent};
+use aether_fullstack_core::RequestError;
+use aether_html::{FormData, FormEvent};
 use std::{prelude::rust_2024::Future, rc::Rc};
 
 #[cfg(feature = "server")]
@@ -15,7 +15,7 @@ use axum::extract::multipart::{Field, MultipartError};
 /// A streaming multipart form data handler.
 ///
 /// This type makes it easy to send and receive multipart form data in a streaming fashion by directly
-/// leveraging the corresponding `dioxus_html::FormData` and `axum::extract::Multipart` types.
+/// leveraging the corresponding `aether_html::FormData` and `axum::extract::Multipart` types.
 ///
 /// On the client, you can create a `MultipartFormData` instance by using `.into()` on a `FormData` instance.
 /// This is typically done by using the `FormEvent`'s `.data()` method.
@@ -129,7 +129,7 @@ impl<S: Send + Sync + 'static, D> FromRequest<S> for MultipartFormData<D> {
 
         #[cfg(not(feature = "server"))]
         async {
-            use dioxus_fullstack_core::HttpError;
+            use aether_fullstack_core::HttpError;
 
             let _ = req;
             let _ = state;

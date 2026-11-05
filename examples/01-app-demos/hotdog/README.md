@@ -1,12 +1,12 @@
 # Hot diggity dog!
 
-A Dioxus demo app for the new tutorial!
+A Aether demo app for the new tutorial!
 
 ![Demo](assets/screenshot.png)
 
 ## To run
 
-Make sure you cd to this directory (dioxus/hotdog) and then `serve` any platform:
+Make sure you cd to this directory (aether/hotdog) and then `serve` any platform:
 
 ```rust
 dx serve --platform web

@@ -3,8 +3,8 @@
 /// # Example
 /// ```rust
 /// use generational_box::*;
-/// use dioxus::prelude::*;
-/// use dioxus_core::Subscribers;
+/// use aether::prelude::*;
+/// use aether_core::Subscribers;
 ///
 /// struct MyCopyValue<T, S: 'static> {
 ///     value: CopyValue<T, S>,
@@ -76,8 +76,8 @@ macro_rules! default_impl {
 /// # Example
 /// ```rust
 /// use generational_box::*;
-/// use dioxus::prelude::*;
-/// use dioxus_core::Subscribers;
+/// use aether::prelude::*;
+/// use aether_core::Subscribers;
 ///
 /// struct MyCopyValue<T, S: 'static> {
 ///     value: CopyValue<T, S>,
@@ -154,8 +154,8 @@ macro_rules! read_impls {
 /// # Example
 /// ```rust
 /// use generational_box::*;
-/// use dioxus::prelude::*;
-/// use dioxus_core::Subscribers;
+/// use aether::prelude::*;
+/// use aether_core::Subscribers;
 ///
 /// struct MyCopyValue<T, S: 'static> {
 ///     value: CopyValue<T, S>,
@@ -235,8 +235,8 @@ macro_rules! fmt_impls {
 /// # Example
 /// ```rust
 /// use generational_box::*;
-/// use dioxus::prelude::*;
-/// use dioxus_core::Subscribers;
+/// use aether::prelude::*;
+/// use aether_core::Subscribers;
 ///
 /// struct MyCopyValue<T, S: 'static> {
 ///     value: CopyValue<T, S>,
@@ -301,7 +301,7 @@ macro_rules! eq_impls {
 /// # Example
 /// ```rust, ignore
 /// use generational_box::*;
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// struct MyCopyValue<T, S: 'static> {
 ///     value: CopyValue<T, S>,

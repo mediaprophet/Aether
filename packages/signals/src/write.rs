@@ -16,7 +16,7 @@ pub type WritableRef<'a, T: Writable, O = <T as Readable>::Target> =
 ///
 /// # Example
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// enum MyEnum {
 ///     String(String),
 ///     Number(i32),
@@ -59,7 +59,7 @@ pub trait Writable: Readable {
 ///
 /// # Example
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn app() -> Element {
 ///     let mut value = use_signal(|| String::from("hello"));
 ///
@@ -84,7 +84,7 @@ pub trait Writable: Readable {
 /// without calling [`WriteLock::deref_mut`], you will get an error like this:
 ///
 /// ```compile_fail
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[derive(Debug)]
 /// enum Colors {
 ///     Red(u32),
@@ -116,12 +116,12 @@ pub trait Writable: Readable {
 ///   --> src/main.rs:18:21
 ///    |
 /// 16 |                 match mutable_reference {
-///    |                       ----------------- this expression has type `dioxus::prelude::Write<'_, Colors>`
+///    |                       ----------------- this expression has type `aether::prelude::Write<'_, Colors>`
 /// 17 |                     // Since we are matching on the `Write` t...
 /// 18 |                     Colors::Red(brightness) => *brightness += 1,
 ///    |                     ^^^^^^^^^^^^^^^^^^^^^^^ expected `Write<'_, Colors>`, found `Colors`
 ///    |
-///    = note: expected struct `dioxus::prelude::Write<'_, Colors, >`
+///    = note: expected struct `aether::prelude::Write<'_, Colors, >`
 ///                found enum `Colors`
 /// ```
 ///
@@ -129,7 +129,7 @@ pub trait Writable: Readable {
 ///
 /// ```rust
 /// use std::ops::DerefMut;
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[derive(Debug)]
 /// enum Colors {
 ///     Red(u32),
@@ -300,7 +300,7 @@ pub trait WritableExt: Writable {
     ///
     /// # Example
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// fn List(list: Signal<Vec<i32>>) -> Element {
     ///     rsx! {
     ///         for index in 0..list.len() {

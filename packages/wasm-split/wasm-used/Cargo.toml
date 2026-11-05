@@ -7,7 +7,7 @@ license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
 description = "wasm-used implementation for Rust"
-keywords = ["wasm", "wasm-used", "wasm-split", "dioxus" ]
+keywords = ["wasm", "wasm-used", "wasm-split", "aether" ]
 
 [dependencies]
 walrus = { workspace = true, features = ["parallel"] }

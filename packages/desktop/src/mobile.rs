@@ -1,5 +1,5 @@
-/// Expose the `Java_dev_dioxus_main_Rust_*` JNI trampolines that wry's Kotlin layer calls into.
-/// We hardcode the package to `dev.dioxus.main` so host Java/Kotlin always has a single set of
+/// Expose the `Java_dev_aether_main_Rust_*` JNI trampolines that wry's Kotlin layer calls into.
+/// We hardcode the package to `dev.aether.main` so host Java/Kotlin always has a single set of
 /// symbols to bind against, without having to plumb the top-level package name down into this crate.
 ///
 /// As of wry 0.55 the Kotlin lifecycle methods (create/start/stop/...) live on a `Rust` object
@@ -7,14 +7,14 @@
 /// `Rust` — passing `WryActivity` would emit the wrong JNI symbol names and crash at startup with
 /// `UnsatisfiedLinkError`.
 ///
-/// The CLI is expecting to find `dev.dioxus.main` in the final library. If you find a need to
+/// The CLI is expecting to find `dev.aether.main` in the final library. If you find a need to
 /// change this, you'll need to change the CLI as well.
 #[cfg(target_os = "android")]
 #[unsafe(no_mangle)]
 #[inline(never)]
 pub extern "C" fn start_app() {
     use crate::Config;
-    use dioxus_core::{Element, VirtualDom};
+    use aether_core::{Element, VirtualDom};
     use std::any::Any;
 
     // `WryActivity.onCreate` (and therefore this setup) runs again on activity re-creation
@@ -32,8 +32,8 @@ pub extern "C" fn start_app() {
         }
     }
 
-    tao::android_binding!(dev_dioxus, main, Rust, android_setup, root, tao);
-    wry::android_binding!(dev_dioxus, main, wry);
+    tao::android_binding!(dev_aether, main, Rust, android_setup, root, tao);
+    wry::android_binding!(dev_aether, main, wry);
 
     #[cfg(target_os = "android")]
     fn root() {
@@ -65,7 +65,7 @@ pub extern "C" fn start_app() {
                 //
                 // This is a slightly hacky way of being able to use std::env::var code in android apps without
                 // going through their custom java-based system.
-                let env_file = dioxus_cli_config::android_session_cache_dir().join(".env");
+                let env_file = aether_cli_config::android_session_cache_dir().join(".env");
                 if let Ok(env_file) = std::fs::read_to_string(&env_file) {
                     for line in env_file.lines() {
                         if let Some((key, value)) = line.trim().split_once('=') {

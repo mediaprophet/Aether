@@ -2,9 +2,9 @@
 
 use std::rc::Rc;
 
-use dioxus::prelude::*;
-use dioxus_history::{History, MemoryHistory};
-use dioxus_router::components::HistoryProvider;
+use aether::prelude::*;
+use aether_history::{History, MemoryHistory};
+use aether_router::components::HistoryProvider;
 
 fn prepare(path: impl Into<String>) -> VirtualDom {
     let mut vdom = VirtualDom::new_with_props(
@@ -93,7 +93,7 @@ fn prepare(path: impl Into<String>) -> VirtualDom {
 #[test]
 fn root_index() {
     let vdom = prepare("/");
-    let html = dioxus_ssr::render(&vdom);
+    let html = aether_ssr::render(&vdom);
 
     assert_eq!(html, "<h1>App</h1><h2>Root Index</h2>");
 }
@@ -101,7 +101,7 @@ fn root_index() {
 #[test]
 fn fixed() {
     let vdom = prepare("/fixed");
-    let html = dioxus_ssr::render(&vdom);
+    let html = aether_ssr::render(&vdom);
 
     assert_eq!(html, "<h1>App</h1><h2>Fixed</h2><h3>Fixed - Index</h3>");
 }
@@ -109,7 +109,7 @@ fn fixed() {
 #[test]
 fn fixed_fixed() {
     let vdom = prepare("/fixed/fixed");
-    let html = dioxus_ssr::render(&vdom);
+    let html = aether_ssr::render(&vdom);
 
     assert_eq!(html, "<h1>App</h1><h2>Fixed</h2><h3>Fixed - Fixed</h3>");
 }
@@ -117,7 +117,7 @@ fn fixed_fixed() {
 #[test]
 fn parameter() {
     let vdom = prepare("/18");
-    let html = dioxus_ssr::render(&vdom);
+    let html = aether_ssr::render(&vdom);
 
     assert_eq!(
         html,
@@ -128,7 +128,7 @@ fn parameter() {
 #[test]
 fn parameter_fixed() {
     let vdom = prepare("/18/fixed");
-    let html = dioxus_ssr::render(&vdom);
+    let html = aether_ssr::render(&vdom);
 
     assert_eq!(
         html,

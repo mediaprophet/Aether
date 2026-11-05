@@ -1,14 +1,14 @@
 use wasm_bindgen::{JsCast, JsValue, prelude::Closure};
 use web_sys::{Event, History, ScrollRestoration, Window, window};
 
-/// A [`dioxus_history::History`] provider that integrates with a browser via the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API).
+/// A [`aether_history::History`] provider that integrates with a browser via the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API).
 ///
 /// # Prefix
-/// This [`dioxus_history::History`] supports a prefix, which can be used for web apps that aren't located
+/// This [`aether_history::History`] supports a prefix, which can be used for web apps that aren't located
 /// at the root of their domain.
 ///
 /// Application developers are responsible for ensuring that right after the prefix comes a `/`. If
-/// that is not the case, this [`dioxus_history::History`] will replace the first character after the prefix
+/// that is not the case, this [`aether_history::History`] will replace the first character after the prefix
 /// with one.
 ///
 /// Application developers are responsible for not rendering the router if the prefix is not present
@@ -34,7 +34,7 @@ impl WebHistory {
     pub fn new(prefix: Option<String>, do_scroll_restoration: bool) -> Self {
         let myself = Self::new_inner(prefix, do_scroll_restoration);
 
-        let current_route = dioxus_history::History::current_route(&myself);
+        let current_route = aether_history::History::current_route(&myself);
         let current_route_str = current_route.to_string();
         let prefix_str = myself.prefix.as_deref().unwrap_or("");
         let current_url = format!("{prefix_str}{current_route_str}");
@@ -56,7 +56,7 @@ impl WebHistory {
 
         let prefix = prefix
             // If there isn't a base path, try to grab one from the CLI
-            .or_else(dioxus_cli_config::web_base_path)
+            .or_else(aether_cli_config::web_base_path)
             // Normalize the prefix to start and end with no slashes
             .as_ref()
             .map(|prefix| prefix.trim_matches('/'))
@@ -116,7 +116,7 @@ impl WebHistory {
     }
 }
 
-impl dioxus_history::History for WebHistory {
+impl aether_history::History for WebHistory {
     fn current_route(&self) -> String {
         self.route_from_location()
     }
@@ -186,7 +186,7 @@ impl dioxus_history::History for WebHistory {
     }
 }
 
-/// A [`dioxus_history::History`] provider that integrates with a browser via the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
+/// A [`aether_history::History`] provider that integrates with a browser via the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
 /// but uses the url fragment for the route. This allows serving as a single html file or on a single url path.
 pub struct HashHistory {
     do_scroll_restoration: bool,
@@ -209,7 +209,7 @@ impl HashHistory {
     pub fn new(do_scroll_restoration: bool) -> Self {
         let myself = Self::new_inner(do_scroll_restoration);
 
-        let current_route = dioxus_history::History::current_route(&myself);
+        let current_route = aether_history::History::current_route(&myself);
         let current_route_str = current_route.to_string();
         let pathname_str = &myself.pathname;
         let current_url = format!("{pathname_str}#{current_route_str}");
@@ -262,7 +262,7 @@ impl HashHistory {
     }
 }
 
-impl dioxus_history::History for HashHistory {
+impl aether_history::History for HashHistory {
     fn current_route(&self) -> String {
         let location = self.window.location();
 
@@ -360,7 +360,7 @@ impl ScrollPosition {
             Box::new(move || window.scroll_to_with_x_and_y(x, y)) as Box<dyn FnMut()>
         );
         web_sys::window()
-            .expect("should be run in a context with a `Window` object (dioxus cannot be run from a web worker)")
+            .expect("should be run in a context with a `Window` object (aether cannot be run from a web worker)")
             .request_animation_frame(&f.into_js_value().unchecked_into())
             .expect("should register `requestAnimationFrame` OK");
     }

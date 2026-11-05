@@ -62,13 +62,13 @@ async fn check_file_and_report(path: PathBuf) -> Result<()> {
 ///
 /// Doesn't do mod-descending, so it will still try to check unreachable files. TODO.
 async fn check_project_and_report(build: &BuildRequest) -> Result<()> {
-    let dioxus_crate = build
+    let aether_crate = build
         .workspace
         .find_main_package(Some(build.package.clone()))?;
-    let dioxus_crate = &build.workspace.krates[dioxus_crate];
+    let aether_crate = &build.workspace.krates[aether_crate];
     let mut files_to_check = vec![];
     collect_rs_files(
-        dioxus_crate.manifest_path.parent().unwrap().as_std_path(),
+        aether_crate.manifest_path.parent().unwrap().as_std_path(),
         &mut files_to_check,
     );
     check_files_and_report(files_to_check).await

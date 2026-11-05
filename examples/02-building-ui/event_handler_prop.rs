@@ -1,13 +1,13 @@
 //! Passing event handlers as props.
 //!
-//! Components can accept callbacks using `EventHandler<T>`, which is Dioxus's equivalent
+//! Components can accept callbacks using `EventHandler<T>`, which is Aether's equivalent
 //! of React's `onClick` prop or a closure. Call the handler with `.call(value)` from the
 //! child; the parent decides what happens when the event fires.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

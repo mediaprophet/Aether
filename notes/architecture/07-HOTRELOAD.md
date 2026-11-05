@@ -1,6 +1,6 @@
 # Hot-Reload and Hot-Patching Architecture
 
-Dioxus supports two complementary hot-reload systems: RSX template hot-reload for UI changes, and Subsecond hot-patching for Rust code changes.
+Aether supports two complementary hot-reload systems: RSX template hot-reload for UI changes, and Subsecond hot-patching for Rust code changes.
 
 ## Subsecond Hot-Patching
 
@@ -133,7 +133,7 @@ For each new dynamic node:
 Bidirectional WebSocket between app and devserver.
 
 **Connection**:
-- URL: `ws://localhost:3000/_dioxus`
+- URL: `ws://localhost:3000/_aether`
 - Query params: `build_id`, `pid`, `aslr_reference`
 - Persistent during development
 
@@ -174,7 +174,7 @@ pub struct HotReloadMsg {
 
 ### WASM-Specific Handling
 
-- Connection at `ws://host/_dioxus?build_id={build_id}`
+- Connection at `ws://host/_aether?build_id={build_id}`
 - Supports playground mode (iframe via postMessage)
 - Console logging sent to devserver
 - Page reload on `FullReloadCommand`
@@ -182,22 +182,22 @@ pub struct HotReloadMsg {
 
 ## Integration Flow
 
-### Subsecond in Dioxus Apps
+### Subsecond in Aether Apps
 
 ```rust
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
     // Devtools automatically connects during init
 }
 ```
 
-For non-Dioxus apps:
+For non-Aether apps:
 ```rust
 fn main() {
-    dioxus_devtools::connect_subsecond();
+    aether_devtools::connect_subsecond();
 
     loop {
-        dioxus_devtools::subsecond::call(|| {
+        aether_devtools::subsecond::call(|| {
             handle_request()
         });
     }
@@ -209,7 +209,7 @@ fn main() {
 ```rust
 #[tokio::main]
 async fn main() {
-    dioxus_devtools::serve_subsecond_with_args(
+    aether_devtools::serve_subsecond_with_args(
         state,
         |state| async {
             app_main(state).await

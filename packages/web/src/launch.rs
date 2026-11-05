@@ -1,11 +1,11 @@
-//! This module contains the `launch` function, which is the main entry point for dioxus web
+//! This module contains the `launch` function, which is the main entry point for aether web
 pub use crate::Config;
-use dioxus_core::{Element, VirtualDom};
+use aether_core::{Element, VirtualDom};
 use std::any::Any;
 
 /// Launch the web application with the given root component, context and config
 ///
-/// For a builder API, see `LaunchBuilder` defined in the `dioxus` crate.
+/// For a builder API, see `LaunchBuilder` defined in the `aether` crate.
 pub fn launch(
     root: fn() -> Element,
     contexts: Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync>>,
@@ -25,7 +25,7 @@ pub fn launch(
 
 /// Launch the web application with a prebuild virtual dom
 ///
-/// For a builder API, see `LaunchBuilder` defined in the `dioxus` crate.
+/// For a builder API, see `LaunchBuilder` defined in the `aether` crate.
 pub fn launch_virtual_dom(vdom: VirtualDom, platform_config: Config) {
     wasm_bindgen_futures::spawn_local(async move {
         crate::run(vdom, platform_config).await;

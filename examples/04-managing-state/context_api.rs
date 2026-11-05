@@ -1,4 +1,4 @@
-//! Demonstrates cross-component state sharing using Dioxus' Context API
+//! Demonstrates cross-component state sharing using Aether' Context API
 //!
 //! Features:
 //! - Context provider initialization
@@ -7,7 +7,7 @@
 //! - Error handling for missing context
 //! - Platform-agnostic implementation
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const STYLE: Asset = asset!("/examples/assets/context_api.css");
 

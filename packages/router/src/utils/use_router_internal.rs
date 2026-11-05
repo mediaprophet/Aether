@@ -1,5 +1,5 @@
 use crate::RouterContext;
-use dioxus_core::{try_consume_context, use_hook};
+use aether_core::{try_consume_context, use_hook};
 
 /// A private hook to subscribe to the router.
 ///

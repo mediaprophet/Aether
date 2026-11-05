@@ -35,8 +35,8 @@ use crate::{Cli, Commands, Verbosity, dx_build_info::GIT_COMMIT_HASH_SHORT, serv
 use anyhow::{Context, Error, Result, bail};
 use cargo_metadata::diagnostic::{Diagnostic, DiagnosticLevel};
 use clap::Parser;
-use dioxus_cli_telemetry::TelemetryEventData;
-use dioxus_dx_wire_format::StructuredOutput;
+use aether_cli_telemetry::TelemetryEventData;
+use aether_dx_wire_format::StructuredOutput;
 use futures_channel::mpsc::{UnboundedReceiver, UnboundedSender};
 use futures_util::FutureExt;
 use itertools::Itertools;
@@ -64,7 +64,7 @@ use tracing_subscriber::{
 };
 use uuid::Uuid;
 
-const LOG_ENV: &str = "DIOXUS_LOG";
+const LOG_ENV: &str = "AETHER_LOG";
 const DX_SRC_FLAG: &str = "dx_src";
 
 pub static VERBOSITY: OnceLock<Verbosity> = OnceLock::new();
@@ -145,10 +145,10 @@ impl TraceController {
         let env_filter = match env::var(LOG_ENV) {
             Ok(_) => EnvFilter::from_env(LOG_ENV),
             _ if is_serve_cmd => EnvFilter::new(
-                "error,dx=trace,dioxus_cli=trace,manganis_cli_support=trace,wasm_split_cli=trace,subsecond_cli_support=trace",
+                "error,dx=trace,aether_cli=trace,manganis_cli_support=trace,wasm_split_cli=trace,subsecond_cli_support=trace",
             ),
             _ => EnvFilter::new(format!(
-                "error,dx={our_level},dioxus_cli={our_level},manganis_cli_support={our_level},wasm_split_cli={our_level},subsecond_cli_support={our_level}",
+                "error,dx={our_level},aether_cli={our_level},manganis_cli_support={our_level},wasm_split_cli={our_level},subsecond_cli_support={our_level}",
                 our_level = if args.verbosity.verbose {
                     "debug"
                 } else {
@@ -399,7 +399,7 @@ impl TraceController {
         }
 
         // Now start loading telemetry files, locking them, and then uploading them.
-        let stats_dir = Workspace::dioxus_data_dir().join("stats").join("sessions");
+        let stats_dir = Workspace::aether_data_dir().join("stats").join("sessions");
         for entry in stats_dir.read_dir()?.flatten() {
             // Try to open the file...
             let Ok(mut file) = std::fs::File::open(entry.path()) else {
@@ -494,7 +494,7 @@ impl TraceController {
         self.upload_to_posthog(&vec![body]).await
     }
 
-    /// Convert the dioxus-cli-telemetry event into a posthog event.
+    /// Convert the aether-cli-telemetry event into a posthog event.
     ///
     /// We try to maintain the same structure for each telemetry event to do advanced filtering on the backend.
     fn telemetry_to_posthog(
@@ -589,7 +589,7 @@ impl TraceController {
         }
 
         // Create the sessions folder if it doesn't exist
-        let stats_folder = Workspace::dioxus_data_dir().join("stats");
+        let stats_folder = Workspace::aether_data_dir().join("stats");
         let sessions_folder = stats_folder.join("sessions");
         if !sessions_folder.exists() {
             std::fs::create_dir_all(&sessions_folder)?;
@@ -739,7 +739,7 @@ impl TraceController {
                 let msg_list = std::iter::from_fn(|| msgs.try_recv().ok()).collect::<Vec<_>>();
 
                 if !msg_list.is_empty() {
-                    let dest = Workspace::dioxus_data_dir()
+                    let dest = Workspace::aether_data_dir()
                         .join("stats")
                         .join("sessions")
                         .join(format!("{}.jsonl", reporter.session_id));
@@ -775,7 +775,7 @@ impl TraceController {
             }
         }
 
-        "https://dx-cli-stats.dioxus.dev/".to_string()
+        "https://dx-cli-stats.aether.dev/".to_string()
     }
 
     /// Collect the raw arguments passed to the CLI and convert them into a telemetry event.
@@ -785,7 +785,7 @@ impl TraceController {
     pub(crate) fn to_invoked_event(arg: &crate::Commands) -> TelemetryEventData {
         let (message, anonymized) = Self::command_anonymized(arg);
         let raw_arguments = std::env::args()
-            .map(|s| dioxus_cli_telemetry::strip_paths(&s))
+            .map(|s| aether_cli_telemetry::strip_paths(&s))
             .collect::<Vec<_>>();
         TelemetryEventData::new("cli_invoked", message)
             .with_value("raw_arguments", raw_arguments)
@@ -968,7 +968,7 @@ impl TraceController {
             .rev()
             .map(|frame| {
                 // Convert the sentry type to the posthog type
-                dioxus_cli_telemetry::StackFrame {
+                aether_cli_telemetry::StackFrame {
                     platform: "custom".to_string(),
                     raw_id: frame
                         .image_addr

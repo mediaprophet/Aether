@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-config-macros"
+name = "aether-config-macros"
 edition = "2024"
 version.workspace = true
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]

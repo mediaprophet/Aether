@@ -1,6 +1,6 @@
 #![allow(deprecated)]
 
-use dioxus_autofmt::{IndentOptions, IndentType};
+use aether_autofmt::{IndentOptions, IndentType};
 
 macro_rules! twoway {
     ($val:literal => $name:ident ($indent:expr)) => {
@@ -13,8 +13,8 @@ macro_rules! twoway {
                 .expect("fmt_file should only be called on valid syn::File files");
 
             let formatted =
-                dioxus_autofmt::try_fmt_file(src_wrong, &parsed, $indent).unwrap_or_default();
-            let out = dioxus_autofmt::apply_formats(src_wrong, formatted);
+                aether_autofmt::try_fmt_file(src_wrong, &parsed, $indent).unwrap_or_default();
+            let out = aether_autofmt::apply_formats(src_wrong, formatted);
 
             // normalize line endings
             let out = out.replace("\r", "");

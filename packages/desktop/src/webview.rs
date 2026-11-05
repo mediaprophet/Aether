@@ -2,16 +2,16 @@ use crate::WeakDesktopContext;
 use crate::desktop_context::{PendingDesktopWindow, PendingWindowCancellation};
 use crate::desktop_state::DesktopAppContext;
 use crate::file_upload::{DesktopFileData, DesktopFileDragEvent};
-use crate::menubar::DioxusMenu;
+use crate::menubar::AetherMenu;
 use crate::{
     DesktopContext, DesktopService, WindowConfig, assets::AssetHandlerRegistry, edits::WryQueue,
     file_upload::NativeFileHover, ipc::UserWindowEvent, protocol,
 };
 use crate::{element::DesktopElement, file_upload::DesktopFormData};
 use base64::prelude::BASE64_STANDARD;
-use dioxus_core::{RenderTargetId, Runtime, VirtualDom};
-use dioxus_hooks::to_owned;
-use dioxus_html::{FileData, FormValue, HtmlEvent, PlatformEventData, SerializedFileData};
+use aether_core::{RenderTargetId, Runtime, VirtualDom};
+use aether_hooks::to_owned;
+use aether_html::{FileData, FormValue, HtmlEvent, PlatformEventData, SerializedFileData};
 use std::rc::Rc;
 use std::sync::{Arc, atomic::AtomicBool};
 use std::{cell::OnceCell, time::Duration};
@@ -97,14 +97,14 @@ impl WebviewEdits {
         // Also important to remember here that we don't pass a body from the JavaScript side of things
         let data = request
             .headers()
-            .get("dioxus-data")
-            .ok_or_else(|| Error::custom("dioxus-data header not set"))?;
+            .get("aether-data")
+            .ok_or_else(|| Error::custom("aether-data header not set"))?;
 
         let as_utf = std::str::from_utf8(data.as_bytes())
-            .map_err(|_| Error::custom("dioxus-data header is not a valid (utf-8) string"))?;
+            .map_err(|_| Error::custom("aether-data header is not a valid (utf-8) string"))?;
 
         let data_from_header = base64::Engine::decode(&BASE64_STANDARD, as_utf)
-            .map_err(|_| Error::custom("dioxus-data header is not a base64 string"))?;
+            .map_err(|_| Error::custom("aether-data header is not a base64 string"))?;
 
         let response = match serde_json::from_slice(&data_from_header) {
             Ok(event) => {
@@ -150,11 +150,11 @@ impl WebviewEdits {
 
         // check for a mounted event placeholder and replace it with a desktop specific element
         let as_any = match data {
-            dioxus_html::EventData::Mounted => {
+            aether_html::EventData::Mounted => {
                 let element = DesktopElement::new(element, desktop_context.clone(), query.clone());
                 Rc::new(PlatformEventData::new(Box::new(element)))
             }
-            dioxus_html::EventData::Form(form) => {
+            aether_html::EventData::Form(form) => {
                 Rc::new(PlatformEventData::new(Box::new(DesktopFormData {
                     value: form.value,
                     valid: form.valid,
@@ -185,7 +185,7 @@ impl WebviewEdits {
                 })))
             }
             // Which also includes drops...
-            dioxus_html::EventData::Drag(ref drag) => {
+            aether_html::EventData::Drag(ref drag) => {
                 // we want to override this with a native file engine, provided by the most recent drag event
                 let full_file_paths = hovered_file.current_paths();
 
@@ -204,7 +204,7 @@ impl WebviewEdits {
                         }
                     })
                     .collect::<Vec<_>>();
-                let new_xfer_data = dioxus_html::SerializedDataTransfer {
+                let new_xfer_data = aether_html::SerializedDataTransfer {
                     files: new_file_data,
                     ..xfer_data
                 };
@@ -218,7 +218,7 @@ impl WebviewEdits {
             _ => data.into_any(),
         };
 
-        let event = dioxus_core::Event::new(as_any, bubbles);
+        let event = aether_core::Event::new(as_any, bubbles);
         self.runtime
             .handle_event_for_target(self.target_id, &name, event.clone(), element);
 
@@ -301,11 +301,11 @@ pub(crate) struct WebviewInstance {
     _web_context: WebContext,
 
     // Same with the menu.
-    // Currently it's a DioxusMenu because 1) we don't touch it and 2) we support a number of platforms
+    // Currently it's a AetherMenu because 1) we don't touch it and 2) we support a number of platforms
     // like ios where muda does not give us a menu type. It sucks but alas.
     //
     // This would be a good thing for someone looking to contribute to fix.
-    _menu: Option<DioxusMenu>,
+    _menu: Option<AetherMenu>,
 }
 
 impl WebviewInstance {
@@ -472,13 +472,13 @@ impl WebviewInstance {
                 )),
             })
             .with_transparent(cfg.window.window.transparent)
-            .with_url("dioxus://index.html/")
+            .with_url("aether://index.html/")
             .with_ipc_handler(ipc_handler)
             .with_navigation_handler(move |var| {
                 // Serve the index and assets.
-                if var.starts_with("dioxus://")
-                    || var.starts_with("http://dioxus.")
-                    || var.starts_with("https://dioxus.")
+                if var.starts_with("aether://")
+                    || var.starts_with("http://aether.")
+                    || var.starts_with("https://aether.")
                 {
                     // After the page has loaded once, don't allow any more navigation
                     let page_loaded = page_loaded.swap(true, std::sync::atomic::Ordering::SeqCst);
@@ -498,7 +498,7 @@ impl WebviewInstance {
                 // However, users can customize this to allow/disallow domains/routes/patterns.
                 navigation_handler.as_ref().map(|f| f(&var)).unwrap_or(true)
             })
-            .with_asynchronous_custom_protocol(String::from("dioxus"), request_handler);
+            .with_asynchronous_custom_protocol(String::from("aether"), request_handler);
 
         // Enable https scheme on android, needed for secure context API, like the geolocation API
         #[cfg(target_os = "android")]
@@ -802,7 +802,7 @@ impl PendingWebview {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use dioxus_core::{Element, VNode};
+    use aether_core::{Element, VNode};
     use futures_util::FutureExt;
 
     fn empty_app() -> Element {

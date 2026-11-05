@@ -1,10 +1,10 @@
-//! Integration between Dioxus and Blitz
+//! Integration between Aether and Blitz
 use crate::{
     NodeId, mutation_buffer::MutationBuffer, qual_name, trace, write_once_attr::WriteOnceAttr,
 };
 use blitz_dom::{BaseDocument, Document, DocumentMutator, Widget};
 use blitz_traits::events::DomEventKind;
-use dioxus_core::{BorrowedAttributeValue, ElementId, WriteMutations};
+use aether_core::{BorrowedAttributeValue, ElementId, WriteMutations};
 use std::str::FromStr as _;
 
 #[path = "textarea_value.rs"]
@@ -237,10 +237,10 @@ impl<R: RealDom> WriteMutations for StackWriter<'_, R> {
     }
 }
 
-/// The state of the Dioxus integration with the RealDom
+/// The state of the Aether integration with the RealDom
 #[derive(Debug)]
-pub struct DioxusState {
-    /// Stack machine state for applying dioxus mutations
+pub struct AetherState {
+    /// Stack machine state for applying aether mutations
     stack: StackState<NodeId>,
     /// Count of each handler type (indexed by `DomEventKind` discriminant)
     pub(crate) event_handler_counts: [u32; 64],
@@ -250,8 +250,8 @@ pub struct DioxusState {
     pub(crate) buffered_mutations: MutationBuffer,
 }
 
-impl DioxusState {
-    /// Initialize the DioxusState in the RealDom
+impl AetherState {
+    /// Initialize the AetherState in the RealDom
     pub fn create(root_id: NodeId) -> Self {
         Self {
             stack: StackState::new(root_id),
@@ -271,7 +271,7 @@ impl DioxusState {
         self.stack.element_to_node(element_id)
     }
 
-    /// Apply the buffered dioxus mutations to `doc`, driving the blitz backend
+    /// Apply the buffered aether mutations to `doc`, driving the blitz backend
     /// from the local stack machine.
     pub(crate) fn apply_buffered_mutations(&mut self, doc: &mut BaseDocument) {
         let Self {
@@ -298,7 +298,7 @@ impl DioxusState {
 /// supplies the real tree semantics via [`BlitzBackend`].
 pub(crate) type MutationWriter<'a> = StackWriter<'a, BlitzBackend<'a>>;
 
-/// The blitz-backed "real semantics" for the dioxus stack machine.
+/// The blitz-backed "real semantics" for the aether stack machine.
 pub(crate) struct BlitzBackend<'a> {
     /// The realdom mutation handle associated with this writer
     docm: DocumentMutator<'a>,
@@ -386,10 +386,10 @@ impl RealDom for BlitzBackend<'_> {
         let value = BorrowedAttributeValue::Text("<rust func>");
         self.set_attribute_impl(node, name, None, value);
 
-        // Also set the data-dioxus-id attribute so we can find the element later
+        // Also set the data-aether-id attribute so we can find the element later
         let value = element_id.raw().to_string();
         let value = BorrowedAttributeValue::Text(&value);
-        self.set_attribute_impl(node, "data-dioxus-id", None, value);
+        self.set_attribute_impl(node, "data-aether-id", None, value);
 
         if let Ok(kind) = DomEventKind::from_str(name) {
             let idx = kind.discriminant() as usize;
@@ -499,7 +499,7 @@ fn set_attribute_inner(
 ) {
     trace!("set_attribute node_id:{node_id} ns: {ns:?} name:{local_name}, value:{value:?}");
 
-    // Dioxus has overloaded the style namespace to accumulate style attributes without a `style` block
+    // Aether has overloaded the style namespace to accumulate style attributes without a `style` block
     // TODO: accumulate style attributes into a single style element.
     if ns == Some("style") {
         match value {
@@ -534,7 +534,7 @@ fn set_attribute_inner(
 /// HTML boolean attributes are "on" whenever they are present, regardless of their value, so a
 /// falsy value (e.g. `disabled: false`) must remove the attribute rather than write `"false"`.
 ///
-/// Mirrors `BOOL_ATTRS` in `dioxus-ssr` and `isBoolAttr` in the web interpreter.
+/// Mirrors `BOOL_ATTRS` in `aether-ssr` and `isBoolAttr` in the web interpreter.
 fn is_bool_attr(name: &str) -> bool {
     matches!(
         name,
@@ -571,17 +571,17 @@ fn is_bool_attr(name: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::{DioxusDocument, DocumentConfig};
+    use crate::{AetherDocument, DocumentConfig};
     use blitz_dom::LocalName;
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
-    fn build(app: fn() -> Element) -> DioxusDocument {
-        let mut doc = DioxusDocument::new(VirtualDom::new(app), DocumentConfig::default());
+    fn build(app: fn() -> Element) -> AetherDocument {
+        let mut doc = AetherDocument::new(VirtualDom::new(app), DocumentConfig::default());
         doc.initial_build();
         doc
     }
 
-    fn attr(doc: &DioxusDocument, selector: &str, name: &str) -> Option<String> {
+    fn attr(doc: &AetherDocument, selector: &str, name: &str) -> Option<String> {
         let inner = doc.inner.borrow();
         let node_id = inner
             .query_selector(selector)

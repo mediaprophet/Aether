@@ -1,6 +1,6 @@
-# File-explorer with Rust and Dioxus
+# File-explorer with Rust and Aether
 
-This example shows how a Dioxus App can directly leverage system calls and libraries to bridge native functionality with the WebView renderer.
+This example shows how a Aether App can directly leverage system calls and libraries to bridge native functionality with the WebView renderer.
 
 ![example](./assets/image.png)
 

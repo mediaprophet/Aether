@@ -2,9 +2,9 @@
 //! static template attribute at the same `(name, namespace)` key. After the
 //! dynamic attribute disappears, the diff must restore the static value.
 
-use dioxus::prelude::*;
-use dioxus_core::{Attribute, ScopeId, generation};
-use dioxus_renderer_oracle::{RendererOracle, SnapshotNode};
+use aether::prelude::*;
+use aether_core::{Attribute, ScopeId, generation};
+use aether_renderer_oracle::{RendererOracle, SnapshotNode};
 
 /// Find the value of `attr` on the first `tag` element anywhere in the snapshot.
 fn attr_value(nodes: &[SnapshotNode], tag: &str, attr: &str) -> Option<String> {

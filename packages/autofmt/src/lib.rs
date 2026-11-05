@@ -3,7 +3,7 @@
 #![doc(html_favicon_url = "https://avatars.githubusercontent.com/u/79236386")]
 
 use crate::writer::*;
-use dioxus_rsx::{BodyNode, CallBody};
+use aether_rsx::{BodyNode, CallBody};
 use proc_macro2::{LineColumn, Span};
 use syn::parse::Parser;
 

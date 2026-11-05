@@ -6,11 +6,11 @@ license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [features]
-tracing = ["dep:tracing-subscriber", "dioxus-native-dom/tracing"]
+tracing = ["dep:tracing-subscriber", "aether-native-dom/tracing"]
 
 [dependencies]
-dioxus = { workspace = true, features = ["html", "hooks", "signals"] }
-dioxus-native-dom = { workspace = true }
+aether = { workspace = true, features = ["html", "hooks", "signals"] }
+aether-native-dom = { workspace = true }
 anyrender_vello = { workspace = true }
 vello = { workspace = true }
 rustc-hash = { workspace = true }

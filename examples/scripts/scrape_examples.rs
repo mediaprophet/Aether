@@ -6,8 +6,8 @@ struct Example {
 }
 
 fn main() {
-    let dir = PathBuf::from("/Users/jonathankelley/Development/dioxus/examples");
-    let out_file = PathBuf::from("/Users/jonathankelley/Development/dioxus/target/decl.toml");
+    let dir = PathBuf::from("/Users/jonathankelley/Development/aether/examples");
+    let out_file = PathBuf::from("/Users/jonathankelley/Development/aether/target/decl.toml");
 
     let mut out_items = vec![];
 
@@ -23,7 +23,7 @@ fn main() {
             if path.extension().and_then(|s| s.to_str()) == Some("rs") {
                 let file_stem = path.file_stem().and_then(|s| s.to_str()).unwrap();
                 let workspace_path = path
-                    .strip_prefix("/Users/jonathankelley/Development/dioxus")
+                    .strip_prefix("/Users/jonathankelley/Development/aether")
                     .unwrap();
                 out_items.push(Example {
                     name: file_stem.to_string(),

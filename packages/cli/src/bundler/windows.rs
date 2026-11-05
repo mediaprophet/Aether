@@ -1276,7 +1276,7 @@ mod tests {
             "product_name": "Hotdog",
             "upgrade_code": "00000000-0000-0000-0000-000000000000",
             "version": "0.1.0",
-            "publisher": "Dioxus Labs",
+            "publisher": "Aether Labs",
             "main_binary_name": "hotdog.exe",
             "main_binary_path": "C:\\staging\\hotdog.exe",
             "short_description": "Hotdog app",
@@ -1298,6 +1298,6 @@ mod tests {
         assert!(rendered.contains("<Directory Id=\"ProgramFiles64Folder\">"));
         assert!(!rendered.contains("<Directory Id=\"ProgramFilesFolder\">"));
         // Verify \{{ substitution works: registry key should contain actual values
-        assert!(rendered.contains("Software\\Dioxus Labs\\Hotdog"));
+        assert!(rendered.contains("Software\\Aether Labs\\Hotdog"));
     }
 }

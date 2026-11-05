@@ -3,11 +3,11 @@
 //! use_future won't return a value, analogous to use_effect.
 //! If you want to return a value from a future, use use_resource instead.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use futures_timer::Delay;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

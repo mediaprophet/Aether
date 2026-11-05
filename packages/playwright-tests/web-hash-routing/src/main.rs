@@ -1,10 +1,10 @@
 use std::rc::Rc;
 
-use dioxus::{prelude::*, web::HashHistory};
+use aether::{prelude::*, web::HashHistory};
 
 fn main() {
-    dioxus::LaunchBuilder::new()
-        .with_cfg(dioxus::web::Config::new().history(Rc::new(HashHistory::new(false))))
+    aether::LaunchBuilder::new()
+        .with_cfg(aether::web::Config::new().history(Rc::new(HashHistory::new(false))))
         .launch(|| {
             rsx! {
                 Router::<Route> {}

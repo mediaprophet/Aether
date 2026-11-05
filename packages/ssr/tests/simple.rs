@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[test]
 fn simple() {
@@ -9,12 +9,12 @@ fn simple() {
     }
 
     let mut dom = VirtualDom::new(App);
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
-    assert_eq!(dioxus_ssr::render(&dom), "<div>hello!</div>");
+    assert_eq!(aether_ssr::render(&dom), "<div>hello!</div>");
 
     assert_eq!(
-        dioxus_ssr::render_element(rsx!( div {"hello!"} )),
+        aether_ssr::render_element(rsx!( div {"hello!"} )),
         "<div>hello!</div>"
     );
 }
@@ -22,7 +22,7 @@ fn simple() {
 #[test]
 fn lists() {
     assert_eq!(
-        dioxus_ssr::render_element(rsx! {
+        aether_ssr::render_element(rsx! {
             ul {
                 {
                     (0..5).map(|i| rsx! {
@@ -39,7 +39,7 @@ fn lists() {
 fn dynamic() {
     let dynamic = 123;
     assert_eq!(
-        dioxus_ssr::render_element(rsx! {
+        aether_ssr::render_element(rsx! {
             div { "Hello world 1 -->" "{dynamic}" "<-- Hello world 2" }
         }),
         "<div>Hello world 1 --&#62;123&#60;-- Hello world 2</div>"
@@ -58,7 +58,7 @@ fn components() {
     }
 
     assert_eq!(
-        dioxus_ssr::render_element(rsx! {
+        aether_ssr::render_element(rsx! {
             div {
                 {
                     (0..5).map(|name| rsx! {
@@ -74,7 +74,7 @@ fn components() {
 #[test]
 fn fragments() {
     assert_eq!(
-        dioxus_ssr::render_element(rsx! {
+        aether_ssr::render_element(rsx! {
             div {
                 {
                     (0..5).map(|_| rsx! ({}))

@@ -12,7 +12,7 @@ use super::metadata::{
     WhileInfo,
 };
 
-/// The result of checking a Dioxus file for issues.
+/// The result of checking a Aether file for issues.
 pub struct IssueReport {
     pub path: PathBuf,
     pub crate_root: PathBuf,
@@ -160,13 +160,13 @@ impl Display for IssueReport {
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[non_exhaustive]
 #[allow(clippy::enum_variant_names)] // we'll add non-hook ones in the future
-/// Issues that might be found via static analysis of a Dioxus file.
+/// Issues that might be found via static analysis of a Aether file.
 pub enum Issue {
-    /// <https://dioxuslabs.com/learn/0.7/reference/hooks#no-hooks-in-conditionals>
+    /// <https://aetherlabs.com/learn/0.7/reference/hooks#no-hooks-in-conditionals>
     HookInsideConditional(HookInfo, ConditionalInfo),
-    /// <https://dioxuslabs.com/learn/0.7/reference/hooks#no-hooks-in-loops>
+    /// <https://aetherlabs.com/learn/0.7/reference/hooks#no-hooks-in-loops>
     HookInsideLoop(HookInfo, AnyLoopInfo),
-    /// <https://dioxuslabs.com/learn/0.7/reference/hooks#no-hooks-in-closures>
+    /// <https://aetherlabs.com/learn/0.7/reference/hooks#no-hooks-in-closures>
     HookInsideClosure(HookInfo, ClosureInfo),
     HookInsideAsync(HookInfo, AsyncInfo),
     HookOutsideComponent(HookInfo),

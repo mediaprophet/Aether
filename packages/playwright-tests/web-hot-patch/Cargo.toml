@@ -1,13 +1,13 @@
 [package]
-name = "dioxus-playwright-web-patch-test"
+name = "aether-playwright-web-patch-test"
 version = "0.0.1"
 edition = "2024"
-description = "Playwright test for Dioxus Web"
+description = "Playwright test for Aether Web"
 license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [dependencies]
-dioxus = { path = "../../dioxus", features = ["web"] }
+aether = { path = "../../aether", features = ["web"] }
 wasm-bindgen = { version = "0.2.114" }
 web-sys = { version = "*", features = ["MouseEvent"] }
 

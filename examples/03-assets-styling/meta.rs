@@ -1,9 +1,9 @@
 //! This example shows how to add metadata to the page with the Meta component
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

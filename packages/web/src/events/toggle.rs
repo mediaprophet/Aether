@@ -1,5 +1,5 @@
 use super::{Synthetic, WebEventExt};
-use dioxus_html::HasToggleData;
+use aether_html::HasToggleData;
 
 impl HasToggleData for Synthetic<web_sys::Event> {
     fn as_any(&self) -> &dyn std::any::Any {
@@ -7,7 +7,7 @@ impl HasToggleData for Synthetic<web_sys::Event> {
     }
 }
 
-impl WebEventExt for dioxus_html::ToggleData {
+impl WebEventExt for aether_html::ToggleData {
     type WebEvent = web_sys::Event;
 
     #[inline(always)]

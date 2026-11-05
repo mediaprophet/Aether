@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_core::generation;
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_core::generation;
+use aether_renderer_oracle::RendererOracle;
 
 // The tests in this file are intended to be run with Miri, and contain no assertions. If they
 // complete under Miri, they have passed.

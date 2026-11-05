@@ -1,5 +1,5 @@
-use dioxus_core::ElementId;
-use dioxus_html::{
+use aether_core::ElementId;
+use aether_html::{
     MountedResult, RenderedElementBacking,
     geometry::{PixelsRect, PixelsSize, PixelsVector2D},
 };
@@ -24,7 +24,7 @@ macro_rules! scripted_getter {
         fn $meth_name(
             &self,
         ) -> std::pin::Pin<
-            Box<dyn futures_util::Future<Output = dioxus_html::MountedResult<$output_type>>>,
+            Box<dyn futures_util::Future<Output = aether_html::MountedResult<$output_type>>>,
         > {
             let script = format!($script, id = self.id.raw());
 
@@ -35,10 +35,10 @@ macro_rules! scripted_getter {
             Box::pin(async move {
                 match fut.await {
                     Ok(Some(res)) => Ok(res),
-                    Ok(None) => MountedResult::Err(dioxus_html::MountedError::OperationFailed(
+                    Ok(None) => MountedResult::Err(aether_html::MountedError::OperationFailed(
                         Box::new(DesktopQueryError::FailedToQuery),
                     )),
-                    Err(err) => MountedResult::Err(dioxus_html::MountedError::OperationFailed(
+                    Err(err) => MountedResult::Err(aether_html::MountedError::OperationFailed(
                         Box::new(err),
                     )),
                 }
@@ -72,8 +72,8 @@ impl RenderedElementBacking for LiveviewElement {
 
     fn scroll_to(
         &self,
-        options: dioxus_html::ScrollToOptions,
-    ) -> std::pin::Pin<Box<dyn futures_util::Future<Output = dioxus_html::MountedResult<()>>>> {
+        options: aether_html::ScrollToOptions,
+    ) -> std::pin::Pin<Box<dyn futures_util::Future<Output = aether_html::MountedResult<()>>>> {
         let script = format!(
             "return window.interpreter.scrollTo({}, {});",
             self.id.raw(),
@@ -84,11 +84,11 @@ impl RenderedElementBacking for LiveviewElement {
         Box::pin(async move {
             match fut.await {
                 Ok(true) => Ok(()),
-                Ok(false) => MountedResult::Err(dioxus_html::MountedError::OperationFailed(
+                Ok(false) => MountedResult::Err(aether_html::MountedError::OperationFailed(
                     Box::new(DesktopQueryError::FailedToQuery),
                 )),
                 Err(err) => {
-                    MountedResult::Err(dioxus_html::MountedError::OperationFailed(Box::new(err)))
+                    MountedResult::Err(aether_html::MountedError::OperationFailed(Box::new(err)))
                 }
             }
         })
@@ -97,7 +97,7 @@ impl RenderedElementBacking for LiveviewElement {
     fn scroll(
         &self,
         coordinates: PixelsVector2D,
-        behavior: dioxus_html::ScrollBehavior,
+        behavior: aether_html::ScrollBehavior,
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = MountedResult<()>>>> {
         let script = format!(
             "return window.interpreter.scroll({}, {}, {}, {});",
@@ -111,11 +111,11 @@ impl RenderedElementBacking for LiveviewElement {
         Box::pin(async move {
             match fut.await {
                 Ok(true) => Ok(()),
-                Ok(false) => MountedResult::Err(dioxus_html::MountedError::OperationFailed(
+                Ok(false) => MountedResult::Err(aether_html::MountedError::OperationFailed(
                     Box::new(DesktopQueryError::FailedToQuery),
                 )),
                 Err(err) => {
-                    MountedResult::Err(dioxus_html::MountedError::OperationFailed(Box::new(err)))
+                    MountedResult::Err(aether_html::MountedError::OperationFailed(Box::new(err)))
                 }
             }
         })
@@ -124,7 +124,7 @@ impl RenderedElementBacking for LiveviewElement {
     fn set_focus(
         &self,
         focus: bool,
-    ) -> std::pin::Pin<Box<dyn futures_util::Future<Output = dioxus_html::MountedResult<()>>>> {
+    ) -> std::pin::Pin<Box<dyn futures_util::Future<Output = aether_html::MountedResult<()>>>> {
         let script = format!(
             "return window.interpreter.setFocus({}, {});",
             self.id.raw(),
@@ -136,11 +136,11 @@ impl RenderedElementBacking for LiveviewElement {
         Box::pin(async move {
             match fut.await {
                 Ok(true) => Ok(()),
-                Ok(false) => MountedResult::Err(dioxus_html::MountedError::OperationFailed(
+                Ok(false) => MountedResult::Err(aether_html::MountedError::OperationFailed(
                     Box::new(DesktopQueryError::FailedToQuery),
                 )),
                 Err(err) => {
-                    MountedResult::Err(dioxus_html::MountedError::OperationFailed(Box::new(err)))
+                    MountedResult::Err(aether_html::MountedError::OperationFailed(Box::new(err)))
                 }
             }
         })

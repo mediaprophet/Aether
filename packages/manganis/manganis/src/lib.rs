@@ -26,10 +26,10 @@ pub use manganis_core::{
 pub use manganis_core::SwiftPackageMetadata;
 pub use manganis_core::SymbolData;
 
-// FFI utilities and plugin metadata for Dioxus mobile platform APIs
+// FFI utilities and plugin metadata for Aether mobile platform APIs
 //
 // This crate provides common patterns and utilities for implementing
-// mobile platform APIs in Dioxus applications. It handles the
+// mobile platform APIs in Aether applications. It handles the
 // boilerplate for JNI (Android) and objc2 (iOS/macOS) bindings, build scripts,
 // and platform-specific resource management.
 

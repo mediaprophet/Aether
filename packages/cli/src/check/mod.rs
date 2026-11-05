@@ -26,7 +26,7 @@ impl VisitHooks {
     }
 }
 
-/// Checks a Dioxus file for issues.
+/// Checks a Aether file for issues.
 pub fn check_file(path: PathBuf, file_content: &str) -> IssueReport {
     let file = syn::parse_file(file_content).unwrap();
     let mut visit_hooks = VisitHooks::new();

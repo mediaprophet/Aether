@@ -1,9 +1,9 @@
-use dioxus_core::{LaunchConfig, VirtualDom};
+use aether_core::{LaunchConfig, VirtualDom};
 
 use crate::LiveviewRouter;
 
 pub(crate) fn app_title() -> String {
-    dioxus_cli_config::app_title().unwrap_or_else(|| "Dioxus Liveview App".to_string())
+    aether_cli_config::app_title().unwrap_or_else(|| "Aether Liveview App".to_string())
 }
 
 /// A configuration for the LiveView server.
@@ -18,7 +18,7 @@ impl<R: LiveviewRouter + 'static> LaunchConfig for Config<R> {}
 impl<R: LiveviewRouter> Default for Config<R> {
     fn default() -> Self {
         Self {
-            address: dioxus_cli_config::fullstack_address_or_localhost(),
+            address: aether_cli_config::fullstack_address_or_localhost(),
             router: R::create_default_liveview_router(),
             route: "/".to_string(),
         }
@@ -33,7 +33,7 @@ impl<R: LiveviewRouter> Config<R> {
     }
 
     /// Create a new configuration for the LiveView server.
-    pub fn with_app(mut self, app: fn() -> dioxus_core::Element) -> Self {
+    pub fn with_app(mut self, app: fn() -> aether_core::Element) -> Self {
         self.router = self.router.with_app(&self.route, app);
         self
     }

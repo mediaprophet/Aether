@@ -6,9 +6,9 @@ license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [dependencies]
-dioxus = { workspace = true, features = ["fullstack"] }
+aether = { workspace = true, features = ["fullstack"] }
 
 [features]
 default=["web", "server"]
-web=["dioxus/web"]
-server=["dioxus/server"]
+web=["aether/web"]
+server=["aether/server"]

@@ -3,7 +3,7 @@ use std::process::Command;
 use schemars::{JsonSchema, Schema, schema_for};
 use serde::{Deserialize, Serialize};
 
-/// A component compatible with the dioxus components system.
+/// A component compatible with the aether components system.
 /// This may be a "virtual" component which is empty except for a list of members.
 #[derive(Deserialize, Serialize, JsonSchema, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]

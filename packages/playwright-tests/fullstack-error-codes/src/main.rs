@@ -4,14 +4,14 @@
 //! While capturing the error, we set the appropriate HTTP status code using `FullstackContext::commit_error_status`.
 //! The router will then use this status code when doing server-side rendering (SSR).
 //!
-//! Any errors not captured by an error boundary will be handled by dioxus-ssr itself, which will render
+//! Any errors not captured by an error boundary will be handled by aether-ssr itself, which will render
 //! a generic error page instead.
 
-use dioxus::prelude::*;
-use dioxus_fullstack::{FullstackContext, StatusCode};
+use aether::prelude::*;
+use aether_fullstack::{FullstackContext, StatusCode};
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         rsx! {
             Router::<Route> {}
         }
@@ -49,7 +49,7 @@ fn Blog(id: u32) -> Element {
             FullstackContext::commit_http_status(StatusCode::CREATED, None);
             rsx! { div { "Blog post 2" } }
         }
-        3 => dioxus_core::bail!("An error occurred while loading the blog post!"),
+        3 => aether_core::bail!("An error occurred while loading the blog post!"),
         _ => HttpError::not_found("Blog post not found")?,
     }
 }

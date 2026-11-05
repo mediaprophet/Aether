@@ -20,12 +20,12 @@ async fn run_harness() {
 #[allow(dead_code)]
 async fn test_harnesses() {
     tracing_subscriber::registry()
-        .with(tracing_subscriber::fmt::layer().with_filter(EnvFilter::new("error,dx=debug,dioxus_cli=debug,manganis_cli_support=debug,wasm_split_cli=debug,subsecond_cli_support=debug",)))
+        .with(tracing_subscriber::fmt::layer().with_filter(EnvFilter::new("error,dx=debug,aether_cli=debug,manganis_cli_support=debug,wasm_split_cli=debug,subsecond_cli_support=debug",)))
         .init();
 
     TestHarnessBuilder::run(vec![
         TestHarnessBuilder::new("harness-simple-web")
-            .deps(r#"dioxus = { workspace = true, features = ["web"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["web"] }"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::Web);
@@ -33,7 +33,7 @@ async fn test_harnesses() {
                 assert!(t.server.is_none());
             }),
         TestHarnessBuilder::new("harness-simple-desktop")
-            .deps(r#"dioxus = { workspace = true, features = ["desktop"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["desktop"] }"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::host());
@@ -41,15 +41,15 @@ async fn test_harnesses() {
                 assert!(t.server.is_none());
             }),
         TestHarnessBuilder::new("harness-simple-mobile")
-            .deps(r#"dioxus = { workspace = true, features = ["mobile"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["mobile"] }"#)
             .asrt(
                 "dx build",
                 |targets| async move { assert!(targets.is_err()) },
             ),
         TestHarnessBuilder::new("harness-simple-fullstack")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
-            .fetr(r#"web=["dioxus/web"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
+            .fetr(r#"web=["aether/web"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::Web);
@@ -58,10 +58,10 @@ async fn test_harnesses() {
                 assert_eq!(server.triple, Triple::host());
             }),
         TestHarnessBuilder::new("harness-simple-fullstack-with-default")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
             .fetr(r#"default=["web", "server"]"#)
-            .fetr(r#"web=["dioxus/web"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .fetr(r#"web=["aether/web"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::Web);
@@ -70,10 +70,10 @@ async fn test_harnesses() {
                 assert_eq!(server.triple, Triple::host());
             }),
         TestHarnessBuilder::new("harness-simple-fullstack-native-with-default")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
             .fetr(r#"default=["native", "server"]"#)
-            .fetr(r#"native=["dioxus/native"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .fetr(r#"native=["aether/native"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::host());
@@ -84,12 +84,12 @@ async fn test_harnesses() {
                 assert_eq!(server.triple, Triple::host());
             }),
         TestHarnessBuilder::new("harness-fullstack-multi-target")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
             .fetr(r#"default=["web", "desktop", "mobile", "server"]"#)
-            .fetr(r#"web=["dioxus/web"]"#)
-            .fetr(r#"desktop=["dioxus/desktop"]"#)
-            .fetr(r#"mobile=["dioxus/mobile"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .fetr(r#"web=["aether/web"]"#)
+            .fetr(r#"desktop=["aether/desktop"]"#)
+            .fetr(r#"mobile=["aether/mobile"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(r#"dx build"#, |t| async move { assert!(t.is_err()) })
             .asrt(r#"dx build --web"#, |targets| async move {
                 let t = targets.unwrap();
@@ -126,11 +126,11 @@ async fn test_harnesses() {
                 assert_eq!(t.client.triple, "aarch64-linux-android".parse().unwrap());
             }),
         TestHarnessBuilder::new("harness-fullstack-multi-target-no-default")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
-            .fetr(r#"web=["dioxus/web"]"#)
-            .fetr(r#"desktop=["dioxus/desktop"]"#)
-            .fetr(r#"mobile=["dioxus/mobile"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
+            .fetr(r#"web=["aether/web"]"#)
+            .fetr(r#"desktop=["aether/desktop"]"#)
+            .fetr(r#"mobile=["aether/mobile"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(r#"dx build"#, |targets| async move {
                 assert!(targets.is_err())
             })
@@ -154,9 +154,9 @@ async fn test_harnesses() {
                 assert_eq!(server.triple, Triple::host());
             }),
         TestHarnessBuilder::new("harness-fullstack-desktop")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
-            .fetr(r#"desktop=["dioxus/desktop"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
+            .fetr(r#"desktop=["aether/desktop"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::host());
@@ -165,11 +165,11 @@ async fn test_harnesses() {
                 assert_eq!(server.triple, Triple::host());
             }),
         TestHarnessBuilder::new("harness-fullstack-desktop-with-features")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
             .deps(r#"anyhow = { workspace = true, optional = true }"#)
-            .fetr(r#"desktop=["dioxus/desktop", "has_anyhow"]"#)
+            .fetr(r#"desktop=["aether/desktop", "has_anyhow"]"#)
             .fetr(r#"has_anyhow=["dep:anyhow"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::host());
@@ -178,12 +178,12 @@ async fn test_harnesses() {
                 assert_eq!(server.triple, Triple::host());
             }),
         TestHarnessBuilder::new("harness-fullstack-desktop-with-default")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
             .deps(r#"anyhow = { workspace = true, optional = true }"#)
             .fetr(r#"default=["desktop"]"#)
-            .fetr(r#"desktop=["dioxus/desktop", "has_anyhow"]"#)
+            .fetr(r#"desktop=["aether/desktop", "has_anyhow"]"#)
             .fetr(r#"has_anyhow=["dep:anyhow"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::host());
@@ -191,7 +191,7 @@ async fn test_harnesses() {
                 assert_eq!(server.bundle, BundleFormat::Server);
                 assert_eq!(server.triple, Triple::host());
             }),
-        TestHarnessBuilder::new("harness-no-dioxus")
+        TestHarnessBuilder::new("harness-no-aether")
             .deps(r#"anyhow = { workspace = true, optional = true }"#)
             .fetr(r#"web=["dep:anyhow"]"#)
             .fetr(r#"server=[]"#)
@@ -202,7 +202,7 @@ async fn test_harnesses() {
             }),
         TestHarnessBuilder::new("harness-simple-dedicated-server"),
         TestHarnessBuilder::new("harness-simple-dedicated-client")
-            .deps(r#"dioxus = { workspace = true, features = ["web"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["web"] }"#)
             .asrt(r#"dx build"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::Web);
@@ -224,11 +224,11 @@ async fn test_harnesses() {
                 assert_eq!(s.triple, "wasm32-unknown-unknown".parse().unwrap());
             }),
         TestHarnessBuilder::new("harness-renderer-swap")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
             .fetr(r#"default=["desktop", "server"]"#)
-            .fetr(r#"desktop=["dioxus/desktop"]"#)
-            .fetr(r#"native=["dioxus/native"]"#)
-            .fetr(r#"server=["dioxus/server"]"#)
+            .fetr(r#"desktop=["aether/desktop"]"#)
+            .fetr(r#"native=["aether/native"]"#)
+            .fetr(r#"server=["aether/server"]"#)
             .asrt(
                 r#"dx build --desktop --renderer native"#,
                 |targets| async move {
@@ -240,9 +240,9 @@ async fn test_harnesses() {
                 },
             ),
         TestHarnessBuilder::new("harness-default-to-non-default")
-            .deps(r#"dioxus = { workspace = true, features = [] }"#)
+            .deps(r#"aether = { workspace = true, features = [] }"#)
             .fetr(r#"default=["web"]"#)
-            .fetr(r#"web=["dioxus/web"]"#)
+            .fetr(r#"web=["aether/web"]"#)
             .asrt(
                 r#"dx build --ios"#,
                 |targets| async move {
@@ -257,12 +257,12 @@ async fn test_harnesses() {
                 },
             ),
         TestHarnessBuilder::new("harness-fullstack-with-optional-tokio")
-            .deps(r#"dioxus = { workspace = true, features = ["fullstack"] }"#)
+            .deps(r#"aether = { workspace = true, features = ["fullstack"] }"#)
             .deps(r#"serde = { workspace = true }"#)
             .deps(r#"tokio = { workspace = true, features = ["full"], optional = true }"#)
             .fetr(r#"default = []"#)
-            .fetr(r#"server = ["dioxus/server", "dep:tokio"]"#)
-            .fetr(r#"web = ["dioxus/web"]"#)
+            .fetr(r#"server = ["aether/server", "dep:tokio"]"#)
+            .fetr(r#"web = ["aether/web"]"#)
             // .asrt(r#"dx build"#, |targets| async move {
             //     assert!(targets.is_err())
             // })
@@ -275,23 +275,23 @@ async fn test_harnesses() {
                 assert_eq!(server.triple, Triple::host());
             }),
         TestHarnessBuilder::new("harness-web-with-no-default-features")
-            .deps(r#"dioxus = { workspace = true }"#)
+            .deps(r#"aether = { workspace = true }"#)
             .fetr(r#"default=["other"]"#)
             .fetr(r#"other=[]"#)
             .asrt(r#"dx build --no-default-features --web"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::Web);
-                assert_eq!(t.client.features, vec!["dioxus/web"]);
+                assert_eq!(t.client.features, vec!["aether/web"]);
                 assert!(t.server.is_none());
             }),
         TestHarnessBuilder::new("harness-web-with-default-features")
-            .deps(r#"dioxus = { workspace = true }"#)
+            .deps(r#"aether = { workspace = true }"#)
             .fetr(r#"default=["other"]"#)
             .fetr(r#"other=[]"#)
             .asrt(r#"dx build --web"#, |targets| async move {
                 let t = targets.unwrap();
                 assert_eq!(t.client.bundle, BundleFormat::Web);
-                assert_eq!(t.client.features.iter().map(|s| s.as_str()).collect::<HashSet<_>>(), ["dioxus/web", "other"].into_iter().collect::<HashSet<_>>());
+                assert_eq!(t.client.features.iter().map(|s| s.as_str()).collect::<HashSet<_>>(), ["aether/web", "other"].into_iter().collect::<HashSet<_>>());
                 assert!(t.server.is_none());
             }),
     ])
@@ -385,10 +385,10 @@ publish = false
 
         std::fs::write(test_dir.join("Cargo.toml"), cargo_toml).unwrap();
 
-        let contents = if features.contains("dioxus") {
-            r#"use dioxus::prelude::*;
+        let contents = if features.contains("aether") {
+            r#"use aether::prelude::*;
 fn main() {
-    dioxus::launch(|| rsx! { "hello world!" })
+    aether::launch(|| rsx! { "hello world!" })
 }
 "#
         } else {

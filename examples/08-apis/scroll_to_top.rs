@@ -1,14 +1,14 @@
 //! Scroll elements using their MountedData
 //!
-//! Dioxus exposes a few helpful APIs around elements (mimicking the DOM APIs) to allow you to interact with elements
+//! Aether exposes a few helpful APIs around elements (mimicking the DOM APIs) to allow you to interact with elements
 //! across the renderers. This includes scrolling, reading dimensions, and more.
 //!
 //! In this example we demonstrate how to scroll to the top of the page using the `scroll_to` method on the `MountedData`
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

@@ -11,13 +11,13 @@ Please be careful when executing JavaScript code with `eval`. You should only ex
 </div>
 
 ```rust
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn App() -> Element {
     rsx! {
         button {
             onclick: move |_| async move {
-                // Eval is a global function you can use anywhere inside Dioxus. It will execute the given JavaScript code.
+                // Eval is a global function you can use anywhere inside Aether. It will execute the given JavaScript code.
                 let result = document::eval(r#"console.log("Hello World");
                 return "Hello World";"#);
 
@@ -35,7 +35,7 @@ fn App() -> Element {
 When you execute JavaScript code with `eval`, you can pass data to it by formatting the value into the JavaScript code or sending values to the `Eval` channel.
 
 ```rust
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn app() -> Element {
     rsx! {
@@ -44,8 +44,8 @@ fn app() -> Element {
                 // You can pass initial data to the eval function by formatting it into the JavaScript code.
                 const LOOP_COUNT: usize = 10;
                 let eval = document::eval(&format!(r#"for(let i = 0; i < {LOOP_COUNT}; i++) {{
-                    // You can receive values asynchronously with the `await dioxus.recv()` method.
-                    let value = await dioxus.recv();
+                    // You can receive values asynchronously with the `await aether.recv()` method.
+                    let value = await aether.recv();
                     console.log("Received", value);
                 }}"#));
 
@@ -62,10 +62,10 @@ fn app() -> Element {
 
 ## Sending data from JavaScript
 
-The `Eval` struct also contains methods for receiving values you send from JavaScript. You can use the `dioxus.send()` method to send values to the JavaScript code and the `Eval::recv()` method to receive values from the JavaScript code.
+The `Eval` struct also contains methods for receiving values you send from JavaScript. You can use the `aether.send()` method to send values to the JavaScript code and the `Eval::recv()` method to receive values from the JavaScript code.
 
 ```rust
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn app() -> Element {
     rsx! {
@@ -73,8 +73,8 @@ fn app() -> Element {
             onclick: move |_| async move {
                 // You can send values from rust to the JavaScript code by using the `send` method on the object returned by `eval`.
                 let mut eval = document::eval(r#"for(let i = 0; i < 10; i++) {
-                    // You can send values asynchronously with the `dioxus.send()` method.
-                    dioxus.send(i);
+                    // You can send values asynchronously with the `aether.send()` method.
+                    aether.send(i);
                 }"#);
 
                 // You can receive values from the JavaScript code with the `recv` method on the object returned by `eval`.
@@ -91,10 +91,10 @@ fn app() -> Element {
 
 ## Interacting with the DOM with Eval
 
-You can also use the `eval` function to execute JavaScript code that reads or modifies the DOM. If you want to interact with the mounted DOM, you need to use `eval` inside the [`use_effect`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_effect.html) hook which runs after the component has been mounted.
+You can also use the `eval` function to execute JavaScript code that reads or modifies the DOM. If you want to interact with the mounted DOM, you need to use `eval` inside the [`use_effect`](https://docs.rs/aether-hooks/latest/aether_hooks/fn.use_effect.html) hook which runs after the component has been mounted.
 
 ```rust
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const SCRIPT: &str = r#"
     let element = document.getElementById("my-element");

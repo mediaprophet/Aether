@@ -1,9 +1,9 @@
 //! This example shows how to set the title of the page or window with the Title component
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

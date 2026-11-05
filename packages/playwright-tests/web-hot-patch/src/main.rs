@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const CSS: Asset = asset!("/assets/style.css");
 const IMAGE: Asset = asset!("/assets/toasts.png");
@@ -31,5 +31,5 @@ fn app() -> Element {
 }
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }

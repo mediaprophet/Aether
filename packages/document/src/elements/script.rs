@@ -1,6 +1,6 @@
 use super::*;
 use crate::document;
-use dioxus_core::{VNode, use_hook};
+use aether_core::{VNode, use_hook};
 
 #[non_exhaustive]
 #[derive(Clone, Props, PartialEq)]
@@ -71,7 +71,7 @@ impl ScriptProps {
 ///
 /// # Example
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn LoadScript() -> Element {
 ///     rsx! {
 ///         // You can use the Script component to render a script tag into the head of the page

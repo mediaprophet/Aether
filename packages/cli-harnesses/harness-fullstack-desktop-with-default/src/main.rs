@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 fn main() {
-    dioxus::launch(|| rsx! { "hello world!" })
+    aether::launch(|| rsx! { "hello world!" })
 }

@@ -5,7 +5,7 @@
 // - Server futures
 
 #![allow(non_snake_case, unused)]
-use dioxus::{fullstack::commit_initial_chunk, prelude::*};
+use aether::{fullstack::commit_initial_chunk, prelude::*};
 use serde::{Deserialize, Serialize};
 
 fn app() -> Element {
@@ -111,7 +111,7 @@ fn NestedSuspendedComponent(id: i32) -> Element {
 fn main() {
     LaunchBuilder::new()
         .with_cfg(server_only! {
-            dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
+            aether::server::ServeConfig::builder().enable_out_of_order_streaming()
         })
         .launch(app);
 }

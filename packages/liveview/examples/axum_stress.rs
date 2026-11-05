@@ -1,5 +1,5 @@
 use axum::{Router, extract::ws::WebSocketUpgrade, response::Html, routing::get};
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn app() -> Element {
     let mut state = use_signal(|| 0);
@@ -21,11 +21,11 @@ fn app() -> Element {
 
 #[tokio::main]
 async fn main() {
-    dioxus::logger::initialize_default();
+    aether::logger::initialize_default();
 
     let addr: std::net::SocketAddr = ([127, 0, 0, 1], 3030).into();
 
-    let view = dioxus_liveview::LiveViewPool::new();
+    let view = aether_liveview::LiveViewPool::new();
 
     let app = Router::new()
         .route(
@@ -35,12 +35,12 @@ async fn main() {
                     r#"
             <!DOCTYPE html>
             <html>
-                <head> <title>Dioxus LiveView with axum</title>  </head>
+                <head> <title>Aether LiveView with axum</title>  </head>
                 <body> <div id="main"></div> </body>
                 {glue}
             </html>
             "#,
-                    glue = dioxus_liveview::interpreter_glue(&format!("ws://{addr}/ws"))
+                    glue = aether_liveview::interpreter_glue(&format!("ws://{addr}/ws"))
                 ))
             }),
         )
@@ -48,7 +48,7 @@ async fn main() {
             "/ws",
             get(move |ws: WebSocketUpgrade| async move {
                 ws.on_upgrade(move |socket| async move {
-                    _ = view.launch(dioxus_liveview::axum_socket(socket), app).await;
+                    _ = view.launch(aether_liveview::axum_socket(socket), app).await;
                 })
             }),
         );

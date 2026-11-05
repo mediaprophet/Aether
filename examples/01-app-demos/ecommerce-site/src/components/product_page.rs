@@ -1,7 +1,7 @@
 use std::{fmt::Display, str::FromStr};
 
 use crate::api::{Product, fetch_product};
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[component]
 pub fn ProductPage(product_id: ReadSignal<usize>) -> Element {

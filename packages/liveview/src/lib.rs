@@ -9,7 +9,7 @@ pub use adapters::*;
 mod element;
 pub mod pool;
 mod query;
-use dioxus_interpreter_js::NATIVE_JS;
+use aether_interpreter_js::NATIVE_JS;
 use futures_util::{SinkExt, StreamExt};
 pub use pool::*;
 mod config;
@@ -34,7 +34,7 @@ pub enum LiveViewError {
 }
 
 fn handle_edits_code() -> String {
-    use dioxus_interpreter_js::unified_bindings::SLEDGEHAMMER_JS;
+    use aether_interpreter_js::unified_bindings::SLEDGEHAMMER_JS;
 
     let serialize_file_uploads = r#"if (
         target.tagName === "INPUT" &&
@@ -108,7 +108,7 @@ fn handle_edits_code() -> String {
 /// `window.location` when creating a web socket to LiveView.
 ///
 /// ```rust
-/// use dioxus_liveview::interpreter_glue;
+/// use aether_liveview::interpreter_glue;
 ///
 /// // Creates websocket connection to same host as current page
 /// interpreter_glue("/api/liveview");
@@ -139,11 +139,11 @@ pub fn interpreter_glue(url_or_path: &str) -> String {
     format!(
         r#"
 <script>
-    function __dioxusGetWsUrl(path) {{
+    function __aetherGetWsUrl(path) {{
       {get_ws_url}
     }}
 
-    var WS_ADDR = __dioxusGetWsUrl("{url_or_path}");
+    var WS_ADDR = __aetherGetWsUrl("{url_or_path}");
     {handle_edits}
 </script>
     "#

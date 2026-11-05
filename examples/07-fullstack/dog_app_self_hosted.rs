@@ -1,10 +1,10 @@
 //! This example showcases a fullstack variant of the "dog app" demo, but with the loader and actions
 //! self-hosted instead of using the Dog API.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const CSS: Asset = asset!("/assets/style.css");
 const IMAGE: Asset = asset!("/assets/toasts.png");
@@ -32,5 +32,5 @@ async fn get_count() -> Result<i32> {
 }
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }

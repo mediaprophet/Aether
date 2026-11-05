@@ -1,5 +1,5 @@
 use super::{Synthetic, WebEventExt};
-use dioxus_html::HasMediaData;
+use aether_html::HasMediaData;
 
 impl HasMediaData for Synthetic<web_sys::Event> {
     fn as_any(&self) -> &dyn std::any::Any {
@@ -7,7 +7,7 @@ impl HasMediaData for Synthetic<web_sys::Event> {
     }
 }
 
-impl WebEventExt for dioxus_html::MediaData {
+impl WebEventExt for aether_html::MediaData {
     type WebEvent = web_sys::Event;
 
     #[inline(always)]

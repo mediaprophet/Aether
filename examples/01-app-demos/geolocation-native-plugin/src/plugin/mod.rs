@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-License-Identifier: MIT
 
-//! Dioxus Geolocation Plugin
+//! Aether Geolocation Plugin
 //!
 //! This plugin provides APIs for getting and tracking the device's current position
 //! on Android and iOS mobile platforms.
@@ -18,8 +18,8 @@ mod models;
 
 pub use error::{Error, Result};
 
-// Note: Permissions are now declared in Dioxus.toml using the unified manifest system.
-// See Dioxus.toml in the project root for the permission configuration:
+// Note: Permissions are now declared in Aether.toml using the unified manifest system.
+// See Aether.toml in the project root for the permission configuration:
 //
 // [permissions]
 // location = { precision = "fine", description = "Access your precise location..." }

@@ -1,5 +1,5 @@
 {
-  "name": "Dioxus",
+  "name": "Aether",
   "icons": [
     {
       "src": "logo_192.png",
@@ -26,8 +26,8 @@
   "scope": "/",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "short_name": "Dioxus",
-  "description": "Dioxus is a portable, performant, and ergonomic framework for building cross-platform user interfaces in Rust.",
+  "short_name": "Aether",
+  "description": "Aether is a portable, performant, and ergonomic framework for building cross-platform user interfaces in Rust.",
   "dir": "ltr",
   "lang": "en",
   "orientation": "portrait"

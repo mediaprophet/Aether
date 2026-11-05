@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-fullstack"
+name = "aether-fullstack"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 version = { workspace = true }
 edition = "2024"
-description = "Library for fetching resources from servers in Dioxus apps."
+description = "Library for fetching resources from servers in Aether apps."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -18,17 +18,17 @@ ciborium = { workspace = true }
 base64 = { workspace = true }
 tracing = { workspace = true }
 thiserror = { workspace = true }
-dioxus-fullstack-core = { workspace = true }
+aether-fullstack-core = { workspace = true }
 http = { workspace = true }
 anyhow = { workspace = true }
-dioxus-core = { workspace = true }
-dioxus-signals = { workspace = true }
-dioxus-hooks = { workspace = true }
-dioxus-html = { workspace = true }
-dioxus-cli-config = { workspace = true }
+aether-core = { workspace = true }
+aether-signals = { workspace = true }
+aether-hooks = { workspace = true }
+aether-html = { workspace = true }
+aether-cli-config = { workspace = true }
 futures = { workspace = true, default-features = true }
 bytes = { workspace = true, features = ["serde"] }
-dioxus-fullstack-macro = { workspace = true }
+aether-fullstack-macro = { workspace = true }
 http-body-util = "0.1.3"
 futures-util = { workspace = true }
 axum-core = { workspace = true }
@@ -44,7 +44,7 @@ form_urlencoded = { workspace = true }
 axum = { workspace = true, default-features = false, features = ["json", "form", "query", "multipart", "query"] }
 http-body = { workspace = true }
 headers = "0.4.1"
-dioxus-asset-resolver = { workspace = true, features = ["native"] }
+aether-asset-resolver = { workspace = true, features = ["native"] }
 
 const_format = { workspace = true, default-features = true }
 const-str = { workspace = true, default-features = true }
@@ -88,8 +88,8 @@ webpki-roots = { workspace = true }
 tokio-util = { workspace = true, features = ["codec", "rt"] }
 
 [dev-dependencies]
-dioxus = { workspace = true, features = ["fullstack", "router"] }
-dioxus-server = { workspace = true }
+aether = { workspace = true, features = ["fullstack", "router"] }
+aether-server = { workspace = true }
 
 [features]
 default = ["ws"]

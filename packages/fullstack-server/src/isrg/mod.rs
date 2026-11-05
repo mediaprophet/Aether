@@ -57,7 +57,7 @@ impl IncrementalRenderer {
     /// Cache a rendered response.
     ///
     /// ```rust
-    /// # use dioxus_server::IncrementalRenderer;
+    /// # use aether_server::IncrementalRenderer;
     /// # let mut renderer = IncrementalRenderer::builder().build();
     /// let route = "/index".to_string();
     /// let response = b"<html><body>Hello world</body></html>";
@@ -83,7 +83,7 @@ impl IncrementalRenderer {
     /// Try to get a cached response for a route.
     ///
     /// ```rust
-    /// # use dioxus_server::IncrementalRenderer;
+    /// # use aether_server::IncrementalRenderer;
     /// # let mut renderer = IncrementalRenderer::builder().build();
     /// # let route = "/index".to_string();
     /// # let response = b"<html><body>Hello world</body></html>";
@@ -96,7 +96,7 @@ impl IncrementalRenderer {
     /// If the route is not cached, `None` is returned.
     ///
     /// ```rust
-    /// # use dioxus_server::IncrementalRenderer;
+    /// # use aether_server::IncrementalRenderer;
     /// # let mut renderer = IncrementalRenderer::builder().build();
     /// let route = "/index";
     /// let response = renderer.get(route).unwrap();
@@ -160,5 +160,5 @@ pub enum IncrementalRendererError {
 
     /// An error occurred while rendering a route.
     #[error("Unknown error: {0}")]
-    Other(#[from] dioxus_core::CapturedError),
+    Other(#[from] aether_core::CapturedError),
 }

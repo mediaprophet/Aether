@@ -6,8 +6,8 @@ use crate::{
     ops::{EventBehaviorSpec, Op},
     vdom::App,
 };
-use dioxus_core::{BorrowedAttributeValue, ElementId, Event, ScopeId, VirtualDom, WriteMutations};
-use dioxus_renderer_oracle::{EventListenerTarget, RendererOracle, SnapshotNode};
+use aether_core::{BorrowedAttributeValue, ElementId, Event, ScopeId, VirtualDom, WriteMutations};
+use aether_renderer_oracle::{EventListenerTarget, RendererOracle, SnapshotNode};
 use std::{
     any::Any,
     cell::RefCell,
@@ -363,7 +363,7 @@ fn render_model_with_ssr(context: &HarnessContext, model: &Model) -> Result<Stri
             context.with_model(|global| *global = model.clone());
             let mut vdom = VirtualDom::new_with_props(App, context.clone());
             vdom.rebuild_in_place();
-            dioxus_ssr::render(&vdom)
+            aether_ssr::render(&vdom)
         })
     })
     .map_err(|payload| format!("panic in SSR render: {}", panic_message(&payload)))
@@ -583,38 +583,38 @@ fn fire_selected_event_listener(
             });
         }
         EventBehaviorSpec::ScheduleUpdate => {
-            let update = dioxus_core::schedule_update();
+            let update = aether_core::schedule_update();
             update();
         }
         EventBehaviorSpec::ScheduleUpdateAny => {
-            let id = dioxus_core::current_scope_id();
-            let update_any = dioxus_core::schedule_update_any();
+            let id = aether_core::current_scope_id();
+            let update_any = aether_core::schedule_update_any();
             update_any(id);
         }
-        EventBehaviorSpec::NeedsUpdate => dioxus_core::needs_update(),
+        EventBehaviorSpec::NeedsUpdate => aether_core::needs_update(),
         EventBehaviorSpec::NeedsUpdateAny => {
-            let id = dioxus_core::current_scope_id();
-            dioxus_core::needs_update_any(id);
+            let id = aether_core::current_scope_id();
+            aether_core::needs_update_any(id);
         }
         EventBehaviorSpec::ContextRoundTrip => {
-            let id = dioxus_core::current_scope_id();
-            dioxus_core::provide_context(EventScopeContext);
-            dioxus_core::provide_context(EventScopeContext);
-            let _ = dioxus_core::has_context::<EventScopeContext>();
-            let _ = dioxus_core::try_consume_context::<EventScopeContext>();
-            let _ = dioxus_core::consume_context::<EventScopeContext>();
-            let _ = dioxus_core::consume_context_from_scope::<EventScopeContext>(id);
+            let id = aether_core::current_scope_id();
+            aether_core::provide_context(EventScopeContext);
+            aether_core::provide_context(EventScopeContext);
+            let _ = aether_core::has_context::<EventScopeContext>();
+            let _ = aether_core::try_consume_context::<EventScopeContext>();
+            let _ = aether_core::consume_context::<EventScopeContext>();
+            let _ = aether_core::consume_context_from_scope::<EventScopeContext>(id);
         }
         EventBehaviorSpec::RootContextRoundTrip => {
-            dioxus_core::provide_root_context(EventRootContext);
-            dioxus_core::provide_root_context(EventRootContext);
-            let _ = dioxus_core::try_consume_context::<EventRootContext>();
-            let _ = dioxus_core::consume_context::<EventRootContext>();
-            let _ = dioxus_core::consume_context_from_scope::<EventRootContext>(ScopeId::ROOT);
+            aether_core::provide_root_context(EventRootContext);
+            aether_core::provide_root_context(EventRootContext);
+            let _ = aether_core::try_consume_context::<EventRootContext>();
+            let _ = aether_core::consume_context::<EventRootContext>();
+            let _ = aether_core::consume_context_from_scope::<EventRootContext>(ScopeId::ROOT);
         }
-        EventBehaviorSpec::QueueEffect => dioxus_core::queue_effect(|| {}),
+        EventBehaviorSpec::QueueEffect => aether_core::queue_effect(|| {}),
         EventBehaviorSpec::SpawnIsomorphic => {
-            let _ = dioxus_core::spawn_isomorphic(async {});
+            let _ = aether_core::spawn_isomorphic(async {});
         }
     });
 

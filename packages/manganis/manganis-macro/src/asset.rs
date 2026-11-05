@@ -62,7 +62,7 @@ impl ToTokens for AssetParser {
     // 1) The crate the macro was invoked in
     //   - It needs the hashed contents of the file, the file path, and the file options
     //   - Most of this is just forwarding the input, the only thing that the macro needs to do is hash the file contents
-    // 2) A bundler that supports manganis (currently just dioxus-cli)
+    // 2) A bundler that supports manganis (currently just aether-cli)
     //   - The macro needs to output the absolute path to the asset for the bundler to find later
     //   - It also needs to serialize the bundled asset along with the asset options for the bundler to use later
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {

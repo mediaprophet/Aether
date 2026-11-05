@@ -1,14 +1,14 @@
 #![allow(missing_docs)]
 use crate::{use_callback, use_hook_did_run, use_signal};
-use dioxus_core::{Callback, Subscribers, Task, use_hook};
-use dioxus_signals::*;
+use aether_core::{Callback, Subscribers, Task, use_hook};
+use aether_signals::*;
 use std::future::Future;
 use std::ops::Deref;
 
 /// A hook that allows you to spawn a future the first time you render a component.
 ///
 ///
-/// This future will **not** run on the server. To run a future on the server, you should use [`dioxus_core::spawn_isomorphic`] directly.
+/// This future will **not** run on the server. To run a future on the server, you should use [`aether_core::spawn_isomorphic`] directly.
 ///
 ///
 /// `use_future` **won't return a value**. If you want to return a value from a future, use [`crate::use_resource()`] instead.
@@ -16,7 +16,7 @@ use std::ops::Deref;
 /// ## Example
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// # use std::time::Duration;
 /// fn app() -> Element {
 ///     let mut count = use_signal(|| 0);
@@ -50,7 +50,7 @@ where
 
     let callback = use_callback(move |_| {
         let fut = future();
-        dioxus_core::spawn(async move {
+        aether_core::spawn(async move {
             state.set(UseFutureState::Pending);
             fut.await;
             state.set(UseFutureState::Ready);
@@ -60,12 +60,12 @@ where
     // Create the task inside a CopyValue so we can reset it in-place later
     let task = use_hook(|| CopyValue::new(callback(())));
 
-    // Early returns in dioxus have consequences for use_memo, use_resource, and use_future, etc
+    // Early returns in aether have consequences for use_memo, use_resource, and use_future, etc
     // We *don't* want futures to be running if the component early returns. It's a rather weird behavior to have
     // use_memo running in the background even if the component isn't hitting those hooks anymore.
     //
     // React solves this by simply not having early returns interleave with hooks.
-    // However, since dioxus allows early returns (since we use them for suspense), we need to solve this problem
+    // However, since aether allows early returns (since we use them for suspense), we need to solve this problem
     use_hook_did_run(move |did_run| match did_run {
         true => task.peek().resume(),
         false => task.peek().pause(),

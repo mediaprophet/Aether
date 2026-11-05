@@ -12,23 +12,23 @@ mod wasm;
 ///
 /// See [`crate::init`] for more info.
 ///
-/// If you're doing setup before your `dioxus::launch` function that requires lots of logging, then
+/// If you're doing setup before your `aether::launch` function that requires lots of logging, then
 /// it might be worth calling this earlier than launch.
 ///
-/// `dioxus::launch` calls this for you automatically and won't replace any facade you've already set.
+/// `aether::launch` calls this for you automatically and won't replace any facade you've already set.
 ///
 /// # Example
 ///
 /// ```rust, ignore
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 /// use tracing::info;
 ///
 /// fn main() {
-///     dioxus::logger::initialize_default();
+///     aether::logger::initialize_default();
 ///
 ///     info!("Doing some work before launching...");
 ///
-///     dioxus::launch(App);
+///     aether::launch(App);
 /// }
 ///
 /// #[component]
@@ -51,20 +51,20 @@ pub fn initialize_default() {
     }
 }
 
-/// Initialize `dioxus-logger` with a specified max filter.
+/// Initialize `aether-logger` with a specified max filter.
 ///
-/// Generally it is best to initialize the logger before launching your Dioxus app.
+/// Generally it is best to initialize the logger before launching your Aether app.
 /// Works on Web, Desktop, Fullstack, and Liveview.
 ///
 /// # Example
 ///
 /// ```rust, ignore
-/// use dioxus::prelude::*;
-/// use dioxus::logger::tracing::{Level, info};
+/// use aether::prelude::*;
+/// use aether::logger::tracing::{Level, info};
 ///
 /// fn main() {
-///     dioxus::logger::init(Level::INFO).expect("logger failed to init");
-///     dioxus::launch(App);
+///     aether::logger::init(Level::INFO).expect("logger failed to init");
+///     aether::launch(App);
 /// }
 ///
 /// #[component]
@@ -104,7 +104,7 @@ pub fn init(level: Level) -> Result<(), SetGlobalDefaultError> {
                     .add_directive("hyper_util=warn".parse().unwrap()), // hyper has `debug!` sitting around in some places that are spammy
             );
 
-        if !dioxus_cli_config::is_cli_enabled() {
+        if !aether_cli_config::is_cli_enabled() {
             return set_global_default(sub.finish());
         }
 

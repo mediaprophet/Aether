@@ -1,12 +1,12 @@
 [package]
-name = "dioxus-fullstack-macro"
+name = "aether-fullstack-macro"
 version = { workspace = true }
 edition = "2024"
 repository = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "liveview"]
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 license = "CC-BY-NC-ND-4.0"
-description = "Server function macros for Dioxus"
+description = "Server function macros for Aether"
 
 [dependencies]
 quote = { workspace = true, default-features = true }
@@ -21,7 +21,7 @@ const_format = { workspace = true, default-features = true }
 convert_case = { workspace = true, default-features = true }
 
 [dev-dependencies]
-dioxus = { workspace = true, features = ["fullstack"] }
+aether = { workspace = true, features = ["fullstack"] }
 serde = { workspace = true, features = ["derive"] }
 tower-http = { workspace = true, features = ["timeout"] }
 axum = { workspace = true }

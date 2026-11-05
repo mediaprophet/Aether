@@ -326,7 +326,7 @@ impl<M: MultiWriter> WriteMutations for TargetRouter<'_, M> {
 }
 
 /// A `Mutation` represents a single instruction for the renderer to use to modify the UI tree to match the state
-/// of the Dioxus VirtualDom.
+/// of the Aether VirtualDom.
 ///
 /// These edits can be serialized and sent over the network or through any interface
 #[derive(Debug, PartialEq)]

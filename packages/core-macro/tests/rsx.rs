@@ -7,10 +7,10 @@ fn rsx() {
 /// This test ensures that automatic `into` conversion occurs for default values.
 ///
 /// These are compile-time tests.
-/// See https://github.com/DioxusLabs/dioxus/issues/2373
+/// See https://github.com/AetherLabs/aether/issues/2373
 #[cfg(test)]
 mod test_default_into {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     #[derive(Props, Clone, PartialEq)]
     struct MyCoolProps {
@@ -99,11 +99,11 @@ mod test_default_into {
 /// are correctly created as default when not provided.
 ///
 /// These are compile-time tests.
-/// See https://github.com/DioxusLabs/dioxus/issues/2648
+/// See https://github.com/AetherLabs/aether/issues/2648
 #[cfg(test)]
 #[allow(unused)]
 mod test_optional_signals {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     // Test if test components fail to compile.
     #[component]

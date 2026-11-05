@@ -3,9 +3,9 @@ use blitz_traits::{
     net::Method,
 };
 
-pub(crate) struct DioxusNativeNavigationProvider;
+pub(crate) struct AetherNativeNavigationProvider;
 
-impl NavigationProvider for DioxusNativeNavigationProvider {
+impl NavigationProvider for AetherNativeNavigationProvider {
     fn navigate_to(&self, options: NavigationOptions) {
         if options.method == Method::GET
             && matches!(options.url.scheme(), "http" | "https" | "mailto")

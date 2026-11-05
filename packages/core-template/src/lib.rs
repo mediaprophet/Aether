@@ -1,4 +1,4 @@
-//! Static template storage for Dioxus views.
+//! Static template storage for Aether views.
 //!
 //! The `rsx!` macro lowers each view into two pieces:
 //!

@@ -78,7 +78,7 @@ export class NativeInterpreter extends JSChannel_ {
         target instanceof HTMLInputElement &&
         target.getAttribute("type") === "file"
       ) {
-        // Send a message to the host to open the file dialog if the target is a file input and has a dioxus id attached to it
+        // Send a message to the host to open the file dialog if the target is a file input and has a aether id attached to it
         let target_id = getTargetId(target);
         if (target_id !== null) {
           // Handle file inputs specifically, since we want to get the real file inputs from the native
@@ -87,7 +87,7 @@ export class NativeInterpreter extends JSChannel_ {
             target instanceof HTMLInputElement &&
             target.getAttribute("type") === "file"
           ) {
-            // Send a message to the host to open the file dialog if the target is a file input and has a dioxus id attached to it
+            // Send a message to the host to open the file dialog if the target is a file input and has a aether id attached to it
             event.preventDefault();
 
             const contents = serializeEvent(event, target);
@@ -170,7 +170,7 @@ export class NativeInterpreter extends JSChannel_ {
     return fetch(`${this.baseUri}/${path}`, {
       method: "GET",
       headers: {
-        "x-dioxus-data": base64data
+        "x-aether-data": base64data
       }
     });
   }
@@ -437,7 +437,7 @@ export class NativeInterpreter extends JSChannel_ {
     // Only trust the websocket once it sends us the required server key
     let authenticated = false;
     // Reconnect if the websocket closes. This may happen on ios when the app is suspended
-    // in the background: https://github.com/DioxusLabs/dioxus/issues/4374
+    // in the background: https://github.com/AetherLabs/aether/issues/4374
     this.edits.onclose = () => {
       setTimeout(() => {
         // If the edits path has changed, we don't want to reconnect to the old one
@@ -475,7 +475,7 @@ export class NativeInterpreter extends JSChannel_ {
 
   kickAllStylesheetsOnPage() {
     // If this function is being called and we have not explicitly set kickStylesheets to true, then we should
-    // force kick the stylesheets, regardless if they have a dioxus attribute or not
+    // force kick the stylesheets, regardless if they have a aether attribute or not
     // This happens when any hotreload happens.
     let stylesheets = document.querySelectorAll("link[rel=stylesheet]");
     for (let i = 0; i < stylesheets.length; i++) {
@@ -558,7 +558,7 @@ function handleVirtualdomEventSync(
   // the issue here isn't that big, tbh, but there's a small chance we lose the event due to header max size (16k per header, 32k max)
   const contents_bytes = new TextEncoder().encode(contents);
   const contents_base64 = btoa(String.fromCharCode.apply(null, contents_bytes));
-  xhr.setRequestHeader("dioxus-data", contents_base64);
+  xhr.setRequestHeader("aether-data", contents_base64);
   xhr.send();
 
   // Deserialize the response, and then prevent the default/capture the event if the virtualdom wants to
@@ -580,7 +580,7 @@ function getTargetId(target: EventTarget): NodeId | null {
     }
 
     if (ourTarget instanceof Element) {
-      realId = ourTarget.getAttribute(`data-dioxus-id`);
+      realId = ourTarget.getAttribute(`data-aether-id`);
     }
 
     ourTarget = ourTarget.parentNode;

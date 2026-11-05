@@ -4,10 +4,10 @@
 //! For `class:`, you can also build the class string inline with if/else, and individual
 //! CSS properties can be set as named attributes like `color:` or `background_color:`.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

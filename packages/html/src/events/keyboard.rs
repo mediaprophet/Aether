@@ -1,4 +1,4 @@
-use dioxus_core::Event;
+use aether_core::Event;
 use keyboard_types::{Code, Key, Location, Modifiers};
 use std::fmt::Debug;
 

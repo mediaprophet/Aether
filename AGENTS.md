@@ -39,7 +39,7 @@ packages/
 ├── aether-hooks/     # Sovereign built-in hooks crate
 ├── aether-html/      # Sovereign HTML element definitions crate
 ├── aether-router/    # Sovereign type-safe routing crate
-├── dioxus/           # Internal compatibility bridge crate
+├── aether/           # Internal compatibility bridge crate
 ├── core/             # VirtualDOM, components, diffing, scheduling implementation
 ├── rsx/              # RSX macro parsing and code generation
 ├── rsx-hotreload/    # Template diffing for hot-reload

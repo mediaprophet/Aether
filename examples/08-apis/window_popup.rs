@@ -1,8 +1,8 @@
 //! This example shows how to create a popup window and send data back to the parent window.
 //! The app root is headless and owns each native window explicitly.
 
-use dioxus::desktop::{Config, WindowBuilder, WindowConfig};
-use dioxus::prelude::*;
+use aether::desktop::{Config, WindowBuilder, WindowConfig};
+use aether::prelude::*;
 
 #[derive(Store, PartialEq, Clone, Debug, Default)]
 struct MailState {
@@ -10,7 +10,7 @@ struct MailState {
 }
 
 fn main() {
-    dioxus::LaunchBuilder::desktop()
+    aether::LaunchBuilder::desktop()
         .with_cfg(Config::new().with_headless_root(true))
         .launch(app);
 }
@@ -81,7 +81,7 @@ fn Popup(mut mail: Store<MailState>) -> Element {
             onsubmit: move |event| {
                 event.prevent_default();
                 mail.emails_sent().push(user_input.cloned());
-                dioxus::desktop::window().close();
+                aether::desktop::window().close();
             },
             h1 { "Compose a new email" }
             input {

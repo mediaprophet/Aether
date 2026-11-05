@@ -1,7 +1,7 @@
 use crate::{WebDataTransfer, WebFileData, WebFileEngine};
 
 use super::{Synthetic, WebEventExt};
-use dioxus_html::{
+use aether_html::{
     FileData, HasDataTransferData, HasDragData, HasFileData, HasMouseData,
     InteractionElementOffset, InteractionLocation, Modifiers, ModifiersInteraction,
     PointerInteraction,
@@ -52,7 +52,7 @@ impl ModifiersInteraction for Synthetic<DragEvent> {
 }
 
 impl PointerInteraction for Synthetic<DragEvent> {
-    fn held_buttons(&self) -> dioxus_html::input_data::MouseButtonSet {
+    fn held_buttons(&self) -> aether_html::input_data::MouseButtonSet {
         decode_mouse_button_set(self.event.buttons())
     }
 
@@ -74,19 +74,19 @@ impl HasDragData for Synthetic<DragEvent> {
 }
 
 impl HasDataTransferData for Synthetic<DragEvent> {
-    fn data_transfer(&self) -> dioxus_html::DataTransfer {
+    fn data_transfer(&self) -> aether_html::DataTransfer {
         use wasm_bindgen::JsCast;
 
         if let Some(target) = self.event.dyn_ref::<web_sys::DragEvent>()
             && let Some(data) = target.data_transfer()
         {
             let web_data_transfer = WebDataTransfer::new(data);
-            return dioxus_html::DataTransfer::new(web_data_transfer);
+            return aether_html::DataTransfer::new(web_data_transfer);
         }
 
         // Return an empty DataTransfer if we couldn't get one from the event
         let web_data_transfer = WebDataTransfer::new(web_sys::DataTransfer::new().unwrap());
-        dioxus_html::DataTransfer::new(web_data_transfer)
+        aether_html::DataTransfer::new(web_data_transfer)
     }
 }
 
@@ -121,7 +121,7 @@ impl HasFileData for Synthetic<DragEvent> {
     }
 }
 
-impl WebEventExt for dioxus_html::DragData {
+impl WebEventExt for aether_html::DragData {
     type WebEvent = web_sys::DragEvent;
 
     #[inline(always)]

@@ -2,12 +2,12 @@
 //! same way the CLI does, to check the debug-build hot-reload path end to end.
 #![cfg(debug_assertions)]
 
-use dioxus::prelude::*;
-use dioxus_core::internal::HotReloadedTemplate;
-use dioxus_html::HtmlCtx;
-use dioxus_rsx::CallBody;
-use dioxus_rsx_hotreload::HotReloadResult;
-use dioxus_signals::{GlobalKey, WritableExt, get_global_context};
+use aether::prelude::*;
+use aether_core::internal::HotReloadedTemplate;
+use aether_html::HtmlCtx;
+use aether_rsx::CallBody;
+use aether_rsx_hotreload::HotReloadResult;
+use aether_signals::{GlobalKey, WritableExt, get_global_context};
 
 // The `rsx!` invocation is kept at column 1 so its hot-reload key is known to the test.
 const APP_RSX_LINE: u32 = line!() + 6;
@@ -119,22 +119,22 @@ fn renders_hot_reloaded_template() {
     let mut dom = VirtualDom::new(App);
     dom.rebuild_in_place();
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         r#"<div id="root" class="old-class"><h1 title="world">Hello world</h1><span>old-literalx1</span><section><strong>static child</strong></section><section>text child</section><p>count: 2</p><ul><li>item 0</li><li>item 1</li></ul></div>"#
     );
 
     hot_reload_app(&dom);
-    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+    dom.render_immediate(&mut aether_core::NoOpMutations);
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         r#"<div id="root" class="new-class"><p>count: 2</p><h1 title="t-world">Hi world!</h1><span>new-literalx2</span><section><strong>edited child</strong></section><section>edited text</section><ul><li>row 0</li><li>row 1</li></ul></div>"#
     );
 
     // Re-rendering without a new template keeps the hot-reloaded output.
     dom.mark_dirty(ScopeId::APP);
-    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+    dom.render_immediate(&mut aether_core::NoOpMutations);
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         r#"<div id="root" class="new-class"><p>count: 2</p><h1 title="t-world">Hi world!</h1><span>new-literalx2</span><section><strong>edited child</strong></section><section>edited text</section><ul><li>row 0</li><li>row 1</li></ul></div>"#
     );
 }

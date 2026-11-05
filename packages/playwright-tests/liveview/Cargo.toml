@@ -1,13 +1,13 @@
 [package]
-name = "dioxus-playwright-liveview-test"
+name = "aether-playwright-liveview-test"
 version = "0.0.1"
 edition = "2024"
-description = "Playwright test for Dioxus Liveview"
+description = "Playwright test for Aether Liveview"
 license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [dependencies]
-dioxus = { workspace = true }
-dioxus-liveview = { workspace = true, features = ["axum"] }
+aether = { workspace = true }
+aether-liveview = { workspace = true, features = ["axum"] }
 tokio = { workspace = true, features = ["full"] }
 axum = { workspace = true, default-features = true, features = ["ws"] }

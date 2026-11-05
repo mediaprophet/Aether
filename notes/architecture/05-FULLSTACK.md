@@ -1,4 +1,4 @@
-# Dioxus Fullstack Architecture
+# Aether Fullstack Architecture
 
 The fullstack ecosystem enables seamless client-server communication through server functions, SSR, and hydration.
 
@@ -64,12 +64,12 @@ struct ErrorPayload<E> {
 1. `ServerFunction` struct holds metadata
 2. `inventory::submit!` for compile-time registration
 3. `ServerFunction::collect()` returns all handlers
-4. `DioxusRouterExt::register_server_functions()` registers on Axum
+4. `AetherRouterExt::register_server_functions()` registers on Axum
 
 ## SSR (Server-Side Rendering)
 
 ### SsrRendererPool
-- Thread-safe pool of `dioxus_ssr::Renderer` instances
+- Thread-safe pool of `aether_ssr::Renderer` instances
 - Manages concurrent rendering
 - Optional incremental cache for static generation
 
@@ -108,7 +108,7 @@ struct ErrorPayload<E> {
 2. Hooks serialize data: `use_server_future`, `use_server_cached`, `use_loader`
 3. Data stored with unique IDs
 4. Serialized to base64-encoded CBOR
-5. Injected as `window.__DIOXUS_HYDRATION_DATA__`
+5. Injected as `window.__AETHER_HYDRATION_DATA__`
 
 ### Client-Side
 1. JavaScript reads hydration data from HTML
@@ -129,10 +129,10 @@ struct ErrorPayload<E> {
 - Passed as State to Axum handlers
 - Allows request context access
 
-### DioxusRouterExt Trait
+### AetherRouterExt Trait
 Extension methods on `axum::Router`:
 - `serve_static_assets()` - Serves `/public`
-- `serve_dioxus_application(cfg, component)` - Full SSR + server functions
+- `serve_aether_application(cfg, component)` - Full SSR + server functions
 - `register_server_functions()` - Registers collected handlers
 - `serve_api_application(cfg, component)` - API-only
 
@@ -264,7 +264,7 @@ Server:
   → HydrationContext created
   → Render components
   → use_server_future serializes results
-  → Inject __DIOXUS_HYDRATION__ script
+  → Inject __AETHER_HYDRATION__ script
   → HTTP 200 + HTML
 
 Client:

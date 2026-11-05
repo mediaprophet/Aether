@@ -109,11 +109,11 @@ impl Component {
         let diagnostics = &self.diagnostics;
 
         quote! {
-            dioxus_core::DynamicNode::Component({
+            aether_core::DynamicNode::Component({
 
                 // todo: ensure going through the trait actually works
                 // we want to avoid importing traits
-                use dioxus_core::Properties;
+                use aether_core::Properties;
                 let __comp = #component;
                 #diagnostics
                 __comp
@@ -229,7 +229,7 @@ impl Component {
             // we only want to span the name and generics, not the builder helper call so jump-to-def
             // only finds the single entry (#name)
             let spanned = quote_spanned! { self.name.span() => #name #generics };
-            quote! { dioxus_core::ComponentFunctionExt::builder(#spanned) }
+            quote! { aether_core::ComponentFunctionExt::builder(#spanned) }
         };
 
         tokens.append_all(self.add_fields_to_builder(
@@ -316,7 +316,7 @@ impl Component {
                         ).emit_as_expr_tokens());
                     } else {
                         // tokens = quote! {
-                        //     dioxus_core::HasAttributes::push_attribute(
+                        //     aether_core::HasAttributes::push_attribute(
                         //         #tokens,
                         //         #name,
                         //         None,

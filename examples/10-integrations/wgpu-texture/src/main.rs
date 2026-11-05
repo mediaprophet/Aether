@@ -1,8 +1,8 @@
 use color::{OpaqueColor, Srgb};
 use color::{palette::css::WHITE, parse_color};
 use demo_renderer::{DemoMessage, DemoWidget};
-use dioxus::prelude::*;
-use dioxus_native::CustomWidgetAttr;
+use aether::prelude::*;
+use aether_native::CustomWidgetAttr;
 use std::any::Any;
 use wgpu::{Features, Limits};
 use winit::dpi::LogicalSize;
@@ -40,7 +40,7 @@ fn main() {
         Box::new(limits()),
         Box::new(window_attributes()),
     ];
-    dioxus_native::launch_cfg(app, Vec::new(), config);
+    aether_native::launch_cfg(app, Vec::new(), config);
 }
 
 fn app() -> Element {

@@ -1,4 +1,4 @@
-use dioxus_html::{
+use aether_html::{
     HasTouchPointData, InteractionLocation, Modifiers, ModifiersInteraction, TouchPoint,
     geometry::{ClientPoint, PagePoint, ScreenPoint},
 };
@@ -27,7 +27,7 @@ impl ModifiersInteraction for Synthetic<TouchEvent> {
     }
 }
 
-impl dioxus_html::events::HasTouchData for Synthetic<TouchEvent> {
+impl aether_html::events::HasTouchData for Synthetic<TouchEvent> {
     fn touches(&self) -> Vec<TouchPoint> {
         let touches = TouchEvent::touches(&self.event);
         let mut result = Vec::with_capacity(touches.length() as usize);
@@ -99,7 +99,7 @@ impl InteractionLocation for Synthetic<Touch> {
     }
 }
 
-impl WebEventExt for dioxus_html::TouchData {
+impl WebEventExt for aether_html::TouchData {
     type WebEvent = web_sys::TouchEvent;
 
     #[inline(always)]

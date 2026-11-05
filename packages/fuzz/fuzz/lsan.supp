@@ -10,4 +10,4 @@ leak:generational_box::unsync::UnsyncStorage>::create_new
 # caches with `Box::leak` so it satisfies `Template::new`'s static-lifetime
 # requirement. Every unique template the fuzzer produces stays alive for
 # the rest of the process by design.
-leak:dioxus_vdom_fuzz::vdom::intern_
+leak:aether_vdom_fuzz::vdom::intern_

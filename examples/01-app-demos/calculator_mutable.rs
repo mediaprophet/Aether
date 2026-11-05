@@ -1,19 +1,19 @@
 //! This example showcases a simple calculator using an approach to state management where the state is composed of only
-//! a single signal. Since Dioxus implements traditional React diffing, state can be consolidated into a typical Rust struct
+//! a single signal. Since Aether implements traditional React diffing, state can be consolidated into a typical Rust struct
 //! with methods that take `&mut self`. For many use cases, this is a simple way to manage complex state without wrapping
 //! everything in a signal.
 //!
 //! Generally, you'll want to split your state into several signals if you have a large application, but for small
 //! applications, or focused components, this is a great way to manage state.
 
-use dioxus::html::MouseEvent;
-use dioxus::html::input_data::keyboard_types::{Key, NamedKey};
-use dioxus::prelude::*;
+use aether::html::MouseEvent;
+use aether::html::input_data::keyboard_types::{Key, NamedKey};
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::new()
+    aether::LaunchBuilder::new()
         .with_cfg(desktop! {{
-            use dioxus::desktop::{Config, LogicalSize, WindowBuilder};
+            use aether::desktop::{Config, LogicalSize, WindowBuilder};
             Config::new().with_window(
                 WindowBuilder::new()
                     .with_title("Calculator Demo")
@@ -22,7 +22,7 @@ fn main() {
             )
         }})
         .with_cfg(native! {{
-            use dioxus::native::{Config, LogicalSize, WindowAttributes};
+            use aether::native::{Config, LogicalSize, WindowAttributes};
             Config::new().with_window_attributes(
                 WindowAttributes::default()
                     .with_title("Calculator Demo")

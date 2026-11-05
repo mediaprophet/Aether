@@ -41,7 +41,7 @@
 //! template.
 //!
 //!
-//! Dioxus uses a greedy algorithm to find the best match. We first try to create the child template with the dynamic context from the last full rebuild.
+//! Aether uses a greedy algorithm to find the best match. We first try to create the child template with the dynamic context from the last full rebuild.
 //! Then we use the child template that leaves the least unused dynamic items in the pool to create the new template.
 //!
 //! For the example above:
@@ -63,12 +63,12 @@
 //! The subproblem is optimal because the alternative is leaving less dynamic items for the remaining templates to hot reload which just makes it
 //! more difficult to match future templates.
 
-use dioxus_core::internal::{
+use aether_core::internal::{
     FmtedSegments, HotReloadAttributeValue, HotReloadDynamicAttribute, HotReloadDynamicNode,
     HotReloadLiteral, HotReloadedTemplate, NamedAttribute,
 };
-use dioxus_core_types::HotReloadingContext;
-use dioxus_rsx::*;
+use aether_core_types::HotReloadingContext;
+use aether_rsx::*;
 use std::collections::HashMap;
 
 use crate::extensions::{hot_reload_template_parts, html_tag_and_namespace};

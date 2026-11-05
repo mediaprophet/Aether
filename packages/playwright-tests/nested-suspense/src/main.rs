@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use dioxus::prelude::*;
+use aether::prelude::*;
 use nested_suspense::app;
 
 fn main() {

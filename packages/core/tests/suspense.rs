@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_core::{ScopeId, SuspenseBoundaryProps, WriteMutations, current_scope_id, generation};
-use dioxus_renderer_oracle::{RendererOracle, SnapshotNode};
+use aether::prelude::*;
+use aether_core::{ScopeId, SuspenseBoundaryProps, WriteMutations, current_scope_id, generation};
+use aether_renderer_oracle::{RendererOracle, SnapshotNode};
 use pretty_assertions::assert_eq;
 use std::cell::Cell;
 use std::future::poll_fn;
@@ -106,8 +106,8 @@ fn suspense_resolves_ssr() {
             let mut dom = VirtualDom::new(app);
             dom.rebuild_in_place();
             dom.wait_for_suspense().await;
-            dom.render_immediate(&mut dioxus_core::NoOpMutations);
-            let out = dioxus_ssr::render(&dom);
+            dom.render_immediate(&mut aether_core::NoOpMutations);
+            let out = aether_ssr::render(&dom);
 
             assert_eq!(out, "<div>Waiting for... child</div>");
         });
@@ -158,15 +158,15 @@ fn suspense_keeps_state() {
         .unwrap()
         .block_on(async {
             let mut dom = VirtualDom::new(app);
-            dom.rebuild(&mut dioxus_core::NoOpMutations);
+            dom.rebuild(&mut aether_core::NoOpMutations);
             dom.render_suspense_immediate().await;
 
-            let out = dioxus_ssr::render(&dom);
+            let out = aether_ssr::render(&dom);
 
             assert_eq!(out, "fallback");
 
             dom.wait_for_suspense().await;
-            let out = dioxus_ssr::render(&dom);
+            let out = aether_ssr::render(&dom);
 
             assert_eq!(out, "<div>child with future resolved</div>");
         });
@@ -217,10 +217,10 @@ fn suspense_does_not_poll_spawn() {
         .unwrap()
         .block_on(async {
             let mut dom = VirtualDom::new(app);
-            dom.rebuild(&mut dioxus_core::NoOpMutations);
+            dom.rebuild(&mut aether_core::NoOpMutations);
 
             dom.wait_for_suspense().await;
-            let out = dioxus_ssr::render(&dom);
+            let out = aether_ssr::render(&dom);
 
             assert_eq!(out, "<div>child with future resolved</div>");
         });
@@ -270,12 +270,12 @@ fn suspended_nodes_dont_trigger_effects() {
         .unwrap()
         .block_on(async {
             let mut dom = VirtualDom::new(app);
-            dom.rebuild(&mut dioxus_core::NoOpMutations);
+            dom.rebuild(&mut aether_core::NoOpMutations);
 
             let work = async move {
                 loop {
                     dom.wait_for_work().await;
-                    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+                    dom.render_immediate(&mut aether_core::NoOpMutations);
                 }
             };
             tokio::select! {
@@ -326,21 +326,21 @@ fn resolved_to_suspended() {
         .unwrap()
         .block_on(async {
             let mut dom = VirtualDom::new(app);
-            dom.rebuild(&mut dioxus_core::NoOpMutations);
+            dom.rebuild(&mut aether_core::NoOpMutations);
 
-            let out = dioxus_ssr::render(&dom);
+            let out = aether_ssr::render(&dom);
 
             assert_eq!(out, "rendered 1 times");
 
             dom.in_scope(ScopeId::APP, || *SUSPENDED.write() = true);
 
             dom.render_suspense_immediate().await;
-            let out = dioxus_ssr::render(&dom);
+            let out = aether_ssr::render(&dom);
 
             assert_eq!(out, "fallback");
 
             dom.wait_for_suspense().await;
-            let out = dioxus_ssr::render(&dom);
+            let out = aether_ssr::render(&dom);
 
             assert_eq!(out, "rendered 3 times");
         });
@@ -389,7 +389,7 @@ fn suspense_tracks_resolved() {
         .unwrap()
         .block_on(async {
             let mut dom = VirtualDom::new(app);
-            dom.rebuild(&mut dioxus_core::NoOpMutations);
+            dom.rebuild(&mut aether_core::NoOpMutations);
 
             dom.render_suspense_immediate().await;
             dom.wait_for_suspense_work().await;
@@ -430,7 +430,7 @@ fn suspense_tracks_resolved() {
     }
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/2783
+// Regression test for https://github.com/AetherLabs/aether/issues/2783
 #[test]
 fn toggle_suspense() {
     fn app() -> Element {

@@ -1,6 +1,6 @@
 use std::{cell::Cell, rc::Rc};
 
-use dioxus_core::*;
+use aether_core::*;
 use futures_util::StreamExt;
 
 use crate::use_callback;

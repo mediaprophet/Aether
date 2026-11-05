@@ -1,6 +1,6 @@
 use crate::renderer::{EditSummary, OracleNodeId, RendererOracle};
 use crate::vdom_snapshot::vdom_snapshot;
-use dioxus_core::{Element, ScopeId, VNode, VirtualDom, consume_context, generation};
+use aether_core::{Element, ScopeId, VNode, VirtualDom, consume_context, generation};
 use std::rc::Rc;
 
 /// The steps for a [`Sequence`], handed to the source app via a root context so
@@ -37,7 +37,7 @@ struct ExpectedStep(Rc<StepSource>);
 ///     .run();
 /// ```
 ///
-/// The source app dispatches on `dioxus_core::generation()` to pick the current
+/// The source app dispatches on `aether_core::generation()` to pick the current
 /// step, cloned from a root context. Between steps
 /// `Sequence` marks `ScopeId::APP` dirty and renders. The expected DOM is built
 /// by walking the VNode tree of the same step in a throwaway `VirtualDom` -
@@ -47,7 +47,7 @@ struct ExpectedStep(Rc<StepSource>);
 /// `Static` is a pre-built `Element` - what `rsx!{...}` evaluates to outside any
 /// runtime. Works for handler-free, signal-free content.
 ///
-/// `Lazy` is a closure invoked inside the Dioxus runtime each time the step
+/// `Lazy` is a closure invoked inside the Aether runtime each time the step
 /// renders. Required for rsx that creates event handlers, reads signals, or
 /// otherwise needs runtime context to construct.
 enum StepSource {
@@ -126,7 +126,7 @@ impl Sequence {
         self
     }
 
-    /// Append a state from a closure that runs *inside* the Dioxus runtime each
+    /// Append a state from a closure that runs *inside* the Aether runtime each
     /// time the step renders. Use this when the rsx contains event handlers or
     /// reads signals - those constructions require an active runtime.
     pub fn step_with(mut self, state: impl Fn() -> Element + 'static) -> Self {

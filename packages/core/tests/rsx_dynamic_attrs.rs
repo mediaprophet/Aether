@@ -1,8 +1,8 @@
-use dioxus::prelude::*;
-use dioxus_core::{Mutation, Mutations, ScopeId, VNode, VNodeChild};
-use dioxus_renderer_oracle::{RendererOracle, SnapshotAttr, SnapshotNode, fresh_snapshot};
+use aether::prelude::*;
+use aether_core::{Mutation, Mutations, ScopeId, VNode, VNodeChild};
+use aether_renderer_oracle::{RendererOracle, SnapshotAttr, SnapshotNode, fresh_snapshot};
 
-dioxus::html::define_elements! {
+aether::html::define_elements! {
     #[element(name = "style-panel")]
     stylePanel {}
 
@@ -121,7 +121,7 @@ fn separated_empty_fragment_slots() -> Element {
     }
 }
 
-fn root_element(vnode: &VNode) -> dioxus_core::StaticElement<'_> {
+fn root_element(vnode: &VNode) -> aether_core::StaticElement<'_> {
     vnode
         .children()
         .find_map(|child| match child {
@@ -305,14 +305,14 @@ fn separated_empty_fragment_slots_stay_inside_static_parent() {
 #[test]
 fn no_op_rebuild_places_separated_empty_fragment_inside_static_parent() {
     let mut dom = VirtualDom::new(separated_empty_fragment_slots_dynamic_app);
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
     dom.in_scope(ScopeId::APP, || *SHOW_SEPARATED_SLOT_B.write() = true);
 
     let mut mutations = Mutations::default();
     dom.render_immediate(&mut mutations);
 
-    let mut stack = vec![Some(dioxus_core::ElementId::ROOT)];
+    let mut stack = vec![Some(aether_core::ElementId::ROOT)];
     let mut root_appends = false;
     for mutation in &mutations.edits {
         match mutation {
@@ -328,7 +328,7 @@ fn no_op_rebuild_places_separated_empty_fragment_inside_static_parent() {
             Mutation::CreateElement { .. } | Mutation::CreateText { .. } => stack.push(None),
             Mutation::AppendChildren { m } => {
                 let parent = stack[stack.len() - *m - 1];
-                root_appends |= parent == Some(dioxus_core::ElementId::ROOT);
+                root_appends |= parent == Some(aether_core::ElementId::ROOT);
                 stack.truncate(stack.len() - *m);
             }
             Mutation::ReplaceWith { m } => {

@@ -5,12 +5,12 @@
 // - 500 Routes
 
 #![allow(non_snake_case)]
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::new()
+    aether::LaunchBuilder::new()
         .with_cfg(server_only! {
-            dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
+            aether::server::ServeConfig::builder().enable_out_of_order_streaming()
         })
         .launch(app);
 }
@@ -50,7 +50,7 @@ fn Blog(id: i32) -> Element {
 
 #[component]
 fn ThrowsError() -> Element {
-    dioxus::core::bail!("This route tests uncaught errors in the server",)
+    aether::core::bail!("This route tests uncaught errors in the server",)
 }
 
 #[component]

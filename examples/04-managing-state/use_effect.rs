@@ -1,16 +1,16 @@
 //! Running side effects when state changes.
 //!
 //! `use_effect` runs a closure after every render where one of the signals it reads has
-//! changed. It's the escape hatch for talking to code outside of Dioxus — logging, syncing
+//! changed. It's the escape hatch for talking to code outside of Aether — logging, syncing
 //! to `localStorage`, updating the `document.title`, tweaking imperative APIs, and so on.
 //!
 //! For pure derivations of other signals, reach for `use_memo` instead — effects are meant
 //! for side effects, not for computing values used in the UI.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

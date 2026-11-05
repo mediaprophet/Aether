@@ -1,11 +1,11 @@
 //! A simple example of a router with a few routes and a nav bar.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
     // launch the router, using our `Route` component as the generic type
     // This will automatically boot the app to "/" unless otherwise specified
-    dioxus::launch(|| rsx! { Router::<Route> {} });
+    aether::launch(|| rsx! { Router::<Route> {} });
 }
 
 /// By default, the Routable derive will use the name of the variant as the route

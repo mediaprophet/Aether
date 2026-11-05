@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-ext"
+name = "aether-ext"
 version = { workspace = true }
 edition = "2024"
 publish = false
@@ -8,8 +8,8 @@ publish = false
 
 [dependencies]
 wasm-bindgen = { workspace = true }
-dioxus-autofmt = { workspace = true }
-dioxus-rsx-rosetta = { workspace = true }
+aether-autofmt = { workspace = true }
+aether-rsx-rosetta = { workspace = true }
 html_parser = { workspace = true }
 syn = { workspace = true }
 

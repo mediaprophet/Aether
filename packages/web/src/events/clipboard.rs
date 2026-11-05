@@ -1,4 +1,4 @@
-use dioxus_html::{DataTransfer, FileData, HasClipboardData, HasDataTransferData, HasFileData};
+use aether_html::{DataTransfer, FileData, HasClipboardData, HasDataTransferData, HasFileData};
 use web_sys::ClipboardEvent;
 
 use crate::WebDataTransfer;
@@ -38,7 +38,7 @@ impl HasFileData for WebClipboardData {
     }
 }
 
-impl WebEventExt for dioxus_html::ClipboardData {
+impl WebEventExt for aether_html::ClipboardData {
     type WebEvent = web_sys::ClipboardEvent;
 
     #[inline(always)]

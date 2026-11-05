@@ -1,6 +1,6 @@
 use super::*;
 use crate::{sequence::Sequence, vdom_snapshot::assert_no_mutations};
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn simple_app() -> Element {
     rsx! {

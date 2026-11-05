@@ -1,4 +1,4 @@
-//! This example is a simple showcase of Dioxus Server Functions.
+//! This example is a simple showcase of Aether Server Functions.
 //!
 //! The other examples in this folder showcase advanced features of server functions like custom
 //! data types, error handling, websockets, and more.
@@ -7,7 +7,7 @@
 //!
 //! ## Server Functions
 //!
-//! In Dioxus, Server Functions are `axum` backend endpoints that can be called directly from the client
+//! In Aether, Server Functions are `axum` backend endpoints that can be called directly from the client
 //! as if you were simply calling a local Rust function. You can do anything with a server function
 //! that an Axum handler can do like extracting path, query, headers, and body parameters.
 //!
@@ -31,7 +31,7 @@
 //! ## Error Types
 //!
 //! The `Err` type of the server function return type is also somewhat special. The `Err` type can be:
-//! - `anyhow::Error` (the `dioxus_core::Err` type alias) for untyped errors with rich context. Note
+//! - `anyhow::Error` (the `aether_core::Err` type alias) for untyped errors with rich context. Note
 //!   that these errors will always downcast to `ServerFnError` on the client, losing the original
 //!   error stack and type.
 //! - `ServerFnError` for typed errors with a status code and optional message.
@@ -48,11 +48,11 @@
 //! ## Calling Server Functions from the Client
 //!
 //! Server functions can be called from the client by simply importing the function and calling it
-//! like a normal Rust function. Unlike regular axum handlers, Dioxus server functions have a few
+//! like a normal Rust function. Unlike regular axum handlers, Aether server functions have a few
 //! non-obvious restrictions.
 //!
 //! Most importantly, the arguments to the server function must implement either `Deserialize` *or*
-//! `IntoRequest`. The `IntoRequest` trait is a Dioxus abstraction that represents the "inverse" of the
+//! `IntoRequest`. The `IntoRequest` trait is a Aether abstraction that represents the "inverse" of the
 //! Axum `FromRequest` trait. Anything that is sent to the server from the client must be both extractable
 //! with `FromRequest` on the server *and* constructible with `IntoRequest` on the client.
 //!
@@ -86,10 +86,10 @@
 //!
 //! Unlike axum handlers, server functions do not need to be manually registered with a router.
 //! By default, *all* server functions in your app will be automatically registered with the
-//! server when you call `dioxus::launch` or create a router manually with `dioxus::server::router()`.
+//! server when you call `aether::launch` or create a router manually with `aether::server::router()`.
 //!
 //! However, not all server functions are automatically registered by default. Server functions that
-//! take a `State<T>` extractor cannot be automatically added to the router since the dioxus router
+//! take a `State<T>` extractor cannot be automatically added to the router since the aether router
 //! type does not know how to construct the `T` type.
 //!
 //! These server functions will be registered once the `ServerState<T>` layer is added to the app with
@@ -110,7 +110,7 @@
 //! These functions are still exposed as HTTP endpoints, but their names are procedurally generated
 //! from the module path, function name, and a hash of the function signature. This makes it hard to
 //! call these functions with `curl` or `postman`, but save you the trouble of coming up with unique
-//! names for simple functions that are only called from your Dioxus app.
+//! names for simple functions that are only called from your Aether app.
 //!
 //! If you're shipping desktop/mobile apps, we don't recommend using anonymous server functions
 //! since the function names could change between builds and thus make older versions of your app
@@ -123,18 +123,18 @@
 //!
 //! ## More examples
 //!
-//! With Dioxus Fullstack 0.7, pretty much anything you can do with an Axum handler, you can do with
+//! With Aether Fullstack 0.7, pretty much anything you can do with an Axum handler, you can do with
 //! a server function. More advanced examples can be found in this folder showcasing custom data types,
 //! error handling, websockets, and more.
 
 use axum_core::response::IntoResponse;
-use dioxus::prelude::*;
-use dioxus_fullstack::FromResponse;
-use dioxus_fullstack::http::StatusCode;
+use aether::prelude::*;
+use aether_fullstack::FromResponse;
+use aether_fullstack::http::StatusCode;
 use serde::{Deserialize, Serialize};
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -193,7 +193,7 @@ async fn echo(body: String) -> Result<String> {
 }
 
 /// A Server function that takes path and query parameters, as well as a server-only extractor.
-#[post("/api/{user_id}/chat?room_id", headers: dioxus_fullstack::HeaderMap)]
+#[post("/api/{user_id}/chat?room_id", headers: aether_fullstack::HeaderMap)]
 async fn chat(user_id: u32, room_id: Option<u32>) -> Result<String> {
     Ok(format!(
         "User ID: {}, Room ID: {} - Headers: {:#?}",
@@ -250,7 +250,7 @@ impl IntoResponse for CustomData {
 }
 
 impl FromResponse for CustomData {
-    async fn from_response(res: dioxus_fullstack::ClientResponse) -> Result<Self, ServerFnError> {
+    async fn from_response(res: aether_fullstack::ClientResponse) -> Result<Self, ServerFnError> {
         let message = res.json::<String>().await?;
         Ok(CustomData { message })
     }
@@ -280,11 +280,11 @@ async fn anonymous() -> Result<String> {
 /// An anonymous server function with a custom prefix and a fixed endpoint name.
 ///
 /// This is less preferred over the `#[get]`/`#[post]` syntax but is still functional for backwards
-/// compatibility. Previously, only the `#[server]` attribute was available, but as of Dioxus 0.7,
+/// compatibility. Previously, only the `#[server]` attribute was available, but as of Aether 0.7,
 /// the `#[get]`/`#[post]` attributes are preferred for new code.
 ///
 /// You can also use server-only extractors here as well, provided they come after the configuration.
-#[server(prefix = "/api/custom", endpoint = "my_anonymous", headers: dioxus_fullstack::HeaderMap)]
+#[server(prefix = "/api/custom", endpoint = "my_anonymous", headers: aether_fullstack::HeaderMap)]
 async fn custom_anonymous() -> Result<String> {
     Ok(format!(
         "Hello from a custom anonymous server function! -> {:#?}",

@@ -7,7 +7,7 @@ You may have noticed that this struct doesn't have many methods. Most methods fo
 You can use the methods on the `ReadableExt` trait to read a memo:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 
 fn app() -> Element {
     let mut count = use_signal(|| 0);
@@ -30,7 +30,7 @@ fn app() -> Element {
 Memo also includes helper methods just like [`Signal`]s to make it easier to use. Calling a memo like a function will clone the inner value:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 
 fn app() -> Element {
     let mut count = use_signal(|| 0);
@@ -58,7 +58,7 @@ For a full list of all the helpers available, check out the [`Readable`], [`Read
 Because Memos check borrows at runtime, you need to be careful when reading memos inside of async code. If you hold a read of a memo over an await point, that read may still be open when the memo reruns which will cause a panic:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # async fn sleep(delay: u32) {}
 async fn double_me_async(value: &u32) -> u32 {
     sleep(100).await;
@@ -89,7 +89,7 @@ rsx!{
 Instead of holding a read over an await point, you can clone whatever values you need out of your memo:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # async fn sleep(delay: u32) {}
 async fn double_me_async(value: u32) -> u32 {
     sleep(100).await;
@@ -124,7 +124,7 @@ This is incredibly convenient for UI development, but it does come with some tra
 TLDR **Don't pass memos up in the component tree**. It will cause issues:
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn MyComponent() -> Element {
     let child_signal = use_signal(|| None);
 

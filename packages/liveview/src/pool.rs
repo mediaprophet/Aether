@@ -6,9 +6,9 @@ use crate::{
     query::{QueryEngine, QueryResult},
 };
 
-use dioxus_core::{Element, Event, ScopeId, VirtualDom, provide_context};
-use dioxus_html::{EventData, HtmlEvent, PlatformEventData};
-use dioxus_interpreter_js::MutationState;
+use aether_core::{Element, Event, ScopeId, VirtualDom, provide_context};
+use aether_html::{EventData, HtmlEvent, PlatformEventData};
+use aether_interpreter_js::MutationState;
 use futures_util::{SinkExt, StreamExt, pin_mut};
 use serde::Serialize;
 use std::{any::Any, rc::Rc};
@@ -28,7 +28,7 @@ impl Default for LiveViewPool {
 impl LiveViewPool {
     pub fn new() -> Self {
         // Set the event converter
-        dioxus_html::set_event_converter(Box::new(SerializedHtmlEventConverter));
+        aether_html::set_event_converter(Box::new(SerializedHtmlEventConverter));
 
         LiveViewPool {
             pool: LocalPoolHandle::new(
@@ -70,7 +70,7 @@ impl LiveViewPool {
     }
 }
 
-/// A LiveViewSocket is a Sink and Stream of Strings that Dioxus uses to communicate with the client
+/// A LiveViewSocket is a Sink and Stream of Strings that Aether uses to communicate with the client
 ///
 /// Most websockets from most HTTP frameworks can be converted into a LiveViewSocket using the appropriate adapter.
 ///
@@ -115,7 +115,7 @@ impl<S> LiveViewSocket for S where
 
 /// The primary event loop for the VirtualDom waiting for user input
 ///
-/// This function makes it easy to integrate Dioxus LiveView with any socket-based framework.
+/// This function makes it easy to integrate Aether LiveView with any socket-based framework.
 ///
 /// As long as your framework can provide a Sink and Stream of Bytes, you can use this function.
 ///
@@ -124,7 +124,7 @@ pub async fn run(mut vdom: VirtualDom, ws: impl LiveViewSocket) -> Result<(), Li
     #[cfg(all(feature = "devtools", debug_assertions))]
     let mut hot_reload_rx = {
         let (tx, rx) = tokio::sync::mpsc::unbounded_channel();
-        dioxus_devtools::connect(move |template| _ = tx.send(template));
+        aether_devtools::connect(move |template| _ = tx.send(template));
         rx
     };
 
@@ -219,15 +219,15 @@ pub async fn run(mut vdom: VirtualDom, ws: impl LiveViewSocket) -> Result<(), Li
             Some(msg) = hot_reload_wait => {
                 #[cfg(all(feature = "devtools", debug_assertions))]
                 match msg {
-                    dioxus_devtools::DevserverMsg::HotReload(msg)=> {
-                        dioxus_devtools::apply_changes(&vdom, &msg);
+                    aether_devtools::DevserverMsg::HotReload(msg)=> {
+                        aether_devtools::apply_changes(&vdom, &msg);
                     }
-                    dioxus_devtools::DevserverMsg::Shutdown => {
+                    aether_devtools::DevserverMsg::Shutdown => {
                         std::process::exit(0);
                     },
-                    dioxus_devtools::DevserverMsg::FullReloadCommand
-                    | dioxus_devtools::DevserverMsg::FullReloadStart
-                    | dioxus_devtools::DevserverMsg::FullReloadFailed => {
+                    aether_devtools::DevserverMsg::FullReloadCommand
+                    | aether_devtools::DevserverMsg::FullReloadStart
+                    | aether_devtools::DevserverMsg::FullReloadFailed => {
                         // usually only web gets this message - what are we supposed to do?
                         // Maybe we could just binary patch ourselves in place without losing window state?
                     },

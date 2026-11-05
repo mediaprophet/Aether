@@ -53,7 +53,7 @@ impl Hash for BundledAsset {
 }
 
 impl BundledAsset {
-    pub const PLACEHOLDER_HASH: &str = "This should be replaced by dx as part of the build process. If you see this error, make sure you are using a matching version of dx and dioxus and you are not stripping symbols from your binary.";
+    pub const PLACEHOLDER_HASH: &str = "This should be replaced by dx as part of the build process. If you see this error, make sure you are using a matching version of dx and aether and you are not stripping symbols from your binary.";
 
     #[doc(hidden)]
     /// This should only be called from the macro
@@ -92,7 +92,7 @@ impl BundledAsset {
 ///
 /// ```rust, ignore
 /// # use manganis::{asset, Asset};
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// const ASSET: Asset = asset!("/assets/image.png");
 /// rsx! {
 ///     img { src: ASSET }
@@ -149,7 +149,7 @@ impl Asset {
             bytes.push(byte);
         }
 
-        deserialize_const!(BundledAsset, bytes.as_slice()).expect("Failed to deserialize asset. Make sure you built with the matching version of the Dioxus CLI").1
+        deserialize_const!(BundledAsset, bytes.as_slice()).expect("Failed to deserialize asset. Make sure you built with the matching version of the Aether CLI").1
     }
 
     /// Return a canonicalized path to the asset
@@ -159,9 +159,9 @@ impl Asset {
     pub fn resolve(&self) -> PathBuf {
         let bundled = self.bundled();
 
-        #[cfg(feature = "dioxus")]
+        #[cfg(feature = "aether")]
         // If the asset is relative, we resolve the asset at the current directory
-        if !dioxus_core_types::is_bundled_app() {
+        if !aether_core_types::is_bundled_app() {
             return PathBuf::from(bundled.absolute_source_path.as_str());
         }
 
@@ -172,9 +172,9 @@ impl Asset {
             return PathBuf::from(bundled.absolute_source_path.as_str());
         }
 
-        #[cfg(feature = "dioxus")]
+        #[cfg(feature = "aether")]
         let bundle_root = {
-            let base_path = dioxus_cli_config::base_path();
+            let base_path = aether_cli_config::base_path();
             let base_path = base_path
                 .as_deref()
                 .map(|base_path| {
@@ -184,7 +184,7 @@ impl Asset {
                 .unwrap_or_default();
             PathBuf::from(format!("{base_path}/assets/"))
         };
-        #[cfg(not(feature = "dioxus"))]
+        #[cfg(not(feature = "aether"))]
         let bundle_root = PathBuf::from("/assets/");
 
         // Otherwise presumably we're bundled and we can use the bundled path
@@ -222,8 +222,8 @@ impl std::fmt::Display for Asset {
     }
 }
 
-#[cfg(feature = "dioxus")]
-impl dioxus_core_types::DioxusFormattable for Asset {
+#[cfg(feature = "aether")]
+impl aether_core_types::AetherFormattable for Asset {
     fn format(&self) -> std::borrow::Cow<'static, str> {
         std::borrow::Cow::Owned(self.to_string())
     }

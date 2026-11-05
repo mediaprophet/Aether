@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 use std::{
     fmt::{self, Display},
     str::FromStr,
@@ -79,7 +79,7 @@ fn without_trailing_slashes_parse() {
     );
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/2984
+// Regression test for https://github.com/AetherLabs/aether/issues/2984
 #[test]
 fn query_segments_parse() {
     #[derive(Debug, Clone, PartialEq)]
@@ -222,10 +222,10 @@ fn child_route_preserves_query_and_hash() {
     assert_eq!(Route::from_str(&reserved.to_string()).unwrap(), reserved);
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/5792
+// Regression test for https://github.com/AetherLabs/aether/issues/5792
 #[test]
 fn empty_query_omits_question_mark() {
-    use dioxus_router::routable::FromQuery;
+    use aether_router::routable::FromQuery;
 
     #[derive(Debug, Clone, PartialEq, Default)]
     struct Params {

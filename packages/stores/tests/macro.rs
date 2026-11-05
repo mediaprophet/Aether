@@ -7,8 +7,8 @@
 #[allow(unused)]
 #[allow(clippy::disallowed_names)]
 mod macro_tests {
-    use dioxus_signals::*;
-    use dioxus_stores::*;
+    use aether_signals::*;
+    use aether_stores::*;
     use std::collections::HashMap;
 
     fn derive_unit() {
@@ -146,7 +146,7 @@ mod macro_tests {
 
     fn derive_generic_struct_with_private_field() {
         mod inner {
-            use dioxus_stores::*;
+            use aether_stores::*;
 
             #[derive(Store)]
             pub struct Item<T> {
@@ -169,8 +169,8 @@ mod macro_tests {
             }
         }
 
-        use dioxus_signals::*;
-        use dioxus_stores::*;
+        use aether_signals::*;
+        use aether_stores::*;
         use inner::{Item, ItemStoreExt};
 
         let store = use_store(Item::<i32>::new);
@@ -689,8 +689,8 @@ mod macro_tests {
     // Cross-module test: public fields are accessible from outside the defining module
     // via the public extension trait, while the private trait stays module-private
     mod inner_module {
-        use dioxus_signals::*;
-        use dioxus_stores::*;
+        use aether_signals::*;
+        use aether_stores::*;
 
         #[derive(Store)]
         pub struct Config {
@@ -738,12 +738,12 @@ mod macro_tests {
     // generated accessor — callable from exactly the scope that could have
     // named the field itself.
     mod arbitrary_vis_parent {
-        use dioxus_signals::*;
-        use dioxus_stores::*;
+        use aether_signals::*;
+        use aether_stores::*;
 
         pub mod defining {
-            use dioxus_signals::*;
-            use dioxus_stores::*;
+            use aether_signals::*;
+            use aether_stores::*;
 
             #[derive(Store)]
             pub struct Item {
@@ -782,12 +782,12 @@ mod macro_tests {
     }
 
     mod r#raw_parent {
-        use dioxus_signals::*;
-        use dioxus_stores::*;
+        use aether_signals::*;
+        use aether_stores::*;
 
         pub mod raw_mod {
-            use dioxus_signals::*;
-            use dioxus_stores::*;
+            use aether_signals::*;
+            use aether_stores::*;
 
             #[derive(Store)]
             pub struct Item {

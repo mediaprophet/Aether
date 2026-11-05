@@ -7,10 +7,10 @@
 //! Hooks rely on being called in the same order every render, so never call them inside
 //! `if`, `match`, or loops.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

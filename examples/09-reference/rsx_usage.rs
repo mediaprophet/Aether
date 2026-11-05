@@ -39,14 +39,14 @@
 //! - Allow top-level fragments
 
 fn main() {
-    dioxus::launch(app)
+    aether::launch(app)
 }
 
 use core::{fmt, str::FromStr};
 use std::fmt::Display;
 
 use baller::Baller;
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn app() -> Element {
     let formatting = "formatting!";
@@ -146,7 +146,7 @@ fn app() -> Element {
             }
 
             // Conditional rendering
-            // Dioxus conditional rendering is based around None/Some. We have no special syntax for conditionals.
+            // Aether conditional rendering is based around None/Some. We have no special syntax for conditionals.
             // You can convert a bool condition to rsx! with .then and .or
             {true.then(|| rsx!(div {}))}
 

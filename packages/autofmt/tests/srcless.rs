@@ -1,4 +1,4 @@
-use dioxus_rsx::CallBody;
+use aether_rsx::CallBody;
 use syn::parse_quote;
 
 macro_rules! test_case {
@@ -19,7 +19,7 @@ fn write_block_out() {
 }
 
 fn works(parsed: CallBody, src: &str) {
-    let block = dioxus_autofmt::write_block_out(&parsed).unwrap();
+    let block = aether_autofmt::write_block_out(&parsed).unwrap();
     let src = src
         .trim()
         .trim_start_matches("parse_quote! {")

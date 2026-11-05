@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-renderer-oracle"
+name = "aether-renderer-oracle"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "A fast oracle renderer for validating Dioxus VirtualDom mutations."
+description = "A fast oracle renderer for validating Aether VirtualDom mutations."
 license = "CC-BY-NC-ND-4.0"
 publish = false
 repository = "https://github.com/mediaprophet/Aether"
@@ -11,8 +11,8 @@ homepage = "https://github.com/mediaprophet/Aether"
 rust-version = "1.85.0"
 
 [dependencies]
-dioxus-core = { workspace = true }
+aether-core = { workspace = true }
 pretty_assertions = { workspace = true }
 
 [dev-dependencies]
-dioxus = { workspace = true }
+aether = { workspace = true }

@@ -1,4 +1,4 @@
-use dioxus_html::HasFocusData;
+use aether_html::HasFocusData;
 
 use super::{Synthetic, WebEventExt};
 
@@ -8,7 +8,7 @@ impl HasFocusData for Synthetic<web_sys::FocusEvent> {
     }
 }
 
-impl WebEventExt for dioxus_html::FocusData {
+impl WebEventExt for aether_html::FocusData {
     type WebEvent = web_sys::FocusEvent;
 
     #[inline(always)]

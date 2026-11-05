@@ -1,5 +1,5 @@
 use crate::{Transportable, transport::SerializeContextEntry};
-use dioxus_core::use_hook;
+use aether_core::use_hook;
 
 /// This allows you to send data from the server to the client *during hydration*.
 /// - When compiled as server, the closure is ran and the resulting data is serialized on the server and sent to the client.
@@ -8,11 +8,11 @@ use dioxus_core::use_hook;
 ///
 /// The order this function is run on the client needs to be the same order initially run on the server.
 ///
-/// If Dioxus fullstack cannot find the data on the client, it will run the closure again to get the data.
+/// If Aether fullstack cannot find the data on the client, it will run the closure again to get the data.
 ///
 /// # Example
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// fn app() -> Element {
 ///    let state1 = use_server_cached(|| {

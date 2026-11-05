@@ -1,5 +1,5 @@
 use crate::{Attribute, DynamicNode, VNode};
-use dioxus_core_template::{
+use aether_core_template::{
     StaticTemplateElement, StaticTemplateNode, StaticTemplateNodeIter, StaticTemplateText,
     TemplateAnchor, TemplatePath, TemplateSlotTarget,
 };
@@ -674,7 +674,7 @@ fn child_position(target: TemplateSlotTarget) -> usize {
 mod tests {
     use super::*;
     use crate::{Attribute, DynamicNode, DynamicValues};
-    use dioxus_core_template::RuntimeTemplateBuilder;
+    use aether_core_template::RuntimeTemplateBuilder;
 
     fn vnode_from_builder(
         builder: RuntimeTemplateBuilder,

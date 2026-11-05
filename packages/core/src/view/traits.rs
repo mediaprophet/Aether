@@ -2,7 +2,7 @@
 //! traits and helpers that turn a typed view into a [`VNode`].
 
 use crate::{DynamicValues, Template, VNode};
-use dioxus_core_template::{
+use aether_core_template::{
     TEMPLATE_STORAGE_DYNAMIC_CAP, TEMPLATE_STORAGE_OPS_CAP, TEMPLATE_STORAGE_STRING_CAP,
     TemplateRawTree, TemplateStorage,
 };
@@ -212,7 +212,7 @@ fn runtime_template(tree: &'static TemplateRawTree) -> Template {
     *templates
         .get_or_insert_default()
         .entry(key)
-        .or_insert_with(|| dioxus_core_template::build_runtime_template(tree))
+        .or_insert_with(|| aether_core_template::build_runtime_template(tree))
 }
 
 impl View for () {}

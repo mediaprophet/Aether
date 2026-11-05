@@ -5,16 +5,16 @@ use crate::isrg::{
 };
 use crate::streaming::{Mount, StreamingRenderer};
 use crate::{ServeConfig, document::ServerDocument};
-use dioxus_cli_config::base_path;
-use dioxus_core::{
+use aether_cli_config::base_path;
+use aether_core::{
     DynamicNode, DynamicNodeSlot, ErrorContext, MountedVNode, Runtime, ScopeId, SuspenseContext,
     VirtualDom, consume_context, has_context, try_consume_context,
 };
-use dioxus_fullstack_core::{FullstackContext, StreamingStatus};
-use dioxus_fullstack_core::{HttpError, ServerFnError, history::provide_fullstack_history_context};
-use dioxus_fullstack_core::{HydrationContext, SerializedHydrationData};
-use dioxus_router::ParseRouteError;
-use dioxus_ssr::Renderer;
+use aether_fullstack_core::{FullstackContext, StreamingStatus};
+use aether_fullstack_core::{HttpError, ServerFnError, history::provide_fullstack_history_context};
+use aether_fullstack_core::{HydrationContext, SerializedHydrationData};
+use aether_router::ParseRouteError;
+use aether_ssr::Renderer;
 use futures_channel::mpsc::Sender;
 use futures_util::{Stream, StreamExt};
 use http::{HeaderMap, StatusCode, request::Parts};
@@ -180,15 +180,15 @@ impl SsrRendererPool {
                 let base_path = base_path.trim_matches('/');
                 let base_path = format!("/{base_path}");
                 let route = route.strip_prefix(&base_path).unwrap_or(&route);
-                dioxus_history::MemoryHistory::with_initial_path(route).with_prefix(base_path)
+                aether_history::MemoryHistory::with_initial_path(route).with_prefix(base_path)
             } else {
-                dioxus_history::MemoryHistory::with_initial_path(&route)
+                aether_history::MemoryHistory::with_initial_path(&route)
             };
 
             // Provide the document and streaming context to the root of the app
             let streaming_context =
                 virtual_dom.in_scope(ScopeId::ROOT, || FullstackContext::new(parts));
-            virtual_dom.provide_root_context(document.clone() as Rc<dyn dioxus_document::Document>);
+            virtual_dom.provide_root_context(document.clone() as Rc<dyn aether_document::Document>);
             virtual_dom.provide_root_context(streaming_context.clone());
 
             virtual_dom.in_scope(ScopeId::ROOT, || {
@@ -196,8 +196,8 @@ impl SsrRendererPool {
                 provide_fullstack_history_context(history);
 
                 // Provide a hydration compatible error boundary that serializes errors for the client
-                dioxus_core::provide_create_error_boundary(
-                    dioxus_fullstack_core::init_error_boundary,
+                aether_core::provide_create_error_boundary(
+                    aether_fullstack_core::init_error_boundary,
                 );
             });
 
@@ -503,7 +503,7 @@ impl SsrRendererPool {
         // Add an error boundary to the scope. We serialize the suspense error boundary separately so we can use
         // the normal in memory ErrorContext here
         Runtime::current().in_scope(suspense_scope, || {
-            dioxus_core::provide_context(ErrorContext::new(None))
+            aether_core::provide_context(ErrorContext::new(None))
         });
     }
 
@@ -630,7 +630,7 @@ impl SsrRendererPool {
     ) -> Result<(), IncrementalRendererError> {
         let title = {
             let document: Option<Rc<ServerDocument>> =
-                virtual_dom.in_scope(ScopeId::ROOT, dioxus_core::try_consume_context);
+                virtual_dom.in_scope(ScopeId::ROOT, aether_core::try_consume_context);
             // Collect any head content from the document provider and inject that into the head
             document.and_then(|document| document.title())
         };
@@ -665,7 +665,7 @@ impl SsrRendererPool {
     ) -> Result<(), IncrementalRendererError> {
         to.write_str(&cfg.index.close_head)?;
 
-        use dioxus_interpreter_js::INITIALIZE_STREAMING_JS;
+        use aether_interpreter_js::INITIALIZE_STREAMING_JS;
         write!(to, "<script>{INITIALIZE_STREAMING_JS}</script>")?;
 
         Ok(())
@@ -684,7 +684,7 @@ impl SsrRendererPool {
         let raw_data = resolved_data.data;
         write!(
             to,
-            r#"<script>window.initial_dioxus_hydration_data="{raw_data}";"#,
+            r#"<script>window.initial_aether_hydration_data="{raw_data}";"#,
         )?;
         #[cfg(debug_assertions)]
         {
@@ -693,11 +693,11 @@ impl SsrRendererPool {
             let debug_locations = &resolved_data.debug_locations;
             write!(
                 to,
-                r#"window.initial_dioxus_hydration_debug_types={debug_types};"#,
+                r#"window.initial_aether_hydration_debug_types={debug_types};"#,
             )?;
             write!(
                 to,
-                r#"window.initial_dioxus_hydration_debug_locations={debug_locations};"#,
+                r#"window.initial_aether_hydration_debug_locations={debug_locations};"#,
             )?;
         }
         write!(to, r#"</script>"#,)?;

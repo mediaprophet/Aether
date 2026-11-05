@@ -8,12 +8,12 @@
 //! offsets. Components and fragments are transparent and emit into the current
 //! level.
 //!
-//! The template structure comes from the flat op-tape [`dioxus_core::Template`]
+//! The template structure comes from the flat op-tape [`aether_core::Template`]
 //! (`VNode::children` / element children / dynamic anchors, the same document-order
-//! walk SSR uses in `dioxus_ssr`); mounted `ElementId`s come from the rendered
+//! walk SSR uses in `aether_ssr`); mounted `ElementId`s come from the rendered
 //! `MountedVNode`. No DOM reads happen here - the cursor performs them.
 
-use dioxus_core::{
+use aether_core::{
     AttributeValue, DynamicNode, DynamicNodeSlot, ElementId, MountedVNode, ScopeState,
     StaticElement, VNodeChild, VirtualDom,
 };
@@ -58,7 +58,7 @@ impl WebsysDom {
     }
 
     /// Emit an element's children, interleaving static children
-    /// with dynamic node slots in document order (mirrors `dioxus_ssr`).
+    /// with dynamic node slots in document order (mirrors `aether_ssr`).
     fn emit_element_children_at_level<'a>(
         &mut self,
         vnode: MountedVNode<'a>,
@@ -219,7 +219,7 @@ impl WebsysDom {
                     } else {
                         let event_name =
                             attribute.name.strip_prefix("on").unwrap_or(attribute.name);
-                        let bubbles = dioxus_core_types::event_bubbles(event_name);
+                        let bubbles = aether_core_types::event_bubbles(event_name);
                         dynamic_attrs.listeners.push((event_name, bubbles));
                     }
                 }

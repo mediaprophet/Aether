@@ -1,8 +1,8 @@
 [package]
-name = "dioxus-component-manifest"
+name = "aether-component-manifest"
 edition = "2024"
 version.workspace = true
-description = "Wire format for the dioxus CLI telemetry type"
+description = "Wire format for the aether CLI telemetry type"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"

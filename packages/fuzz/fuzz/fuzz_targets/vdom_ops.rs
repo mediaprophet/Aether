@@ -1,6 +1,6 @@
 #![no_main]
 
-use dioxus_vdom_fuzz::{
+use aether_vdom_fuzz::{
     FuzzCase, ReductionOptions, decode_case, encode_case, format_failure_report, mutate_case,
     print_case_trace, reduce_case_to_encoded_vec, run_case, warmup_deferred_priority_paths,
 };
@@ -95,7 +95,7 @@ fn cargo_fuzz_minimizing() -> bool {
 fn coverage_ignore_failures() -> bool {
     static IGNORE_FAILURES: OnceLock<bool> = OnceLock::new();
     *IGNORE_FAILURES
-        .get_or_init(|| std::env::var_os("DIOXUS_VDOM_FUZZ_COVERAGE_IGNORE_FAILURES").is_some())
+        .get_or_init(|| std::env::var_os("AETHER_VDOM_FUZZ_COVERAGE_IGNORE_FAILURES").is_some())
 }
 
 fn claim_semantic_reduction_attempt() -> bool {

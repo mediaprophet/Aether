@@ -3,22 +3,22 @@
 //! This example is a simple iOS-style calculator. Instead of wrapping the state in a single struct like the
 //! `calculate_mutable` example, this example uses several closures to manage actions with the state. Most
 //! components will start like this since it's the quickest way to start adding state to your app. The `Signal` type
-//! in Dioxus is `Copy` - meaning you don't need to clone it to use it in a closure.
+//! in Aether is `Copy` - meaning you don't need to clone it to use it in a closure.
 //!
 //! Notice how our logic is consolidated into just a few callbacks instead of a single struct. This is a rather organic
-//! way to start building state management in Dioxus, and it's a great way to start.
+//! way to start building state management in Aether, and it's a great way to start.
 
-use dioxus::events::*;
-use dioxus::html::input_data::keyboard_types::{Key, NamedKey};
-use dioxus::prelude::*;
+use aether::events::*;
+use aether::html::input_data::keyboard_types::{Key, NamedKey};
+use aether::prelude::*;
 
 const TITLE: &str = "Calculator";
 const STYLE: Asset = asset!("/examples/assets/calculator.css");
 
 fn main() {
-    dioxus::LaunchBuilder::new()
+    aether::LaunchBuilder::new()
         .with_cfg(desktop!({
-            use dioxus::desktop::{Config, LogicalSize, WindowBuilder};
+            use aether::desktop::{Config, LogicalSize, WindowBuilder};
             Config::new().with_window(
                 WindowBuilder::default()
                     .with_title(TITLE)
@@ -26,7 +26,7 @@ fn main() {
             )
         }))
         .with_cfg(native!({
-            use dioxus::native::{Config, LogicalSize, WindowAttributes};
+            use aether::native::{Config, LogicalSize, WindowAttributes};
             Config::new().with_window_attributes(
                 WindowAttributes::default()
                     .with_title(TITLE)

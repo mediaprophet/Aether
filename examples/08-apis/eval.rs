@@ -3,11 +3,11 @@
 //! Eval will only work with renderers that support javascript - so currently only the web and desktop/mobile renderers
 //! that use a webview. Native renderers will throw "unsupported" errors when calling `eval`.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use futures_timer::Delay;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -17,12 +17,12 @@ fn app() -> Element {
         Delay::new(std::time::Duration::from_secs(1)).await;
 
         // The `eval` is available in the prelude - and simply takes a block of JS.
-        // Dioxus' eval is interesting since it allows sending messages to and from the JS code using the `await dioxus.recv()`
+        // Aether' eval is interesting since it allows sending messages to and from the JS code using the `await aether.recv()`
         // builtin function. This allows you to create a two-way communication channel between Rust and JS.
         let mut eval = document::eval(
             r#"
-                dioxus.send("Hi from JS!");
-                let msg = await dioxus.recv();
+                aether.send("Hi from JS!");
+                let msg = await aether.recv();
                 console.log(msg);
                 return "hi from JS!";
             "#,

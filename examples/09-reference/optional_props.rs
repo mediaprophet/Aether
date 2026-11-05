@@ -3,10 +3,10 @@
 //! This example demonstrates how to use optional props in your components. The `Button` component has several props,
 //! and we use a variety of attributes to set them.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -25,7 +25,7 @@ fn app() -> Element {
             a: "asd".to_string(),
             b: "asd".to_string(),
 
-            // We can omit the `Some` on `c` since Dioxus automatically transforms Option<T> into optional
+            // We can omit the `Some` on `c` since Aether automatically transforms Option<T> into optional
             c: "asd".to_string(),
             d: Some("asd".to_string()),
             e: "asd".to_string(),

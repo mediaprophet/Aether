@@ -66,7 +66,7 @@ pub const fn deserialize_asset(bytes: &[u8]) -> BundledAsset {
     match const_serialize::deserialize_const!(BundledAsset, bytes) {
         Some((_, asset)) => asset,
         None => panic!(
-            "Failed to deserialize asset. This may be caused by a mismatch between your dioxus and dioxus-cli versions"
+            "Failed to deserialize asset. This may be caused by a mismatch between your aether and aether-cli versions"
         ),
     }
 }

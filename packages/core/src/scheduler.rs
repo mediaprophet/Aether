@@ -1,8 +1,8 @@
-//! # Dioxus uses a scheduler to run queued work in the correct order.
+//! # Aether uses a scheduler to run queued work in the correct order.
 //!
 //! ## Goals
 //! We try to prevent three different situations:
-//! 1. Running queued work after it could be dropped. Related issues (<https://github.com/DioxusLabs/dioxus/pull/1993>)
+//! 1. Running queued work after it could be dropped. Related issues (<https://github.com/AetherLabs/aether/pull/1993>)
 //!
 //! User code often assumes that this property is true. For example, if this code reruns the child component after signal is changed to None, it will panic
 //! ```rust, ignore
@@ -23,7 +23,7 @@
 //! }
 //! ```
 //!
-//! 2. Running effects before the dom is updated. Related issues (<https://github.com/DioxusLabs/dioxus/issues/2307>)
+//! 2. Running effects before the dom is updated. Related issues (<https://github.com/AetherLabs/aether/issues/2307>)
 //!
 //! Effects can be used to run code that accesses the DOM directly. They should only run when the DOM is in an updated state. If they are run with an out of date version of the DOM, unexpected behavior can occur.
 //! ```rust, ignore
@@ -41,7 +41,7 @@
 //! }
 //! ```
 //!
-//! 3. Observing out of date state. Related issues (<https://github.com/DioxusLabs/dioxus/issues/1935>)
+//! 3. Observing out of date state. Related issues (<https://github.com/AetherLabs/aether/issues/1935>)
 //!
 //! Where ever possible, updates should happen in an order that makes it impossible to observe an out of date state.
 //! ```rust, ignore
@@ -69,7 +69,7 @@
 //!    Priority: These are the highest priority tasks. Dirty scopes will be rerun in order from the scope closest to the root to the scope furthest from the root. We follow this order to ensure that if a higher component reruns and drops a lower component, the lower component will not be run after it should be dropped.
 //!
 //! 2. Tasks:
-//!    Description: Futures spawned in the dioxus runtime each have an unique task id. When the waker for that future is called, the task is rerun.
+//!    Description: Futures spawned in the aether runtime each have an unique task id. When the waker for that future is called, the task is rerun.
 //!    Priority: These are the second highest priority tasks. They are run after all other dirty scopes have been resolved because those dirty scopes may cause children (and the tasks those children own) to drop which should cancel the futures.
 //!
 //! 3. Effects:

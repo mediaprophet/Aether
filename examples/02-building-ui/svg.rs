@@ -1,16 +1,16 @@
 //! Thanks to @japsu and their project https://github.com/japsu/jatsi for the example!
 //!
-//! This example shows how to create a simple dice rolling app using SVG and Dioxus.
+//! This example shows how to create a simple dice rolling app using SVG and Aether.
 //! The `svg` element and its children have a custom namespace, and are attached using different methods than regular
 //! HTML elements. Any element can specify a custom namespace by using the `namespace` meta attribute.
 //!
 //! If you `go-to-definition` on the `svg` element, you'll see its custom namespace.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use rand::{Rng, rng};
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         rsx! {
             div { user_select: "none", webkit_user_select: "none", margin_left: "10%", margin_right: "10%",
                 h1 { "Click die to generate a new value" }

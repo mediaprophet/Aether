@@ -18,7 +18,7 @@ impl HashFragment {
         let ident = &self.ident;
         let ty = &self.ty;
         quote! {
-            let #ident = <#ty as dioxus_router::routable::FromHashFragment>::from_hash_fragment(&*hash);
+            let #ident = <#ty as aether_router::routable::FromHashFragment>::from_hash_fragment(&*hash);
         }
     }
 
@@ -28,7 +28,7 @@ impl HashFragment {
             {
                 let __hash = #ident.to_string();
                 if !__hash.is_empty() {
-                    write!(f, "#{}", dioxus_router::exports::percent_encoding::utf8_percent_encode(&__hash, dioxus_router::exports::FRAGMENT_ASCII_SET))?;
+                    write!(f, "#{}", aether_router::exports::percent_encoding::utf8_percent_encode(&__hash, aether_router::exports::FRAGMENT_ASCII_SET))?;
                 }
             }
         }

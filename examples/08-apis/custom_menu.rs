@@ -1,8 +1,8 @@
-//! This example shows how to use a custom menu bar with Dioxus desktop.
+//! This example shows how to use a custom menu bar with Aether desktop.
 //! This example is not supported on the mobile or web renderers.
 
-use dioxus::desktop::{muda::*, use_muda_event_handler};
-use dioxus::prelude::*;
+use aether::desktop::{muda::*, use_muda_event_handler};
+use aether::prelude::*;
 
 fn main() {
     // Create a menu bar that only contains the edit menu
@@ -25,10 +25,10 @@ fn main() {
     menu.append(&edit_menu).unwrap();
 
     // Create a desktop config that overrides the default menu with the custom menu
-    let config = dioxus::desktop::Config::new().with_menu(menu);
+    let config = aether::desktop::Config::new().with_menu(menu);
 
     // Launch the app with the custom menu
-    dioxus::LaunchBuilder::new().with_cfg(config).launch(app)
+    aether::LaunchBuilder::new().with_cfg(config).launch(app)
 }
 
 fn app() -> Element {

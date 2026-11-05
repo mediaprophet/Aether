@@ -1,4 +1,4 @@
-use dioxus_core::{Runtime, ScopeId, Subscribers, internal::RsxLocation};
+use aether_core::{Runtime, ScopeId, Subscribers, internal::RsxLocation};
 use generational_box::BorrowResult;
 use std::{any::Any, cell::RefCell, collections::HashMap, ops::Deref, panic::Location, rc::Rc};
 
@@ -224,7 +224,7 @@ where
         }
         // Otherwise, create it
         // Constructors are always run in the root scope
-        let signal = dioxus_core::Runtime::current().in_scope(ScopeId::ROOT, || {
+        let signal = aether_core::Runtime::current().in_scope(ScopeId::ROOT, || {
             T::initialize_from_function(self.constructor)
         });
         context
@@ -332,7 +332,7 @@ impl GlobalLazyContext {
 
 /// The hot-reload template slot every `rsx!` site reads in debug builds.
 #[doc(hidden)]
-pub type HotReloadTemplateSignal = GlobalSignal<Option<dioxus_core::internal::HotReloadedTemplate>>;
+pub type HotReloadTemplateSignal = GlobalSignal<Option<aether_core::internal::HotReloadedTemplate>>;
 
 /// Read guard over a [`HotReloadTemplateSignal`].
 #[doc(hidden)]
@@ -365,34 +365,34 @@ pub fn read_hot_reload_template(
 #[doc(hidden)]
 pub fn hot_reload_template(
     read: &Option<HotReloadTemplateRead>,
-) -> Option<&dioxus_core::internal::HotReloadedTemplate> {
+) -> Option<&aether_core::internal::HotReloadedTemplate> {
     read.as_ref().and_then(|read| read.as_ref())
 }
 
 /// Initial value of every `rsx!` hot-reload slot: one shared function rather than a closure per
 /// site.
-fn no_hot_reload_template() -> Option<dioxus_core::internal::HotReloadedTemplate> {
+fn no_hot_reload_template() -> Option<aether_core::internal::HotReloadedTemplate> {
     None
 }
 
 /// Render the `rsx!` site at `location`, template `index`, whose body has no formatted text and
 /// no component literals: nothing needs to be read from a literal pool, so the hot-reload slot
-/// is consulted only once the [`VNode`](dioxus_core::VNode) is built.
+/// is consulted only once the [`VNode`](aether_core::VNode) is built.
 #[cfg(debug_assertions)]
 #[doc(hidden)]
 pub fn render_site(
     location: RsxLocation,
     index: usize,
-    meta: dioxus_core::internal::HotReloadSiteMeta,
-    tree: &'static dioxus_core::internal::TemplateRawTree,
-    dynamic: dioxus_core::DynamicValues,
-) -> dioxus_core::VNode {
+    meta: aether_core::internal::HotReloadSiteMeta,
+    tree: &'static aether_core::internal::TemplateRawTree,
+    dynamic: aether_core::DynamicValues,
+) -> aether_core::VNode {
     let read = read_hot_reload_template(location, index);
-    let vnode = dioxus_core::view::vnode_from_tree(tree, dynamic);
-    dioxus_core::internal::render_hot_reloaded(
+    let vnode = aether_core::view::vnode_from_tree(tree, dynamic);
+    aether_core::internal::render_hot_reloaded(
         vnode,
         hot_reload_template(&read),
-        dioxus_core::internal::DynamicLiteralPool::new(Vec::new()),
+        aether_core::internal::DynamicLiteralPool::new(Vec::new()),
         &meta,
     )
 }
@@ -403,14 +403,14 @@ pub fn render_site(
 pub fn render_static_site(
     location: RsxLocation,
     index: usize,
-    tree: &'static dioxus_core::internal::TemplateRawTree,
-) -> dioxus_core::VNode {
+    tree: &'static aether_core::internal::TemplateRawTree,
+) -> aether_core::VNode {
     render_site(
         location,
         index,
-        dioxus_core::internal::HotReloadSiteMeta::STATIC,
+        aether_core::internal::HotReloadSiteMeta::STATIC,
         tree,
-        dioxus_core::view::dynamic_values(0, 0),
+        aether_core::view::dynamic_values(0, 0),
     )
 }
 
@@ -424,8 +424,8 @@ pub fn render_static_site(
 #[doc(hidden)]
 pub struct HotReloadSite {
     read: Option<HotReloadTemplateRead>,
-    meta: dioxus_core::internal::HotReloadSiteMeta,
-    literal_pool: dioxus_core::internal::DynamicLiteralPool,
+    meta: aether_core::internal::HotReloadSiteMeta,
+    literal_pool: aether_core::internal::DynamicLiteralPool,
 }
 
 #[cfg(debug_assertions)]
@@ -436,13 +436,13 @@ impl HotReloadSite {
     pub fn new(
         location: RsxLocation,
         index: usize,
-        meta: dioxus_core::internal::HotReloadSiteMeta,
+        meta: aether_core::internal::HotReloadSiteMeta,
         dynamic_text: Vec<String>,
     ) -> Self {
         Self {
             read: read_hot_reload_template(location, index),
             meta,
-            literal_pool: dioxus_core::internal::DynamicLiteralPool::new(dynamic_text),
+            literal_pool: aether_core::internal::DynamicLiteralPool::new(dynamic_text),
         }
     }
 
@@ -455,16 +455,16 @@ impl HotReloadSite {
         }
     }
 
-    /// Build the site's [`VNode`](dioxus_core::VNode) from its cached template and render it
+    /// Build the site's [`VNode`](aether_core::VNode) from its cached template and render it
     /// through the hot-reload pools, falling back to the site's original template.
     #[doc(hidden)]
     pub fn finish(
         self,
-        tree: &'static dioxus_core::internal::TemplateRawTree,
-        dynamic: dioxus_core::DynamicValues,
-    ) -> dioxus_core::VNode {
-        let vnode = dioxus_core::view::vnode_from_tree(tree, dynamic);
-        dioxus_core::internal::render_hot_reloaded(
+        tree: &'static aether_core::internal::TemplateRawTree,
+        dynamic: aether_core::DynamicValues,
+    ) -> aether_core::VNode {
+        let vnode = aether_core::view::vnode_from_tree(tree, dynamic);
+        aether_core::internal::render_hot_reloaded(
             vnode,
             hot_reload_template(&self.read),
             self.literal_pool,

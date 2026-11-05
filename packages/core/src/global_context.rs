@@ -13,13 +13,13 @@ pub fn current_scope_id() -> ScopeId {
 ///
 /// # Examples
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn Component() -> Element {
 ///     let request = spawn(async move {
 ///         match reqwest::get("https://api.example.com").await {
 ///             Ok(_) => unimplemented!(),
 ///             // You can explicitly throw an error into a scope with throw_error
-///             Err(err) => dioxus::core::throw_error(err),
+///             Err(err) => aether::core::throw_error(err),
 ///         }
 ///     });
 ///
@@ -34,7 +34,7 @@ pub fn throw_error(error: impl Into<CapturedError> + 'static) {
 ///
 /// Unlike `use_context`, this is **not** a hook. It reads the context value directly from the
 /// runtime each time it is called, rather than caching it on first render. This means it can be
-/// called from anywhere the Dioxus runtime is active — inside event handlers, async tasks, spawned
+/// called from anywhere the Aether runtime is active — inside event handlers, async tasks, spawned
 /// futures, or other non-hook contexts — without following the rules of hooks.
 pub fn try_consume_context<T: 'static + Clone>() -> Option<T> {
     Runtime::with_current_scope(|cx| cx.consume_context::<T>())
@@ -44,7 +44,7 @@ pub fn try_consume_context<T: 'static + Clone>() -> Option<T> {
 ///
 /// Unlike `use_context`, this is **not** a hook. It reads the context value directly from the
 /// runtime each time it is called, rather than caching it on first render. This means it can be
-/// called from anywhere the Dioxus runtime is active — inside event handlers, async tasks, spawned
+/// called from anywhere the Aether runtime is active — inside event handlers, async tasks, spawned
 /// futures, or other non-hook contexts — without following the rules of hooks.
 pub fn consume_context<T: 'static + Clone>() -> T {
     Runtime::with_current_scope(|cx| cx.consume_context::<T>())
@@ -89,8 +89,8 @@ pub fn suspend(task: Task) -> Element {
 /// Because this future runs during suspense, you need to be careful to work with hydration. It is not recommended to do any async IO work in this future, as it can easily cause hydration issues. However, you can use isomorphic tasks to do work that can be consistently replicated on the server and client like logging or responding to state changes.
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_core::spawn_isomorphic;
+/// # use aether::prelude::*;
+/// # use aether_core::spawn_isomorphic;
 /// // ❌ Do not do requests in isomorphic tasks. It may resolve at a different time on the server and client, causing hydration issues.
 /// let mut state = use_signal(|| None);
 /// spawn_isomorphic(async move {
@@ -116,7 +116,7 @@ pub fn spawn_isomorphic(fut: impl Future<Output = ()> + 'static) -> Task {
 ///
 /// # Example
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// fn App() -> Element {
 ///     rsx! {
@@ -138,12 +138,12 @@ pub fn spawn(fut: impl Future<Output = ()> + 'static) -> Task {
     Runtime::with_current_scope(|cx| cx.spawn(fut))
 }
 
-/// Queue an effect to run after the next render. You generally shouldn't need to interact with this function directly. [use_effect](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_effect.html) will call this function for you.
+/// Queue an effect to run after the next render. You generally shouldn't need to interact with this function directly. [use_effect](https://docs.rs/aether-hooks/latest/aether_hooks/fn.use_effect.html) will call this function for you.
 pub fn queue_effect(f: impl FnOnce() + 'static) {
     Runtime::with_current_scope(|cx| cx.queue_effect(f))
 }
 
-/// Spawn a future that Dioxus won't clean up when this component is unmounted
+/// Spawn a future that Aether won't clean up when this component is unmounted
 ///
 /// This is good for tasks that need to be run after the component has been dropped.
 ///
@@ -152,8 +152,8 @@ pub fn queue_effect(f: impl FnOnce() + 'static) {
 /// # Example
 ///
 /// ```rust
-/// use dioxus::prelude::*;
-/// use dioxus_core::spawn_forever;
+/// use aether::prelude::*;
+/// use aether_core::spawn_forever;
 ///
 /// // The parent component can create and destroy children dynamically
 /// fn App() -> Element {
@@ -217,11 +217,11 @@ pub fn remove_future(id: Task) {
 ///
 /// <div class="warning">
 ///
-/// `use_hook` is not reactive. It just returns the value on every render. If you need state that will track changes, use [`use_signal`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_signal.html) instead.
+/// `use_hook` is not reactive. It just returns the value on every render. If you need state that will track changes, use [`use_signal`](https://docs.rs/aether-hooks/latest/aether_hooks/fn.use_signal.html) instead.
 ///
 /// ❌ Don't use `use_hook` with `Rc<RefCell<T>>` for state. It will not update the UI and other hooks when the state changes.
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 /// use std::rc::Rc;
 /// use std::cell::RefCell;
 ///
@@ -239,7 +239,7 @@ pub fn remove_future(id: Task) {
 ///
 /// ✅ Use `use_signal` instead.
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// pub fn Comp() -> Element {
 ///     let mut count = use_signal(|| 0);
@@ -258,7 +258,7 @@ pub fn remove_future(id: Task) {
 /// # Example
 ///
 /// ```rust, no_run
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// // prints a greeting on the initial render
 /// pub fn use_hello_world() {
@@ -269,7 +269,7 @@ pub fn remove_future(id: Task) {
 /// # Custom Hook Example
 ///
 /// ```rust, no_run
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// pub struct InnerCustomState(usize);
 ///
@@ -319,7 +319,7 @@ pub fn needs_update_any(id: ScopeId) {
 
 /// Schedule an update for the current component.
 ///
-/// Note: Unlike [`needs_update`], the function returned by this method will work outside of the dioxus runtime.
+/// Note: Unlike [`needs_update`], the function returned by this method will work outside of the aether runtime.
 ///
 /// Note: The function returned by this method will schedule an update for the current component even if it has already updated between when `schedule_update` was called and when the returned function is called.
 /// If the desired behavior is to invalidate the current rendering of the current component (and no-op if already invalidated)
@@ -335,7 +335,7 @@ pub fn schedule_update() -> Arc<dyn Fn() + Send + Sync> {
 ///
 /// A component's [`ScopeId`] can be obtained from the [`current_scope_id`] method.
 ///
-/// Note: Unlike [`needs_update`], the function returned by this method will work outside of the dioxus runtime.
+/// Note: Unlike [`needs_update`], the function returned by this method will work outside of the aether runtime.
 ///
 /// Note: It does not matter when `schedule_update_any` is called: the returned function will invalidate what ever generation of the specified component is current when returned function is called.
 /// If the desired behavior is to schedule invalidation of the current rendering of a component, use [`ReactiveContext`](crate::reactive_context::ReactiveContext) instead.
@@ -346,15 +346,15 @@ pub fn schedule_update_any() -> Arc<dyn Fn(ScopeId) + Send + Sync> {
 
 /// Creates a callback that will be run before the component is removed.
 /// This can be used to clean up side effects from the component
-/// (created with [`use_effect`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_effect.html)).
+/// (created with [`use_effect`](https://docs.rs/aether-hooks/latest/aether_hooks/fn.use_effect.html)).
 ///
 /// Note:
 /// Effects do not run on the server, but use_drop **DOES**. It runs any time the component is dropped including during SSR rendering on the server. If your clean up logic targets web, the logic has to be gated by a feature, see the below example for details.
 ///
 /// Example:
 /// ```rust
-/// use dioxus::prelude::*;
-/// use dioxus_core::use_drop;
+/// use aether::prelude::*;
+/// use aether_core::use_drop;
 ///
 /// fn app() -> Element {
 ///     let mut state = use_signal(|| true);
@@ -429,7 +429,7 @@ pub fn use_drop<D: FnOnce() + 'static>(destroy: D) {
 
 /// A hook that allows you to insert a "before render" function.
 ///
-/// This function will always be called before dioxus tries to render your component. This should be used for safely handling
+/// This function will always be called before aether tries to render your component. This should be used for safely handling
 /// early returns
 pub fn use_before_render(f: impl FnMut() + 'static) {
     use_hook(|| Runtime::with_current_scope(|cx| cx.push_before_render(f)));
@@ -437,7 +437,7 @@ pub fn use_before_render(f: impl FnMut() + 'static) {
 
 /// Push this function to be run after the next render
 ///
-/// This function will always be called before dioxus tries to render your component. This should be used for safely handling
+/// This function will always be called before aether tries to render your component. This should be used for safely handling
 /// early returns
 pub fn use_after_render(f: impl FnMut() + 'static) {
     use_hook(|| Runtime::with_current_scope(|cx| cx.push_after_render(f)));

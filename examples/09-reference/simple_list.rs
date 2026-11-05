@@ -2,10 +2,10 @@
 //!
 //! Rsx allows anything that's an iterator where the output type implements Into<Element>, so you can use any of the following:
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

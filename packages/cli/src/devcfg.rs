@@ -5,7 +5,7 @@
 /// This is used to verify that binaries are copied with different names such that they don't collide
 /// and should generally be only enabled on certain platforms that require it.
 pub(crate) fn should_force_entropy() -> bool {
-    std::env::var("DIOXUS_FORCE_ENTRY").is_ok()
+    std::env::var("AETHER_FORCE_ENTRY").is_ok()
 }
 
 /// Should we test the installs?

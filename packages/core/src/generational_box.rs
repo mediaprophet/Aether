@@ -1,6 +1,6 @@
 //! Integration with the generational-box crate for copy state management.
 //!
-//! Each scope in dioxus has a single [Owner]
+//! Each scope in aether has a single [Owner]
 
 use generational_box::{AnyStorage, Owner, SyncStorage, UnsyncStorage};
 use std::{

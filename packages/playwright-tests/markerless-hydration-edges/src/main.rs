@@ -1,14 +1,14 @@
 // Edge cases that markerless hydration must handle without producing
 // hydration comments or `data-node-hydration` attributes.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
-    use_hook(dioxus::fullstack::commit_initial_chunk);
+    use_hook(aether::fullstack::commit_initial_chunk);
 
     rsx! {
         DangerousInnerHtml {}
@@ -75,7 +75,7 @@ async fn resolve_empty_stream() -> usize {
 // so later updates land on it, rather than splitting against a length the parser
 // already shortened (which binds the body incorrectly or raises a hydration mismatch).
 // Regression for the leading-newline case of
-// https://github.com/DioxusLabs/dioxus/issues/5548.
+// https://github.com/AetherLabs/aether/issues/5548.
 #[component]
 fn TextareaLeadingNewline() -> Element {
     let mut value = use_signal(|| "BODY".to_string());
@@ -113,7 +113,7 @@ fn PreLeadingNewline() -> Element {
 // `textarea` interprets its children as raw text, so it cannot carry hydration
 // comment markers. Markerless hydration must bind the SSR-rendered text content
 // and let later updates patch it. Regression for
-// https://github.com/DioxusLabs/dioxus/issues/5548.
+// https://github.com/AetherLabs/aether/issues/5548.
 #[component]
 fn TextareaHydration() -> Element {
     let mut value = use_signal(|| "initial textarea body".to_string());

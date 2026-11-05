@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_core::{ScopeId, generation};
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_core::{ScopeId, generation};
+use aether_renderer_oracle::RendererOracle;
 
 #[test]
 fn toggle_option_text() {
@@ -203,7 +203,7 @@ fn dynamic_node_replacement_from_empty_output_uses_slot_site() {
     assert_eq!(summary.replaces, 0);
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/2815
+// Regression test for https://github.com/AetherLabs/aether/issues/2815
 #[test]
 fn toggle_template() {
     fn app() -> Element {

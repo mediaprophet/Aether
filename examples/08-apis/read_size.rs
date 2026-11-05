@@ -6,10 +6,10 @@
 
 use std::rc::Rc;
 
-use dioxus::{html::geometry::euclid::Rect, prelude::*};
+use aether::{html::geometry::euclid::Rect, prelude::*};
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

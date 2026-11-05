@@ -1,12 +1,12 @@
-//! Demonstrate how to use dioxus as a child window for use in alternative renderers like wgpu.
+//! Demonstrate how to use aether as a child window for use in alternative renderers like wgpu.
 //!
 //! The code here is borrowed from wry's example:
 //! https://github.com/tauri-apps/wry/blob/dev/examples/wgpu.rs
 //!
 //! To use this feature set `with_as_child_window()` on your desktop config which will then let you
 
-use dioxus::prelude::*;
-use dioxus::{
+use aether::prelude::*;
+use aether::{
     desktop::tao::{event::Event as WryEvent, window::Window},
     desktop::{Config, tao::window::WindowBuilder, use_wry_event_handler, window},
 };
@@ -34,7 +34,7 @@ fn main() {
         })
         .with_as_child_window();
 
-    dioxus::LaunchBuilder::desktop()
+    aether::LaunchBuilder::desktop()
         .with_cfg(config)
         .launch(app);
 }
@@ -48,7 +48,7 @@ fn app() -> Element {
     });
 
     use_wry_event_handler(move |event, _| {
-        use dioxus::desktop::tao::event::WindowEvent;
+        use aether::desktop::tao::event::WindowEvent;
 
         if let WryEvent::WindowEvent {
             event: WindowEvent::Resized(new_size),

@@ -3,12 +3,12 @@
 <details>
 <summary>async block may outlive the current function, but it borrows `value`, which is owned by the current function</summary>
 
-Tasks in Dioxus need only access data that can last for the entire lifetime of the application. That generally means data that is moved into the async block. **If you get this error, you may have forgotten to add `move` to your async block.**
+Tasks in Aether need only access data that can last for the entire lifetime of the application. That generally means data that is moved into the async block. **If you get this error, you may have forgotten to add `move` to your async block.**
 
 Broken component:
 
 ```rust, compile_fail
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn App() -> Element {
     let signal = use_signal(|| 0);
@@ -27,7 +27,7 @@ fn App() -> Element {
 Fixed component:
 
 ```rust, no_run
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn App() -> Element {
     let signal = use_signal(|| 0);
@@ -53,7 +53,7 @@ Data in rust has a single owner. If you run into this error, you have likely tri
 Broken component:
 
 ```rust, compile_fail
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // `MyComponent` accepts a string which cannot be copied implicitly
 #[component]
 fn MyComponent(string: String) -> Element {
@@ -77,7 +77,7 @@ You can fix this issue by either:
 - Making your data `Copy` with `ReadSignal`:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // `MyComponent` accepts `ReadSignal<String>` which implements `Copy`
 #[component]
 fn MyComponent(string: ReadSignal<String>) -> Element {
@@ -99,7 +99,7 @@ fn MyComponent(string: ReadSignal<String>) -> Element {
 - Calling `clone` on your data before you move it into the closure:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // `MyComponent` accepts a string which doesn't implement `Copy`
 #[component]
 fn MyComponent(string: String) -> Element {

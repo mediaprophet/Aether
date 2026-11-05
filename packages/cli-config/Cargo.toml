@@ -1,12 +1,12 @@
 [package]
-name = "dioxus-cli-config"
+name = "aether-cli-config"
 edition = "2024"
 version.workspace = true
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
-description = "CLI Configuration for dioxus-cli"
+description = "CLI Configuration for aether-cli"
 keywords = ["web", "desktop", "mobile", "gui", "wasm"]
 
 [dependencies]

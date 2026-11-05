@@ -219,7 +219,7 @@ pub fn option_asset(input: TokenStream) -> TokenStream {
 ///
 /// Then use the `css_module` attribute:
 /// ```rust, ignore
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// fn app() -> Element {
 ///     #[css_module("/assets/styles.css")]

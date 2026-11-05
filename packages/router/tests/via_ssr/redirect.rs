@@ -1,9 +1,9 @@
-use dioxus::prelude::*;
-use dioxus_history::{History, MemoryHistory};
-use dioxus_router::components::HistoryProvider;
+use aether::prelude::*;
+use aether_history::{History, MemoryHistory};
+use aether_router::components::HistoryProvider;
 use std::{rc::Rc, str::FromStr};
 
-// Tests for regressions of <https://github.com/DioxusLabs/dioxus/issues/2549>
+// Tests for regressions of <https://github.com/AetherLabs/aether/issues/2549>
 #[test]
 fn redirects_apply_in_order() {
     let path = Route::from_str("/").unwrap();
@@ -15,7 +15,7 @@ fn redirects_apply_in_order() {
     );
     let mut vdom = VirtualDom::new_with_props(App, AppProps { path });
     vdom.rebuild_in_place();
-    let as_string = dioxus_ssr::render(&vdom);
+    let as_string = aether_ssr::render(&vdom);
     assert_eq!(as_string, "en");
 }
 

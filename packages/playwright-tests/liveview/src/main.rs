@@ -1,7 +1,7 @@
 // This test is used by playwright configured in the root of the repo
 
 use axum::{Router, extract::ws::WebSocketUpgrade, response::Html, routing::get};
-use dioxus::{logger::tracing::Level, prelude::*};
+use aether::{logger::tracing::Level, prelude::*};
 
 fn app() -> Element {
     let mut num = use_signal(|| 0);
@@ -40,11 +40,11 @@ fn OnMounted() -> Element {
 
 #[tokio::main]
 async fn main() {
-    _ = dioxus::logger::init(Level::DEBUG);
+    _ = aether::logger::init(Level::DEBUG);
 
     let addr: std::net::SocketAddr = ([127, 0, 0, 1], 3030).into();
 
-    let view = dioxus_liveview::LiveViewPool::new();
+    let view = aether_liveview::LiveViewPool::new();
 
     let app = Router::new()
         .route(
@@ -54,12 +54,12 @@ async fn main() {
                     r#"
             <!DOCTYPE html>
             <html>
-                <head> <title>Dioxus LiveView with axum</title>  </head>
+                <head> <title>Aether LiveView with axum</title>  </head>
                 <body> <div id="main"></div> </body>
                 {glue}
             </html>
             "#,
-                    glue = dioxus_liveview::interpreter_glue(&format!("ws://{addr}/ws"))
+                    glue = aether_liveview::interpreter_glue(&format!("ws://{addr}/ws"))
                 ))
             }),
         )
@@ -67,7 +67,7 @@ async fn main() {
             "/ws",
             get(move |ws: WebSocketUpgrade| async move {
                 ws.on_upgrade(move |socket| async move {
-                    _ = view.launch(dioxus_liveview::axum_socket(socket), app).await;
+                    _ = view.launch(aether_liveview::axum_socket(socket), app).await;
                 })
             }),
         );

@@ -329,7 +329,7 @@ const DATABASE_CONFIG: Asset = asset!("/config/db.yaml");
 
 **secret!() Macro**:
 ```rust
-const API_KEY: Secret = secret!("DIOXUS_API_KEY");
+const API_KEY: Secret = secret!("AETHER_API_KEY");
 // Compile-time validation
 // Runtime injection from secure store
 ```

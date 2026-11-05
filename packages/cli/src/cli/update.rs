@@ -36,8 +36,8 @@ impl SelfUpdate {
             let start = std::time::Instant::now();
             if self.list {
                 let res = self_update::backends::github::Update::configure()
-                    .repo_owner("dioxuslabs")
-                    .repo_name("dioxus")
+                    .repo_owner("aetherlabs")
+                    .repo_name("aether")
                     .bin_name("dx")
                     .current_version(cargo_crate_version!())
                     .reqwest_client(crate::http_client::blocking_client()?)
@@ -61,8 +61,8 @@ impl SelfUpdate {
 
             let http_client = crate::http_client::blocking_client()?;
             let repo = self_update::backends::github::Update::configure()
-                .repo_owner("dioxuslabs")
-                .repo_name("dioxus")
+                .repo_owner("aetherlabs")
+                .repo_name("aether")
                 .bin_name("dx")
                 .current_version(cargo_crate_version!())
                 .reqwest_client(http_client.clone())
@@ -124,7 +124,7 @@ impl SelfUpdate {
                 })
                 .context("No suitable asset found")?;
 
-            let install_dir = Workspace::dioxus_data_dir().join("self-update");
+            let install_dir = Workspace::aether_data_dir().join("self-update");
             std::fs::create_dir_all(&install_dir).context("Failed to create install directory")?;
 
             tracing::info!("Downloading update from Github");
@@ -226,8 +226,8 @@ pub fn log_if_cli_could_update() {
             return;
         };
         let release = self_update::backends::github::Update::configure()
-            .repo_owner("dioxuslabs")
-            .repo_name("dioxus")
+            .repo_owner("aetherlabs")
+            .repo_name("aether")
             .bin_name("dx")
             .current_version(cargo_crate_version!())
             .reqwest_client(http_client)

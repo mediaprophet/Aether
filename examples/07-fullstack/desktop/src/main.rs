@@ -1,12 +1,12 @@
 #![allow(non_snake_case)]
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
     // Make sure to set the url of the server where server functions are hosted - they aren't always at localhost
     #[cfg(not(feature = "server"))]
-    dioxus::fullstack::set_server_url("http://127.0.0.1:8080");
+    aether::fullstack::set_server_url("http://127.0.0.1:8080");
 
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 pub fn app() -> Element {

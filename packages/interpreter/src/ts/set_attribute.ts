@@ -103,7 +103,7 @@ export function setAttributeInner(
 
 function setAttributeDefault(node: HTMLElement, field: string, value: string) {
   // The presence of a an attribute is enough to set it to true, provided the value is being set to a truthy value
-  // Again, kinda ugly and would prefer this logic to be baked into dioxus-html at compile time
+  // Again, kinda ugly and would prefer this logic to be baked into aether-html at compile time
   // https://github.com/facebook/react/blob/8b88ac2592c5f555f315f9440cbb665dd1e7457a/packages/react-dom/src/shared/DOMProperty.js#L352-L364
   if (!truthy(value) && isBoolAttr(field)) {
     node.removeAttribute(field);

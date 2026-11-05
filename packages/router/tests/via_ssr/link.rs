@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_history::{History, MemoryHistory};
-use dioxus_router::components::HistoryProvider;
+use aether::prelude::*;
+use aether_history::{History, MemoryHistory};
+use aether_router::components::HistoryProvider;
 use std::rc::Rc;
 
 fn prepare<R: Routable>() -> String {
@@ -21,7 +21,7 @@ fn prepare_at_with_base_path<R: Routable>(at: impl ToString, base_path: impl ToS
         },
     );
     vdom.rebuild_in_place();
-    return dioxus_ssr::render(&vdom);
+    return aether_ssr::render(&vdom);
 
     #[derive(Props)]
     struct AppProps<R: Routable> {
@@ -116,7 +116,7 @@ fn href_external() {
     fn Root() -> Element {
         rsx! {
             Link {
-                to: "https://dioxuslabs.com/",
+                to: "https://aetherlabs.com/",
                 "Link"
             }
         }
@@ -124,7 +124,7 @@ fn href_external() {
 
     let expected = format!(
         "<h1>App</h1><a {href} {rel}>Link</a>",
-        href = r#"href="https://dioxuslabs.com/""#,
+        href = r#"href="https://aetherlabs.com/""#,
         rel = r#"rel="noopener noreferrer""#,
     );
 
@@ -319,7 +319,7 @@ fn with_new_tab_external() {
     fn Root() -> Element {
         rsx! {
             Link {
-                to: "https://dioxuslabs.com/",
+                to: "https://aetherlabs.com/",
                 new_tab: true,
                 "Link"
             }
@@ -328,7 +328,7 @@ fn with_new_tab_external() {
 
     let expected = format!(
         "<h1>App</h1><a {href} {rel} {target}>Link</a>",
-        href = r#"href="https://dioxuslabs.com/""#,
+        href = r#"href="https://aetherlabs.com/""#,
         rel = r#"rel="noopener noreferrer""#,
         target = r#"target="_blank""#
     );

@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[test]
 fn static_inner_html() {
@@ -7,9 +7,9 @@ fn static_inner_html() {
     }
 
     let mut dom = VirtualDom::new(app);
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
-    assert_eq!(dioxus_ssr::render(&dom), r#"<div><div>1234</div></div>"#);
+    assert_eq!(aether_ssr::render(&dom), r#"<div><div>1234</div></div>"#);
 }
 
 #[test]
@@ -20,7 +20,7 @@ fn dynamic_inner_html() {
     }
 
     let mut dom = VirtualDom::new(app);
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
-    assert_eq!(dioxus_ssr::render(&dom), r#"<div><div>1234</div></div>"#);
+    assert_eq!(aether_ssr::render(&dom), r#"<div><div>1234</div></div>"#);
 }

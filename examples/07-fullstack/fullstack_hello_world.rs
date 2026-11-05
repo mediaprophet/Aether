@@ -1,13 +1,13 @@
-//! A simple example using Dioxus Fullstack to call a server action.
+//! A simple example using Aether Fullstack to call a server action.
 //!
 //! the `get`, `post`, `put`, `delete`, etc macros are used to define server actions that can be
 //! called from the client. The action can take arguments and return a value, and the client
 //! will automatically serialize and deserialize the data.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         let mut message = use_action(get_message);
 
         rsx! {

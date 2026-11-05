@@ -3,23 +3,23 @@ use std::path::PathBuf;
 use crate::{assets::*, webview::WebviewEdits};
 use crate::{document::NATIVE_EVAL_JS, file_upload::FileDialogRequest};
 use base64::prelude::BASE64_STANDARD;
-use dioxus_core::AnyhowContext;
-use dioxus_html::{SerializedFileData, SerializedFormObject};
-use dioxus_interpreter_js::NATIVE_JS;
-use dioxus_interpreter_js::unified_bindings::SLEDGEHAMMER_JS;
+use aether_core::AnyhowContext;
+use aether_html::{SerializedFileData, SerializedFormObject};
+use aether_interpreter_js::NATIVE_JS;
+use aether_interpreter_js::unified_bindings::SLEDGEHAMMER_JS;
 use wry::{
     RequestAsyncResponder,
     http::{Request, Response, status::StatusCode},
 };
 
 #[cfg(target_os = "android")]
-const BASE_URI: &str = "https://dioxus.index.html/";
+const BASE_URI: &str = "https://aether.index.html/";
 
 #[cfg(target_os = "windows")]
-const BASE_URI: &str = "http://dioxus.index.html/";
+const BASE_URI: &str = "http://aether.index.html/";
 
 #[cfg(not(any(target_os = "android", target_os = "windows")))]
-const BASE_URI: &str = "dioxus://index.html/";
+const BASE_URI: &str = "aether://index.html/";
 
 #[cfg(debug_assertions)]
 static DEFAULT_INDEX: &str = include_str!("./assets/dev.index.html");
@@ -80,7 +80,7 @@ pub(super) fn desktop_handler(
         }
     }
 
-    match dioxus_asset_resolver::native::serve_asset(request.uri().path()) {
+    match aether_asset_resolver::native::serve_asset(request.uri().path()) {
         Ok(res) => responder.respond(res),
         Err(_e) => responder.respond(
             Response::builder()
@@ -183,19 +183,19 @@ fn module_loader(root_id: &str, headless: bool, edit_state: &WebviewEdits) -> St
 fn file_dialog_responder_sync(
     request: wry::http::Request<Vec<u8>>,
     responder: wry::RequestAsyncResponder,
-) -> dioxus_core::Result<()> {
+) -> aether_core::Result<()> {
     // Handle the file dialog request
     // We can't use the body, just the headers
     let header = request
         .headers()
-        .get("x-dioxus-data")
-        .context("Failed to get x-dioxus-data header")?;
+        .get("x-aether-data")
+        .context("Failed to get x-aether-data header")?;
 
     let data_from_header = base64::Engine::decode(&BASE64_STANDARD, header.as_bytes())
-        .context("Failed to decode x-dioxus-data header from base64")?;
+        .context("Failed to decode x-aether-data header from base64")?;
 
     let file_dialog: FileDialogRequest = serde_json::from_slice(&data_from_header)
-        .context("Failed to parse x-dioxus-data header as JSON")?;
+        .context("Failed to parse x-aether-data header as JSON")?;
 
     #[cfg(feature = "tokio_runtime")]
     tokio::spawn(async move {
@@ -216,7 +216,7 @@ fn respond_to_file_dialog(
     mut file_dialog: FileDialogRequest,
     file_list: Vec<PathBuf>,
     responder: wry::RequestAsyncResponder,
-) -> dioxus_core::Result<()> {
+) -> aether_core::Result<()> {
     // Get the position of the entry we're updating, so we can insert new entries in the same place
     // If we can't find it, just append to the end. This is usually due to the input not being in a form element.
     let position_of_entry = file_dialog
@@ -247,7 +247,7 @@ fn respond_to_file_dialog(
                         .map(|d| d.as_millis())
                         .unwrap_or_default() as _,
                     content_type: Some(
-                        dioxus_asset_resolver::native::get_mime_from_ext(
+                        aether_asset_resolver::native::get_mime_from_ext(
                             path.extension().and_then(|s| s.to_str()),
                         )
                         .to_string(),

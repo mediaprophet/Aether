@@ -1,6 +1,6 @@
 use super::*;
 use crate::document;
-use dioxus_core::{VNode, use_hook};
+use aether_core::{VNode, use_hook};
 
 #[non_exhaustive]
 #[derive(Clone, Props, PartialEq)]
@@ -47,7 +47,7 @@ impl StyleProps {
 ///
 /// # Example
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn RedBackground() -> Element {
 ///     rsx! {
 ///         // You can use the style component to render a style tag into the head of the page

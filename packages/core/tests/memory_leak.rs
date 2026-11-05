@@ -1,8 +1,8 @@
 #![allow(non_snake_case)]
-use dioxus::prelude::*;
+use aether::prelude::*;
 use sysinfo::{ProcessRefreshKind, RefreshKind, System};
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/3421
+// Regression test for https://github.com/AetherLabs/aether/issues/3421
 #[tokio::test]
 async fn test_for_memory_leaks() {
     fn app() -> Element {
@@ -56,7 +56,7 @@ async fn test_for_memory_leaks() {
     // create the vdom, the real_dom, and the binding layer between them
     let mut vdom = VirtualDom::new(app);
 
-    vdom.rebuild(&mut dioxus_core::NoOpMutations);
+    vdom.rebuild(&mut aether_core::NoOpMutations);
 
     let pid = sysinfo::get_current_pid().expect("failed to get PID");
 
@@ -78,7 +78,7 @@ async fn test_for_memory_leaks() {
         vdom.wait_for_work().await;
 
         // get the mutations from the vdom
-        vdom.render_immediate(&mut dioxus_core::NoOpMutations);
+        vdom.render_immediate(&mut aether_core::NoOpMutations);
 
         if i % 1000 == 0 {
             let new_memory_usage = get_memory_usage();

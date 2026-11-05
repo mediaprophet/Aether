@@ -1,4 +1,4 @@
-use dioxus_core::{provide_root_context, try_consume_context, use_hook};
+use aether_core::{provide_root_context, try_consume_context, use_hook};
 
 /// Try to get a value from the root of the virtual dom, if it doesn't exist, create a new one with the closure provided.
 ///
@@ -8,7 +8,7 @@ use dioxus_core::{provide_root_context, try_consume_context, use_hook};
 /// ```rust
 /// # #[derive(Clone)]
 /// # struct Logger;
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// fn use_logger() -> Logger {
 ///     // We want one logger per app in the root. Instead of forcing the user to always provide a logger, we can insert a default logger if one doesn't exist.

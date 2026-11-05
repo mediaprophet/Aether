@@ -1,10 +1,10 @@
-use dioxus::LaunchBuilder;
-use dioxus::prelude::*;
+use aether::LaunchBuilder;
+use aether::prelude::*;
 
 fn main() {
     LaunchBuilder::new()
         .with_cfg(
-            dioxus::desktop::Config::new()
+            aether::desktop::Config::new()
                 .with_windows_browser_args("--remote-debugging-port=8787"),
         )
         .launch(app);

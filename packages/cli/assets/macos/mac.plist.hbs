@@ -32,14 +32,14 @@
 		<key>LSMinimumSystemVersion</key>
 		<string>{{ minimum_system_version }}</string>
 
-		<!-- Permission usage descriptions from Dioxus.toml [permissions] section -->
+		<!-- Permission usage descriptions from Aether.toml [permissions] section -->
 		{{#each permissions}}
 		<key>{{ this.key }}</key>
 		<string>{{ this.description }}</string>
 		{{/each}}
 
 		{{#if url_schemes}}
-		<!-- URL schemes from Dioxus.toml [deep_links] and [macos] sections -->
+		<!-- URL schemes from Aether.toml [deep_links] and [macos] sections -->
 		<key>CFBundleURLTypes</key>
 		<array>
 			<dict>
@@ -53,10 +53,10 @@
 		</array>
 		{{/if}}
 
-		<!-- Additional plist entries from Dioxus.toml [macos.plist] section -->
+		<!-- Additional plist entries from Aether.toml [macos.plist] section -->
 		{{{ plist_entries }}}
 
-		<!-- Raw plist XML from Dioxus.toml [macos.raw.info_plist] -->
+		<!-- Raw plist XML from Aether.toml [macos.raw.info_plist] -->
 		{{{ raw_plist }}}
 	</dict>
 </plist>

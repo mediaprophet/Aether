@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-native-dom"
+name = "aether-native-dom"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Core headless native renderer for Dioxus based on blitz"
+description = "Core headless native renderer for Aether based on blitz"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -30,8 +30,8 @@ blitz-dom = { workspace = true, default-features = false, features = ["custom-wi
 blitz-traits = { workspace = true }
 
 # Aether core dependencies
-dioxus-core = { workspace = true }
-dioxus-html = { workspace = true }
+aether-core = { workspace = true }
+aether-html = { workspace = true }
 
 # Windowing & Input
 keyboard-types = { workspace = true }
@@ -43,7 +43,7 @@ rustc-hash = { workspace = true }
 futures-util = { workspace = true }
 
 [dev-dependencies]
-dioxus = { workspace = true }
+aether = { workspace = true }
 
 [package.metadata.docs.rs]
 all-features = true

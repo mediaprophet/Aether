@@ -1,18 +1,18 @@
 //! Signals that hold a collection.
 //!
-//! `Signal<Vec<T>>` is the workhorse for dynamic lists. Dioxus exposes `push`, `pop`,
+//! `Signal<Vec<T>>` is the workhorse for dynamic lists. Aether exposes `push`, `pop`,
 //! `remove`, `clear`, and `retain` directly on the signal so you don't have to call
 //! `.write()` for the common cases. For anything else, `.write()` returns a guard that
 //! derefs to the underlying `Vec`.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
-    let mut todos = use_signal(|| vec!["learn dioxus".to_string(), "build an app".to_string()]);
+    let mut todos = use_signal(|| vec!["learn aether".to_string(), "build an app".to_string()]);
     let mut draft = use_signal(String::new);
 
     rsx! {

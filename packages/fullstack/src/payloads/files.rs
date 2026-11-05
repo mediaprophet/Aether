@@ -1,7 +1,7 @@
 use super::*;
 use axum_core::extract::Request;
-use dioxus_fullstack_core::RequestError;
-use dioxus_html::FileData;
+use aether_fullstack_core::RequestError;
+use aether_html::FileData;
 
 #[cfg(feature = "server")]
 use std::path::Path;
@@ -62,7 +62,7 @@ impl FileStream {
     async fn from_path_buf(file: &Path) -> Result<Self, std::io::Error> {
         let metadata = file.metadata()?;
         let contents = tokio::fs::File::open(&file).await?;
-        let mime = dioxus_asset_resolver::native::get_mime_from_ext(
+        let mime = aether_asset_resolver::native::get_mime_from_ext(
             file.extension().and_then(|s| s.to_str()),
         );
         let size = metadata.len();
@@ -139,7 +139,7 @@ impl IntoRequest for FileStream {
 
                 // Set both Content-Length and X-Content-Size for compatibility with server extraction.
                 // In browsers, content-length is often overwritten, so we set X-Content-Size as well
-                // for better compatibility with dioxus-based clients.
+                // for better compatibility with aether-based clients.
                 return builder
                     .header("Content-Type", content_type)?
                     .header("Content-Length", content_length.clone())?
@@ -312,7 +312,7 @@ impl IntoResponse for FileStream {
         use axum::body::Body;
 
         let Some(body) = self.server_body else {
-            use dioxus_fullstack_core::HttpError;
+            use aether_fullstack_core::HttpError;
             return HttpError::new(http::StatusCode::BAD_REQUEST, "FileStream has no body")
                 .into_response();
         };

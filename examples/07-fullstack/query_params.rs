@@ -1,13 +1,13 @@
-//! An example showcasing query parameters in Dioxus Fullstack server functions.
+//! An example showcasing query parameters in Aether Fullstack server functions.
 //!
 //! The query parameter syntax mostly follows axum, but with a few extra conveniences.
 //! - can rename parameters in the function signature with `?age=age_in_years` where `age_in_years` is Rust variable name
 //! - can absorb all query params with `?{object}` directly into a struct implementing `Deserialize`
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         let mut message = use_action(get_message);
         let mut message_rebind = use_action(get_message_rebind);
         let mut message_all = use_action(get_message_all);

@@ -1,7 +1,7 @@
-use dioxus::prelude::*;
-use dioxus_core::generation;
+use aether::prelude::*;
+use aether_core::generation;
 
-#[derive(Debug, Clone, dioxus_stores::Store)]
+#[derive(Debug, Clone, aether_stores::Store)]
 struct ListItem {
     id: usize,
     text: String,
@@ -46,7 +46,7 @@ fn vec_store_remove_non_last_item() {
     }
 
     let mut dom = VirtualDom::new(app);
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
     // Second render triggers remove(0), which previously panicked during memoization
     dom.mark_dirty(ScopeId::APP);
     _ = dom.render_immediate_to_vec();

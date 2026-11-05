@@ -1,7 +1,7 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -17,7 +17,7 @@ fn app() -> Element {
                 div { class: "container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center",
                     a { class: "flex title-font font-medium items-center text-white mb-4 md:mb-0",
                         StacksIcon {}
-                        span { class: "ml-3 text-xl", "Hello Dioxus!" }
+                        span { class: "ml-3 text-xl", "Hello Aether!" }
                     }
                     nav { class: "md:ml-auto flex flex-wrap items-center text-base justify-center",
                         a { class: "mr-5 hover:text-white", "First Link" }
@@ -37,12 +37,12 @@ fn app() -> Element {
                     div { class: "lg:grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center",
                         h1 { class: "title-font sm:text-4xl text-3xl mb-4 font-medium text-white",
                             br { class: "hidden lg:inline-block" }
-                            "Dioxus Sneak Peek"
+                            "Aether Sneak Peek"
                         }
                         p { class: "mb-8 leading-relaxed",
 
-                            "Dioxus is a new UI framework that makes it easy and simple to write cross-platform apps using web
-                            technologies! It is functional, fast, and portable. Dioxus can run on the web, on the desktop, and
+                            "Aether is a new UI framework that makes it easy and simple to write cross-platform apps using web
+                            technologies! It is functional, fast, and portable. Aether can run on the web, on the desktop, and
                             on mobile and embedded platforms."
                         }
                         div { class: "flex justify-center",

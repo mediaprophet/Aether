@@ -1,4 +1,4 @@
-use dioxus_core::{Element, VNode, provide_context, try_consume_context, use_hook};
+use aether_core::{Element, VNode, provide_context, try_consume_context, use_hook};
 
 use crate::{routable::Routable, utils::use_router_internal::use_router_internal};
 
@@ -75,8 +75,8 @@ impl<R> OutletContext<R> {
 /// # Examples
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_router::use_outlet_context;
+/// # use aether::prelude::*;
+/// # use aether_router::use_outlet_context;
 ///
 /// # #[derive(Routable,Clone,PartialEq)]
 /// # enum MyRouter {

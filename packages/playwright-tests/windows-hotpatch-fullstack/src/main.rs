@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const CSS: Asset = asset!("/assets/style.css");
 
@@ -27,11 +27,11 @@ async fn get_count() -> Result<i32> {
 }
 
 fn main() {
-    let builder = dioxus::LaunchBuilder::new();
+    let builder = aether::LaunchBuilder::new();
 
     #[cfg(feature = "desktop")]
     let builder = builder.with_cfg(
-        dioxus::desktop::Config::new().with_windows_browser_args("--remote-debugging-port=8788"),
+        aether::desktop::Config::new().with_windows_browser_args("--remote-debugging-port=8788"),
     );
 
     builder.launch(app);

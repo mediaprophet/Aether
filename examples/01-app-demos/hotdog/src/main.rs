@@ -1,7 +1,7 @@
 mod backend;
 mod frontend;
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use frontend::*;
 
 #[derive(Routable, PartialEq, Clone)]
@@ -17,9 +17,9 @@ enum Route {
 fn main() {
     // only in production should we set the URL, otherwise let `dx` do the work
     #[cfg(all(not(feature = "server"), feature = "production"))]
-    dioxus::fullstack::set_server_url("https://hot-dog.fly.dev");
+    aether::fullstack::set_server_url("https://hot-dog.fly.dev");
 
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

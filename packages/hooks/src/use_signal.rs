@@ -1,11 +1,11 @@
-use dioxus_core::use_hook;
-use dioxus_signals::{Signal, SignalData, Storage, SyncStorage, UnsyncStorage};
+use aether_core::use_hook;
+use aether_signals::{Signal, SignalData, Storage, SyncStorage, UnsyncStorage};
 
 /// Creates a new Signal. Signals are a Copy state management solution with automatic dependency tracking.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
-/// use dioxus_signals::*;
+/// use aether::prelude::*;
+/// use aether_signals::*;
 ///
 /// fn App() -> Element {
 ///     let mut count = use_signal(|| 0);
@@ -43,8 +43,8 @@ pub fn use_signal<T: 'static>(f: impl FnOnce() -> T) -> Signal<T, UnsyncStorage>
 /// Creates a new `Send + Sync`` Signal. Signals are a Copy state management solution with automatic dependency tracking.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
-/// use dioxus_signals::*;
+/// use aether::prelude::*;
+/// use aether_signals::*;
 ///
 /// fn App() -> Element {
 ///     let mut count = use_signal_sync(|| 0);

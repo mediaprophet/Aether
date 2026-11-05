@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_renderer_oracle::RendererOracle;
 
 #[test]
 fn bool_test() {

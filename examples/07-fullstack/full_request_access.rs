@@ -4,10 +4,10 @@
 //! to the client. This means we can still call the endpoint from the client, but have full access
 //! to the request on the server.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

@@ -14,7 +14,7 @@ mod server;
 mod update;
 
 use anyhow::bail;
-use dioxus_dx_wire_format::BuildStage;
+use aether_dx_wire_format::BuildStage;
 pub(crate) use output::*;
 pub(crate) use runner::*;
 pub(crate) use server::*;
@@ -59,9 +59,9 @@ pub(crate) async fn serve_all(args: ServeArgs, tracer: &TraceController) -> Resu
                 • Press {GLOW_STYLE}`/`{GLOW_STYLE:#} for more commands and shortcuts{extra}
                ----------------------------------------------------------------"#,
         binname = builder.client.build.executable_name(),
-        extra = if builder.client.build.using_dioxus_explicitly {
+        extra = if builder.client.build.using_aether_explicitly {
             format!(
-                "\n                Learn more at {LINK_STYLE}https://dioxuslabs.com/learn/0.7/getting_started{LINK_STYLE:#}"
+                "\n                Learn more at {LINK_STYLE}https://aetherlabs.com/learn/0.7/getting_started{LINK_STYLE:#}"
             )
         } else {
             String::new()

@@ -1,11 +1,11 @@
-use dioxus_dx_wire_format::StructuredBuildArtifacts;
+use aether_dx_wire_format::StructuredBuildArtifacts;
 
 use crate::{
     Anonymized, AppBuilder, BuildArtifacts, BuildId, BuildMode, BuildRequest, BundleFormat,
     Platform, TargetArgs, Workspace, cli::*,
 };
 
-/// Build the Rust Dioxus app and all of its assets.
+/// Build the Rust Aether app and all of its assets.
 ///
 /// Produces a final output build. If a "server" feature is present in the package's Cargo.toml, it will
 /// be considered a fullstack app and the server will be built as well.
@@ -95,7 +95,7 @@ impl CommandWithPlatformOverrides<BuildArgs> {
     /// dx serve --target wasm32-unknown-unknown --fullstack            # serves both client and server
     /// dx serve --target wasm32-unknown-unknown --features fullstack   # serves both client and server
     /// dx serve --target wasm32-unknown-unknown                        # only serves the client
-    /// dx serve --target wasm32-unknown-unknown                        # servers both if `fullstack` is enabled on dioxus
+    /// dx serve --target wasm32-unknown-unknown                        # servers both if `fullstack` is enabled on aether
     /// dx serve @client --target wasm32-unknown-unknown                # only serves the client
     /// dx serve @client --target wasm32-unknown-unknown --fullstack    # serves both client and server
     /// ```
@@ -104,8 +104,8 @@ impl CommandWithPlatformOverrides<BuildArgs> {
     pub async fn into_targets(mut self) -> Result<BuildTargets> {
         let workspace = Workspace::current().await?;
 
-        // do some logging to ensure dx matches the dioxus version since we're not always API compatible
-        workspace.check_dioxus_version_against_cli();
+        // do some logging to ensure dx matches the aether version since we're not always API compatible
+        workspace.check_aether_version_against_cli();
 
         // The client args are the `@client` arguments, or the shared build arguments if @client is not specified.
         let client_args = &self.client.as_ref().unwrap_or(&self.shared).build_arguments;

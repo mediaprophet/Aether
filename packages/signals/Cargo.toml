@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-signals"
+name = "aether-signals"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 version = { workspace = true }
 edition = "2024"
-description = "Reactivie signals for Dioxus: Build fullstack web, desktop, and mobile apps with a single codebase."
+description = "Reactivie signals for Aether: Build fullstack web, desktop, and mobile apps with a single codebase."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -13,7 +13,7 @@ rust-version = "1.85.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus-core = { workspace = true }
+aether-core = { workspace = true }
 generational-box = { workspace = true }
 tracing = { workspace = true }
 serde = { workspace = true, features = ["derive"], optional = true }
@@ -24,7 +24,7 @@ futures-util = { workspace = true }
 warnings = { workspace = true }
 
 [dev-dependencies]
-dioxus = { workspace = true }
+aether = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
 tracing-subscriber = { workspace = true, default-features = true }
 reqwest = { workspace = true }

@@ -142,7 +142,7 @@ pub(crate) struct WixSettings {
     ///
     /// By default, this code is generated as a Uuid v5 using the string `<productName>.exe.app.x64` in the DNS namespace.
     ///
-    /// It is recommended that you set this value in your Dioxus.toml to avoid accidental changes in your upgrade code
+    /// It is recommended that you set this value in your Aether.toml to avoid accidental changes in your upgrade code
     /// whenever you want to change your product name.
     #[serde(default)]
     #[schemars(with = "Option<String>")]

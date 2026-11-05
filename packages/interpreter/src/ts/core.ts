@@ -51,7 +51,7 @@ export class BaseInterpreter {
     this.handler = handler;
 
     // make sure to set the root element's ID so it still registers events
-    root.setAttribute("data-dioxus-id", "0");
+    root.setAttribute("data-aether-id", "0");
   }
 
   handleResizeEvent(entry: ResizeObserverEntry) {
@@ -127,7 +127,7 @@ export class BaseInterpreter {
         this.global[event_name].active++;
       }
     } else {
-      const id = element.getAttribute("data-dioxus-id");
+      const id = element.getAttribute("data-aether-id");
       if (!this.local[id]) {
         this.local[id] = {};
       }
@@ -159,7 +159,7 @@ export class BaseInterpreter {
   }
 
   removeNonBubblingListener(element: Element, event_name: string) {
-    const id = element.getAttribute("data-dioxus-id");
+    const id = element.getAttribute("data-aether-id");
     delete this.local[id][event_name];
     if (Object.keys(this.local[id]).length === 0) {
       delete this.local[id];
@@ -168,7 +168,7 @@ export class BaseInterpreter {
   }
 
   removeAllNonBubblingListeners(element: Element) {
-    const id = element.getAttribute("data-dioxus-id");
+    const id = element.getAttribute("data-aether-id");
     delete this.local[id];
   }
 
@@ -189,7 +189,7 @@ export class BaseInterpreter {
     const node = this.nodes[id] as ListenerElement;
     if (node.listening) node.listening += 1;
     else node.listening = 1;
-    node.setAttribute("data-dioxus-id", `${id}`);
+    node.setAttribute("data-aether-id", `${id}`);
     this.createListener(event_name, node, bubbles);
   }
 
@@ -335,7 +335,7 @@ export class BaseInterpreter {
     const id = this.currentTopId();
     if (node.listening) node.listening += 1;
     else node.listening = 1;
-    node.setAttribute("data-dioxus-id", `${id}`);
+    node.setAttribute("data-aether-id", `${id}`);
     this.createListener(event_name, node, bubbles);
   }
 
@@ -344,7 +344,7 @@ export class BaseInterpreter {
     const id = this.currentTopId();
     if (node.listening) node.listening += 1;
     else node.listening = 1;
-    node.setAttribute("data-dioxus-id", `${id}`);
+    node.setAttribute("data-aether-id", `${id}`);
 
     if (event_name === "mounted") {
       (window as any).ipc.postMessage(
@@ -365,7 +365,7 @@ export class BaseInterpreter {
     node.listening = (node.listening ?? 1) - 1;
     this.removeListener(node, event_name, bubbles);
     if (node.listening <= 0) {
-      node.removeAttribute("data-dioxus-id");
+      node.removeAttribute("data-aether-id");
     }
   }
 

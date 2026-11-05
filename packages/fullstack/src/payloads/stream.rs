@@ -7,7 +7,7 @@ use crate::{
 use axum::extract::{FromRequest, Request};
 use axum_core::response::IntoResponse;
 use bytes::{Buf as _, Bytes};
-use dioxus_fullstack_core::{HttpError, RequestError};
+use aether_fullstack_core::{HttpError, RequestError};
 use futures::{Stream, StreamExt};
 #[cfg(feature = "server")]
 use futures_channel::mpsc::UnboundedSender;

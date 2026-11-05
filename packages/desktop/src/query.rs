@@ -59,7 +59,7 @@ impl QueryEngine {
         // We embed the return of the eval in a function so we can send it back to the main thread
         if let Err(err) = context.webview.evaluate_script(&format!(
             r#"(function(){{
-                let dioxus = window.createQuery({request_id});
+                let aether = window.createQuery({request_id});
                 let post_error = function(err) {{
                     let returned_value = {{
                         "method": "query",
@@ -77,10 +77,10 @@ impl QueryEngine {
                 }};
                 try {{
                     const AsyncFunction = async function () {{}}.constructor;
-                    let promise = (new AsyncFunction("dioxus", {script:?}))(dioxus);
+                    let promise = (new AsyncFunction("aether", {script:?}))(aether);
                     promise
                         .then((result)=>{{
-                            dioxus.close();
+                            aether.close();
                             let returned_value = {{
                                 "method": "query",
                                 "params": {{
@@ -97,7 +97,7 @@ impl QueryEngine {
                         }})
                         .catch(err => post_error(`Error running JS: ${{err}}`));
                 }} catch (error) {{
-                    dioxus.close();
+                    aether.close();
                     post_error(`Invalid JS: ${{error}}`);
                 }}
             }})();"#

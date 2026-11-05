@@ -1,10 +1,10 @@
-//! dynamic attributes in dioxus necessitate an allocated node ID.
+//! dynamic attributes in aether necessitate an allocated node ID.
 //!
 //! This tests to ensure we clean it up
 
-use dioxus::prelude::*;
-use dioxus_core::{ScopeId, generation};
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_core::{ScopeId, generation};
+use aether_renderer_oracle::RendererOracle;
 
 #[test]
 fn attrs_cycle() {

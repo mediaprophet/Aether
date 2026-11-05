@@ -1,4 +1,4 @@
-use dioxus_html::HasAnimationData;
+use aether_html::HasAnimationData;
 use web_sys::AnimationEvent;
 
 use super::{Synthetic, WebEventExt};
@@ -21,7 +21,7 @@ impl HasAnimationData for Synthetic<AnimationEvent> {
     }
 }
 
-impl WebEventExt for dioxus_html::AnimationData {
+impl WebEventExt for aether_html::AnimationData {
     type WebEvent = web_sys::AnimationEvent;
 
     #[inline(always)]

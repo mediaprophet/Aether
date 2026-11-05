@@ -1,6 +1,6 @@
 use std::any::Any;
 
-use dioxus_html::HasImageData;
+use aether_html::HasImageData;
 use web_sys::Event;
 
 use super::WebEventExt;
@@ -27,7 +27,7 @@ impl HasImageData for WebImageEvent {
     }
 }
 
-impl WebEventExt for dioxus_html::ImageData {
+impl WebEventExt for aether_html::ImageData {
     type WebEvent = Event;
 
     #[inline(always)]

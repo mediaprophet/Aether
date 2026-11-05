@@ -1,4 +1,4 @@
-use dioxus_core::{try_consume_context, use_hook};
+use aether_core::{try_consume_context, use_hook};
 
 use crate::{Navigator, RouterContext};
 
@@ -7,7 +7,7 @@ use crate::{Navigator, RouterContext};
 /// > The Routable macro will define a version of this hook with an explicit type.
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[derive(Clone, Routable)]
 /// enum Route {
 ///     #[route("/")]

@@ -1,3 +1,3 @@
 fn main() {
-    dioxus_cli_optimization_test::main()
+    aether_cli_optimization_test::main()
 }

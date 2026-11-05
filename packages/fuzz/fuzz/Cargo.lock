@@ -121,7 +121,7 @@ name = "const-serialize"
 version = "0.8.0-alpha.0"
 dependencies = [
  "const-serialize-macro",
- "dioxus-const-vec",
+ "aether-const-vec",
  "serde",
 ]
 
@@ -240,31 +240,31 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus"
+name = "aether"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-asset-resolver",
- "dioxus-cli-config",
- "dioxus-config-macro",
- "dioxus-config-macros",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-devtools",
- "dioxus-document",
- "dioxus-history",
- "dioxus-hooks",
- "dioxus-html",
- "dioxus-logger",
- "dioxus-signals",
- "dioxus-stores",
- "dioxus-web",
+ "aether-asset-resolver",
+ "aether-cli-config",
+ "aether-config-macro",
+ "aether-config-macros",
+ "aether-core",
+ "aether-core-macro",
+ "aether-devtools",
+ "aether-document",
+ "aether-history",
+ "aether-hooks",
+ "aether-html",
+ "aether-logger",
+ "aether-signals",
+ "aether-stores",
+ "aether-web",
  "manganis",
  "subsecond",
  "warnings",
 ]
 
 [[package]]
-name = "dioxus-asset-resolver"
+name = "aether-asset-resolver"
 version = "0.8.0-alpha.0"
 dependencies = [
  "jni",
@@ -275,14 +275,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-cli-config"
+name = "aether-cli-config"
 version = "0.8.0-alpha.0"
 dependencies = [
  "wasm-bindgen",
 ]
 
 [[package]]
-name = "dioxus-config-macro"
+name = "aether-config-macro"
 version = "0.8.0-alpha.0"
 dependencies = [
  "proc-macro2",
@@ -290,23 +290,23 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-config-macros"
+name = "aether-config-macros"
 version = "0.8.0-alpha.0"
 
 [[package]]
-name = "dioxus-const-vec"
+name = "aether-const-vec"
 version = "0.8.0-alpha.0"
 
 [[package]]
-name = "dioxus-core"
+name = "aether-core"
 version = "0.8.0-alpha.0"
 dependencies = [
  "anyhow",
  "const_format",
- "dioxus-const-vec",
- "dioxus-core-macro",
- "dioxus-core-template",
- "dioxus-core-types",
+ "aether-const-vec",
+ "aether-core-macro",
+ "aether-core-template",
+ "aether-core-types",
  "futures-channel",
  "futures-util",
  "generational-box",
@@ -322,37 +322,37 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-core-macro"
+name = "aether-core-macro"
 version = "0.8.0-alpha.0"
 dependencies = [
  "convert_case",
- "dioxus-rsx",
+ "aether-rsx",
  "proc-macro2",
  "quote",
  "syn",
 ]
 
 [[package]]
-name = "dioxus-core-template"
+name = "aether-core-template"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-const-vec",
+ "aether-const-vec",
  "serde",
  "xxhash-rust",
 ]
 
 [[package]]
-name = "dioxus-core-types"
+name = "aether-core-types"
 version = "0.8.0-alpha.0"
 
 [[package]]
-name = "dioxus-devtools"
+name = "aether-devtools"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-devtools-types",
- "dioxus-signals",
+ "aether-cli-config",
+ "aether-core",
+ "aether-devtools-types",
+ "aether-signals",
  "serde",
  "serde_json",
  "subsecond",
@@ -362,22 +362,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-devtools-types"
+name = "aether-devtools-types"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-core",
+ "aether-core",
  "serde",
  "subsecond-types",
 ]
 
 [[package]]
-name = "dioxus-document"
+name = "aether-document"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-core-types",
- "dioxus-html",
+ "aether-core",
+ "aether-core-macro",
+ "aether-core-types",
+ "aether-html",
  "futures-channel",
  "futures-util",
  "generational-box",
@@ -388,27 +388,27 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-fuzz"
+name = "aether-fuzz"
 version = "0.0.0"
 dependencies = [
- "dioxus-vdom-fuzz",
+ "aether-vdom-fuzz",
  "libfuzzer-sys",
 ]
 
 [[package]]
-name = "dioxus-history"
+name = "aether-history"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-core",
+ "aether-core",
  "tracing",
 ]
 
 [[package]]
-name = "dioxus-hooks"
+name = "aether-hooks"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-core",
- "dioxus-signals",
+ "aether-core",
+ "aether-signals",
  "futures-channel",
  "futures-util",
  "generational-box",
@@ -418,16 +418,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-html"
+name = "aether-html"
 version = "0.8.0-alpha.0"
 dependencies = [
  "async-trait",
  "bytes",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-core-types",
- "dioxus-hooks",
- "dioxus-html-internal-macro",
+ "aether-core",
+ "aether-core-macro",
+ "aether-core-types",
+ "aether-hooks",
+ "aether-html-internal-macro",
  "enumset",
  "euclid",
  "futures-channel",
@@ -440,7 +440,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-html-internal-macro"
+name = "aether-html-internal-macro"
 version = "0.8.0-alpha.0"
 dependencies = [
  "convert_case",
@@ -450,7 +450,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-interpreter-js"
+name = "aether-interpreter-js"
 version = "0.8.0-alpha.0"
 dependencies = [
  "js-sys",
@@ -464,28 +464,28 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-logger"
+name = "aether-logger"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-cli-config",
+ "aether-cli-config",
  "tracing",
  "tracing-subscriber",
  "tracing-wasm",
 ]
 
 [[package]]
-name = "dioxus-renderer-oracle"
+name = "aether-renderer-oracle"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-core",
+ "aether-core",
  "pretty_assertions",
 ]
 
 [[package]]
-name = "dioxus-rsx"
+name = "aether-rsx"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-core-template",
+ "aether-core-template",
  "proc-macro2",
  "proc-macro2-diagnostics",
  "quote",
@@ -494,10 +494,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-signals"
+name = "aether-signals"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-core",
+ "aether-core",
  "futures-channel",
  "futures-util",
  "generational-box",
@@ -508,27 +508,27 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-ssr"
+name = "aether-ssr"
 version = "0.8.0-alpha.0"
 dependencies = [
  "askama_escape",
- "dioxus-core",
- "dioxus-core-types",
+ "aether-core",
+ "aether-core-types",
  "rustc-hash 2.1.2",
 ]
 
 [[package]]
-name = "dioxus-stores"
+name = "aether-stores"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-core",
- "dioxus-signals",
- "dioxus-stores-macro",
+ "aether-core",
+ "aether-signals",
+ "aether-stores-macro",
  "generational-box",
 ]
 
 [[package]]
-name = "dioxus-stores-macro"
+name = "aether-stores-macro"
 version = "0.8.0-alpha.0"
 dependencies = [
  "convert_case",
@@ -538,32 +538,32 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus-vdom-fuzz"
+name = "aether-vdom-fuzz"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus",
- "dioxus-core",
- "dioxus-core-template",
- "dioxus-renderer-oracle",
- "dioxus-ssr",
+ "aether",
+ "aether-core",
+ "aether-core-template",
+ "aether-renderer-oracle",
+ "aether-ssr",
  "mutatis",
  "postcard",
  "serde",
 ]
 
 [[package]]
-name = "dioxus-web"
+name = "aether-web"
 version = "0.8.0-alpha.0"
 dependencies = [
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-core-types",
- "dioxus-devtools",
- "dioxus-document",
- "dioxus-history",
- "dioxus-html",
- "dioxus-interpreter-js",
- "dioxus-signals",
+ "aether-cli-config",
+ "aether-core",
+ "aether-core-types",
+ "aether-devtools",
+ "aether-document",
+ "aether-history",
+ "aether-html",
+ "aether-interpreter-js",
+ "aether-signals",
  "futures-channel",
  "futures-util",
  "generational-box",
@@ -985,8 +985,8 @@ name = "manganis-core"
 version = "0.8.0-alpha.0"
 dependencies = [
  "const-serialize",
- "dioxus-cli-config",
- "dioxus-core-types",
+ "aether-cli-config",
+ "aether-core-types",
  "serde",
  "winnow 0.7.15",
 ]

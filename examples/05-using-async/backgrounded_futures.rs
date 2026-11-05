@@ -7,11 +7,11 @@
 //!
 //! This example is more of a demonstration of the behavior than a practical use case, but it's still interesting to see.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use futures_timer::Delay;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

@@ -5,7 +5,7 @@ use axum::{
     response::Response,
     routing::MethodRouter,
 };
-use dioxus_fullstack_core::FullstackContext;
+use aether_fullstack_core::FullstackContext;
 use http::{Method, StatusCode};
 use std::{pin::Pin, prelude::rust_2024::Future};
 
@@ -74,7 +74,7 @@ impl ServerFunction {
                 let current_span = tracing::Span::current();
                 // Allow !Send futures by running in the render handlers pinned local pool
                 let result = state.rt.spawn_pinned(move || async move {
-                    use dioxus_fullstack_core::FullstackContext;
+                    use aether_fullstack_core::FullstackContext;
                     use http::header::{ACCEPT, LOCATION, REFERER};
                     use http::StatusCode;
 

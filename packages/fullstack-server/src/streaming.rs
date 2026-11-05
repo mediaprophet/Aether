@@ -2,7 +2,7 @@
 //! 1. Stream the HTML in order - this will work even if javascript is disabled, but if there is something slow at the top of your page, and fast at the bottom, nothing will render until the slow part is done
 //! 2. Render placeholders and stream the HTML out of order - this will only work if javascript is enabled. This lets you render any parts of your page that resolve quickly, and then render the rest of the page as it becomes available
 //!
-//! Dioxus currently uses a the second out of order streaming approach which requires javascript. The rendering structure is as follows:
+//! Aether currently uses a the second out of order streaming approach which requires javascript. The rendering structure is as follows:
 //! ```html
 //! // Initial content is sent down with placeholders
 //! <div>
@@ -26,7 +26,7 @@
 //! </script>
 //! ```
 
-use dioxus_fullstack_core::SerializedHydrationData;
+use aether_fullstack_core::SerializedHydrationData;
 use futures_channel::mpsc::Sender;
 
 use std::{

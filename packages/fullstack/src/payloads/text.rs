@@ -1,6 +1,6 @@
 use crate::{ClientResponse, FromResponse};
 use axum_core::response::{IntoResponse, Response};
-use dioxus_fullstack_core::ServerFnError;
+use aether_fullstack_core::ServerFnError;
 use send_wrapper::SendWrapper;
 use std::future::Future;
 

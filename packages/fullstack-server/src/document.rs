@@ -4,14 +4,14 @@
 
 use std::cell::RefCell;
 
-use dioxus_core::Element;
-use dioxus_core_macro::rsx;
-use dioxus_document::{
+use aether_core::Element;
+use aether_core_macro::rsx;
+use aether_document::{
     Document, Eval, LinkProps, MetaProps, NoOpDocument, ScriptProps, StyleProps,
 };
-use dioxus_html::elements::prelude::*;
-use dioxus_html::*;
-use dioxus_ssr::Renderer;
+use aether_html::elements::prelude::*;
+use aether_html::*;
+use aether_ssr::Renderer;
 use parking_lot::RwLock;
 use std::sync::LazyLock;
 
@@ -77,7 +77,7 @@ impl ServerDocument {
         // We only serialize the head elements if the web document feature is enabled
         #[cfg(feature = "document")]
         {
-            dioxus_fullstack_core::head_element_hydration_entry()
+            aether_fullstack_core::head_element_hydration_entry()
                 .insert(&!self.0.borrow().streaming, std::panic::Location::caller());
         }
     }

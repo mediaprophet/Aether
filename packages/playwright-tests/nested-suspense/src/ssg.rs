@@ -1,15 +1,15 @@
 #![allow(non_snake_case)]
-use dioxus::prelude::*;
+use aether::prelude::*;
 use nested_suspense::app;
 
 fn main() {
-    dioxus::logger::init(dioxus::logger::tracing::Level::TRACE).expect("logger failed to init");
+    aether::logger::init(aether::logger::tracing::Level::TRACE).expect("logger failed to init");
 
-    dioxus::LaunchBuilder::new()
+    aether::LaunchBuilder::new()
         .with_cfg(server_only! {
             ServeConfig::builder()
                 .incremental(
-                    dioxus::server::IncrementalRendererConfig::new()
+                    aether::server::IncrementalRendererConfig::new()
                         .static_dir(
                             std::env::current_exe()
                                 .unwrap()

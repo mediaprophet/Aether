@@ -44,7 +44,7 @@ impl SealBuilder {
     ///   `__TodoItemStoreVisibleInPub`.
     /// - `span`: span attached to every generated ident.
     /// - `store_ty`: the store type the extension trait is implemented for,
-    ///   e.g. `dioxus_stores::Store<TodoItem, __Lens>`.
+    ///   e.g. `aether_stores::Store<TodoItem, __Lens>`.
     /// - `trait_name`: ident of the extension trait to generate.
     pub(crate) fn new(
         prefix: String,

@@ -4,10 +4,10 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use crate::{DioxusConfig, Result, StructuredOutput, Workspace, verbosity_or_default};
+use crate::{AetherConfig, Result, StructuredOutput, Workspace, verbosity_or_default};
 use anyhow::{Context, bail};
 use clap::Parser;
-use dioxus_component_manifest::{
+use aether_component_manifest::{
     CargoDependency, Component, ComponentDependency, component_manifest_schema,
 };
 use git2::Repository;
@@ -291,20 +291,20 @@ impl ComponentCommand {
     }
 
     /// Load the config
-    async fn resolve_config() -> Result<DioxusConfig> {
+    async fn resolve_config() -> Result<AetherConfig> {
         let workspace = Workspace::current().await?;
 
         let crate_package = workspace.find_main_package(None)?;
 
         Ok(workspace
-            .load_dioxus_config(crate_package, None)?
+            .load_aether_config(crate_package, None)?
             .unwrap_or_default())
     }
 
     /// Resolve a registry from the config if none is provided
     fn resolve_registry(
         registry: ComponentRegistry,
-        config: &DioxusConfig,
+        config: &AetherConfig,
     ) -> Result<ComponentRegistry> {
         if !registry.is_default() {
             return Ok(registry);
@@ -429,7 +429,7 @@ impl RemoteComponentRegistry {
         if let Some(git) = &self.git {
             (git.clone(), self.rev.clone())
         } else {
-            ("https://github.com/dioxuslabs/components".into(), None)
+            ("https://github.com/aetherlabs/components".into(), None)
         }
     }
 
@@ -533,7 +533,7 @@ fn find_component(components: &[ResolvedComponent], component: &str) -> Result<R
 }
 
 /// Get the path to the components module, defaulting to src/components
-fn components_root(module_path: Option<&Path>, config: &DioxusConfig) -> Result<PathBuf> {
+fn components_root(module_path: Option<&Path>, config: &AetherConfig) -> Result<PathBuf> {
     if let Some(module_path) = module_path {
         return Ok(PathBuf::from(module_path));
     }
@@ -548,7 +548,7 @@ fn components_root(module_path: Option<&Path>, config: &DioxusConfig) -> Result<
 }
 
 /// Get the path to the global assets directory, defaulting to assets
-async fn global_assets_root(assets_path: Option<&Path>, config: &DioxusConfig) -> Result<PathBuf> {
+async fn global_assets_root(assets_path: Option<&Path>, config: &AetherConfig) -> Result<PathBuf> {
     if let Some(assets_path) = assets_path {
         return Ok(PathBuf::from(assets_path));
     }
@@ -582,7 +582,7 @@ async fn add_component(
     component_path: Option<&Path>,
     component: &ResolvedComponent,
     behavior: ComponentExistsBehavior,
-    config: &DioxusConfig,
+    config: &AetherConfig,
 ) -> Result<()> {
     // Copy the folder content to the components directory
     let components_root = components_root(component_path, config)?;

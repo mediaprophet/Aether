@@ -6,7 +6,7 @@ authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 description = "Types crate for the Subsecond hotpatch engine."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
-keywords = ["hotpatch", "engine", "subsecond", "dioxus"]
+keywords = ["hotpatch", "engine", "subsecond", "aether"]
 readme = "../README.md"
 
 [dependencies]

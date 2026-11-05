@@ -1,17 +1,17 @@
-//! This example demonstrates how to create an overlay window with dioxus.
+//! This example demonstrates how to create an overlay window with aether.
 //!
 //! Basically, we just create a new window with a transparent background and no decorations, size it to the screen, and
 //! then we can draw whatever we want on it. In this case, we're drawing a simple overlay with a draggable header.
 //!
 //! We also add a global shortcut to toggle the overlay on and off, so you could build a raycast-type app with this.
 
-use dioxus::desktop::{
+use aether::desktop::{
     HotKeyState, LogicalSize, WindowBuilder, tao::dpi::PhysicalPosition, use_global_shortcut,
 };
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::LaunchBuilder::desktop()
+    aether::LaunchBuilder::desktop()
         .with_cfg(make_config())
         .launch(app);
 }
@@ -38,7 +38,7 @@ fn app() -> Element {
                     width: "100%",
                     height: "10px",
                     background_color: "black",
-                    onmousedown: move |_| dioxus::desktop::window().drag(),
+                    onmousedown: move |_| aether::desktop::window().drag(),
                 }
 
                 "This is an overlay!"
@@ -47,8 +47,8 @@ fn app() -> Element {
     }
 }
 
-fn make_config() -> dioxus::desktop::Config {
-    dioxus::desktop::Config::default().with_window(make_window())
+fn make_config() -> aether::desktop::Config {
+    aether::desktop::Config::default().with_window(make_window())
 }
 
 fn make_window() -> WindowBuilder {

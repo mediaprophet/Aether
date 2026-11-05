@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_html::SerializedHtmlEventConverter;
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_html::SerializedHtmlEventConverter;
+use aether_renderer_oracle::RendererOracle;
 use std::{any::Any, rc::Rc};
 
 // This test is intended to be run with Miri, and contains no assertions. If it completes under

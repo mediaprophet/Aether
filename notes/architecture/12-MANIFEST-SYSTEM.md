@@ -1,10 +1,10 @@
-# Dioxus Manifest & Permissions System
+# Aether Manifest & Permissions System
 
-Declare permissions, deep links, background modes, and platform-specific manifest settings through `Dioxus.toml` configuration.
+Declare permissions, deep links, background modes, and platform-specific manifest settings through `Aether.toml` configuration.
 
 ## Overview
 
-Dioxus provides a unified configuration system for cross-platform app manifest customization. Instead of using macros or platform-specific files, all manifest configuration is centralized in your `Dioxus.toml` file.
+Aether provides a unified configuration system for cross-platform app manifest customization. Instead of using macros or platform-specific files, all manifest configuration is centralized in your `Aether.toml` file.
 
 The system follows a **unified-first, platform-override** pattern:
 1. Define cross-platform settings in unified sections (`[permissions]`, `[deep_links]`, `[background]`)
@@ -12,7 +12,7 @@ The system follows a **unified-first, platform-override** pattern:
 
 ## Permissions
 
-Add a `[permissions]` section to your `Dioxus.toml`:
+Add a `[permissions]` section to your `Aether.toml`:
 
 ```toml
 [bundle]
@@ -248,7 +248,7 @@ minimum_system_version = "11.0"
 
 ## How it Works
 
-1. **Parse**: The CLI parses `Dioxus.toml` and extracts all permission and platform-specific configuration
+1. **Parse**: The CLI parses `Aether.toml` and extracts all permission and platform-specific configuration
 2. **Map**: The `PermissionMapper` converts unified permissions to platform-specific identifiers
 3. **Generate**: Handlebars templates inject the permissions and configuration into platform manifests:
    - `AndroidManifest.xml` for Android
@@ -257,7 +257,7 @@ minimum_system_version = "11.0"
 
 ## Migration from Macro-Based System
 
-If you were previously using the `permission!()` macro, migrate to `Dioxus.toml`:
+If you were previously using the `permission!()` macro, migrate to `Aether.toml`:
 
 **Before (deprecated):**
 ```rust
@@ -272,13 +272,13 @@ const LOCATION: Permission = permission!(
 
 **After:**
 ```toml
-# Dioxus.toml
+# Aether.toml
 [permissions]
 location = { precision = "fine", description = "Track your runs" }
 ```
 
-The `permission!()` macro has been removed. All permissions should now be declared in `Dioxus.toml`.
+The `permission!()` macro has been removed. All permissions should now be declared in `Aether.toml`.
 
 ## FFI Integration
 
-For native plugins that require specific permissions, declare them in your library's documentation and let the app developer add them to their `Dioxus.toml`. The `#[manganis::ffi]` macro for FFI bindings is still available for Swift/Kotlin integration.
+For native plugins that require specific permissions, declare them in your library's documentation and let the app developer add them to their `Aether.toml`. The `#[manganis::ffi]` macro for FFI bindings is still available for Swift/Kotlin integration.

@@ -4,8 +4,8 @@
 //! 3. Register a callback for dx_hydrate(id, data) that takes some new data, reruns the suspense boundary with that new data and then rehydrates the node
 
 use crate::dom::WebsysDom;
-use dioxus_core::{ScopeState, SuspenseBoundaryProps, VirtualDom};
-use dioxus_fullstack_core::HydrationContext;
+use aether_core::{ScopeState, SuspenseBoundaryProps, VirtualDom};
+use aether_fullstack_core::HydrationContext;
 use futures_channel::mpsc::UnboundedReceiver;
 use wasm_bindgen::JsCast;
 
@@ -201,7 +201,7 @@ impl WebsysDom {
         let roots = children_array(&self.root);
         self.start_hydration_at_scope(vdom.base_scope(), vdom, roots, true, false)?;
 
-        dioxus_interpreter_js::minimal_bindings::register_rehydrate_chunk_for_streaming(&closure);
+        aether_interpreter_js::minimal_bindings::register_rehydrate_chunk_for_streaming(&closure);
         closure.forget();
 
         Ok(rx)

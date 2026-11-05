@@ -81,8 +81,8 @@ jobs:
         shell: bash
         run: |
           sha=$(git rev-parse HEAD)
-          echo "DIOXUS_CLI_GIT_SHA=$sha" >> "$GITHUB_ENV"
-          echo "DIOXUS_CLI_GIT_SHA_SHORT=${sha:0:7}" >> "$GITHUB_ENV"
+          echo "AETHER_CLI_GIT_SHA=$sha" >> "$GITHUB_ENV"
+          echo "AETHER_CLI_GIT_SHA_SHORT=${sha:0:7}" >> "$GITHUB_ENV"
 
       - name: Install openssl on macos
         if: matrix.platform.os == 'macos-latest'

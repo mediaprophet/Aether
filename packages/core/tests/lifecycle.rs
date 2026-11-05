@@ -2,9 +2,9 @@
 #![allow(non_snake_case)]
 
 //! Tests for the lifecycle of components.
-use dioxus::html::SerializedHtmlEventConverter;
-use dioxus::prelude::*;
-use dioxus_renderer_oracle::RendererOracle;
+use aether::html::SerializedHtmlEventConverter;
+use aether::prelude::*;
+use aether_renderer_oracle::RendererOracle;
 use std::any::Any;
 use std::rc::Rc;
 use std::sync::{Arc, Mutex};

@@ -15,11 +15,11 @@ use std::{fmt::Display, str::FromStr};
 
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD;
-use dioxus::prelude::*;
+use aether::prelude::*;
 use serde::{Deserialize, Serialize};
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         rsx! {
             Router::<Route> {}
         }

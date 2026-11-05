@@ -1,5 +1,5 @@
 {
-    "name": "dioxus",
+    "name": "aether",
     "remoteUser": "vscode",
     "build": {
         "dockerfile": "./Dockerfile",

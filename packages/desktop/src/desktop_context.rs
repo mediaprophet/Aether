@@ -6,7 +6,7 @@ use crate::{
     ipc::UserWindowEvent,
     shortcut::{HotKey, HotKeyState, ShortcutHandle, ShortcutRegistryError},
 };
-use dioxus_core::{Callback, RenderTargetId};
+use aether_core::{Callback, RenderTargetId};
 use std::{
     cell::Cell,
     future::{Future, IntoFuture},
@@ -32,9 +32,9 @@ use tao::platform::ios::WindowExtIOS;
 ///
 /// ## Panics
 ///
-/// This function will panic if it is called outside of the context of a Dioxus App.
+/// This function will panic if it is called outside of the context of a Aether App.
 pub fn window() -> DesktopContext {
-    dioxus_core::consume_context()
+    aether_core::consume_context()
 }
 
 /// Get an imperative handle to the desktop application without using a hook.
@@ -43,9 +43,9 @@ pub fn window() -> DesktopContext {
 ///
 /// ## Panics
 ///
-/// This function will panic if it is called outside of the context of a Dioxus App.
+/// This function will panic if it is called outside of the context of a Aether App.
 pub fn app() -> Rc<DesktopAppContext> {
-    dioxus_core::consume_context()
+    aether_core::consume_context()
 }
 
 /// A handle to the [`DesktopService`] that can be passed around.
@@ -171,11 +171,11 @@ impl DesktopService {
     /// # Example
     ///
     /// ```rust, no_run
-    /// use dioxus::prelude::*;
+    /// use aether::prelude::*;
     ///
     /// # async fn app() {
     /// // Create the window and keep its render target.
-    /// let pending_window = dioxus::desktop::window().new_window(Default::default());
+    /// let pending_window = aether::desktop::window().new_window(Default::default());
     /// let target = pending_window.target_id();
     ///
     /// // Wait for the desktop context to be created.
@@ -188,12 +188,12 @@ impl DesktopService {
     /// # }
     /// ```
     // Note: This method is asynchronous because webview2 does not support creating a new window from
-    // inside of an existing webview callback. Dioxus runs event handlers synchronously inside of a webview
+    // inside of an existing webview callback. Aether runs event handlers synchronously inside of a webview
     // callback. See [this page](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/threading-model#reentrancy) for more information.
     //
     // Related issues:
     // - https://github.com/tauri-apps/wry/issues/583
-    // - https://github.com/DioxusLabs/dioxus/issues/3080
+    // - https://github.com/AetherLabs/aether/issues/3080
     pub fn new_window(&self, cfg: WindowConfig) -> PendingDesktopWindow {
         self.app.new_window(cfg)
     }
@@ -389,10 +389,10 @@ fn is_main_thread() -> bool {
 ///
 /// # Example
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// # async fn app() {
 /// // Create a new window asynchronously
-/// let pending_window = dioxus::desktop::window().new_window(Default::default());
+/// let pending_window = aether::desktop::window().new_window(Default::default());
 /// let target = pending_window.target_id();
 ///
 /// // Wait for the context to be created

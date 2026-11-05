@@ -566,7 +566,7 @@ impl AppBuilder {
     /// Previously, we didn't want to emulate this behavior, but now we do in order to be a good
     /// citizen of the Rust ecosystem and allow users to use `cargo` features like `CARGO_MANIFEST_DIR`.
     ///
-    /// Note that Dioxus apps *should not* rely on this vars being set, but libraries like Bevy do.
+    /// Note that Aether apps *should not* rely on this vars being set, but libraries like Bevy do.
     pub(crate) fn child_environment_variables(
         &self,
         devserver_ip: Option<SocketAddr>,
@@ -580,31 +580,31 @@ impl AppBuilder {
         // These need to be stable within a release version (ie 0.6.0)
         let mut envs: Vec<(String, String)> = vec![
             (
-                dioxus_cli_config::CLI_ENABLED_ENV.into(),
+                aether_cli_config::CLI_ENABLED_ENV.into(),
                 "true".to_string(),
             ),
             (
-                dioxus_cli_config::APP_TITLE_ENV.into(),
+                aether_cli_config::APP_TITLE_ENV.into(),
                 krate.config.web.app.title.clone(),
             ),
             (
-                dioxus_cli_config::SESSION_CACHE_DIR.into(),
+                aether_cli_config::SESSION_CACHE_DIR.into(),
                 self.build.session_cache_dir().display().to_string(),
             ),
-            (dioxus_cli_config::BUILD_ID.into(), build_id.0.to_string()),
+            (aether_cli_config::BUILD_ID.into(), build_id.0.to_string()),
             (
-                dioxus_cli_config::ALWAYS_ON_TOP_ENV.into(),
+                aether_cli_config::ALWAYS_ON_TOP_ENV.into(),
                 always_on_top.to_string(),
             ),
         ];
 
         if let Some(devserver_ip) = devserver_ip {
             envs.push((
-                dioxus_cli_config::DEVSERVER_IP_ENV.into(),
+                aether_cli_config::DEVSERVER_IP_ENV.into(),
                 devserver_ip.ip().to_string(),
             ));
             envs.push((
-                dioxus_cli_config::DEVSERVER_PORT_ENV.into(),
+                aether_cli_config::DEVSERVER_PORT_ENV.into(),
                 devserver_ip.port().to_string(),
             ));
         }
@@ -615,7 +615,7 @@ impl AppBuilder {
 
         if let Some(base_path) = krate.trimmed_base_path() {
             envs.push((
-                dioxus_cli_config::ASSET_ROOT_ENV.into(),
+                aether_cli_config::ASSET_ROOT_ENV.into(),
                 base_path.to_string(),
             ));
         }
@@ -628,11 +628,11 @@ impl AppBuilder {
         // start the server, consume its stdout/stderr.
         if let Some(addr) = start_fullstack_on_address {
             envs.push((
-                dioxus_cli_config::SERVER_IP_ENV.into(),
+                aether_cli_config::SERVER_IP_ENV.into(),
                 addr.ip().to_string(),
             ));
             envs.push((
-                dioxus_cli_config::SERVER_PORT_ENV.into(),
+                aether_cli_config::SERVER_PORT_ENV.into(),
                 addr.port().to_string(),
             ));
         }
@@ -975,7 +975,7 @@ impl AppBuilder {
         changed_file: &Path,
         bundled_name: &Path,
     ) -> Result<PathBuf> {
-        let target = dioxus_cli_config::android_session_cache_dir().join(bundled_name);
+        let target = aether_cli_config::android_session_cache_dir().join(bundled_name);
         tracing::debug!("Pushing asset to device: {target:?}");
 
         let res = Command::new(&self.build.workspace.android_tools()?.adb)
@@ -1483,7 +1483,7 @@ impl AppBuilder {
                 .arg("shell")
                 .arg("rm")
                 .arg("-rf")
-                .arg(dioxus_cli_config::android_session_cache_dir())
+                .arg(aether_cli_config::android_session_cache_dir())
                 .output()
                 .await?;
 
@@ -1501,13 +1501,13 @@ impl AppBuilder {
             Command::new(&adb)
                 .arg("push")
                 .arg(env_file)
-                .arg(dioxus_cli_config::android_session_cache_dir().join(".env"))
+                .arg(aether_cli_config::android_session_cache_dir().join(".env"))
                 .output()
                 .await?;
 
             // eventually, use the user's MainActivity, not our MainActivity
-            // adb shell am start -n dev.dioxus.main/dev.dioxus.main.MainActivity
-            let activity_name = format!("{application_id}/dev.dioxus.main.MainActivity");
+            // adb shell am start -n dev.aether.main/dev.aether.main.MainActivity
+            let activity_name = format!("{application_id}/dev.aether.main.MainActivity");
             let res = Command::new(&adb)
                 .arg("shell")
                 .arg("am")
@@ -1706,7 +1706,7 @@ impl AppBuilder {
             }
 
             BundleFormat::Web => {
-                // code --open-url "vscode://DioxusLabs.dioxus/debugger?uri=http://127.0.0.1:8080"
+                // code --open-url "vscode://AetherLabs.aether/debugger?uri=http://127.0.0.1:8080"
                 // todo - debugger could open to the *current* page afaik we don't have a way to have that info
                 let address = server.devserver_address();
                 let base_path = self.build.base_path();
@@ -1717,7 +1717,7 @@ impl AppBuilder {
                     None => "".to_owned(),
                 };
                 format!(
-                    "{url_scheme}://DioxusLabs.dioxus/debugger?uri={protocol}://{address}{base_path}"
+                    "{url_scheme}://AetherLabs.aether/debugger?uri={protocol}://{address}{base_path}"
                 )
             }
 
@@ -1756,8 +1756,8 @@ impl AppBuilder {
             //
             // lots of pain to figure this out:
             //
-            // (lldb) image add target/dx/tw6/debug/android/app/app/src/main/jniLibs/arm64-v8a/libdioxusmain.so
-            // (lldb) settings append target.exec-search-paths target/dx/tw6/debug/android/app/app/src/main/jniLibs/arm64-v8a/libdioxusmain.so
+            // (lldb) image add target/dx/tw6/debug/android/app/app/src/main/jniLibs/arm64-v8a/libaethermain.so
+            // (lldb) settings append target.exec-search-paths target/dx/tw6/debug/android/app/app/src/main/jniLibs/arm64-v8a/libaethermain.so
             // (lldb) process handle SIGSEGV --pass true --stop false --notify true (otherwise the java threads cause crash)
             //
             BundleFormat::Android => {
@@ -2074,8 +2074,8 @@ impl AppBuilder {
     ) -> anyhow::Result<()> {
         use super::{BuildId, BuilderUpdate};
         use anyhow::Context;
-        use dioxus_cli_config::{server_ip, server_port};
-        use dioxus_dx_wire_format::BuildStage;
+        use aether_cli_config::{server_ip, server_port};
+        use aether_dx_wire_format::BuildStage;
         use futures_util::{StreamExt, stream::FuturesUnordered};
         use std::{
             net::{IpAddr, Ipv4Addr, SocketAddr},

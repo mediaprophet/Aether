@@ -1,7 +1,7 @@
 //! [`View`] implementations for [`VComponent`].
 
 use crate::{DynamicNode, DynamicValues, VComponent, VNode, nodes::IntoVNode};
-use dioxus_core_template::TemplateRawTree;
+use aether_core_template::TemplateRawTree;
 
 use super::{View, ViewExt, ViewTemplate};
 

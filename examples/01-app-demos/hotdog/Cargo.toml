@@ -6,7 +6,7 @@ edition = "2024"
 publish = false
 
 [dependencies]
-dioxus = { workspace = true,  features = ["fullstack", "router"] }
+aether = { workspace = true,  features = ["fullstack", "router"] }
 reqwest = { workspace = true, features = ["json"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
@@ -15,9 +15,9 @@ anyhow = { workspace = true }
 
 [features]
 default = ["web", "server"]
-web = ["dioxus/web"]
-desktop = ["dioxus/desktop"]
-native = ["dioxus/native"]
-mobile = ["dioxus/mobile"]
-server = ["dioxus/server", "dep:rusqlite"]
+web = ["aether/web"]
+desktop = ["aether/desktop"]
+native = ["aether/native"]
+mobile = ["aether/mobile"]
+server = ["aether/server", "dep:rusqlite"]
 production = []

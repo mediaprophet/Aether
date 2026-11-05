@@ -120,7 +120,7 @@ impl FullQuerySegment {
         let ident = &self.ident;
         let ty = &self.ty;
         quote! {
-            let #ident = <#ty as dioxus_router::routable::FromQuery>::from_query(&*query);
+            let #ident = <#ty as aether_router::routable::FromQuery>::from_query(&*query);
         }
     }
 
@@ -130,7 +130,7 @@ impl FullQuerySegment {
             {
                 let as_string = #ident.to_string();
                 if !as_string.is_empty() {
-                    write!(f, "?{}", dioxus_router::exports::percent_encoding::utf8_percent_encode(&as_string, dioxus_router::exports::QUERY_ASCII_SET))?;
+                    write!(f, "?{}", aether_router::exports::percent_encoding::utf8_percent_encode(&as_string, aether_router::exports::QUERY_ASCII_SET))?;
                 }
             }
         }
@@ -150,7 +150,7 @@ impl QueryArgument {
         quote! {
             let #ident = match split_query.get(stringify!(#ident)) {
                 Some(query_argument) => {
-                    use dioxus_router::routable::FromQueryArgument;
+                    use aether_router::routable::FromQueryArgument;
                     <#ty>::from_query_argument(query_argument).unwrap_or_default()
                 },
                 None => <#ty as Default>::default(),
@@ -162,10 +162,10 @@ impl QueryArgument {
         let ident = &self.ident;
         quote! {
             {
-                let as_string = dioxus_router::routable::DisplayQueryArgument::new(stringify!(#ident), #ident).to_string();
+                let as_string = aether_router::routable::DisplayQueryArgument::new(stringify!(#ident), #ident).to_string();
                 if !as_string.is_empty() {
                     f.write_str(if wrote_query_argument { "&" } else { "?" })?;
-                    write!(f, "{}", dioxus_router::exports::percent_encoding::utf8_percent_encode(&as_string, dioxus_router::exports::QUERY_ASCII_SET))?;
+                    write!(f, "{}", aether_router::exports::percent_encoding::utf8_percent_encode(&as_string, aether_router::exports::QUERY_ASCII_SET))?;
                     wrote_query_argument = true;
                 }
             }

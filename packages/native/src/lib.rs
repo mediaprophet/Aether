@@ -1,19 +1,19 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-//! A native renderer for Dioxus.
+//! A native renderer for Aether.
 //!
 //! ## Feature flags
 //!  - `default`: Enables the features listed below.
 //!  - `accessibility`: Enables [`accesskit`](https://docs.rs/accesskit/latest/accesskit/) accessibility support.
-//!  - `hot-reload`: Enables hot-reloading of Dioxus RSX.
+//!  - `hot-reload`: Enables hot-reloading of Aether RSX.
 //!  - `menu`: Enables the [`muda`](https://docs.rs/muda/latest/muda/) menubar.
 //!  - `tracing`: Enables tracing support.
 
 mod assets;
 mod config;
 mod contexts;
-mod dioxus_application;
-mod dioxus_renderer;
+mod aether_application;
+mod aether_renderer;
 mod event_handlers;
 mod hooks;
 mod link_handler;
@@ -24,11 +24,11 @@ pub mod prelude;
 #[cfg(all(feature = "net", not(target_arch = "wasm32")))]
 use blitz_traits::net::NetProvider;
 #[doc(inline)]
-pub use dioxus_native_dom::*;
+pub use aether_native_dom::*;
 
-use assets::DioxusNativeNetProvider;
-pub use dioxus_application::{DioxusNativeApplication, DioxusNativeEvent};
-pub use dioxus_renderer::{DioxusNativeWindowRenderer, RendererOptions};
+use assets::AetherNativeNetProvider;
+pub use aether_application::{AetherNativeApplication, AetherNativeEvent};
+pub use aether_renderer::{AetherNativeWindowRenderer, RendererOptions};
 
 #[doc(inline)]
 pub use anyrender::CompositeAlphaMode;
@@ -56,7 +56,7 @@ pub use android_activity::AndroidApp;
 
 #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
 pub use {
-    dioxus_renderer::{Features, Limits},
+    aether_renderer::{Features, Limits},
     wgpu_context::DeviceHandle,
 };
 
@@ -69,8 +69,8 @@ pub use winit::dpi::{LogicalSize, PhysicalSize};
 pub use winit::window::WindowAttributes;
 
 use blitz_shell::{BlitzShellEvent, BlitzShellProxy, WindowConfig, create_default_event_loop};
-use dioxus_core::{ComponentFunction, Element, VirtualDom, consume_context, use_hook};
-use link_handler::DioxusNativeNavigationProvider;
+use aether_core::{ComponentFunction, Element, VirtualDom, consume_context, use_hook};
+use link_handler::AetherNativeNavigationProvider;
 use std::any::Any;
 use std::sync::Arc;
 use winit::{
@@ -91,7 +91,7 @@ pub fn use_raw_window_handle() -> RawWindowHandle {
     })
 }
 
-/// Launch an interactive HTML/CSS renderer driven by the Dioxus virtualdom
+/// Launch an interactive HTML/CSS renderer driven by the Aether virtualdom
 pub fn launch(app: fn() -> Element) {
     launch_cfg(app, vec![], vec![])
 }
@@ -104,7 +104,7 @@ pub fn launch_cfg(
     launch_cfg_with_props(app, (), contexts, cfg)
 }
 
-// todo: props shouldn't have the clone bound - should try and match dioxus-desktop behavior
+// todo: props shouldn't have the clone bound - should try and match aether-desktop behavior
 pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
     app: impl ComponentFunction<P, M>,
     props: P,
@@ -168,8 +168,8 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
     #[cfg(not(target_arch = "wasm32"))]
     {
         let proxy = proxy.clone();
-        dioxus_devtools::connect(move |event| {
-            let dxn_event = DioxusNativeEvent::DevserverEvent(event);
+        aether_devtools::connect(move |event| {
+            let dxn_event = AetherNativeEvent::DevserverEvent(event);
             proxy.send_event(BlitzShellEvent::embedder_event(dxn_event));
         })
     }
@@ -188,14 +188,14 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
         let inner_net_provider = Arc::new(blitz_net::Provider::new(net_waker));
         vdom.provide_root_context(Arc::clone(&inner_net_provider));
 
-        Arc::new(DioxusNativeNetProvider::with_inner(
+        Arc::new(AetherNativeNetProvider::with_inner(
             proxy.clone(),
             inner_net_provider as _,
         )) as Arc<dyn NetProvider>
     };
 
     #[cfg(any(not(feature = "net"), target_arch = "wasm32"))]
-    let net_provider = DioxusNativeNetProvider::shared(proxy.clone());
+    let net_provider = AetherNativeNetProvider::shared(proxy.clone());
 
     vdom.provide_root_context(Arc::clone(&net_provider));
 
@@ -208,10 +208,10 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
     #[cfg(not(feature = "html"))]
     let html_parser_provider = None;
 
-    let navigation_provider = Some(Arc::new(DioxusNativeNavigationProvider) as _);
+    let navigation_provider = Some(Arc::new(AetherNativeNavigationProvider) as _);
 
     // Create document + window from the baked virtualdom
-    let doc = DioxusDocument::new(
+    let doc = AetherDocument::new(
         vdom,
         DocumentConfig {
             net_provider: Some(net_provider),
@@ -222,14 +222,14 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
         },
     );
     #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
-    let renderer = DioxusNativeWindowRenderer::with_options(RendererOptions {
+    let renderer = AetherNativeWindowRenderer::with_options(RendererOptions {
         base_color: config.base_color,
         alpha_mode: config.alpha_mode,
         features,
         limits,
     });
     #[cfg(not(any(feature = "vello", feature = "vello-hybrid")))]
-    let renderer = DioxusNativeWindowRenderer::with_options(RendererOptions {
+    let renderer = AetherNativeWindowRenderer::with_options(RendererOptions {
         base_color: config.base_color,
         alpha_mode: config.alpha_mode,
     });
@@ -237,7 +237,7 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
         WindowConfig::with_attributes(Box::new(doc) as _, renderer, config.window_attributes);
 
     // Create application
-    let application = DioxusNativeApplication::new(proxy, event_queue, config);
+    let application = AetherNativeApplication::new(proxy, event_queue, config);
 
     // Run event loop
     event_loop.run_app(application).unwrap();

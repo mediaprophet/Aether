@@ -1,4 +1,4 @@
-use dioxus_html::HasTransitionData;
+use aether_html::HasTransitionData;
 use web_sys::TransitionEvent;
 
 use super::Synthetic;

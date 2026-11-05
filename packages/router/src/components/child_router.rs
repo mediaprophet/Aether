@@ -1,8 +1,8 @@
 /// Components that allow the macro to add child routers. This component provides a context
 /// to the child router that maps child routes to root routes and vice versa.
 use crate::{Outlet, OutletContext, Routable};
-use dioxus_core::{Element, provide_context, try_consume_context, use_hook};
-use dioxus_core_macro::{Props, component, rsx};
+use aether_core::{Element, provide_context, try_consume_context, use_hook};
+use aether_core_macro::{Props, component, rsx};
 
 /// Maps a child route into the root router and vice versa
 // NOTE: Currently child routers only support simple static prefixes, but this
@@ -53,7 +53,7 @@ impl<R: Routable> PartialEq for ChildRouterProps<R> {
     }
 }
 
-/// A component that provides a [`History`](dioxus_history::History) to a child router. The `#[child]` attribute on the router macro will insert this automatically.
+/// A component that provides a [`History`](aether_history::History) to a child router. The `#[child]` attribute on the router macro will insert this automatically.
 #[component]
 #[allow(missing_docs)]
 pub fn ChildRouter<R: Routable>(props: ChildRouterProps<R>) -> Element {

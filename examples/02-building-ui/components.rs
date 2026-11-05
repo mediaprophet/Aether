@@ -1,13 +1,13 @@
 //! Defining and using components.
 //!
 //! A component is just a function annotated with `#[component]` that returns an `Element`.
-//! Its arguments are its props — Dioxus generates a builder so you can construct the
+//! Its arguments are its props — Aether generates a builder so you can construct the
 //! component inside `rsx!` with a struct-like syntax.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

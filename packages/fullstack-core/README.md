@@ -1,19 +1,19 @@
-# Dioxus Fullstack Core
+# Aether Fullstack Core
 
-Dioxus-fullstack-core provides types, traits, hooks, contexts for [`dioxus-fullstack`](https://crates.io/crates/dioxus-fullstack). Libraries that need to integrate with dioxus-fullstack should rely on this crate instead of the full-fledged renderer for quicker build times.
+Aether-fullstack-core provides types, traits, hooks, contexts for [`aether-fullstack`](https://crates.io/crates/aether-fullstack). Libraries that need to integrate with aether-fullstack should rely on this crate instead of the full-fledged renderer for quicker build times.
 
 ## Usage
 
 To start using this crate, you can run the following command:
 
 ```bash
-cargo add dioxus-fullstack-hooks
+cargo add aether-fullstack-hooks
 ```
 
 Then you can use hooks like `use_server_future` in your components:
 
 ```rust
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 
 fn App() -> Element {

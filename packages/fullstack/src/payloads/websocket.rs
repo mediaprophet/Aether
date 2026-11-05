@@ -1,7 +1,7 @@
 #![allow(unreachable_code)]
 #![allow(unused_imports)]
 
-//! This module implements WebSocket support for Dioxus Fullstack applications.
+//! This module implements WebSocket support for Aether Fullstack applications.
 //!
 //! WebSockets provide a full-duplex communication channel over a single, long-lived connection.
 //!
@@ -18,7 +18,7 @@
 //! - `WebsocketState`: An enum representing the state of the WebSocket connection.
 //! - plus a variety of error types and traits for encoding/decoding messages.
 //!
-//! Dioxus Fullstack websockets are typed in both directions, letting the happy path (`.send()` and `.recv()`)
+//! Aether Fullstack websockets are typed in both directions, letting the happy path (`.send()` and `.recv()`)
 //! automatically serialize and deserialize messages for you.
 
 use crate::{ClientRequest, Encoding, FromResponse, IntoRequest, JsonEncoding, ServerFnError};
@@ -28,11 +28,11 @@ use axum::{
 };
 use axum_core::response::{IntoResponse, Response};
 use bytes::Bytes;
-use dioxus_core::{CapturedError, Result, use_hook};
-use dioxus_fullstack_core::{HttpError, RequestError};
-use dioxus_hooks::{Resource, UseWaker, use_resource};
-use dioxus_hooks::{use_signal, use_waker};
-use dioxus_signals::{ReadSignal, ReadableExt, ReadableOptionExt, Signal, WritableExt};
+use aether_core::{CapturedError, Result, use_hook};
+use aether_fullstack_core::{HttpError, RequestError};
+use aether_hooks::{Resource, UseWaker, use_resource};
+use aether_hooks::{use_signal, use_waker};
+use aether_signals::{ReadSignal, ReadableExt, ReadableOptionExt, Signal, WritableExt};
 use futures::{
     Sink, SinkExt, Stream, StreamExt, TryFutureExt,
     stream::{SplitSink, SplitStream},
@@ -1192,7 +1192,7 @@ mod native {
     use crate::ClientRequest;
 
     use super::{CloseCode, Message, WebsocketError};
-    use dioxus_fullstack_core::RequestError;
+    use aether_fullstack_core::RequestError;
     use futures_util::{
         StreamExt,
         stream::{SplitSink, SplitStream},

@@ -4,9 +4,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use std::time::Duration;
 
-use dioxus::prelude::*;
-use dioxus_core::ElementId;
-use dioxus_signals::*;
+use aether::prelude::*;
+use aether_core::ElementId;
+use aether_signals::*;
 
 #[tokio::test]
 async fn effects_rerun() {
@@ -30,7 +30,7 @@ async fn effects_rerun() {
                     println!("Signal: {:?}", signal);
 
                     // Stop the wait for work manually
-                    dioxus_core::needs_update();
+                    aether_core::needs_update();
                 }
             });
             signal += 1;
@@ -53,7 +53,7 @@ async fn effects_rerun() {
     assert_eq!(current_counter.effect, 1);
 }
 
-// https://github.com/DioxusLabs/dioxus/issues/2347
+// https://github.com/AetherLabs/aether/issues/2347
 // Effects should rerun when the signal changes if there are no changes to the component
 #[tokio::test]
 async fn effects_rerun_without_rerender() {

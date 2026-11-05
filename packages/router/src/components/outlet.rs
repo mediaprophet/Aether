@@ -1,5 +1,5 @@
 use crate::{outlet::OutletContext, *};
-use dioxus_core::Element;
+use aether_core::Element;
 
 /// An outlet for the current content.
 ///
@@ -14,7 +14,7 @@ use dioxus_core::Element;
 ///
 /// # Example
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[derive(Clone, Routable)]
 /// #[rustfmt::skip]
 /// enum Route {
@@ -57,8 +57,8 @@ use dioxus_core::Element;
 /// # #[component]
 /// # fn App() -> Element {
 /// #     rsx! {
-/// #         dioxus_router::components::HistoryProvider {
-/// #             history:  move |_| std::rc::Rc::new(dioxus_history::MemoryHistory::with_initial_path(Route::Child {}.to_string())) as std::rc::Rc<dyn dioxus_history::History>,
+/// #         aether_router::components::HistoryProvider {
+/// #             history:  move |_| std::rc::Rc::new(aether_history::MemoryHistory::with_initial_path(Route::Child {}.to_string())) as std::rc::Rc<dyn aether_history::History>,
 /// #             Router::<Route> {}
 /// #         }
 /// #     }
@@ -66,7 +66,7 @@ use dioxus_core::Element;
 /// #
 /// # let mut vdom = VirtualDom::new(App);
 /// # vdom.rebuild_in_place();
-/// # assert_eq!(dioxus_ssr::render(&vdom), "<h1>App</h1><p>Child</p>");
+/// # assert_eq!(aether_ssr::render(&vdom), "<h1>App</h1><p>Child</p>");
 /// ```
 pub fn Outlet<R: Routable + Clone>() -> Element {
     OutletContext::<R>::render()

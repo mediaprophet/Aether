@@ -132,37 +132,455 @@ dependencies = [
 name = "aether"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus",
- "refract",
+ "aether",
+ "aether-asset-resolver",
+ "aether-cli-config",
+ "aether-config-macro",
+ "aether-config-macros",
+ "aether-core",
+ "aether-core-macro",
+ "aether-desktop",
+ "aether-devtools",
+ "aether-document",
+ "aether-fullstack",
+ "aether-fullstack-macro",
+ "aether-history",
+ "aether-hooks",
+ "aether-html",
+ "aether-liveview",
+ "aether-logger",
+ "aether-native",
+ "aether-router",
+ "aether-server",
+ "aether-signals",
+ "aether-ssr",
+ "aether-stores",
+ "aether-web",
+ "env_logger",
+ "futures-util",
+ "manganis",
+ "rand 0.9.4",
+ "serde",
+ "subsecond",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "warnings",
+ "wasm-splitter",
 ]
+
+[[package]]
+name = "aether-asset-resolver"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-cli-config",
+ "http",
+ "infer",
+ "jni 0.21.1",
+ "js-sys",
+ "ndk",
+ "ndk-context",
+ "ndk-sys",
+ "percent-encoding",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "aether-autofmt"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-rsx",
+ "pretty_assertions",
+ "prettyplease",
+ "proc-macro2",
+ "quote",
+ "regex",
+ "serde",
+ "syn 2.0.117",
+]
+
+[[package]]
+name = "aether-cli"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-autofmt",
+ "aether-cli-config",
+ "aether-cli-telemetry",
+ "aether-component-manifest",
+ "aether-core",
+ "aether-core-types",
+ "aether-devtools-types",
+ "aether-dx-wire-format",
+ "aether-html",
+ "aether-rsx",
+ "aether-rsx-hotreload",
+ "aether-rsx-rosetta",
+ "ansi-to-html",
+ "ansi-to-tui",
+ "anyhow",
+ "ar",
+ "axum",
+ "axum-extra",
+ "axum-server",
+ "backtrace",
+ "brotli",
+ "bytes",
+ "cargo-config2",
+ "cargo-generate",
+ "cargo-util-schemas",
+ "cargo_metadata",
+ "cargo_toml",
+ "chrono",
+ "clap",
+ "clap_complete",
+ "codemap",
+ "console",
+ "console-subscriber",
+ "const-serialize",
+ "convert_case 0.8.0",
+ "crossterm",
+ "ctrlc",
+ "depinfo",
+ "dircpy",
+ "dirs 6.0.0",
+ "dunce",
+ "escargot",
+ "flate2",
+ "fs2",
+ "futures-channel",
+ "futures-util",
+ "git2",
+ "grass",
+ "handlebars",
+ "home",
+ "html_parser",
+ "hyper",
+ "hyper-rustls",
+ "hyper-util",
+ "icns",
+ "ignore",
+ "image",
+ "imagequant",
+ "include_dir",
+ "indoc",
+ "itertools 0.14.0",
+ "krates",
+ "kstring",
+ "lightningcss",
+ "log",
+ "manganis",
+ "manganis-core",
+ "md5",
+ "mozjpeg",
+ "notify",
+ "nucleo",
+ "object",
+ "open",
+ "owo-colors",
+ "path-absolutize",
+ "pdb",
+ "plist",
+ "png 0.17.16",
+ "pretty_assertions",
+ "prettyplease",
+ "proc-macro2",
+ "ratatui",
+ "rayon",
+ "regex",
+ "reqwest",
+ "rpm",
+ "rustls",
+ "schemars",
+ "self-replace",
+ "self_update",
+ "sentry-backtrace",
+ "serde",
+ "serde_json",
+ "serde_json5",
+ "sha1 0.10.6",
+ "sha2 0.10.9",
+ "shell-words",
+ "subsecond-types",
+ "syn 2.0.117",
+ "tar",
+ "target-lexicon 0.13.5",
+ "tempfile",
+ "thiserror 2.0.21",
+ "throbber-widgets-tui",
+ "tokio",
+ "tokio-stream",
+ "tokio-tungstenite",
+ "tokio-util",
+ "toml 1.1.2+spec-1.1.0",
+ "toml_edit 0.25.17+spec-1.1.0",
+ "tower",
+ "tower-http",
+ "tracing",
+ "tracing-subscriber",
+ "unicode-segmentation",
+ "uuid",
+ "walkdir",
+ "walrus",
+ "wasm-split-cli",
+ "wasmparser 0.245.1",
+ "webpki-roots",
+ "which",
+ "zip",
+]
+
+[[package]]
+name = "aether-cli-config"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "aether-cli-optimization-test"
+version = "0.0.1"
+dependencies = [
+ "aether",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "aether-cli-telemetry"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "chrono",
+ "dirs 6.0.0",
+ "rand 0.9.4",
+ "serde",
+ "serde_json",
+ "uuid",
+]
+
+[[package]]
+name = "aether-component-manifest"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "schemars",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "aether-config-macro"
+version = "0.8.0-alpha.3"
+
+[[package]]
+name = "aether-config-macros"
+version = "0.8.0-alpha.3"
+
+[[package]]
+name = "aether-const-vec"
+version = "0.8.0-alpha.3"
 
 [[package]]
 name = "aether-core"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus-core",
+ "aether",
+ "aether-const-vec",
+ "aether-core-macro",
+ "aether-core-template",
+ "aether-core-types",
+ "aether-html",
+ "aether-renderer-oracle",
+ "aether-ssr",
+ "anyhow",
+ "const_format",
+ "criterion",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "longest-increasing-subsequence",
+ "pretty_assertions",
+ "rand 0.9.4",
+ "reqwest",
+ "rustc-hash 2.1.2",
+ "rustversion",
+ "serde",
+ "slab",
+ "slotmap",
+ "subsecond",
+ "sysinfo",
+ "tokio",
+ "tracing",
+ "tracing-fluent-assertions",
+ "tracing-subscriber",
+ "web-sys",
+ "xxhash-rust",
 ]
+
+[[package]]
+name = "aether-core-macro"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-html",
+ "aether-rsx",
+ "convert_case 0.8.0",
+ "proc-macro2",
+ "quote",
+ "rustversion",
+ "syn 2.0.117",
+ "tokio",
+ "trybuild",
+]
+
+[[package]]
+name = "aether-core-template"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-const-vec",
+ "serde",
+ "xxhash-rust",
+]
+
+[[package]]
+name = "aether-core-types"
+version = "0.8.0-alpha.3"
 
 [[package]]
 name = "aether-desktop"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus-desktop",
+ "aether",
+ "aether-asset-resolver",
+ "aether-cli-config",
+ "aether-core",
+ "aether-core-macro",
+ "aether-devtools",
+ "aether-document",
+ "aether-history",
+ "aether-hooks",
+ "aether-html",
+ "aether-interpreter-js",
+ "aether-signals",
+ "aether-ssr",
+ "anyhow",
+ "async-trait",
+ "base64 0.22.1",
+ "bytes",
+ "dunce",
+ "exitcode",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "global-hotkey",
+ "http-range",
+ "image",
+ "infer",
+ "jni 0.21.1",
+ "lazy-js-bundle",
+ "libc",
+ "manganis",
+ "muda",
+ "ndk",
+ "ndk-sys",
+ "objc2 0.6.5",
+ "objc2-app-kit 0.3.2",
+ "objc2-foundation 0.3.2",
+ "objc2-ui-kit",
+ "percent-encoding",
+ "rand 0.9.4",
+ "reqwest",
+ "rfd",
+ "rustc-hash 2.1.2",
+ "separator",
+ "serde",
+ "serde_json",
+ "signal-hook",
+ "slab",
+ "subtle",
+ "tao",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "tray-icon",
+ "tungstenite",
+ "webbrowser",
+ "wry",
+]
+
+[[package]]
+name = "aether-devtools"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-cli-config",
+ "aether-core",
+ "aether-devtools-types",
+ "aether-signals",
+ "futures-channel",
+ "futures-util",
+ "serde",
+ "serde_json",
+ "subsecond",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "tungstenite",
+]
+
+[[package]]
+name = "aether-devtools-types"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-core",
+ "serde",
+ "subsecond-types",
+]
+
+[[package]]
+name = "aether-document"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "aether-core-macro",
+ "aether-core-template",
+ "aether-core-types",
+ "aether-html",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "lazy-js-bundle",
+ "serde",
+ "serde_json",
+ "tracing",
+]
+
+[[package]]
+name = "aether-dx-wire-format"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "cargo_metadata",
+ "manganis-core",
+ "serde",
+ "serde_json",
+ "subsecond-types",
 ]
 
 [[package]]
 name = "aether-examples"
 version = "0.8.0-alpha.3"
 dependencies = [
+ "aether",
+ "aether-html",
+ "aether-ssr",
+ "aether-stores",
  "anyhow",
  "axum-core",
  "base64 0.22.1",
  "bytes",
  "ciborium",
- "dioxus",
- "dioxus-html",
- "dioxus-ssr",
- "dioxus-stores",
  "etalon",
  "form_urlencoded",
  "futures",
@@ -189,45 +607,716 @@ dependencies = [
 ]
 
 [[package]]
+name = "aether-ext"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-autofmt",
+ "aether-rsx-rosetta",
+ "html_parser",
+ "syn 2.0.117",
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "aether-fullstack"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-asset-resolver",
+ "aether-cli-config",
+ "aether-core",
+ "aether-fullstack-core",
+ "aether-fullstack-macro",
+ "aether-hooks",
+ "aether-html",
+ "aether-server",
+ "aether-signals",
+ "anyhow",
+ "async-stream",
+ "axum",
+ "axum-core",
+ "axum-extra",
+ "base64 0.22.1",
+ "bytes",
+ "ciborium",
+ "const-str 0.7.1",
+ "const_format",
+ "content_disposition",
+ "derive_more",
+ "form_urlencoded",
+ "futures",
+ "futures-channel",
+ "futures-util",
+ "gloo-net",
+ "headers",
+ "http",
+ "http-body",
+ "http-body-util",
+ "inventory",
+ "js-sys",
+ "mime",
+ "pin-project",
+ "postcard",
+ "reqwest",
+ "rmp-serde",
+ "rustls",
+ "rustversion",
+ "send_wrapper",
+ "serde",
+ "serde_json",
+ "serde_qs",
+ "serde_urlencoded",
+ "thiserror 2.0.21",
+ "tokio",
+ "tokio-stream",
+ "tokio-tungstenite",
+ "tokio-util",
+ "tower",
+ "tower-http",
+ "tower-layer",
+ "tracing",
+ "tungstenite",
+ "url",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "wasm-streams",
+ "web-sys",
+ "webpki-roots",
+ "xxhash-rust",
+]
+
+[[package]]
+name = "aether-fullstack-core"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "aether-document",
+ "aether-fullstack",
+ "aether-history",
+ "aether-hooks",
+ "aether-signals",
+ "anyhow",
+ "axum-core",
+ "base64 0.22.1",
+ "ciborium",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "http",
+ "inventory",
+ "parking_lot",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "aether-fullstack-macro"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "axum",
+ "const_format",
+ "convert_case 0.8.0",
+ "proc-macro2",
+ "quote",
+ "serde",
+ "syn 2.0.117",
+ "tower-http",
+ "xxhash-rust",
+]
+
+[[package]]
+name = "aether-history"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "tracing",
+]
+
+[[package]]
 name = "aether-hooks"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus-hooks",
+ "aether",
+ "aether-core",
+ "aether-signals",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "reqwest",
+ "rustversion",
+ "slab",
+ "tokio",
+ "tracing",
+ "web-sys",
 ]
 
 [[package]]
 name = "aether-html"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus-html",
+ "aether",
+ "aether-core",
+ "aether-core-macro",
+ "aether-core-types",
+ "aether-hooks",
+ "aether-html-internal-macro",
+ "aether-rsx",
+ "aether-web",
+ "async-trait",
+ "bytes",
+ "enumset",
+ "euclid",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "js-sys",
+ "keyboard-types",
+ "lazy-js-bundle",
+ "manganis",
+ "rustversion",
+ "serde",
+ "serde_json",
+ "serde_repr",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "aether-html-internal-macro"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "convert_case 0.8.0",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.117",
+ "trybuild",
+]
+
+[[package]]
+name = "aether-interpreter-js"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-core",
+ "aether-core-types",
+ "aether-html",
+ "js-sys",
+ "lazy-js-bundle",
+ "rustc-hash 2.1.2",
+ "serde",
+ "sledgehammer_bindgen",
+ "sledgehammer_utils",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
+name = "aether-liveview"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-cli-config",
+ "aether-core",
+ "aether-devtools",
+ "aether-document",
+ "aether-history",
+ "aether-html",
+ "aether-interpreter-js",
+ "axum",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "rustc-hash 2.1.2",
+ "serde",
+ "serde_json",
+ "slab",
+ "thiserror 2.0.21",
+ "tokio",
+ "tokio-stream",
+ "tokio-util",
+ "tower",
+ "tracing",
+]
+
+[[package]]
+name = "aether-logger"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-cli-config",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+ "wasm-bindgen",
+ "wasm-bindgen-test",
 ]
 
 [[package]]
 name = "aether-native"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus-native",
+ "aether-asset-resolver",
+ "aether-cli-config",
+ "aether-config-macros",
+ "aether-core",
+ "aether-core-macro",
+ "aether-devtools",
+ "aether-document",
+ "aether-history",
+ "aether-hooks",
+ "aether-html",
+ "aether-native-dom",
+ "aether-signals",
+ "aether-stores",
+ "android-activity",
+ "anyrender",
+ "blitz-dom",
+ "blitz-html",
+ "blitz-net",
+ "blitz-paint",
+ "blitz-shell",
+ "blitz-traits",
+ "cfg-if",
+ "futures-util",
+ "gpu-device-context",
+ "keyboard-types",
+ "manganis",
+ "peniko",
+ "rustc-hash 2.1.2",
+ "slotmap",
+ "tokio",
+ "tracing",
+ "vector-cpu-render-adapter",
+ "vector-gpu-render-adapter",
+ "vector-hybrid-render-adapter",
+ "vector-skia-render-adapter",
+ "webbrowser",
+ "winit",
+]
+
+[[package]]
+name = "aether-native-dom"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "aether-html",
+ "blitz-dom",
+ "blitz-traits",
+ "futures-util",
+ "keyboard-types",
+ "rustc-hash 2.1.2",
+ "tracing",
+]
+
+[[package]]
+name = "aether-playwright-default-features-disabled-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+]
+
+[[package]]
+name = "aether-playwright-fullstack-error-codes-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+]
+
+[[package]]
+name = "aether-playwright-fullstack-errors-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "aether-playwright-fullstack-hydration-order-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "aether-playwright-fullstack-mounted-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "aether-playwright-fullstack-routing-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "aether-playwright-fullstack-spread-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+]
+
+[[package]]
+name = "aether-playwright-fullstack-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+ "futures",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "aether-playwright-liveview-test"
+version = "0.0.1"
+dependencies = [
+ "aether",
+ "aether-liveview",
+ "axum",
+ "tokio",
+]
+
+[[package]]
+name = "aether-playwright-markerless-hydration-edges-test"
+version = "0.1.0"
+dependencies = [
+ "aether",
+ "serde",
+ "tokio",
+]
+
+[[package]]
+name = "aether-playwright-web-hash-routing-test"
+version = "0.0.1"
+dependencies = [
+ "aether",
+]
+
+[[package]]
+name = "aether-playwright-web-routing-test"
+version = "0.0.1"
+dependencies = [
+ "aether",
+]
+
+[[package]]
+name = "aether-playwright-web-test"
+version = "0.0.1"
+dependencies = [
+ "aether",
+ "serde_json",
+ "tracing",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
+name = "aether-pwa-example"
+version = "0.1.0"
+dependencies = [
+ "aether",
+]
+
+[[package]]
+name = "aether-renderer-oracle"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "pretty_assertions",
 ]
 
 [[package]]
 name = "aether-router"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus-router",
+ "aether",
+ "aether-cli-config",
+ "aether-core",
+ "aether-core-macro",
+ "aether-fullstack-core",
+ "aether-history",
+ "aether-hooks",
+ "aether-html",
+ "aether-router",
+ "aether-router-macro",
+ "aether-signals",
+ "aether-ssr",
+ "axum",
+ "base64 0.22.1",
+ "ciborium",
+ "criterion",
+ "percent-encoding",
+ "rustversion",
+ "serde",
+ "tokio",
+ "tracing",
+ "url",
+]
+
+[[package]]
+name = "aether-router-macro"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "base16",
+ "digest 0.10.7",
+ "proc-macro2",
+ "quote",
+ "sha2 0.10.9",
+ "slab",
+ "syn 2.0.117",
+]
+
+[[package]]
+name = "aether-rsx"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-core-template",
+ "prettier-please",
+ "prettyplease",
+ "proc-macro2",
+ "proc-macro2-diagnostics",
+ "quote",
+ "rustversion",
+ "syn 2.0.117",
+]
+
+[[package]]
+name = "aether-rsx-hotreload"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "aether-core-template",
+ "aether-core-types",
+ "aether-html",
+ "aether-rsx",
+ "aether-signals",
+ "aether-ssr",
+ "internment",
+ "proc-macro2",
+ "proc-macro2-diagnostics",
+ "quote",
+ "syn 2.0.117",
+ "tracing",
+]
+
+[[package]]
+name = "aether-rsx-rosetta"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether-autofmt",
+ "aether-html",
+ "aether-rsx",
+ "convert_case 0.8.0",
+ "html_parser",
+ "htmlentity",
+ "pretty_assertions",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.117",
+]
+
+[[package]]
+name = "aether-server"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-cli-config",
+ "aether-core",
+ "aether-core-macro",
+ "aether-devtools",
+ "aether-document",
+ "aether-fullstack-core",
+ "aether-history",
+ "aether-hooks",
+ "aether-html",
+ "aether-interpreter-js",
+ "aether-logger",
+ "aether-router",
+ "aether-signals",
+ "aether-ssr",
+ "anyhow",
+ "async-trait",
+ "axum",
+ "base64 0.22.1",
+ "bytes",
+ "chrono",
+ "ciborium",
+ "dashmap 6.2.1",
+ "enumset",
+ "futures",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "http",
+ "http-body-util",
+ "hyper",
+ "hyper-rustls",
+ "hyper-util",
+ "inventory",
+ "lru",
+ "multer",
+ "parking_lot",
+ "pin-project",
+ "rkyv",
+ "rustc-hash 2.1.2",
+ "rustls",
+ "serde",
+ "serde_json",
+ "serde_qs",
+ "subsecond",
+ "thiserror 2.0.21",
+ "tokio",
+ "tokio-util",
+ "tower",
+ "tower-http",
+ "tower-layer",
+ "tracing",
+ "tracing-futures",
+ "url",
+ "walkdir",
 ]
 
 [[package]]
 name = "aether-signals"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus-signals",
+ "aether",
+ "aether-core",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "parking_lot",
+ "rand 0.9.4",
+ "reqwest",
+ "rustc-hash 2.1.2",
+ "serde",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "warnings",
+]
+
+[[package]]
+name = "aether-ssr"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "aether-core-types",
+ "askama_escape",
+ "rustc-hash 2.1.2",
+]
+
+[[package]]
+name = "aether-stores"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "aether-signals",
+ "aether-stores-macro",
+ "aether-stores-visibility-helper",
+ "generational-box",
+ "trybuild",
+]
+
+[[package]]
+name = "aether-stores-macro"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-stores",
+ "convert_case 0.8.0",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.117",
+]
+
+[[package]]
+name = "aether-stores-visibility-helper"
+version = "0.0.0"
+dependencies = [
+ "aether-signals",
+ "aether-stores",
+]
+
+[[package]]
+name = "aether-tailwind"
+version = "0.0.0"
+dependencies = [
+ "aether",
+ "manganis",
+]
+
+[[package]]
+name = "aether-vdom-fuzz"
+version = "0.8.0-alpha.3"
+dependencies = [
+ "aether",
+ "aether-core",
+ "aether-core-template",
+ "aether-renderer-oracle",
+ "aether-ssr",
+ "mutatis",
+ "postcard",
+ "serde",
 ]
 
 [[package]]
 name = "aether-web"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus-web",
+ "aether",
+ "aether-cli-config",
+ "aether-core",
+ "aether-core-types",
+ "aether-devtools",
+ "aether-document",
+ "aether-fullstack-core",
+ "aether-history",
+ "aether-html",
+ "aether-interpreter-js",
+ "aether-signals",
+ "aether-ssr",
+ "aether-web",
+ "ciborium",
+ "futures-channel",
+ "futures-util",
+ "generational-box",
+ "gloo-dialogs",
+ "gloo-timers",
+ "js-sys",
+ "lazy-js-bundle",
+ "rustc-hash 2.1.2",
+ "send_wrapper",
+ "serde",
+ "serde-wasm-bindgen",
+ "serde_json",
+ "tracing",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "wasm-bindgen-test",
+ "wasm-streams",
+ "web-sys",
 ]
 
 [[package]]
@@ -408,7 +1497,7 @@ version = "1.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "40c48f72fd53cd289104fc64099abca73db4166ad86ea0b4341abe65af83dadc"
 dependencies = [
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -419,7 +1508,7 @@ checksum = "291e6a250ff86cd4a820112fb8898808a366d8f9f58ce16d1f538353ad55747d"
 dependencies = [
  "anstyle",
  "once_cell_polyfill",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -503,7 +1592,7 @@ dependencies = [
  "objc2-foundation 0.3.2",
  "parking_lot",
  "percent-encoding",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
  "x11rb",
 ]
 
@@ -964,7 +2053,7 @@ dependencies = [
 name = "barebones-template-test"
 version = "0.1.0"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
@@ -1019,7 +2108,7 @@ dependencies = [
  "bitflags 2.13.2",
  "cexpr",
  "clang-sys",
- "itertools 0.10.5",
+ "itertools 0.13.0",
  "log",
  "prettyplease",
  "proc-macro2",
@@ -1293,8 +2382,8 @@ dependencies = [
 name = "bluetooth-scanner"
 version = "0.1.1"
 dependencies = [
+ "aether",
  "btleplug",
- "dioxus",
  "futures",
  "futures-channel",
  "tokio",
@@ -2165,8 +3254,8 @@ dependencies = [
 name = "const-serialize"
 version = "0.8.0-alpha.3"
 dependencies = [
+ "aether-const-vec",
  "const-serialize-macro",
- "dioxus-const-vec",
  "rand 0.9.4",
  "serde",
 ]
@@ -3042,1158 +4131,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dioxus"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-asset-resolver",
- "dioxus-cli-config",
- "dioxus-config-macro",
- "dioxus-config-macros",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-desktop",
- "dioxus-devtools",
- "dioxus-document",
- "dioxus-fullstack",
- "dioxus-fullstack-macro",
- "dioxus-history",
- "dioxus-hooks",
- "dioxus-html",
- "dioxus-liveview",
- "dioxus-logger",
- "dioxus-native",
- "dioxus-router",
- "dioxus-server",
- "dioxus-signals",
- "dioxus-ssr",
- "dioxus-stores",
- "dioxus-web",
- "env_logger",
- "futures-util",
- "manganis",
- "rand 0.9.4",
- "serde",
- "subsecond",
- "thiserror 2.0.21",
- "tokio",
- "tracing",
- "warnings",
- "wasm-splitter",
-]
-
-[[package]]
-name = "dioxus-asset-resolver"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-cli-config",
- "http",
- "infer",
- "jni 0.21.1",
- "js-sys",
- "ndk",
- "ndk-context",
- "ndk-sys",
- "percent-encoding",
- "serde_json",
- "thiserror 2.0.21",
- "tokio",
- "wasm-bindgen-futures",
- "web-sys",
-]
-
-[[package]]
-name = "dioxus-autofmt"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus-rsx",
- "pretty_assertions",
- "prettyplease",
- "proc-macro2",
- "quote",
- "regex",
- "serde",
- "syn 2.0.117",
-]
-
-[[package]]
-name = "dioxus-cli"
-version = "0.8.0-alpha.3"
-dependencies = [
- "ansi-to-html",
- "ansi-to-tui",
- "anyhow",
- "ar",
- "axum",
- "axum-extra",
- "axum-server",
- "backtrace",
- "brotli",
- "bytes",
- "cargo-config2",
- "cargo-generate",
- "cargo-util-schemas",
- "cargo_metadata",
- "cargo_toml",
- "chrono",
- "clap",
- "clap_complete",
- "codemap",
- "console",
- "console-subscriber",
- "const-serialize",
- "convert_case 0.8.0",
- "crossterm",
- "ctrlc",
- "depinfo",
- "dioxus-autofmt",
- "dioxus-cli-config",
- "dioxus-cli-telemetry",
- "dioxus-component-manifest",
- "dioxus-core",
- "dioxus-core-types",
- "dioxus-devtools-types",
- "dioxus-dx-wire-format",
- "dioxus-html",
- "dioxus-rsx",
- "dioxus-rsx-hotreload",
- "dioxus-rsx-rosetta",
- "dircpy",
- "dirs 6.0.0",
- "dunce",
- "escargot",
- "flate2",
- "fs2",
- "futures-channel",
- "futures-util",
- "git2",
- "grass",
- "handlebars",
- "home",
- "html_parser",
- "hyper",
- "hyper-rustls",
- "hyper-util",
- "icns",
- "ignore",
- "image",
- "imagequant",
- "include_dir",
- "indoc",
- "itertools 0.14.0",
- "krates",
- "kstring",
- "lightningcss",
- "log",
- "manganis",
- "manganis-core",
- "md5",
- "mozjpeg",
- "notify",
- "nucleo",
- "object",
- "open",
- "owo-colors",
- "path-absolutize",
- "pdb",
- "plist",
- "png 0.17.16",
- "pretty_assertions",
- "prettyplease",
- "proc-macro2",
- "ratatui",
- "rayon",
- "regex",
- "reqwest",
- "rpm",
- "rustls",
- "schemars",
- "self-replace",
- "self_update",
- "sentry-backtrace",
- "serde",
- "serde_json",
- "serde_json5",
- "sha1 0.10.6",
- "sha2 0.10.9",
- "shell-words",
- "subsecond-types",
- "syn 2.0.117",
- "tar",
- "target-lexicon 0.13.5",
- "tempfile",
- "thiserror 2.0.21",
- "throbber-widgets-tui",
- "tokio",
- "tokio-stream",
- "tokio-tungstenite",
- "tokio-util",
- "toml 1.1.2+spec-1.1.0",
- "toml_edit 0.25.17+spec-1.1.0",
- "tower",
- "tower-http",
- "tracing",
- "tracing-subscriber",
- "unicode-segmentation",
- "uuid",
- "walkdir",
- "walrus",
- "wasm-split-cli",
- "wasmparser 0.245.1",
- "webpki-roots",
- "which",
- "zip",
-]
-
-[[package]]
-name = "dioxus-cli-config"
-version = "0.8.0-alpha.3"
-dependencies = [
- "wasm-bindgen",
-]
-
-[[package]]
-name = "dioxus-cli-optimization-test"
-version = "0.0.1"
-dependencies = [
- "dioxus",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "dioxus-cli-telemetry"
-version = "0.8.0-alpha.3"
-dependencies = [
- "chrono",
- "dirs 6.0.0",
- "rand 0.9.4",
- "serde",
- "serde_json",
- "uuid",
-]
-
-[[package]]
-name = "dioxus-component-manifest"
-version = "0.8.0-alpha.3"
-dependencies = [
- "schemars",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "dioxus-config-macro"
-version = "0.8.0-alpha.3"
-
-[[package]]
-name = "dioxus-config-macros"
-version = "0.8.0-alpha.3"
-
-[[package]]
-name = "dioxus-const-vec"
-version = "0.8.0-alpha.3"
-
-[[package]]
-name = "dioxus-core"
-version = "0.8.0-alpha.3"
-dependencies = [
- "anyhow",
- "const_format",
- "criterion",
- "dioxus",
- "dioxus-const-vec",
- "dioxus-core-macro",
- "dioxus-core-template",
- "dioxus-core-types",
- "dioxus-html",
- "dioxus-renderer-oracle",
- "dioxus-ssr",
- "futures-channel",
- "futures-util",
- "generational-box",
- "longest-increasing-subsequence",
- "pretty_assertions",
- "rand 0.9.4",
- "reqwest",
- "rustc-hash 2.1.2",
- "rustversion",
- "serde",
- "slab",
- "slotmap",
- "subsecond",
- "sysinfo",
- "tokio",
- "tracing",
- "tracing-fluent-assertions",
- "tracing-subscriber",
- "web-sys",
- "xxhash-rust",
-]
-
-[[package]]
-name = "dioxus-core-macro"
-version = "0.8.0-alpha.3"
-dependencies = [
- "convert_case 0.8.0",
- "dioxus",
- "dioxus-html",
- "dioxus-rsx",
- "proc-macro2",
- "quote",
- "rustversion",
- "syn 2.0.117",
- "tokio",
- "trybuild",
-]
-
-[[package]]
-name = "dioxus-core-template"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus-const-vec",
- "serde",
- "xxhash-rust",
-]
-
-[[package]]
-name = "dioxus-core-types"
-version = "0.8.0-alpha.3"
-
-[[package]]
-name = "dioxus-desktop"
-version = "0.8.0-alpha.3"
-dependencies = [
- "anyhow",
- "async-trait",
- "base64 0.22.1",
- "bytes",
- "dioxus",
- "dioxus-asset-resolver",
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-devtools",
- "dioxus-document",
- "dioxus-history",
- "dioxus-hooks",
- "dioxus-html",
- "dioxus-interpreter-js",
- "dioxus-signals",
- "dioxus-ssr",
- "dunce",
- "exitcode",
- "futures-channel",
- "futures-util",
- "generational-box",
- "global-hotkey",
- "http-range",
- "image",
- "infer",
- "jni 0.21.1",
- "lazy-js-bundle",
- "libc",
- "manganis",
- "muda",
- "ndk",
- "ndk-sys",
- "objc2 0.6.5",
- "objc2-app-kit 0.3.2",
- "objc2-foundation 0.3.2",
- "objc2-ui-kit",
- "percent-encoding",
- "rand 0.9.4",
- "reqwest",
- "rfd",
- "rustc-hash 2.1.2",
- "separator",
- "serde",
- "serde_json",
- "signal-hook",
- "slab",
- "subtle",
- "tao",
- "thiserror 2.0.21",
- "tokio",
- "tracing",
- "tray-icon",
- "tungstenite",
- "webbrowser",
- "wry",
-]
-
-[[package]]
-name = "dioxus-devtools"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-devtools-types",
- "dioxus-signals",
- "futures-channel",
- "futures-util",
- "serde",
- "serde_json",
- "subsecond",
- "thiserror 2.0.21",
- "tokio",
- "tracing",
- "tungstenite",
-]
-
-[[package]]
-name = "dioxus-devtools-types"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus-core",
- "serde",
- "subsecond-types",
-]
-
-[[package]]
-name = "dioxus-document"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-core-template",
- "dioxus-core-types",
- "dioxus-html",
- "futures-channel",
- "futures-util",
- "generational-box",
- "lazy-js-bundle",
- "serde",
- "serde_json",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-dx-wire-format"
-version = "0.8.0-alpha.3"
-dependencies = [
- "cargo_metadata",
- "manganis-core",
- "serde",
- "serde_json",
- "subsecond-types",
-]
-
-[[package]]
-name = "dioxus-ext"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus-autofmt",
- "dioxus-rsx-rosetta",
- "html_parser",
- "syn 2.0.117",
- "wasm-bindgen",
-]
-
-[[package]]
-name = "dioxus-fullstack"
-version = "0.8.0-alpha.3"
-dependencies = [
- "anyhow",
- "async-stream",
- "axum",
- "axum-core",
- "axum-extra",
- "base64 0.22.1",
- "bytes",
- "ciborium",
- "const-str 0.7.1",
- "const_format",
- "content_disposition",
- "derive_more",
- "dioxus",
- "dioxus-asset-resolver",
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-fullstack-core",
- "dioxus-fullstack-macro",
- "dioxus-hooks",
- "dioxus-html",
- "dioxus-server",
- "dioxus-signals",
- "form_urlencoded",
- "futures",
- "futures-channel",
- "futures-util",
- "gloo-net",
- "headers",
- "http",
- "http-body",
- "http-body-util",
- "inventory",
- "js-sys",
- "mime",
- "pin-project",
- "postcard",
- "reqwest",
- "rmp-serde",
- "rustls",
- "rustversion",
- "send_wrapper",
- "serde",
- "serde_json",
- "serde_qs",
- "serde_urlencoded",
- "thiserror 2.0.21",
- "tokio",
- "tokio-stream",
- "tokio-tungstenite",
- "tokio-util",
- "tower",
- "tower-http",
- "tower-layer",
- "tracing",
- "tungstenite",
- "url",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "wasm-streams",
- "web-sys",
- "webpki-roots",
- "xxhash-rust",
-]
-
-[[package]]
-name = "dioxus-fullstack-core"
-version = "0.8.0-alpha.3"
-dependencies = [
- "anyhow",
- "axum-core",
- "base64 0.22.1",
- "ciborium",
- "dioxus",
- "dioxus-core",
- "dioxus-document",
- "dioxus-fullstack",
- "dioxus-history",
- "dioxus-hooks",
- "dioxus-signals",
- "futures-channel",
- "futures-util",
- "generational-box",
- "http",
- "inventory",
- "parking_lot",
- "serde",
- "serde_json",
- "thiserror 2.0.21",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-fullstack-macro"
-version = "0.8.0-alpha.3"
-dependencies = [
- "axum",
- "const_format",
- "convert_case 0.8.0",
- "dioxus",
- "proc-macro2",
- "quote",
- "serde",
- "syn 2.0.117",
- "tower-http",
- "xxhash-rust",
-]
-
-[[package]]
-name = "dioxus-history"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-core",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-hooks"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-core",
- "dioxus-signals",
- "futures-channel",
- "futures-util",
- "generational-box",
- "reqwest",
- "rustversion",
- "slab",
- "tokio",
- "tracing",
- "web-sys",
-]
-
-[[package]]
-name = "dioxus-html"
-version = "0.8.0-alpha.3"
-dependencies = [
- "async-trait",
- "bytes",
- "dioxus",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-core-types",
- "dioxus-hooks",
- "dioxus-html-internal-macro",
- "dioxus-rsx",
- "dioxus-web",
- "enumset",
- "euclid",
- "futures-channel",
- "futures-util",
- "generational-box",
- "js-sys",
- "keyboard-types",
- "lazy-js-bundle",
- "manganis",
- "rustversion",
- "serde",
- "serde_json",
- "serde_repr",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-html-internal-macro"
-version = "0.8.0-alpha.3"
-dependencies = [
- "convert_case 0.8.0",
- "proc-macro2",
- "quote",
- "syn 2.0.117",
- "trybuild",
-]
-
-[[package]]
-name = "dioxus-interpreter-js"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus-core",
- "dioxus-core-types",
- "dioxus-html",
- "js-sys",
- "lazy-js-bundle",
- "rustc-hash 2.1.2",
- "serde",
- "sledgehammer_bindgen",
- "sledgehammer_utils",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
-]
-
-[[package]]
-name = "dioxus-liveview"
-version = "0.8.0-alpha.3"
-dependencies = [
- "axum",
- "dioxus",
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-devtools",
- "dioxus-document",
- "dioxus-history",
- "dioxus-html",
- "dioxus-interpreter-js",
- "futures-channel",
- "futures-util",
- "generational-box",
- "rustc-hash 2.1.2",
- "serde",
- "serde_json",
- "slab",
- "thiserror 2.0.21",
- "tokio",
- "tokio-stream",
- "tokio-util",
- "tower",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-logger"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-cli-config",
- "serde_json",
- "tracing",
- "tracing-subscriber",
- "wasm-bindgen",
- "wasm-bindgen-test",
-]
-
-[[package]]
-name = "dioxus-native"
-version = "0.8.0-alpha.3"
-dependencies = [
- "android-activity",
- "anyrender",
- "blitz-dom",
- "blitz-html",
- "blitz-net",
- "blitz-paint",
- "blitz-shell",
- "blitz-traits",
- "cfg-if",
- "dioxus-asset-resolver",
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-devtools",
- "dioxus-document",
- "dioxus-history",
- "dioxus-hooks",
- "dioxus-html",
- "dioxus-native-dom",
- "dioxus-signals",
- "dioxus-stores",
- "futures-util",
- "gpu-device-context",
- "keyboard-types",
- "manganis",
- "peniko",
- "rustc-hash 2.1.2",
- "slotmap",
- "tokio",
- "tracing",
- "vector-cpu-render-adapter",
- "vector-gpu-render-adapter",
- "vector-hybrid-render-adapter",
- "vector-skia-render-adapter",
- "webbrowser",
- "winit",
-]
-
-[[package]]
-name = "dioxus-native-dom"
-version = "0.8.0-alpha.3"
-dependencies = [
- "blitz-dom",
- "blitz-traits",
- "dioxus",
- "dioxus-core",
- "dioxus-html",
- "futures-util",
- "keyboard-types",
- "rustc-hash 2.1.2",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-playwright-default-features-disabled-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
-]
-
-[[package]]
-name = "dioxus-playwright-fullstack-error-codes-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
-]
-
-[[package]]
-name = "dioxus-playwright-fullstack-errors-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "serde",
- "tokio",
-]
-
-[[package]]
-name = "dioxus-playwright-fullstack-hydration-order-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "serde",
- "tokio",
-]
-
-[[package]]
-name = "dioxus-playwright-fullstack-mounted-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "serde",
- "tokio",
-]
-
-[[package]]
-name = "dioxus-playwright-fullstack-routing-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "serde",
- "tokio",
-]
-
-[[package]]
-name = "dioxus-playwright-fullstack-spread-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
-]
-
-[[package]]
-name = "dioxus-playwright-fullstack-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "futures",
- "serde",
- "tokio",
-]
-
-[[package]]
-name = "dioxus-playwright-liveview-test"
-version = "0.0.1"
-dependencies = [
- "axum",
- "dioxus",
- "dioxus-liveview",
- "tokio",
-]
-
-[[package]]
-name = "dioxus-playwright-markerless-hydration-edges-test"
-version = "0.1.0"
-dependencies = [
- "dioxus",
- "serde",
- "tokio",
-]
-
-[[package]]
-name = "dioxus-playwright-web-hash-routing-test"
-version = "0.0.1"
-dependencies = [
- "dioxus",
-]
-
-[[package]]
-name = "dioxus-playwright-web-routing-test"
-version = "0.0.1"
-dependencies = [
- "dioxus",
-]
-
-[[package]]
-name = "dioxus-playwright-web-test"
-version = "0.0.1"
-dependencies = [
- "dioxus",
- "serde_json",
- "tracing",
- "wasm-bindgen",
- "web-sys",
-]
-
-[[package]]
-name = "dioxus-pwa-example"
-version = "0.1.0"
-dependencies = [
- "dioxus",
-]
-
-[[package]]
-name = "dioxus-renderer-oracle"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-core",
- "pretty_assertions",
-]
-
-[[package]]
-name = "dioxus-router"
-version = "0.8.0-alpha.3"
-dependencies = [
- "axum",
- "base64 0.22.1",
- "ciborium",
- "criterion",
- "dioxus",
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-fullstack-core",
- "dioxus-history",
- "dioxus-hooks",
- "dioxus-html",
- "dioxus-router",
- "dioxus-router-macro",
- "dioxus-signals",
- "dioxus-ssr",
- "percent-encoding",
- "rustversion",
- "serde",
- "tokio",
- "tracing",
- "url",
-]
-
-[[package]]
-name = "dioxus-router-macro"
-version = "0.8.0-alpha.3"
-dependencies = [
- "base16",
- "digest 0.10.7",
- "dioxus",
- "proc-macro2",
- "quote",
- "sha2 0.10.9",
- "slab",
- "syn 2.0.117",
-]
-
-[[package]]
-name = "dioxus-rsx"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus-core-template",
- "prettier-please",
- "prettyplease",
- "proc-macro2",
- "proc-macro2-diagnostics",
- "quote",
- "rustversion",
- "syn 2.0.117",
-]
-
-[[package]]
-name = "dioxus-rsx-hotreload"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-core",
- "dioxus-core-template",
- "dioxus-core-types",
- "dioxus-html",
- "dioxus-rsx",
- "dioxus-signals",
- "dioxus-ssr",
- "internment",
- "proc-macro2",
- "proc-macro2-diagnostics",
- "quote",
- "syn 2.0.117",
- "tracing",
-]
-
-[[package]]
-name = "dioxus-rsx-rosetta"
-version = "0.8.0-alpha.3"
-dependencies = [
- "convert_case 0.8.0",
- "dioxus-autofmt",
- "dioxus-html",
- "dioxus-rsx",
- "html_parser",
- "htmlentity",
- "pretty_assertions",
- "proc-macro2",
- "quote",
- "syn 2.0.117",
-]
-
-[[package]]
-name = "dioxus-server"
-version = "0.8.0-alpha.3"
-dependencies = [
- "anyhow",
- "async-trait",
- "axum",
- "base64 0.22.1",
- "bytes",
- "chrono",
- "ciborium",
- "dashmap 6.2.1",
- "dioxus",
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-core-macro",
- "dioxus-devtools",
- "dioxus-document",
- "dioxus-fullstack-core",
- "dioxus-history",
- "dioxus-hooks",
- "dioxus-html",
- "dioxus-interpreter-js",
- "dioxus-logger",
- "dioxus-router",
- "dioxus-signals",
- "dioxus-ssr",
- "enumset",
- "futures",
- "futures-channel",
- "futures-util",
- "generational-box",
- "http",
- "http-body-util",
- "hyper",
- "hyper-rustls",
- "hyper-util",
- "inventory",
- "lru",
- "multer",
- "parking_lot",
- "pin-project",
- "rkyv",
- "rustc-hash 2.1.2",
- "rustls",
- "serde",
- "serde_json",
- "serde_qs",
- "subsecond",
- "thiserror 2.0.21",
- "tokio",
- "tokio-util",
- "tower",
- "tower-http",
- "tower-layer",
- "tracing",
- "tracing-futures",
- "url",
- "walkdir",
-]
-
-[[package]]
-name = "dioxus-signals"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-core",
- "futures-channel",
- "futures-util",
- "generational-box",
- "parking_lot",
- "rand 0.9.4",
- "reqwest",
- "rustc-hash 2.1.2",
- "serde",
- "tokio",
- "tracing",
- "tracing-subscriber",
- "warnings",
-]
-
-[[package]]
-name = "dioxus-ssr"
-version = "0.8.0-alpha.3"
-dependencies = [
- "askama_escape",
- "dioxus",
- "dioxus-core",
- "dioxus-core-types",
- "rustc-hash 2.1.2",
-]
-
-[[package]]
-name = "dioxus-stores"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-core",
- "dioxus-signals",
- "dioxus-stores-macro",
- "dioxus-stores-visibility-helper",
- "generational-box",
- "trybuild",
-]
-
-[[package]]
-name = "dioxus-stores-macro"
-version = "0.8.0-alpha.3"
-dependencies = [
- "convert_case 0.8.0",
- "dioxus",
- "dioxus-stores",
- "proc-macro2",
- "quote",
- "syn 2.0.117",
-]
-
-[[package]]
-name = "dioxus-stores-visibility-helper"
-version = "0.0.0"
-dependencies = [
- "dioxus-signals",
- "dioxus-stores",
-]
-
-[[package]]
-name = "dioxus-tailwind"
-version = "0.0.0"
-dependencies = [
- "dioxus",
- "manganis",
-]
-
-[[package]]
-name = "dioxus-vdom-fuzz"
-version = "0.8.0-alpha.3"
-dependencies = [
- "dioxus",
- "dioxus-core",
- "dioxus-core-template",
- "dioxus-renderer-oracle",
- "dioxus-ssr",
- "mutatis",
- "postcard",
- "serde",
-]
-
-[[package]]
-name = "dioxus-web"
-version = "0.8.0-alpha.3"
-dependencies = [
- "ciborium",
- "dioxus",
- "dioxus-cli-config",
- "dioxus-core",
- "dioxus-core-types",
- "dioxus-devtools",
- "dioxus-document",
- "dioxus-fullstack-core",
- "dioxus-history",
- "dioxus-html",
- "dioxus-interpreter-js",
- "dioxus-signals",
- "dioxus-ssr",
- "dioxus-web",
- "futures-channel",
- "futures-util",
- "generational-box",
- "gloo-dialogs",
- "gloo-timers",
- "js-sys",
- "lazy-js-bundle",
- "rustc-hash 2.1.2",
- "send_wrapper",
- "serde",
- "serde-wasm-bindgen",
- "serde_json",
- "tracing",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "wasm-bindgen-test",
- "wasm-streams",
- "web-sys",
-]
-
-[[package]]
 name = "dircpy"
 version = "0.3.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4231,7 +4168,7 @@ dependencies = [
  "libc",
  "option-ext",
  "redox_users",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -4269,7 +4206,7 @@ version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ab8ecd87370524b461f8557c119c405552c396ed91fc0a8eec68679eab26f94a"
 dependencies = [
- "libloading 0.7.4",
+ "libloading 0.8.9",
 ]
 
 [[package]]
@@ -4420,8 +4357,8 @@ checksum = "d0881ea181b1df73ff77ffaaf9c7544ecc11e82fba9b5f27b262a3c73a332555"
 name = "ecommerce-site"
 version = "0.1.1"
 dependencies = [
+ "aether",
  "chrono",
- "dioxus",
  "reqwest",
  "serde",
 ]
@@ -4606,7 +4543,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -4993,7 +4930,7 @@ dependencies = [
 name = "file-explorer"
 version = "0.1.0"
 dependencies = [
- "dioxus",
+ "aether",
  "open",
 ]
 
@@ -5261,14 +5198,14 @@ dependencies = [
 name = "fullstack-auth-example"
 version = "0.1.0"
 dependencies = [
+ "aether",
+ "aether-web",
  "anyhow",
  "async-trait",
  "axum",
  "axum_session",
  "axum_session_auth",
  "axum_session_sqlx",
- "dioxus",
- "dioxus-web",
  "execute",
  "http",
  "serde",
@@ -5282,7 +5219,7 @@ dependencies = [
 name = "fullstack-desktop-example"
 version = "0.1.0"
 dependencies = [
- "dioxus",
+ "aether",
  "serde",
 ]
 
@@ -5290,8 +5227,8 @@ dependencies = [
 name = "fullstack-hackernews-example"
 version = "0.1.0"
 dependencies = [
+ "aether",
  "chrono",
- "dioxus",
  "reqwest",
  "serde",
 ]
@@ -5300,8 +5237,8 @@ dependencies = [
 name = "fullstack-hello-world-example"
 version = "0.1.0"
 dependencies = [
+ "aether",
  "anyhow",
- "dioxus",
  "reqwest",
  "serde",
  "serde_json",
@@ -5312,8 +5249,8 @@ dependencies = [
 name = "fullstack-router-example"
 version = "0.1.0"
 dependencies = [
+ "aether",
  "axum",
- "dioxus",
  "serde",
  "tokio",
 ]
@@ -5546,7 +5483,7 @@ dependencies = [
 name = "geolocation-native-plugin"
 version = "0.1.0"
 dependencies = [
- "dioxus",
+ "aether",
  "manganis",
  "serde",
  "serde_json",
@@ -6929,57 +6866,57 @@ dependencies = [
 name = "harness-default-to-non-default"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-fullstack-desktop"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-fullstack-desktop-with-default"
 version = "0.0.1"
 dependencies = [
+ "aether",
  "anyhow",
- "dioxus",
 ]
 
 [[package]]
 name = "harness-fullstack-desktop-with-features"
 version = "0.0.1"
 dependencies = [
+ "aether",
  "anyhow",
- "dioxus",
 ]
 
 [[package]]
 name = "harness-fullstack-multi-target"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-fullstack-multi-target-no-default"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-fullstack-with-optional-tokio"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
  "serde",
  "tokio",
 ]
 
 [[package]]
-name = "harness-no-dioxus"
+name = "harness-no-aether"
 version = "0.0.1"
 dependencies = [
  "anyhow",
@@ -6989,14 +6926,14 @@ dependencies = [
 name = "harness-renderer-swap"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-simple-dedicated-client"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
@@ -7007,56 +6944,56 @@ version = "0.0.1"
 name = "harness-simple-desktop"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-simple-fullstack"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-simple-fullstack-native-with-default"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-simple-fullstack-with-default"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-simple-mobile"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-simple-web"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-web-with-default-features"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
 name = "harness-web-with-no-default-features"
 version = "0.0.1"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
@@ -7335,8 +7272,8 @@ dependencies = [
 name = "hotdog"
 version = "0.1.0"
 dependencies = [
+ "aether",
  "anyhow",
- "dioxus",
  "reqwest",
  "rusqlite",
  "serde",
@@ -8050,7 +7987,7 @@ checksum = "3640c1c38b8e4e43584d8df18be5fc6b0aa314ce6ebf51b53313d4306cca8e46"
 dependencies = [
  "hermit-abi",
  "libc",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -9010,9 +8947,9 @@ dependencies = [
 name = "manganis-core"
 version = "0.8.0-alpha.3"
 dependencies = [
+ "aether-cli-config",
+ "aether-core-types",
  "const-serialize",
- "dioxus-cli-config",
- "dioxus-core-types",
  "manganis",
  "serde",
  "winnow 0.7.15",
@@ -9257,7 +9194,7 @@ dependencies = [
  "objc2-foundation 0.3.2",
  "png 0.18.1",
  "thiserror 2.0.21",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -9377,13 +9314,13 @@ dependencies = [
 name = "native-headless"
 version = "0.0.0"
 dependencies = [
+ "aether",
+ "aether-native-dom",
  "atomic_refcell",
  "blitz-dom",
  "blitz-paint",
  "blitz-traits",
  "bytemuck",
- "dioxus",
- "dioxus-native-dom",
  "etalon",
  "futures-util",
  "gpu-device-context",
@@ -9445,7 +9382,7 @@ dependencies = [
 name = "nested-suspense"
 version = "0.1.0"
 dependencies = [
- "dioxus",
+ "aether",
  "serde",
  "tokio",
 ]
@@ -9570,7 +9507,7 @@ version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5"
 dependencies = [
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -9725,7 +9662,7 @@ version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "680998035259dcfcafe653688bf2aa6d3e2dc05e98be6ab46afb089dc84f1df8"
 dependencies = [
- "proc-macro-crate 1.3.1",
+ "proc-macro-crate 3.5.0",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -11152,7 +11089,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b570b25f7617e43d59005d0990ccb79e950a423952cea19671b7a876da390adf"
 dependencies = [
  "anyhow",
- "itertools 0.10.5",
+ "itertools 0.14.0",
  "proc-macro2",
  "quote",
  "syn 2.0.117",
@@ -11299,7 +11236,7 @@ dependencies = [
  "once_cell",
  "socket2",
  "tracing",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -12081,7 +12018,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys 0.12.1",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -12140,7 +12077,7 @@ dependencies = [
  "security-framework",
  "security-framework-sys",
  "webpki-root-certs",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -12952,7 +12889,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3a766e1110788c36f4fa1c2b71b387a7815aa65f88ce0229841826633d93723e"
 dependencies = [
  "libc",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -13260,7 +13197,7 @@ dependencies = [
 name = "ssr-only"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]
@@ -13279,7 +13216,7 @@ dependencies = [
  "cfg-if",
  "libc",
  "psm",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -13591,9 +13528,9 @@ dependencies = [
 name = "subsecond-tls-harness"
 version = "0.1.0"
 dependencies = [
+ "aether-devtools",
  "cross-tls-crate",
  "cross-tls-crate-dylib",
- "dioxus-devtools",
 ]
 
 [[package]]
@@ -13632,7 +13569,7 @@ dependencies = [
 name = "suspense-carousel"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus",
+ "aether",
  "futures-timer",
  "serde",
 ]
@@ -13865,7 +13802,7 @@ dependencies = [
  "getrandom 0.4.2",
  "once_cell",
  "rustix 1.1.4",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -13884,7 +13821,7 @@ version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d8c27177b12a6399ffc08b98f76f7c9a1f4fe9fc967c784c5a071fa8d93cf7e1"
 dependencies = [
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -13906,7 +13843,7 @@ dependencies = [
  "parking_lot",
  "rustix 1.1.4",
  "signal-hook",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -13916,7 +13853,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "230a1b821ccbd75b185820a1f1ff7b14d21da1e442e22c0863ea5f08771a8874"
 dependencies = [
  "rustix 1.1.4",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -14625,7 +14562,7 @@ dependencies = [
  "once_cell",
  "png 0.18.1",
  "thiserror 2.0.21",
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -15381,10 +15318,10 @@ dependencies = [
 name = "wasm-split-harness"
 version = "0.1.0"
 dependencies = [
+ "aether",
+ "aether-router",
  "anyhow",
  "async-compression",
- "dioxus",
- "dioxus-router",
  "futures",
  "getrandom 0.3.4",
  "js-sys",
@@ -15872,13 +15809,13 @@ dependencies = [
 name = "wgpu-texture"
 version = "0.0.0"
 dependencies = [
+ "aether",
+ "aether-native",
  "anyrender",
  "blitz-dom",
  "blitz-traits",
  "bytemuck",
  "color",
- "dioxus",
- "dioxus-native",
  "etalon",
  "peniko",
  "tracing-subscriber",
@@ -15966,7 +15903,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.60.2",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -16070,7 +16007,7 @@ dependencies = [
 name = "windows-headless"
 version = "0.8.0-alpha.3"
 dependencies = [
- "dioxus",
+ "aether",
 ]
 
 [[package]]

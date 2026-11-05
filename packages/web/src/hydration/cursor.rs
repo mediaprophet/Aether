@@ -10,7 +10,7 @@
 //! to a node and registering an event listener - are delegated to the JS
 //! `BaseInterpreter` via the generic `setNode` / `setNodeListener` primitives.
 
-use dioxus_interpreter_js::unified_bindings::BaseInterpreter;
+use aether_interpreter_js::unified_bindings::BaseInterpreter;
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{Document, Element, Node, Text};
 

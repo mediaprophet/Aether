@@ -24,7 +24,7 @@ impl MemoryHistory {
     /// Create a [`MemoryHistory`] starting at `path`.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # #[component]
     /// # fn Index() -> Element { VNode::empty() }
     /// # #[component]
@@ -37,7 +37,7 @@ impl MemoryHistory {
     ///     OtherPage {},
     /// }
     ///
-    /// let mut history = dioxus_history::MemoryHistory::with_initial_path(Route::Index {});
+    /// let mut history = aether_history::MemoryHistory::with_initial_path(Route::Index {});
     /// assert_eq!(history.current_route(), Route::Index {}.to_string());
     /// assert_eq!(history.can_go_back(), false);
     /// ```
@@ -57,7 +57,7 @@ impl MemoryHistory {
     /// Set the base path for the history. All routes will be prefixed with this path when rendered.
     ///
     /// ```rust
-    /// # use dioxus_history::*;
+    /// # use aether_history::*;
     /// let mut history = MemoryHistory::default().with_prefix("/my-app");
     ///
     /// // The base path is set to "/my-app"

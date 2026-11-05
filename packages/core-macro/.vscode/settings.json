@@ -8,7 +8,7 @@
         "check",
         "--quiet",
         // "--package",
-        // "dioxus-core-macro",
+        // "aether-core-macro",
         "--message-format",
         "json",
         "--all-targets"
@@ -16,5 +16,5 @@
     "rust-analyzer.cargo.buildScripts.rebuildOnSave": false,
     "rust-analyzer.cargo.buildScripts.invocationLocation": "root",
     "rust-analyzer.cargo.buildScripts.invocationStrategy": "once",
-    // "rust-analyzer.check.command": "check --package dioxus-core-macro"
+    // "rust-analyzer.check.command": "check --package aether-core-macro"
 }

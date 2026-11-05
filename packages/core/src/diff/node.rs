@@ -14,7 +14,7 @@ use crate::{
     nodes::{DynamicNode, VText},
     scopes::ScopeId,
 };
-use dioxus_core_template::{StaticTemplateNode, TemplateAnchor, TemplatePath};
+use aether_core_template::{StaticTemplateNode, TemplateAnchor, TemplatePath};
 
 /// How a dynamic-slot edge scan ([`VNode::dynamic_node_edge_element`]) reads mount state.
 ///

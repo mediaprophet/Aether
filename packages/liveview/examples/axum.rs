@@ -1,6 +1,6 @@
 use axum::Router;
-use dioxus::prelude::*;
-use dioxus_liveview::LiveviewRouter;
+use aether::prelude::*;
+use aether_liveview::LiveviewRouter;
 
 fn app() -> Element {
     let mut num = use_signal(|| 0);
@@ -15,7 +15,7 @@ fn app() -> Element {
 
 #[tokio::main]
 async fn main() {
-    dioxus::logger::initialize_default();
+    aether::logger::initialize_default();
 
     let addr: std::net::SocketAddr = ([127, 0, 0, 1], 3030).into();
 

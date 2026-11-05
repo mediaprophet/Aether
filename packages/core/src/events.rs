@@ -11,7 +11,7 @@ use std::{any::Any, cell::RefCell, marker::PhantomData, panic::Location, rc::Rc}
 /// # Example
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// rsx! {
 ///     button {
 ///         onclick: move |evt: Event<MouseData>| {
@@ -51,7 +51,7 @@ impl<T: ?Sized> Event<T> {
     /// # Example
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// rsx! {
     ///    button {
     ///       onclick: move |evt: MouseEvent| {
@@ -84,7 +84,7 @@ impl<T: ?Sized> Event<T> {
     /// # Example
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// rsx! {
     ///     button {
     ///         onclick: move |evt: Event<MouseData>| {
@@ -109,7 +109,7 @@ impl<T: ?Sized> Event<T> {
     /// # Example
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// rsx! {
     ///     button {
     ///         onclick: move |evt: Event<MouseData>| {
@@ -125,7 +125,7 @@ impl<T: ?Sized> Event<T> {
     /// Get a reference to the inner data from this event
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// rsx! {
     ///     button {
     ///         onclick: move |evt: Event<MouseData>| {
@@ -146,7 +146,7 @@ impl<T: ?Sized> Event<T> {
     /// # Example
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// fn App() -> Element {
     ///     rsx! {
     ///         a {
@@ -154,7 +154,7 @@ impl<T: ?Sized> Event<T> {
     ///             onclick: move |event| {
     ///                 event.prevent_default();
     ///             },
-    ///             href: "https://dioxuslabs.com",
+    ///             href: "https://aetherlabs.com",
     ///             "don't go to the link"
     ///         }
     ///     }
@@ -212,7 +212,7 @@ impl<T: std::fmt::Debug> std::fmt::Debug for Event<T> {
 /// # Example
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// rsx! {
 ///     MyComponent { onclick: move |evt| tracing::debug!("clicked") }
 /// };
@@ -265,7 +265,7 @@ pub struct Callback<Args = (), Ret = ()> {
     /// During diffing components with EventHandler, we move the EventHandler over in place instead of rerunning the child component.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// #[component]
     /// fn Child(onclick: EventHandler<MouseEvent>) -> Element {
     ///     rsx! {
@@ -280,7 +280,7 @@ pub struct Callback<Args = (), Ret = ()> {
     /// This is both more efficient and allows us to avoid out of date EventHandlers.
     ///
     /// We double box here because we want the data to be copy (GenerationalBox) and still update in place (ExternalListenerCallback)
-    /// This isn't an ideal solution for performance, but it is non-breaking and fixes the issues described in <https://github.com/DioxusLabs/dioxus/pull/2298>
+    /// This isn't an ideal solution for performance, but it is non-breaking and fixes the issues described in <https://github.com/AetherLabs/aether/pull/2298>
     pub(super) callback: GenerationalBox<Option<ExternalListenerCallback<Args, Ret>>>,
 }
 
@@ -302,8 +302,8 @@ impl<T: 'static, Ret: Default + 'static> Default for Callback<T, Ret> {
 /// A helper trait for [`Callback`]s that allows functions to accept a [`Callback`] that may return an async block which will automatically be spawned.
 ///
 /// ```rust, no_run
-/// use dioxus::prelude::*;
-/// fn accepts_fn<Ret: dioxus_core::SpawnIfAsync<Marker>, Marker>(callback: impl FnMut(u32) -> Ret + 'static) {
+/// use aether::prelude::*;
+/// fn accepts_fn<Ret: aether_core::SpawnIfAsync<Marker>, Marker>(callback: impl FnMut(u32) -> Ret + 'static) {
 ///     let callback = Callback::new(callback);
 /// }
 /// // You can accept both async and non-async functions
@@ -315,12 +315,12 @@ impl<T: 'static, Ret: Default + 'static> Default for Callback<T, Ret> {
     diagnostic::on_unimplemented(
         message = "`SpawnIfAsync` is not implemented for `{Self}`",
         label = "Return Value",
-        note = "Closures (or event handlers) in dioxus need to return either: nothing (the unit type `()`), or an async block that dioxus will automatically spawn",
+        note = "Closures (or event handlers) in aether need to return either: nothing (the unit type `()`), or an async block that aether will automatically spawn",
         note = "You likely need to add a semicolon to the end of the event handler to make it return nothing",
     )
 )]
 pub trait SpawnIfAsync<Marker, Ret = ()>: Sized {
-    /// Spawn the value into the dioxus runtime if it is an async block
+    /// Spawn the value into the aether runtime if it is an async block
     fn spawn(self) -> Ret;
 }
 

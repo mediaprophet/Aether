@@ -9,7 +9,7 @@ use axum::{
     response::{IntoResponse, Response},
     routing::*,
 };
-use dioxus_core::{ComponentFunction, VirtualDom};
+use aether_core::{ComponentFunction, VirtualDom};
 use http::header::*;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
@@ -18,25 +18,25 @@ use tower::ServiceExt;
 use tower::util::MapResponse;
 use tower_http::services::fs::ServeFileSystemResponseBody;
 
-/// A extension trait with utilities for integrating Dioxus with your Axum router.
-pub trait DioxusRouterExt {
-    /// Serves the static WASM for your Dioxus application (except the generated index.html).
+/// A extension trait with utilities for integrating Aether with your Axum router.
+pub trait AetherRouterExt {
+    /// Serves the static WASM for your Aether application (except the generated index.html).
     ///
     /// # Example
     /// ```rust, no_run
     /// # #![allow(non_snake_case)]
-    /// # use dioxus::prelude::*;
-    /// use dioxus_server::DioxusRouterExt;
+    /// # use aether::prelude::*;
+    /// use aether_server::AetherRouterExt;
     ///
     /// #[tokio::main]
     /// async fn main() -> anyhow::Result<()> {
-    ///     let addr = dioxus::cli_config::fullstack_address_or_localhost();
+    ///     let addr = aether::cli_config::fullstack_address_or_localhost();
     ///     let router = axum::Router::new()
     ///         // Server side render the application, serve static assets, and register server functions
     ///         .serve_static_assets()
     ///         // Server render the application
     ///         // ...
-    ///         .with_state(dioxus_server::FullstackState::headless());
+    ///         .with_state(aether_server::FullstackState::headless());
     ///     let listener = tokio::net::TcpListener::bind(addr).await?;
     ///     axum::serve(listener, router).await?;
     ///     Ok(())
@@ -44,21 +44,21 @@ pub trait DioxusRouterExt {
     /// ```
     fn serve_static_assets(self) -> Router<FullstackState>;
 
-    /// Serves the Dioxus application. This will serve a complete server side rendered application.
+    /// Serves the Aether application. This will serve a complete server side rendered application.
     /// This will serve static assets, server render the application, register server functions, and integrate with hot reloading.
     ///
     /// # Example
     /// ```rust, no_run
     /// # #![allow(non_snake_case)]
-    /// # use dioxus::prelude::*;
-    /// use dioxus_server::{DioxusRouterExt, ServeConfig};
+    /// # use aether::prelude::*;
+    /// use aether_server::{AetherRouterExt, ServeConfig};
     ///
     /// #[tokio::main]
     /// async fn main() {
-    ///     let addr = dioxus::cli_config::fullstack_address_or_localhost();
+    ///     let addr = aether::cli_config::fullstack_address_or_localhost();
     ///     let router = axum::Router::new()
     ///         // Server side render the application, serve static assets, and register server functions
-    ///         .serve_dioxus_application(ServeConfig::new(), app);
+    ///         .serve_aether_application(ServeConfig::new(), app);
     ///     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     ///     axum::serve(listener, router).await.unwrap();
     /// }
@@ -67,7 +67,7 @@ pub trait DioxusRouterExt {
     ///     rsx! { "Hello World" }
     /// }
     /// ```
-    fn serve_dioxus_application<M: 'static>(
+    fn serve_aether_application<M: 'static>(
         self,
         cfg: ServeConfig,
         app: impl ComponentFunction<(), M> + Send + Sync,
@@ -77,15 +77,15 @@ pub trait DioxusRouterExt {
     ///
     /// # Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_server::DioxusRouterExt;
+    /// # use aether::prelude::*;
+    /// # use aether_server::AetherRouterExt;
     /// #[tokio::main]
     /// async fn main() {
-    ///     let addr = dioxus::cli_config::fullstack_address_or_localhost();
+    ///     let addr = aether::cli_config::fullstack_address_or_localhost();
     ///     let router = axum::Router::new()
     ///         // Register server functions routes with the default handler
     ///         .register_server_functions()
-    ///         .with_state(dioxus_server::FullstackState::headless());
+    ///         .with_state(aether_server::FullstackState::headless());
     ///     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     ///     axum::serve(listener, router).await.unwrap();
     /// }
@@ -93,7 +93,7 @@ pub trait DioxusRouterExt {
     #[allow(dead_code)]
     fn register_server_functions(self) -> Router<FullstackState>;
 
-    /// Serves a Dioxus application without static assets.
+    /// Serves a Aether application without static assets.
     /// Sets up server function routes and rendering endpoints only.
     ///
     /// Useful for WebAssembly environments or when static assets
@@ -101,8 +101,8 @@ pub trait DioxusRouterExt {
     ///
     /// # Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_server::{DioxusRouterExt, ServeConfig};
+    /// # use aether::prelude::*;
+    /// # use aether_server::{AetherRouterExt, ServeConfig};
     /// #[tokio::main]
     /// async fn main() {
     ///     let router = axum::Router::new()
@@ -125,7 +125,7 @@ pub trait DioxusRouterExt {
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-impl DioxusRouterExt for Router<FullstackState> {
+impl AetherRouterExt for Router<FullstackState> {
     fn register_server_functions(mut self) -> Router<FullstackState> {
         use std::collections::HashSet;
 
@@ -161,7 +161,7 @@ impl DioxusRouterExt for Router<FullstackState> {
             .with_state(FullstackState::new(cfg, app))
     }
 
-    fn serve_dioxus_application<M: 'static>(
+    fn serve_aether_application<M: 'static>(
         self,
         cfg: ServeConfig,
         app: impl ComponentFunction<(), M> + Send + Sync,
@@ -181,8 +181,8 @@ impl DioxusRouterExt for Router<FullstackState> {
 /// use std::sync::{Arc, Mutex};
 ///
 /// use axum::routing::get;
-/// use dioxus::prelude::*;
-/// use dioxus_server::{FullstackState, render_handler, ServeConfig};
+/// use aether::prelude::*;
+/// use aether_server::{FullstackState, render_handler, ServeConfig};
 ///
 /// fn app() -> Element {
 ///     rsx! {
@@ -192,7 +192,7 @@ impl DioxusRouterExt for Router<FullstackState> {
 ///
 /// #[tokio::main]
 /// async fn main() {
-///     let addr = dioxus::cli_config::fullstack_address_or_localhost();
+///     let addr = aether::cli_config::fullstack_address_or_localhost();
 ///     let router = axum::Router::new()
 ///         // Register server functions, etc.
 ///         // Note you can use `register_server_functions_with_context`
@@ -212,7 +212,7 @@ pub async fn render_handler(
     FullstackState::render_handler(State(state), request).await
 }
 
-/// State used by [`FullstackState::render_handler`] to render a dioxus component with axum
+/// State used by [`FullstackState::render_handler`] to render a aether component with axum
 #[derive(Clone)]
 pub struct FullstackState {
     config: ServeConfig,
@@ -295,8 +295,8 @@ impl FullstackState {
     /// use std::sync::{Arc, Mutex};
     ///
     /// use axum::routing::get;
-    /// use dioxus::prelude::*;
-    /// use dioxus_server::{FullstackState, render_handler, ServeConfig};
+    /// use aether::prelude::*;
+    /// use aether_server::{FullstackState, render_handler, ServeConfig};
     ///
     /// fn app() -> Element {
     ///     rsx! {
@@ -306,7 +306,7 @@ impl FullstackState {
     ///
     /// #[tokio::main]
     /// async fn main() {
-    ///     let addr = dioxus::cli_config::fullstack_address_or_localhost();
+    ///     let addr = aether::cli_config::fullstack_address_or_localhost();
     ///     let router = axum::Router::new()
     ///         // Register server functions, etc.
     ///         // Note you can use `register_server_functions_with_context`
@@ -385,7 +385,7 @@ impl FullstackState {
 
 /// Get the path to the public assets directory to serve static files from
 pub(crate) fn public_path() -> Option<PathBuf> {
-    if let Ok(path) = std::env::var("DIOXUS_PUBLIC_PATH") {
+    if let Ok(path) = std::env::var("AETHER_PUBLIC_PATH") {
         return Some(PathBuf::from(path));
     }
 

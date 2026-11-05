@@ -1,6 +1,6 @@
 # Signals and State Management
 
-Dioxus state management is built on a layered architecture: generational-box for memory, signals for reactivity, and stores for nested data.
+Aether state management is built on a layered architecture: generational-box for memory, signals for reactivity, and stores for nested data.
 
 ## Generational Box
 

@@ -1,6 +1,6 @@
-# Dioxus Renderers Architecture
+# Aether Renderers Architecture
 
-Dioxus supports multiple rendering backends through a common trait-based abstraction. Each renderer implements the same interfaces to enable cross-platform component reuse.
+Aether supports multiple rendering backends through a common trait-based abstraction. Each renderer implements the same interfaces to enable cross-platform component reuse.
 
 ## Core Abstraction
 
@@ -17,7 +17,7 @@ The bridge between VirtualDOM and real DOM implementations:
 - `remove_node(id)` - Delete element
 
 ### HtmlEventConverter Trait
-Maps platform-specific events to standardized Dioxus types:
+Maps platform-specific events to standardized Aether types:
 - Each renderer provides its own implementation
 - Converts `PlatformEventData` (renderer-specific) to typed event data
 - Enables event polymorphism across platforms
@@ -32,7 +32,7 @@ Platform Event → Captured by renderer
     → WriteMutations applied
 ```
 
-## Web Renderer (dioxus-web)
+## Web Renderer (aether-web)
 
 ### WebsysDom Structure
 ```
@@ -53,8 +53,8 @@ WebsysDom
 
 ### Event Handling
 - Single delegated listener on root element
-- Event.target walked up DOM tree for `data-dioxus-id` attribute
-- `WebEventConverter` converts web_sys events to Dioxus types
+- Event.target walked up DOM tree for `data-aether-id` attribute
+- `WebEventConverter` converts web_sys events to Aether types
 - Supports all standard DOM events (mouse, keyboard, touch, etc.)
 
 ### Hydration System
@@ -74,7 +74,7 @@ launch(root_component, contexts, config)
   → Main loop: wait_for_work() → render_immediate() → flush_edits()
 ```
 
-## Desktop Renderer (dioxus-desktop)
+## Desktop Renderer (aether-desktop)
 
 ### Wry/Tao Integration
 Uses Wry webview library with Tao window management.
@@ -102,17 +102,17 @@ Implements WriteMutations for wry-based rendering:
 ```
 Browser event → JavaScript → window.postMessage()
     → Wry intercepts request
-    → Extract dioxus-data header (base64 JSON)
+    → Extract aether-data header (base64 JSON)
     → IpcMessage { method, params }
     → Handle: UserEvent, Query, BrowserOpen, Initialize
 ```
 
 ### Protocol Handler
-- `dioxus://` custom protocol for asset serving
+- `aether://` custom protocol for asset serving
 - Handles `__events` path for event processing
 - `__file_dialog` for file selection
 - Custom handler namespaces for user-provided handlers
-- Checks `dioxus_asset_resolver` for bundled assets
+- Checks `aether_asset_resolver` for bundled assets
 
 ### Native Features
 - Menu integration via muda crate
@@ -133,7 +133,7 @@ Config
 └── Devtools support toggle
 ```
 
-## Native Renderer (dioxus-native)
+## Native Renderer (aether-native)
 
 ### Blitz Integration
 - Blitz layout engine for CSS layout
@@ -141,9 +141,9 @@ Config
 - Winit for cross-platform window management
 - Not a browser engine - custom native rendering pipeline
 
-### DioxusNativeWindowRenderer
+### AetherNativeWindowRenderer
 ```
-DioxusNativeWindowRenderer
+AetherNativeWindowRenderer
 ├── anyrender-vello wrapper
 ├── WindowRenderer trait implementation
 ├── GPU features configurable
@@ -153,7 +153,7 @@ DioxusNativeWindowRenderer
 ### Rendering Pipeline
 ```
 VirtualDOM components
-    → DioxusNativeDOM
+    → AetherNativeDOM
     → Blitz DOM tree with CSS
     → Blitz layout engine
     → Vello renderer
@@ -170,7 +170,7 @@ VirtualDOM components
 ```
 Event::NewEvents(StartCause::Init)
     → Create initial window
-    → DioxusDocument with VirtualDOM
+    → AetherDocument with VirtualDOM
 
 Resumed → Renderer.resume()
 
@@ -183,7 +183,7 @@ WindowEvent::RedrawRequested
 WindowEvent::Resized → Queue redraw
 ```
 
-## LiveView Renderer (dioxus-liveview)
+## LiveView Renderer (aether-liveview)
 
 ### Server-Rendered Architecture
 ```
@@ -237,7 +237,7 @@ LiveviewElement methods:
     scroll_to(options) → JS: element.scrollTo()
 ```
 
-## Interpreter Package (dioxus-interpreter-js)
+## Interpreter Package (aether-interpreter-js)
 
 ### Sledgehammer Framework
 Ultra-compact binary protocol for DOM mutations shared across renderers.
@@ -300,7 +300,7 @@ All non-web renderers batch mutations for efficiency:
    - Manage stack machine state
 
 2. **Implement HtmlEventConverter**
-   - Map platform events to Dioxus types
+   - Map platform events to Aether types
    - Handle serialization if needed
 
 3. **Create Launch Function**

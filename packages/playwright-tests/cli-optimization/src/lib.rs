@@ -1,6 +1,6 @@
 // This test checks the CLI optimizes assets correctly without breaking them
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const SOME_IMAGE: Asset = asset!("/images/toasts.png", AssetOptions::image().with_avif());
 const SOME_IMAGE_WITH_THE_SAME_URL: Asset =
@@ -17,7 +17,7 @@ static _ASSET: Asset = asset!(
     AssetOptions::builder().with_hash_suffix(false)
 );
 
-// Regression coverage for https://github.com/DioxusLabs/dioxus/issues/5512:
+// Regression coverage for https://github.com/AetherLabs/aether/issues/5512:
 // `with_minify(false)` must copy the file byte-for-byte (no IIFE rewrap, no
 // ESM transform), and `with_minify(true)` must keep the script as a classic
 // script (not ESM) so the `<script>` tag without `type="module"` still runs.
@@ -77,7 +77,7 @@ static _MJS_AUTO_JS: Asset = asset!(
 );
 
 pub fn main() {
-    dioxus::launch(App);
+    aether::launch(App);
 }
 
 #[component]
@@ -131,7 +131,7 @@ struct Data {
 #[component]
 fn LoadsAsset() -> Element {
     let data = use_resource(|| async {
-        let bytes = dioxus::asset_resolver::read_asset_bytes(&JSON)
+        let bytes = aether::asset_resolver::read_asset_bytes(&JSON)
             .await
             .unwrap();
         serde_json::from_slice::<Data>(&bytes).unwrap()

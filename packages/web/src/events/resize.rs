@@ -1,4 +1,4 @@
-use dioxus_html::{HasResizeData, ResizeResult, geometry::PixelsSize};
+use aether_html::{HasResizeData, ResizeResult, geometry::PixelsSize};
 use wasm_bindgen::JsCast;
 use web_sys::{CustomEvent, Event, ResizeObserverEntry};
 
@@ -34,7 +34,7 @@ impl HasResizeData for Synthetic<ResizeObserverEntry> {
     }
 }
 
-impl WebEventExt for dioxus_html::ResizeData {
+impl WebEventExt for aether_html::ResizeData {
     type WebEvent = web_sys::ResizeObserverEntry;
 
     #[inline(always)]

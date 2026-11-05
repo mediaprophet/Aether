@@ -2,7 +2,7 @@
 
 use std::rc::Rc;
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[derive(Routable, Clone, PartialEq, Debug)]
 #[rustfmt::skip]

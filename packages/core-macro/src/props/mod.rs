@@ -1,8 +1,8 @@
 //! This code mostly comes from idanarye/rust-typed-builder
 //!
-//! However, it has been adopted to fit the Dioxus Props builder pattern.
+//! However, it has been adopted to fit the Aether Props builder pattern.
 //!
-//! For Dioxus, we make a few changes:
+//! For Aether, we make a few changes:
 //! - [x] Automatically implement [`Into<Option>`] on the setters (IE the strip setter option)
 //! - [x] Automatically implement a default of none for optional fields (those explicitly wrapped with [`Option<T>`])
 
@@ -198,7 +198,7 @@ mod field_info {
 
                 // children field is automatically defaulted to an empty VNode unless it is marked as optional (in which case it defaults to None)
                 if name == "children" && !strip_option_auto {
-                    builder_attr.default = Some(parse_quote!(dioxus_core::VNode::empty()));
+                    builder_attr.default = Some(parse_quote!(aether_core::VNode::empty()));
                 }
 
                 // String fields automatically use impl Display
@@ -706,7 +706,7 @@ mod struct_info {
             let mut generics = self.with_component_builder_params(self.generics.clone());
             let where_clause = generics.make_where_clause();
             where_clause.predicates.push(
-                parse_quote!(__RenderFn: dioxus_core::ComponentFunction<#props_ty, __ComponentMarker>),
+                parse_quote!(__RenderFn: aether_core::ComponentFunction<#props_ty, __ComponentMarker>),
             );
             where_clause
                 .predicates
@@ -726,7 +726,7 @@ mod struct_info {
                 .collect();
 
             let move_signal_fields = quote! {
-                use dioxus_core::internal::{NonPartialEq as _, CanPartialEq as _};
+                use aether_core::internal::{NonPartialEq as _, CanPartialEq as _};
 
                 // If they are equal, we don't need to rerun the component we can just update the existing signals
                 #(
@@ -913,7 +913,7 @@ mod struct_info {
                 })
                 .chain(
                     self.has_child_owned_fields
-                        .then(|| quote!(owner: dioxus_core::internal::generational_box::Owner)),
+                        .then(|| quote!(owner: aether_core::internal::generational_box::Owner)),
                 );
             let global_fields_value = self
                 .extend_fields()
@@ -922,7 +922,7 @@ mod struct_info {
                     quote!(#name: Vec::new())
                 })
                 .chain(self.has_child_owned_fields.then(
-                    || quote!(owner: dioxus_core::internal::generational_box::Owner::default()),
+                    || quote!(owner: aether_core::internal::generational_box::Owner::default()),
                 ))
                 .collect::<Vec<_>>();
             let component_builder_render_generics =
@@ -943,7 +943,7 @@ mod struct_info {
                     _phantom: (#( #phantom_generics ),*),
                 }
 
-                impl #impl_generics dioxus_core::Properties for #name #ty_generics
+                impl #impl_generics aether_core::Properties for #name #ty_generics
                 #b_generics_where
                 {
                     type ComponentBuilder<RenderFn, Marker> = #builder_name #component_generics_with_empty;
@@ -966,11 +966,11 @@ mod struct_info {
                     }
                 }
 
-                impl #component_builder_render_impl_generics dioxus_core::ComponentBuilderRender<__RenderFn, __ComponentMarker> for #name #ty_generics
+                impl #component_builder_render_impl_generics aether_core::ComponentBuilderRender<__RenderFn, __ComponentMarker> for #name #ty_generics
                 #component_builder_render_where
                 {
-                    fn into_vcomponent(self, render_fn: __RenderFn) -> dioxus_core::VComponent {
-                        <Self as dioxus_core::Properties>::into_vcomponent(self, render_fn)
+                    fn into_vcomponent(self, render_fn: __RenderFn) -> aether_core::VComponent {
+                        <Self as aether_core::Properties>::into_vcomponent(self, render_fn)
                     }
                 }
             })
@@ -1024,18 +1024,18 @@ mod struct_info {
 
             Ok(quote! {
                 #[allow(dead_code, non_camel_case_types, missing_docs)]
-                impl #impl_generics dioxus_core::HasAttributes for #builder_name < #( #ty_generics ),* > #where_clause {
+                impl #impl_generics aether_core::HasAttributes for #builder_name < #( #ty_generics ),* > #where_clause {
                     fn push_attribute<L>(
                         mut self,
                         ____name: &'static str,
                         ____ns: Option<&'static str>,
-                        ____attr: impl dioxus_core::IntoAttributeValue<L>,
+                        ____attr: impl aether_core::IntoAttributeValue<L>,
                         ____volatile: bool
                     ) -> Self {
                         self.#field_name.push(
-                            dioxus_core::Attribute::new(
+                            aether_core::Attribute::new(
                                 ____name,
-                                dioxus_core::IntoAttributeValue::<L>::into_value(____attr),
+                                aether_core::IntoAttributeValue::<L>::into_value(____attr),
                                 ____ns,
                                 ____volatile,
                             )
@@ -1060,15 +1060,15 @@ mod struct_info {
             if field.child_owned {
                 (
                     Some(marker_ident.clone()),
-                    quote!(impl dioxus_core::SuperInto<#arg_type, #marker_ident>),
+                    quote!(impl aether_core::SuperInto<#arg_type, #marker_ident>),
                     // If this looks like a signal type, we automatically convert it with SuperInto and use the props struct as the owner
-                    quote!(dioxus_core::with_owner(self.owner.clone(), move || dioxus_core::SuperInto::super_into(#field_name))),
+                    quote!(aether_core::with_owner(self.owner.clone(), move || aether_core::SuperInto::super_into(#field_name))),
                 )
             } else if field.builder_attr.auto_into || field.builder_attr.strip_option {
                 (
                     Some(marker_ident.clone()),
-                    quote!(impl dioxus_core::SuperInto<#arg_type, #marker_ident>),
-                    quote!(dioxus_core::SuperInto::super_into(#field_name)),
+                    quote!(impl aether_core::SuperInto<#arg_type, #marker_ident>),
+                    quote!(aether_core::SuperInto::super_into(#field_name)),
                 )
             } else if field.builder_attr.from_displayable {
                 (
@@ -1085,7 +1085,7 @@ mod struct_info {
             if *field.name == "key" {
                 return Err(Error::new_spanned(
                     field.name,
-                    "Naming a prop `key` is not allowed because the name can conflict with the built in key attribute. See https://dioxuslabs.com/learn/0.7/essentials/ui/iteration for more information about keys",
+                    "Naming a prop `key` is not allowed because the name can conflict with the built in key attribute. See https://aetherlabs.com/learn/0.7/essentials/ui/iteration for more information about keys",
                 ));
             }
             Ok(())
@@ -1152,7 +1152,7 @@ mod struct_info {
                         ty_generics_tuple.elems.push_value(empty_type());
                         target_generics_tuple
                             .elems
-                            .push_value(parse_quote!(dioxus_core::internal::Set));
+                            .push_value(parse_quote!(aether_core::internal::Set));
                     } else {
                         g.params.insert(field_param_index, f.generic_ty_param());
                         let generic_argument: syn::Type = f.type_ident();
@@ -1279,7 +1279,7 @@ mod struct_info {
                 .map(|f| {
                     let generic_ident = &f.generic_ident;
                     let marker = required_marker_name(f);
-                    quote!(#generic_ident: dioxus_core::internal::RequiredProp<#fields_mod_name::#marker>)
+                    quote!(#generic_ident: aether_core::internal::RequiredProp<#fields_mod_name::#marker>)
                 })
                 .collect();
             let build_where_clause = if build_where_predicates.is_empty() {
@@ -1313,7 +1313,7 @@ mod struct_info {
 
                     let body = if !is_default {
                         if is_child_owned_type {
-                            quote!{ dioxus_core::SuperInto::super_into(#default) }
+                            quote!{ aether_core::SuperInto::super_into(#default) }
                         } else if field.builder_attr.auto_into {
                             quote!{ (#default).into() }
                         } else if field.builder_attr.auto_to_string {
@@ -1328,14 +1328,14 @@ mod struct_info {
                     if field.builder_attr.skip {
                         quote!(let #name = #body;)
                     } else if is_child_owned_type {
-                        quote!(let #name = ::core::option::Option::unwrap_or_else(#name, || dioxus_core::with_owner(owner.clone(), move || #body));)
+                        quote!(let #name = ::core::option::Option::unwrap_or_else(#name, || aether_core::with_owner(owner.clone(), move || #body));)
                     } else {
                         quote!(let #name = ::core::option::Option::unwrap_or_else(#name, || #body);)
                     }
                 } else {
                     let marker = required_marker_name(field);
                     let generic_ident = &field.generic_ident;
-                    quote!(let #name = <#generic_ident as dioxus_core::internal::RequiredProp<#fields_mod_name::#marker>>::take(#name);)
+                    quote!(let #name = <#generic_ident as aether_core::internal::RequiredProp<#fields_mod_name::#marker>>::take(#name);)
                 }
             })
                 .collect::<Vec<_>>();
@@ -1384,7 +1384,7 @@ mod struct_info {
                     #[allow(dead_code, non_camel_case_types, missing_docs)]
                     #vis struct #name #generics_with_bounds #where_clause {
                         inner: #original_name #ty_generics,
-                        owner: dioxus_core::internal::generational_box::Owner,
+                        owner: aether_core::internal::generational_box::Owner,
                     }
 
                     impl #original_impl_generics PartialEq for #name #ty_generics #where_clause {
@@ -1406,23 +1406,23 @@ mod struct_info {
                         /// Create a component from the props.
                         pub fn into_vcomponent<M: 'static>(
                             self,
-                            render_fn: impl dioxus_core::ComponentFunction<#original_name #ty_generics, M>,
-                        ) -> dioxus_core::VComponent {
-                            use dioxus_core::ComponentFunction;
+                            render_fn: impl aether_core::ComponentFunction<#original_name #ty_generics, M>,
+                        ) -> aether_core::VComponent {
+                            use aether_core::ComponentFunction;
                             let component_name = ::std::any::type_name_of_val(&render_fn);
-                            dioxus_core::VComponent::new(move |wrapper: Self| render_fn.rebuild(wrapper.inner), self, component_name)
+                            aether_core::VComponent::new(move |wrapper: Self| render_fn.rebuild(wrapper.inner), self, component_name)
                         }
                     }
 
-                    impl #component_builder_render_impl_generics dioxus_core::ComponentBuilderRender<__RenderFn, __ComponentMarker> for #name #ty_generics
+                    impl #component_builder_render_impl_generics aether_core::ComponentBuilderRender<__RenderFn, __ComponentMarker> for #name #ty_generics
                     #component_builder_render_where
                     {
-                        fn into_vcomponent(self, render_fn: __RenderFn) -> dioxus_core::VComponent {
+                        fn into_vcomponent(self, render_fn: __RenderFn) -> aether_core::VComponent {
                             self.into_vcomponent(render_fn)
                         }
                     }
 
-                    impl #original_impl_generics dioxus_core::Properties for #name #ty_generics #where_clause {
+                    impl #original_impl_generics aether_core::Properties for #name #ty_generics #where_clause {
                         type ComponentBuilder<RenderFn, Marker> = ();
 
                         fn component_builder<RenderFn, Marker>(
@@ -1439,7 +1439,7 @@ mod struct_info {
                     #[allow(dead_code, non_camel_case_types, missing_docs)]
                     impl #component_builder_build_impl_generics #builder_name #modified_component_ty_generics #component_builder_build_where {
                         #doc
-                        pub fn build(self) -> dioxus_core::ComponentBuilderOutput<__RenderFn, #name #ty_generics, __ComponentMarker>
+                        pub fn build(self) -> aether_core::ComponentBuilderOutput<__RenderFn, #name #ty_generics, __ComponentMarker>
                         #build_where_clause
                         {
                             let #builder_name {
@@ -1459,7 +1459,7 @@ mod struct_info {
                                     },
                                     owner,
                                 };
-                            dioxus_core::ComponentBuilderOutput::new(render_fn, props)
+                            aether_core::ComponentBuilderOutput::new(render_fn, props)
                         }
                     }
                 }
@@ -1474,7 +1474,7 @@ mod struct_info {
                     #[allow(dead_code, non_camel_case_types, missing_docs)]
                     impl #component_builder_build_impl_generics #builder_name #modified_component_ty_generics #component_builder_build_where {
                         #doc
-                        pub fn build(self) -> dioxus_core::ComponentBuilderOutput<__RenderFn, #name #ty_generics, __ComponentMarker>
+                        pub fn build(self) -> aether_core::ComponentBuilderOutput<__RenderFn, #name #ty_generics, __ComponentMarker>
                         #build_where_clause
                         {
                             let #builder_name {
@@ -1491,7 +1491,7 @@ mod struct_info {
                                 #name {
                                     #( #field_names ),*
                                 };
-                            dioxus_core::ComponentBuilderOutput::new(render_fn, props)
+                            aether_core::ComponentBuilderOutput::new(render_fn, props)
                         }
                     }
                 )

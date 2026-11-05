@@ -2,9 +2,9 @@
 //!
 //! The builder API is useful when Rust control flow or helper functions are a
 //! better fit than an `rsx!` block. It supports the same elements, attributes,
-//! events, and child values you would use in regular Dioxus components.
+//! events, and child values you would use in regular Aether components.
 
-use dioxus::{core::view::ViewExt, prelude::*};
+use aether::{core::view::ViewExt, prelude::*};
 
 #[derive(Clone, Copy, PartialEq)]
 struct Metric {
@@ -32,7 +32,7 @@ const METRICS: &[Metric] = &[
 ];
 
 fn main() {
-    println!("{}", dioxus_ssr::render_element(app()));
+    println!("{}", aether_ssr::render_element(app()));
 }
 
 fn app() -> Element {

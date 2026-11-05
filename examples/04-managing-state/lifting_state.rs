@@ -8,10 +8,10 @@
 //! For state that needs to be shared across many layers, reach for `use_context_provider`
 //! instead — see `context_api.rs`.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

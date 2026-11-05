@@ -245,7 +245,7 @@ impl BuildRequest {
             include_bytes!("../../assets/android/gen/app/proguard-rules.pro"),
         )?;
 
-        // Copy additional ProGuard rule files from Dioxus.toml [android] config
+        // Copy additional ProGuard rule files from Aether.toml [android] config
         for rule_file in &self.config.android.proguard_rules {
             let src = self.package_manifest_dir().join(rule_file);
             if src.exists() {
@@ -886,7 +886,7 @@ impl BuildRequest {
             // Their setup is really annoying and requires us to hardcode `dx` to specific versions of tao/wry.
             (
                 "WRY_ANDROID_PACKAGE".to_string(),
-                "dev.dioxus.main".to_string().into(),
+                "dev.aether.main".to_string().into(),
             ),
             (
                 "WRY_ANDROID_LIBRARY".to_string(),
@@ -988,7 +988,7 @@ impl BuildRequest {
             .join("main")
             .join("kotlin");
 
-        for segment in "dev.dioxus.main".split('.') {
+        for segment in "dev.aether.main".split('.') {
             kotlin_dir = kotlin_dir.join(segment);
         }
 
@@ -1061,7 +1061,7 @@ impl AndroidTools {
             .or_else(|| Self::var_or_debug("ANDROID_NDK_HOME"))
             .or_else(|| {
                 // Look for the most recent NDK in the event the user has installed multiple NDK
-                // Eventually we might need to drive this from Dioxus.toml
+                // Eventually we might need to drive this from Aether.toml
                 let sdk = sdk.as_ref()?;
                 let ndk_dir = sdk.join("ndk").read_dir().ok()?;
                 ndk_dir
@@ -1331,7 +1331,7 @@ impl AndroidTools {
     }
 
     pub(crate) fn openssl_prebuilt_dest() -> PathBuf {
-        crate::Workspace::dioxus_data_dir()
+        crate::Workspace::aether_data_dir()
             .join("prebuilt")
             .join("openssl-1.1.1q-beta-1")
     }

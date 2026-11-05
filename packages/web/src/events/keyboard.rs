@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use dioxus_html::{
+use aether_html::{
     Code, HasKeyboardData, Key, Location, Modifiers, ModifiersInteraction, NamedKey,
     input_data::decode_key_location,
 };
@@ -55,7 +55,7 @@ impl ModifiersInteraction for Synthetic<KeyboardEvent> {
     }
 }
 
-impl WebEventExt for dioxus_html::KeyboardData {
+impl WebEventExt for aether_html::KeyboardData {
     type WebEvent = web_sys::KeyboardEvent;
 
     #[inline(always)]

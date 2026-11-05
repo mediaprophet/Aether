@@ -4,10 +4,10 @@
 //! or pass a conditional expression directly. The element re-renders only when the read
 //! signals change, so you can freely animate colors, sizes, and transforms this way.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

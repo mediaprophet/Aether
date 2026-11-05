@@ -1,14 +1,14 @@
-//! Regression test for <https://github.com/DioxusLabs/dioxus/issues/4646>
+//! Regression test for <https://github.com/AetherLabs/aether/issues/4646>
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    // we split these two to ensure `dioxus::serve` works properly.
+    // we split these two to ensure `aether::serve` works properly.
     #[cfg(feature = "server")]
-    dioxus::serve(|| async move { Ok(dioxus::server::router(app)) });
+    aether::serve(|| async move { Ok(aether::server::router(app)) });
 
     #[cfg(not(feature = "server"))]
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

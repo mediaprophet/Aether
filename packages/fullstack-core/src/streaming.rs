@@ -1,7 +1,7 @@
 use crate::{HttpError, ServerFnError};
 use axum_core::extract::FromRequest;
 use axum_core::response::IntoResponse;
-use dioxus_core::{CapturedError, ReactiveContext};
+use aether_core::{CapturedError, ReactiveContext};
 use http::StatusCode;
 use http::{HeaderMap, request::Parts};
 use parking_lot::RwLock;
@@ -9,7 +9,7 @@ use std::collections::HashSet;
 use std::fmt::Debug;
 use std::sync::Arc;
 
-/// The context provided by dioxus fullstack for server-side rendering.
+/// The context provided by aether fullstack for server-side rendering.
 ///
 /// This context will only be set on the server during the initial streaming response
 /// and inside server functions.
@@ -55,7 +55,7 @@ impl PartialEq for FullstackContext {
 }
 
 impl FullstackContext {
-    /// Create a new streaming context. You should not need to call this directly. Dioxus fullstack will
+    /// Create a new streaming context. You should not need to call this directly. Aether fullstack will
     /// provide this context for you.
     pub fn new(parts: Parts) -> Self {
         Self {
@@ -75,7 +75,7 @@ impl FullstackContext {
     }
 
     /// Commit the initial chunk of the response. This will be called automatically if you are using the
-    /// dioxus router when the suspense boundary above the router is resolved. Otherwise, you will need
+    /// aether router when the suspense boundary above the router is resolved. Otherwise, you will need
     /// to call this manually to start the streaming part of the response.
     ///
     /// Once this method has been called, the http response parts can no longer be modified.
@@ -159,8 +159,8 @@ impl FullstackContext {
             return Some(context);
         }
 
-        // Otherwise, try to get it from the dioxus runtime context (for streaming SSR)
-        if let Some(rt) = dioxus_core::Runtime::try_current() {
+        // Otherwise, try to get it from the aether runtime context (for streaming SSR)
+        if let Some(rt) = aether_core::Runtime::try_current() {
             let id = rt.try_current_scope_id()?;
             if let Some(ctx) = rt.consume_context::<FullstackContext>(id) {
                 return Some(ctx);
@@ -251,15 +251,15 @@ pub enum StreamingStatus {
 }
 
 /// Commit the initial chunk of the response. This will be called automatically if you are using the
-/// dioxus router when the suspense boundary above the router is resolved. Otherwise, you will need
+/// aether router when the suspense boundary above the router is resolved. Otherwise, you will need
 /// to call this manually to start the streaming part of the response.
 ///
 /// On the client, this will do nothing.
 ///
 /// # Example
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_fullstack_core::*;
+/// # use aether::prelude::*;
+/// # use aether_fullstack_core::*;
 /// # fn Children() -> Element { unimplemented!() }
 /// fn App() -> Element {
 ///     // This will start streaming immediately after the current render is complete.
@@ -289,15 +289,15 @@ pub fn extract<T: FromRequest<FullstackContext, M>, M>()
 ///
 /// # Example
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_fullstack_core::*;
+/// # use aether::prelude::*;
+/// # use aether_fullstack_core::*;
 /// #[component]
 /// fn MetaTitle(title: String) -> Element {
 ///     // If streaming has already started, warn the user that the meta tag will not show
 ///     // up in the initial chunk.
 ///     use_hook(|| {
 ///         if current_status() == StreamingStatus::InitialChunkCommitted {
-///            dioxus::logger::tracing::warn!("Since `MetaTitle` was rendered after the initial chunk was committed, the meta tag will not show up in the head without javascript enabled.");
+///            aether::logger::tracing::warn!("Since `MetaTitle` was rendered after the initial chunk was committed, the meta tag will not show up in the head without javascript enabled.");
 ///         }
 ///     });
 ///

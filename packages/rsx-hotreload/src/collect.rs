@@ -89,7 +89,7 @@ pub fn collect_from_file(file: &mut File) -> Vec<Macro> {
 #[test]
 fn changing_files() {
     let old = r#"
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 /// some comment
 pub fn CoolChild() -> Element {
@@ -103,7 +103,7 @@ pub fn CoolChild() -> Element {
 }"#;
 
     let new = r#"
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 /// some comment
 pub fn CoolChild() -> Element {
@@ -115,7 +115,7 @@ pub fn CoolChild() -> Element {
 }"#;
 
     let same = r#"
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 /// some comment!!!!!
 pub fn CoolChild() -> Element {

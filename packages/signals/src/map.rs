@@ -1,5 +1,5 @@
 use crate::{ReadableExt, ReadableRef, read::Readable, read_impls};
-use dioxus_core::{IntoAttributeValue, Subscribers};
+use aether_core::{IntoAttributeValue, Subscribers};
 use generational_box::{AnyStorage, BorrowResult};
 use std::ops::Deref;
 
@@ -79,7 +79,7 @@ where
     V::Target: 'static,
     F: Fn(&V::Target) -> &O,
 {
-    fn into_value(self) -> dioxus_core::AttributeValue {
+    fn into_value(self) -> aether_core::AttributeValue {
         self.with(|f| f.clone().into_value())
     }
 }

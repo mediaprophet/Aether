@@ -1,9 +1,9 @@
 <div>
-  <h1>📦✨ Dioxus CLI</h1>
-  <p><strong>Tooling to supercharge Dioxus projects</strong></p>
+  <h1>📦✨ Aether CLI</h1>
+  <p><strong>Tooling to supercharge Aether projects</strong></p>
 </div>
 
-The **dioxus-cli** (inspired by wasm-pack and webpack) is a tool for getting Dioxus projects up and running.
+The **aether-cli** (inspired by wasm-pack and webpack) is a tool for getting Aether projects up and running.
 It handles building, bundling, development and publishing to simplify development.
 
 ## Installation
@@ -11,7 +11,7 @@ It handles building, bundling, development and publishing to simplify developmen
 ### Install the stable version (recommended)
 
 ```shell
-cargo install dioxus-cli
+cargo install aether-cli
 ```
 
 ### Install the latest development build through git
@@ -21,7 +21,7 @@ However, this is not fully tested.
 That means you're probably going to have more bugs despite having the latest bug fixes.
 
 ```shell
-cargo install --git https://github.com/DioxusLabs/dioxus dioxus-cli
+cargo install --git https://github.com/AetherLabs/aether aether-cli
 ```
 
 This will download the CLI from the master branch,
@@ -35,23 +35,23 @@ cargo install --path .
 
 ## Get started
 
-Use `dx new` to initialize a new Dioxus project.
-It will be cloned from the [dioxus-template](https://github.com/DioxusLabs/dioxus-template) repository.
+Use `dx new` to initialize a new Aether project.
+It will be cloned from the [aether-template](https://github.com/AetherLabs/aether-template) repository.
 
 Alternatively, you can specify the template path:
 
 ```shell
-dx new --template gh:dioxuslabs/dioxus-template
+dx new --template gh:aetherlabs/aether-template
 ```
 
 Run `dx --help` for a list of all the available commands.
 Furthermore, you can run `dx <command> --help` to get help with a specific command.
 
-## Dioxus config file
+## Aether config file
 
-You can use the `Dioxus.toml` file for further configuration.
+You can use the `Aether.toml` file for further configuration.
 Some fields are mandatory, but the CLI tool will tell you which ones are missing.
-You can create a `Dioxus.toml` with all fields already set using `dx config init project-name`,
+You can create a `Aether.toml` with all fields already set using `dx config init project-name`,
 or you can use this bare-bones template (only mandatory fields) to get started:
 
 ```toml

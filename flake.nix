@@ -72,7 +72,7 @@
             commonArgs
             // {
               src = cargoSrc;
-              pname = "dioxus-deps";
+              pname = "aether-deps";
               version = cargoToml.workspace.package.version;
             }
           );
@@ -101,8 +101,8 @@
             );
         in
         {
-          packages.dioxus-cli =
-            (rustPackage "dioxus-cli" {
+          packages.aether-cli =
+            (rustPackage "aether-cli" {
               binary = "dx";
               features = [ "no-downloads" ];
             }).overrideAttrs
@@ -112,13 +112,13 @@
                 # flake's own input rev through the env-var override path.
                 # `self.rev` is set on a clean tree; `dirtyRev` on a dirty one
                 # (and includes a `-dirty` suffix, which build.rs accepts).
-                DIOXUS_CLI_GIT_SHA = inputs.self.rev or inputs.self.dirtyRev or "";
+                AETHER_CLI_GIT_SHA = inputs.self.rev or inputs.self.dirtyRev or "";
               });
-          packages.default = self'.packages.dioxus-cli;
-          checks.dioxus-cli = self'.packages.dioxus-cli;
+          packages.default = self'.packages.aether-cli;
+          checks.aether-cli = self'.packages.aether-cli;
 
           devShells.default = pkgs.mkShell {
-            name = "dioxus-dev";
+            name = "aether-dev";
             buildInputs = rustBuildInputs;
             nativeBuildInputs = [
               # Add shell dependencies here

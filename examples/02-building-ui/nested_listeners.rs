@@ -4,10 +4,10 @@
 //!
 //! Both web and desktop support bubbling and bubble cancellation.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

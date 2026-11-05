@@ -16,9 +16,9 @@ fn h_tags_translate() {
 
     let dom = Dom::parse(html).unwrap();
 
-    let body = dioxus_rsx_rosetta::rsx_from_html(&dom);
+    let body = aether_rsx_rosetta::rsx_from_html(&dom);
 
-    let out = dioxus_autofmt::write_block_out(&body).unwrap();
+    let out = aether_autofmt::write_block_out(&body).unwrap();
 
     let expected = r#"
     div {

@@ -4,10 +4,10 @@
 //! current value as a `String`. Binding the `value:` attribute to a signal makes the input
 //! "controlled" — the signal is the single source of truth, so clearing it clears the input.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

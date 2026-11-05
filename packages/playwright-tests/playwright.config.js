@@ -20,7 +20,7 @@ const dx = path.join(repoRoot, "target", "release", process.platform === "win32"
 const ALL_SERVERS = [
   {
     specs: ["liveview.spec.js"], port: 3030,
-    command: "cargo run --package dioxus-playwright-liveview-test --bin dioxus-playwright-liveview-test",
+    command: "cargo run --package aether-playwright-liveview-test --bin aether-playwright-liveview-test",
     env: { CARGO_TERM_PROGRESS_WHEN: "never" }
   },
   { specs: ["web.spec.js"], port: 9990, cwd: "web", command: `${dx} run --force-sequential --web --addr 127.0.0.1 --port 9990` },
@@ -71,7 +71,7 @@ if (!process.env._DX_BUILT) {
     if (s.setup) s.setup();
   }
 
-  execSync("cargo build --package dioxus-cli --release", {
+  execSync("cargo build --package aether-cli --release", {
     cwd: repoRoot,
     env: { ...process.env, CARGO_TERM_PROGRESS_WHEN: "never" },
     stdio: "inherit",

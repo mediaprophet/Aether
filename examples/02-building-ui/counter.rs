@@ -4,10 +4,10 @@
 //! that reads it will re-render automatically. Signals are copy-cheap, so you can freely
 //! move them into event handlers and closures.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

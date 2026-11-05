@@ -13,7 +13,7 @@ impl BundleContext<'_> {
     /// Create the final macOS `.app` bundle and apply Apple-specific metadata.
     ///
     /// This is the primary macOS bundling routine. It takes the executable produced by
-    /// the Dioxus build pipeline and assembles the canonical app bundle structure in
+    /// the Aether build pipeline and assembles the canonical app bundle structure in
     /// `project_out_directory()/macos/<BundleName>.app`.
     ///
     /// The method performs the following steps:
@@ -668,14 +668,14 @@ async fn setup_keychain(identity: Option<&str>) -> Result<Option<SigningIdentity
 async fn setup_temp_keychain(cert_base64: &str, password: &str) -> Result<TempKeychain> {
     use std::io::Write;
 
-    let keychain_password = "dioxus-bundle-keychain";
-    let keychain_path = std::env::temp_dir().join("dioxus-signing.keychain-db");
+    let keychain_password = "aether-bundle-keychain";
+    let keychain_path = std::env::temp_dir().join("aether-signing.keychain-db");
 
     let cert_data = base64_decode(cert_base64)
         .await
         .context("Failed to decode APPLE_CERTIFICATE from base64")?;
 
-    let cert_file = std::env::temp_dir().join("dioxus-signing-cert.p12");
+    let cert_file = std::env::temp_dir().join("aether-signing-cert.p12");
     let mut f = std::fs::File::create(&cert_file)?;
     f.write_all(&cert_data)?;
     drop(f);

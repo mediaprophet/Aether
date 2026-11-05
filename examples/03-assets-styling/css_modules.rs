@@ -1,10 +1,10 @@
 //! This example shows how to use css modules with the `css_module` macro. Css modules convert css
 //! class names to unique names to avoid class name collisions.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

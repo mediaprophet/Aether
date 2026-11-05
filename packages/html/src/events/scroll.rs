@@ -1,4 +1,4 @@
-use dioxus_core::Event;
+use aether_core::Event;
 
 pub type ScrollEvent = Event<ScrollData>;
 

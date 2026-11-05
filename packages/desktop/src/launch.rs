@@ -3,12 +3,12 @@ use crate::{
     app::App,
     ipc::{IpcMethod, UserWindowEvent},
 };
-use dioxus_core::*;
-use dioxus_core_macro::rsx;
+use aether_core::*;
+use aether_core_macro::rsx;
 use std::{any::Any, cell::RefCell, rc::Rc};
 use tao::event::{Event, StartCause, WindowEvent};
 
-#[derive(Clone, dioxus_core_macro::Props)]
+#[derive(Clone, aether_core_macro::Props)]
 struct DesktopRootProps {
     root: fn() -> Element,
     config: Rc<RefCell<Option<WindowConfig>>>,
@@ -20,7 +20,7 @@ impl PartialEq for DesktopRootProps {
     }
 }
 
-#[derive(Clone, dioxus_core_macro::Props)]
+#[derive(Clone, aether_core_macro::Props)]
 struct LaunchedRootProps {
     root: fn() -> Element,
 }
@@ -52,7 +52,7 @@ fn WindowedRoot(props: DesktopRootProps) -> Element {
 ///
 /// This raw entrypoint does not create an implicit native window. The root component must render
 /// at least one [`Window`](crate::Window) component if the app should show UI. Use
-/// [`launch`] or `dioxus::LaunchBuilder::desktop().launch(...)` for the
+/// [`launch`] or `aether::LaunchBuilder::desktop().launch(...)` for the
 /// normal API that wraps the user component in a default window.
 ///
 /// This will block the main thread, and *must* be spawned on the main thread. This function does not assume any runtime
@@ -153,8 +153,8 @@ pub fn launch_virtual_dom_blocking(virtual_dom: VirtualDom, mut desktop_config: 
 /// app should show UI.
 ///
 /// ```rust, ignore
-/// use dioxus::prelude::*;
-/// use dioxus_desktop::{Config, Window};
+/// use aether::prelude::*;
+/// use aether_desktop::{Config, Window};
 ///
 /// fn app() -> Element {
 ///     rsx! {
@@ -165,7 +165,7 @@ pub fn launch_virtual_dom_blocking(virtual_dom: VirtualDom, mut desktop_config: 
 /// }
 ///
 /// let dom = VirtualDom::new(app);
-/// dioxus_desktop::launch::launch_virtual_dom(dom, Config::new());
+/// aether_desktop::launch::launch_virtual_dom(dom, Config::new());
 /// ```
 pub fn launch_virtual_dom(virtual_dom: VirtualDom, desktop_config: Config) -> ! {
     #[cfg(feature = "tokio_runtime")]
@@ -174,7 +174,7 @@ pub fn launch_virtual_dom(virtual_dom: VirtualDom, desktop_config: Config) -> ! 
             assert_ne!(
                 handle.runtime_flavor(),
                 tokio::runtime::RuntimeFlavor::CurrentThread,
-                "The tokio current-thread runtime does not work with dioxus event handling"
+                "The tokio current-thread runtime does not work with aether event handling"
             );
             launch_virtual_dom_blocking(virtual_dom, desktop_config);
         } else {

@@ -8,8 +8,8 @@ use slab::Slab;
 use thiserror::Error;
 use tokio::sync::broadcast::error::RecvError;
 
-const DIOXUS_CODE: &str = r#"
-let dioxus = {
+const AETHER_CODE: &str = r#"
+let aether = {
     recv: function () {
         return new Promise((resolve, _reject) => {
             // Ever 50 ms check for new data
@@ -101,7 +101,7 @@ impl QueryEngine {
         if let Err(err) = self.query_tx.send(format!(
             r#"(function(){{
                 (async (resolve, _reject) => {{
-                    {DIOXUS_CODE}
+                    {AETHER_CODE}
                     if (!window.{QUEUE_NAME}) {{
                         window.{QUEUE_NAME} = [];
                     }}

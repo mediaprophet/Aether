@@ -63,7 +63,7 @@ for (let { port, name } of test_variants) {
     );
   });
 
-  // Regression coverage for https://github.com/DioxusLabs/dioxus/issues/5512.
+  // Regression coverage for https://github.com/AetherLabs/aether/issues/5512.
   // Both files are vanilla IIFE scripts injected via `with_static_head(true)`.
   // The 0.7.4–0.7.6 esbuild path wrapped them in a wrapper IIFE / `--format=esm`,
   // which dropped the global side-effect and produced `export` syntax under a

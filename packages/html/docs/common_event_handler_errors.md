@@ -3,12 +3,12 @@
 <details>
 <summary>function requires argument type to outlive `'static`</summary>
 
-Event handler in Dioxus need only access data that can last for the entire lifetime of the application. That generally means data that is moved into the closure. **If you get this error, you may have forgotten to add `move` to your closure.**
+Event handler in Aether need only access data that can last for the entire lifetime of the application. That generally means data that is moved into the closure. **If you get this error, you may have forgotten to add `move` to your closure.**
 
 Broken component:
 
 ```rust, compile_fail
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // We return an Element which can last as long as the component is on the screen
 fn App() -> Element {
     // Signals are `Copy` which makes them very easy to move into `'static` closures like event handlers
@@ -30,7 +30,7 @@ fn App() -> Element {
 Fixed component:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn App() -> Element {
     let state = use_signal(|| "hello world".to_string());
 
@@ -56,7 +56,7 @@ Data in rust has a single owner. If you run into this error, you have likely tri
 Broken component:
 
 ```rust, compile_fail
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // `MyComponent` accepts a string which cannot be copied implicitly
 #[component]
 fn MyComponent(string: String) -> Element {
@@ -84,7 +84,7 @@ You can fix this issue by either:
 - Making your data `Copy` with `ReadSignal`:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // `MyComponent` accepts `ReadSignal<String>` which implements `Copy`
 #[component]
 fn MyComponent(string: ReadSignal<String>) -> Element {
@@ -106,7 +106,7 @@ fn MyComponent(string: ReadSignal<String>) -> Element {
 - Calling `clone` on your data before you move it into the closure:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 // `MyComponent` accepts a string which doesn't implement `Copy`
 #[component]
 fn MyComponent(string: String) -> Element {

@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 pub fn CoolChild() -> Element {
     rsx! {

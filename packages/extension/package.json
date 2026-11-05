@@ -1,15 +1,15 @@
 {
-    "name": "dioxus",
-    "displayName": "Dioxus",
-    "description": "Useful tools for working with Dioxus",
+    "name": "aether",
+    "displayName": "Aether",
+    "description": "Useful tools for working with Aether",
     "version": "0.7.3",
-    "publisher": "DioxusLabs",
+    "publisher": "AetherLabs",
     "private": true,
     "license": "MIT",
     "icon": "static/icon.png",
     "repository": {
         "type": "git",
-        "url": "https://github.com/DioxusLabs/dioxus"
+        "url": "https://github.com/AetherLabs/aether"
     },
     "engines": {
         "vscode": "^1.68.1"
@@ -28,25 +28,25 @@
     "contributes": {
         "commands": [
             {
-                "command": "extension.htmlToDioxusRsx",
-                "title": "Dioxus: Convert HTML to RSX"
+                "command": "extension.htmlToAetherRsx",
+                "title": "Aether: Convert HTML to RSX"
             },
             {
-                "command": "extension.htmlToDioxusComponent",
-                "title": "Dioxus: Convert HTML to Component"
+                "command": "extension.htmlToAetherComponent",
+                "title": "Aether: Convert HTML to Component"
             },
             {
                 "command": "extension.formatRsx",
-                "title": "Dioxus: Format RSX"
+                "title": "Aether: Format RSX"
             },
             {
                 "command": "extension.formatRsxDocument",
-                "title": "Dioxus: Format RSX Document"
+                "title": "Aether: Format RSX Document"
             }
         ],
         "configuration": {
             "properties": {
-                "dioxus.formatOnSave": {
+                "aether.formatOnSave": {
                     "type": [
                         "string"
                     ],
@@ -74,8 +74,8 @@
     "scripts": {
         "vscode:prepublish": "npm run build-base",
         "vsix": "vsce package",
-        "build-wasm": "cargo build --target wasm32-unknown-unknown --release && cp ../../target/wasm32-unknown-unknown/release/dioxus_ext.wasm pkg/",
-        "bind-wasm": "wasm-bindgen --out-dir=pkg --target=web --omit-default-module-path --omit-imports pkg/dioxus_ext.wasm",
+        "build-wasm": "cargo build --target wasm32-unknown-unknown --release && cp ../../target/wasm32-unknown-unknown/release/aether_ext.wasm pkg/",
+        "bind-wasm": "wasm-bindgen --out-dir=pkg --target=web --omit-default-module-path --omit-imports pkg/aether_ext.wasm",
         "build-base": "npm run build-wasm && npm run bind-wasm && webpack",
         "webpack": "webpack --mode development",
         "webpack-dev": "webpack --mode development --watch",
@@ -106,7 +106,7 @@
         "webpack-cli": "^5.1.4"
     },
     "dependencies": {
-        "dioxus-ext": "./pkg",
+        "aether-ext": "./pkg",
         "vsce": "^2.9.2"
     }
 }

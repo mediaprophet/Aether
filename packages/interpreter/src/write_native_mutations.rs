@@ -1,6 +1,6 @@
 use crate::unified_bindings::Interpreter as Channel;
-use dioxus_core::WriteMutations;
-use dioxus_core_types::event_bubbles;
+use aether_core::WriteMutations;
+use aether_core_types::event_bubbles;
 
 /// The state needed to apply mutations to a channel. This state should be kept across all mutations for the app
 #[derive(Default)]
@@ -23,11 +23,11 @@ impl MutationState {
 }
 
 impl WriteMutations for MutationState {
-    fn push_id(&mut self, id: dioxus_core::ElementId) {
+    fn push_id(&mut self, id: aether_core::ElementId) {
         self.channel.push_id(id.raw() as u32);
     }
 
-    fn set_id(&mut self, id: dioxus_core::ElementId) {
+    fn set_id(&mut self, id: aether_core::ElementId) {
         self.channel.set_id(id.raw() as u32);
     }
 
@@ -71,30 +71,30 @@ impl WriteMutations for MutationState {
         &mut self,
         name: &str,
         ns: Option<&str>,
-        value: dioxus_core::BorrowedAttributeValue<'_>,
+        value: aether_core::BorrowedAttributeValue<'_>,
     ) {
         match value {
-            dioxus_core::BorrowedAttributeValue::Text(txt) => {
+            aether_core::BorrowedAttributeValue::Text(txt) => {
                 self.channel
                     .set_current_attribute(name, txt, ns.unwrap_or_default())
             }
-            dioxus_core::BorrowedAttributeValue::Float(f) => {
+            aether_core::BorrowedAttributeValue::Float(f) => {
                 self.channel
                     .set_current_attribute(name, &f.to_string(), ns.unwrap_or_default())
             }
-            dioxus_core::BorrowedAttributeValue::Int(n) => {
+            aether_core::BorrowedAttributeValue::Int(n) => {
                 self.channel
                     .set_current_attribute(name, &n.to_string(), ns.unwrap_or_default())
             }
-            dioxus_core::BorrowedAttributeValue::Bool(b) => self.channel.set_current_attribute(
+            aether_core::BorrowedAttributeValue::Bool(b) => self.channel.set_current_attribute(
                 name,
                 if b { "true" } else { "false" },
                 ns.unwrap_or_default(),
             ),
-            dioxus_core::BorrowedAttributeValue::None => self
+            aether_core::BorrowedAttributeValue::None => self
                 .channel
                 .remove_current_attribute(name, ns.unwrap_or_default()),
-            dioxus_core::BorrowedAttributeValue::Any(_) => {
+            aether_core::BorrowedAttributeValue::Any(_) => {
                 unreachable!("Any attributes are not supported by the current renderer")
             }
         }

@@ -8,7 +8,7 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { workspace = true, features = [] }
+aether = { workspace = true, features = [] }
 manganis = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
@@ -16,6 +16,6 @@ thiserror = { workspace = true }
 
 [features]
 default = ["mobile"]
-web = ["dioxus/web"]
-desktop = ["dioxus/desktop"]
-mobile = ["dioxus/mobile"]
+web = ["aether/web"]
+desktop = ["aether/desktop"]
+mobile = ["aether/mobile"]

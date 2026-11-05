@@ -1,6 +1,6 @@
 // This test is used by playwright configured in the root of the repo
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn app() -> Element {
     let mut num = use_signal(|| 0);
@@ -38,8 +38,8 @@ fn app() -> Element {
             onclick: move |_| async move {
                 let mut eval = eval(
                     r#"
-                                window.document.title = 'Hello from Dioxus Eval!';
-                                dioxus.send("returned eval value");
+                                window.document.title = 'Hello from Aether Eval!';
+                                aether.send("returned eval value");
                             "#,
                 );
                 let result = eval.recv().await;
@@ -64,5 +64,5 @@ fn main() {
     //         .set_max_level(tracing::Level::TRACE)
     //         .build(),
     // );
-    dioxus::launch(app);
+    aether::launch(app);
 }

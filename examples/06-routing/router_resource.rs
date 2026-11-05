@@ -4,7 +4,7 @@
 //! This example shows how to use ReadSignal to make props reactive
 //! when linking to it from the same component, when using use_resource
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[derive(Clone, Routable, Debug, PartialEq)]
 enum Route {
@@ -15,7 +15,7 @@ enum Route {
 }
 
 fn main() {
-    dioxus::launch(App);
+    aether::launch(App);
 }
 
 #[component]

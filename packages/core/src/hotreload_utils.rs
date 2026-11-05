@@ -5,7 +5,7 @@ use std::{
 
 use crate::{Attribute, AttributeValue, DynamicNode, DynamicValues, Template, VNode, VText};
 #[cfg(feature = "serialize")]
-use dioxus_core_template::deserialize_string_leaky;
+use aether_core_template::deserialize_string_leaky;
 
 #[cfg_attr(feature = "serialize", derive(serde::Serialize, serde::Deserialize))]
 #[doc(hidden)]
@@ -184,25 +184,25 @@ impl DynamicLiteralPool {
         }
         let grab_float = || {
             self.get_component_property_or_default(id, hot_reload, HotReloadLiteral::as_float).unwrap_or_else(|| {
-                tracing::error!("Expected a float component property, because the type was {}. The CLI gave the hot reloading engine a type of {:?}. This is probably caused by a bug in dioxus hot reloading. Please report this issue.", std::any::type_name::<T>(), hot_reload.component_values.get(id));
+                tracing::error!("Expected a float component property, because the type was {}. The CLI gave the hot reloading engine a type of {:?}. This is probably caused by a bug in aether hot reloading. Please report this issue.", std::any::type_name::<T>(), hot_reload.component_values.get(id));
                 Default::default()
             })
         };
         let grab_int = || {
             self.get_component_property_or_default(id, hot_reload, HotReloadLiteral::as_int).unwrap_or_else(|| {
-                tracing::error!("Expected a integer component property, because the type was {}. The CLI gave the hot reloading engine a type of {:?}. This is probably caused by a bug in dioxus hot reloading. Please report this issue.", std::any::type_name::<T>(), hot_reload.component_values.get(id));
+                tracing::error!("Expected a integer component property, because the type was {}. The CLI gave the hot reloading engine a type of {:?}. This is probably caused by a bug in aether hot reloading. Please report this issue.", std::any::type_name::<T>(), hot_reload.component_values.get(id));
                 Default::default()
             })
         };
         let grab_bool = || {
             self.get_component_property_or_default(id, hot_reload, HotReloadLiteral::as_bool).unwrap_or_else(|| {
-                tracing::error!("Expected a bool component property, because the type was {}. The CLI gave the hot reloading engine a type of {:?}. This is probably caused by a bug in dioxus hot reloading. Please report this issue.", std::any::type_name::<T>(), hot_reload.component_values.get(id));
+                tracing::error!("Expected a bool component property, because the type was {}. The CLI gave the hot reloading engine a type of {:?}. This is probably caused by a bug in aether hot reloading. Please report this issue.", std::any::type_name::<T>(), hot_reload.component_values.get(id));
                 Default::default()
             })
         };
         let grab_fmted = || {
             self.get_component_property_or_default(id, hot_reload, |fmted| HotReloadLiteral::as_fmted(fmted).map(|segments| self.render_formatted(segments))).unwrap_or_else(|| {
-                tracing::error!("Expected a string component property, because the type was {}. The CLI gave the hot reloading engine a type of {:?}. This is probably caused by a bug in dioxus hot reloading. Please report this issue.", std::any::type_name::<T>(), hot_reload.component_values.get(id));
+                tracing::error!("Expected a string component property, because the type was {}. The CLI gave the hot reloading engine a type of {:?}. This is probably caused by a bug in aether hot reloading. Please report this issue.", std::any::type_name::<T>(), hot_reload.component_values.get(id));
                 Default::default()
             })
         };
@@ -546,7 +546,7 @@ impl HotReloadedTemplate {
     }
 
     /// Return decoded template operations for inspection.
-    pub fn decoded_ops(&self) -> Vec<dioxus_core_template::DecodedTemplateOp> {
+    pub fn decoded_ops(&self) -> Vec<aether_core_template::DecodedTemplateOp> {
         self.template.decoded_ops().collect()
     }
 
@@ -612,13 +612,13 @@ pub struct NamedAttribute {
     /// The name of this attribute.
     #[cfg_attr(
         feature = "serialize",
-        serde(deserialize_with = "dioxus_core_template::deserialize_string_leaky")
+        serde(deserialize_with = "aether_core_template::deserialize_string_leaky")
     )]
     name: StaticStr,
     /// The namespace of this attribute. Does not exist in the HTML spec
     #[cfg_attr(
         feature = "serialize",
-        serde(deserialize_with = "dioxus_core_template::deserialize_option_leaky")
+        serde(deserialize_with = "aether_core_template::deserialize_option_leaky")
     )]
     namespace: Option<StaticStr>,
     /// Attribute value.

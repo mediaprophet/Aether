@@ -1,18 +1,18 @@
 use tao::window::Window;
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
-pub type DioxusMenu = muda::Menu;
+pub type AetherMenu = muda::Menu;
 #[cfg(any(target_os = "ios", target_os = "android"))]
-pub type DioxusMenu = ();
+pub type AetherMenu = ();
 
 #[cfg(not(any(target_os = "ios", target_os = "android")))]
-pub type DioxusMenuIcon = muda::Icon;
+pub type AetherMenuIcon = muda::Icon;
 #[cfg(any(target_os = "ios", target_os = "android"))]
-pub type DioxusMenuIcon = ();
+pub type AetherMenuIcon = ();
 
 /// Initializes the menu bar for the window.
 #[allow(unused)]
-pub fn init_menu_bar(menu: &DioxusMenu, window: &Window) {
+pub fn init_menu_bar(menu: &AetherMenu, window: &Window) {
     #[cfg(not(any(target_os = "ios", target_os = "android")))]
     {
         desktop_platforms::init_menu_bar(menu, window);
@@ -25,7 +25,7 @@ pub fn init_menu_bar(menu: &DioxusMenu, window: &Window) {
 /// > The menu bar differs per platform because of constraints introduced
 /// > by [`MenuItem`](muda::MenuItem).
 #[allow(unused)]
-pub fn default_menu_bar() -> DioxusMenu {
+pub fn default_menu_bar() -> AetherMenu {
     #[cfg(not(any(target_os = "ios", target_os = "android")))]
     {
         desktop_platforms::default_menu_bar()
@@ -100,7 +100,7 @@ mod desktop_platforms {
 
             help_menu
                 .append_items(&[&MenuItem::with_id(
-                    "dioxus-toggle-dev-tools",
+                    "aether-toggle-dev-tools",
                     "Toggle Developer Tools",
                     true,
                     None,
@@ -110,7 +110,7 @@ mod desktop_platforms {
             // By default we float the window on top in dev mode, but let the user disable it
             help_menu
                 .append_items(&[&MenuItem::with_id(
-                    "dioxus-float-top",
+                    "aether-float-top",
                     "Float on Top (dev mode only)",
                     true,
                     None,

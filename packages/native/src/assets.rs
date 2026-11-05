@@ -3,12 +3,12 @@ use std::sync::Arc;
 
 use blitz_traits::net::{NetHandler, NetProvider, Request};
 
-pub struct DioxusNativeNetProvider {
+pub struct AetherNativeNetProvider {
     inner_net_provider: Option<Arc<dyn NetProvider + 'static>>,
 }
 
 #[allow(unused)]
-impl DioxusNativeNetProvider {
+impl AetherNativeNetProvider {
     pub fn shared(proxy: BlitzShellProxy) -> Arc<dyn NetProvider> {
         Arc::new(Self::new(proxy)) as Arc<dyn NetProvider>
     }
@@ -38,11 +38,11 @@ impl DioxusNativeNetProvider {
     }
 }
 
-impl NetProvider for DioxusNativeNetProvider {
+impl NetProvider for AetherNativeNetProvider {
     fn fetch(&self, doc_id: usize, request: Request, handler: Box<dyn NetHandler>) {
-        if request.url.scheme() == "dioxus" {
+        if request.url.scheme() == "aether" {
             #[allow(clippy::single_match)] // cfg'd code
-            match dioxus_asset_resolver::native::serve_asset(request.url.path()) {
+            match aether_asset_resolver::native::serve_asset(request.url.path()) {
                 Ok(res) => {
                     #[cfg(feature = "tracing")]
                     tracing::trace!("fetching asset from file system success {request:#?}");

@@ -1,7 +1,7 @@
-use dioxus_core::Template;
-use dioxus_core_template::RuntimeTemplateBuilder;
-use dioxus_core_types::HotReloadingContext;
-use dioxus_rsx::*;
+use aether_core::Template;
+use aether_core_template::RuntimeTemplateBuilder;
+use aether_core_types::HotReloadingContext;
+use aether_rsx::*;
 use internment::Intern;
 use std::hash::Hash;
 use std::marker::PhantomData;

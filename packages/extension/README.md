@@ -1,14 +1,14 @@
-# Dioxus VSCode Extension
+# Aether VSCode Extension
 
-![Dioxus Splash](https://github.com/DioxusLabs/dioxus/raw/main/notes/dioxus_splash_8.avif)
+![Aether Splash](https://github.com/AetherLabs/aether/raw/main/notes/aether_splash_8.avif)
 
-This extension wraps functionality in Dioxus CLI to be used in your editor!
+This extension wraps functionality in Aether CLI to be used in your editor!
 
 ## Features:
 
 - Auto-format RSX
 - Convert HTML to RSX
-- Convert HTML to Dioxus Component
+- Convert HTML to Aether Component
 - Format RSX
 
 ## Current commands:
@@ -16,9 +16,9 @@ This extension wraps functionality in Dioxus CLI to be used in your editor!
 ### Convert HTML to RSX
 Converts a selection of html to valid rsx.
 
-### Convert HTML to Dioxus Component
+### Convert HTML to Aether Component
 
-Converts a selection of html to a valid Dioxus component with all SVGs factored out into their own module.
+Converts a selection of html to a valid Aether component with all SVGs factored out into their own module.
 
 ### Format RSX
 
@@ -29,28 +29,28 @@ Formats the current file as RSX.
 - run `npm install`
 - run `npm run vsix`
 
-# Working with Dioxus:
+# Working with Aether:
 
-This overview provides a brief introduction to Dioxus. For a more in-depth guide, make sure to check out:
+This overview provides a brief introduction to Aether. For a more in-depth guide, make sure to check out:
 
-- [Getting Started](https://dioxuslabs.com/learn/0.7/getting_started)
-- [Book (0.6)](https://dioxuslabs.com/learn/0.7/)
+- [Getting Started](https://aetherlabs.com/learn/0.7/getting_started)
+- [Book (0.6)](https://aetherlabs.com/learn/0.7/)
 
 ## Contributing
-- Check out the website [section on contributing](https://dioxuslabs.com/learn/0.7/beyond/contributing).
-- Report issues on our [issue tracker](https://github.com/dioxuslabs/dioxus/issues).
+- Check out the website [section on contributing](https://aetherlabs.com/learn/0.7/beyond/contributing).
+- Report issues on our [issue tracker](https://github.com/aetherlabs/aether/issues).
 - [Join](https://discord.gg/XgGxMSkvUM) the discord and ask questions!
 
 
-<a href="https://github.com/dioxuslabs/dioxus/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=dioxuslabs/dioxus&max=30&columns=10" />
+<a href="https://github.com/aetherlabs/aether/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=aetherlabs/aether&max=30&columns=10" />
 </a>
 
 ## License
 This project is licensed under the [MIT license].
 
-[mit license]: https://github.com/DioxusLabs/dioxus/blob/master/LICENSE-MIT
+[mit license]: https://github.com/AetherLabs/aether/blob/master/LICENSE-MIT
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in Dioxus by you, shall be licensed as MIT, without any additional
+for inclusion in Aether by you, shall be licensed as MIT, without any additional
 terms or conditions.

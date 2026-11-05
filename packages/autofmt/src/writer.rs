@@ -1,5 +1,5 @@
 use crate::{IndentOptions, buffer::Buffer};
-use dioxus_rsx::*;
+use aether_rsx::*;
 use proc_macro2::{LineColumn, Span};
 use quote::ToTokens;
 use regex::Regex;

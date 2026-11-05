@@ -6,7 +6,7 @@ use blitz_traits::events::{
     BlitzKeyEvent, BlitzPointerEvent, BlitzPointerId, BlitzScrollEvent, BlitzWheelDelta,
     BlitzWheelEvent, MouseEventButton,
 };
-use dioxus_html::{
+use aether_html::{
     AnimationData, BeforeInputData, CancelData, ClipboardData, CompositionData, DragData,
     FocusData, FormData, FormValue, HasFileData, HasFocusData, HasFormData, HasKeyboardData,
     HasMouseData, HasPointerData, HasScrollData, HasTouchData, HasTouchPointData, HasWheelData,
@@ -40,7 +40,7 @@ pub struct NativeConverter {}
 
 impl HtmlEventConverter for NativeConverter {
     fn convert_cancel_data(&self, _event: &PlatformEventData) -> CancelData {
-        unimplemented!("todo: convert_cancel_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_cancel_data in aether-native. requires support in blitz")
     }
 
     fn convert_form_data(&self, event: &PlatformEventData) -> FormData {
@@ -68,33 +68,33 @@ impl HtmlEventConverter for NativeConverter {
     }
 
     fn convert_animation_data(&self, _event: &PlatformEventData) -> AnimationData {
-        unimplemented!("todo: convert_animation_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_animation_data in aether-native. requires support in blitz")
     }
 
     fn convert_before_input_data(&self, _event: &PlatformEventData) -> BeforeInputData {
         unimplemented!(
-            "todo: convert_before_input_data in dioxus-native. requires support in blitz"
+            "todo: convert_before_input_data in aether-native. requires support in blitz"
         )
     }
 
     fn convert_clipboard_data(&self, _event: &PlatformEventData) -> ClipboardData {
-        unimplemented!("todo: convert_clipboard_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_clipboard_data in aether-native. requires support in blitz")
     }
 
     fn convert_composition_data(&self, _event: &PlatformEventData) -> CompositionData {
-        unimplemented!("todo: convert_composition_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_composition_data in aether-native. requires support in blitz")
     }
 
     fn convert_drag_data(&self, _event: &PlatformEventData) -> DragData {
-        unimplemented!("todo: convert_drag_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_drag_data in aether-native. requires support in blitz")
     }
 
     fn convert_image_data(&self, _event: &PlatformEventData) -> ImageData {
-        unimplemented!("todo: convert_image_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_image_data in aether-native. requires support in blitz")
     }
 
     fn convert_media_data(&self, _event: &PlatformEventData) -> MediaData {
-        unimplemented!("todo: convert_media_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_media_data in aether-native. requires support in blitz")
     }
 
     fn convert_mounted_data(&self, event: &PlatformEventData) -> MountedData {
@@ -114,11 +114,11 @@ impl HtmlEventConverter for NativeConverter {
     }
 
     fn convert_selection_data(&self, _event: &PlatformEventData) -> SelectionData {
-        unimplemented!("todo: convert_selection_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_selection_data in aether-native. requires support in blitz")
     }
 
     fn convert_toggle_data(&self, _event: &PlatformEventData) -> ToggleData {
-        unimplemented!("todo: convert_toggle_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_toggle_data in aether-native. requires support in blitz")
     }
 
     fn convert_touch_data(&self, event: &PlatformEventData) -> TouchData {
@@ -126,7 +126,7 @@ impl HtmlEventConverter for NativeConverter {
     }
 
     fn convert_transition_data(&self, _event: &PlatformEventData) -> TransitionData {
-        unimplemented!("todo: convert_transition_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_transition_data in aether-native. requires support in blitz")
     }
 
     fn convert_wheel_data(&self, event: &PlatformEventData) -> WheelData {
@@ -134,11 +134,11 @@ impl HtmlEventConverter for NativeConverter {
     }
 
     fn convert_resize_data(&self, _event: &PlatformEventData) -> ResizeData {
-        unimplemented!("todo: convert_resize_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_resize_data in aether-native. requires support in blitz")
     }
 
     fn convert_visible_data(&self, _event: &PlatformEventData) -> VisibleData {
-        unimplemented!("todo: convert_visible_data in dioxus-native. requires support in blitz")
+        unimplemented!("todo: convert_visible_data in aether-native. requires support in blitz")
     }
 }
 
@@ -336,7 +336,7 @@ impl HasFormData for NativeFormData {
 }
 
 impl HasFileData for NativeFormData {
-    fn files(&self) -> Vec<dioxus_html::FileData> {
+    fn files(&self) -> Vec<aether_html::FileData> {
         vec![]
     }
 }
@@ -417,7 +417,7 @@ impl PointerInteraction for NativePointerData {
     }
 
     fn held_buttons(&self) -> MouseButtonSet {
-        dioxus_html::input_data::decode_mouse_button_set(self.0.buttons.bits() as u16)
+        aether_html::input_data::decode_mouse_button_set(self.0.buttons.bits() as u16)
     }
 }
 impl HasMouseData for NativePointerData {
@@ -476,7 +476,7 @@ impl HasPointerData for NativePointerData {
     }
 }
 
-/// Touch event data exposed to Dioxus Native application code.
+/// Touch event data exposed to Aether Native application code.
 ///
 /// Blitz tracks input via pointer events, so a touch event is generated from the
 /// pointer event of the finger that triggered it (`touches_changed`). The full
@@ -612,10 +612,10 @@ impl HasWheelData for NativeWheelData {
     fn delta(&self) -> WheelDelta {
         match self.0.delta {
             BlitzWheelDelta::Lines(x, y) => {
-                dioxus_html::geometry::WheelDelta::Lines(Vector3D::new(x, y, 0.0))
+                aether_html::geometry::WheelDelta::Lines(Vector3D::new(x, y, 0.0))
             }
             BlitzWheelDelta::Pixels(x, y) => {
-                dioxus_html::geometry::WheelDelta::Pixels(Vector3D::new(x, y, 0.0))
+                aether_html::geometry::WheelDelta::Pixels(Vector3D::new(x, y, 0.0))
             }
         }
     }
@@ -633,7 +633,7 @@ impl PointerInteraction for NativeWheelData {
     }
 
     fn held_buttons(&self) -> MouseButtonSet {
-        dioxus_html::input_data::decode_mouse_button_set(self.0.buttons.bits() as u16)
+        aether_html::input_data::decode_mouse_button_set(self.0.buttons.bits() as u16)
     }
 }
 

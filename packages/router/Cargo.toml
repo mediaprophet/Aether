@@ -1,45 +1,45 @@
 [package]
-name = "dioxus-router"
+name = "aether-router"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 version = { workspace = true }
 edition = "2024"
-description = "Cross-platform router for Dioxus apps"
+description = "Cross-platform router for Aether apps"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "wasm"]
 
 [dependencies]
-dioxus-core = { workspace = true }
-dioxus-core-macro = { workspace = true }
-dioxus-signals = { workspace = true }
-dioxus-hooks = { workspace = true }
-dioxus-html = { workspace = true, optional = true }
-dioxus-history = { workspace = true }
-dioxus-router-macro = { workspace = true }
-dioxus-fullstack-core = { workspace = true, optional = true }
+aether-core = { workspace = true }
+aether-core-macro = { workspace = true }
+aether-signals = { workspace = true }
+aether-hooks = { workspace = true }
+aether-html = { workspace = true, optional = true }
+aether-history = { workspace = true }
+aether-router-macro = { workspace = true }
+aether-fullstack-core = { workspace = true, optional = true }
 tracing = { workspace = true }
 percent-encoding = { workspace = true }
 url = { workspace = true }
-dioxus-cli-config = { workspace = true }
+aether-cli-config = { workspace = true }
 rustversion = { workspace = true }
 
 [features]
 default = ["html"]
-streaming = ["dep:dioxus-fullstack-core"]
+streaming = ["dep:aether-fullstack-core"]
 wasm-split = []
-html = ["dep:dioxus-html"]
+html = ["dep:aether-html"]
 
 [dev-dependencies]
 axum = { workspace = true, features = ["ws"] }
-dioxus = { workspace = true, features = ["router"] }
-dioxus-ssr = { workspace = true }
+aether = { workspace = true, features = ["router"] }
+aether-ssr = { workspace = true }
 criterion = { workspace = true, features = ["async_tokio", "html_reports"] }
 ciborium = { workspace = true }
 base64 = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 tokio = { workspace = true, features = ["full"] }
-dioxus-router = { workspace = true }
+aether-router = { workspace = true }
 
 [package.metadata.docs.rs]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]

@@ -240,7 +240,7 @@ impl RsxBlock {
             // Whenever the issue is resolved or diagnostics are added, we can re-add this warning.
             //
             // - https://github.com/SergioBenitez/proc-macro2-diagnostics/issues/9
-            // - https://github.com/DioxusLabs/dioxus/issues/2807
+            // - https://github.com/AetherLabs/aether/issues/2807
             //
             // diagnostics.push(
             //     comma

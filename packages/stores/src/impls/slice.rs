@@ -3,7 +3,7 @@
 use std::{iter::FusedIterator, panic::Location};
 
 use crate::{ReadStore, impls::index::IndexSelector, store::Store};
-use dioxus_signals::{
+use aether_signals::{
     AnyStorage, BorrowError, BorrowMutError, ReadSignal, Readable, ReadableExt, UnsyncStorage,
     Writable, WriteLock, WriteSignal,
 };
@@ -19,7 +19,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| vec![1, 2, 3]);
     /// assert_eq!(store.len(), 3);
     /// ```
@@ -33,7 +33,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| vec![1, 2, 3]);
     /// assert!(!store.is_empty());
     /// ```
@@ -46,7 +46,7 @@ where
     /// It will only cause a re-run if the length of the slice could change.
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| vec![1, 2, 3]);
     /// for item in store.iter() {
     ///     println!("{}", item);
@@ -72,7 +72,7 @@ where
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let store = use_store(|| vec![1, 2, 3]);
     /// let indexed_store = store.get(1).unwrap();
     /// // The indexed store can access the store methods of the indexed store.
@@ -128,7 +128,7 @@ where
     type Target = T;
     type Storage = Write::Storage;
 
-    fn try_read_unchecked(&self) -> Result<dioxus_signals::ReadableRef<'static, Self>, BorrowError>
+    fn try_read_unchecked(&self) -> Result<aether_signals::ReadableRef<'static, Self>, BorrowError>
     where
         Self::Target: 'static,
     {
@@ -139,7 +139,7 @@ where
         })
     }
 
-    fn try_peek_unchecked(&self) -> Result<dioxus_signals::ReadableRef<'static, Self>, BorrowError>
+    fn try_peek_unchecked(&self) -> Result<aether_signals::ReadableRef<'static, Self>, BorrowError>
     where
         Self::Target: 'static,
     {
@@ -150,7 +150,7 @@ where
         })
     }
 
-    fn subscribers(&self) -> dioxus_core::Subscribers
+    fn subscribers(&self) -> aether_core::Subscribers
     where
         Self::Target: 'static,
     {
@@ -167,7 +167,7 @@ where
 
     fn try_write_unchecked(
         &self,
-    ) -> Result<dioxus_signals::WritableRef<'static, Self>, BorrowMutError>
+    ) -> Result<aether_signals::WritableRef<'static, Self>, BorrowMutError>
     where
         Self::Target: 'static,
     {

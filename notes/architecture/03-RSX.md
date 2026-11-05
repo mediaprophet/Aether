@@ -1,6 +1,6 @@
 # RSX and Autofmt Architecture
 
-The `dioxus-rsx` crate parses JSX-like syntax into Rust code, while `dioxus-autofmt` provides formatting capabilities.
+The `aether-rsx` crate parses JSX-like syntax into Rust code, while `aether-autofmt` provides formatting capabilities.
 
 ## RSX Parsing
 
@@ -135,7 +135,7 @@ Generated output structure:
 
 ### Template Structure
 ```rust
-dioxus_core::Element::Ok({
+aether_core::Element::Ok({
     #[cfg(debug_assertions)]
     fn __original_template() -> &'static HotReloadedTemplate { ... }
 

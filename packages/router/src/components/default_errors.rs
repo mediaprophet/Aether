@@ -1,6 +1,6 @@
-use dioxus_core::Element;
-use dioxus_core_macro::rsx;
-use dioxus_html::{
+use aether_core::Element;
+use aether_core_macro::rsx;
+use aether_html::{
     elements::{prelude::*, *},
     extensions::*,
 };

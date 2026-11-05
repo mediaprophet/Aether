@@ -4,12 +4,12 @@
 //! - `use_loader` automatically fetches the list of dog breeds when the component mounts.
 //! - `use_action` fetches a random dog image whenever the `.dispatch` method is called.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

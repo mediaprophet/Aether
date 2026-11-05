@@ -1,5 +1,5 @@
-use dioxus::prelude::*;
-use dioxus_desktop::window;
+use aether::prelude::*;
+use aether_desktop::window;
 use serde::Deserialize;
 
 #[path = "./utils.rs"]
@@ -18,8 +18,8 @@ fn app() -> Element {
     use_future(|| async {
         let mut eval = document::eval(
             r#"for (let i = 0; i < 100; i++) {
-            let value = await dioxus.recv();
-            dioxus.send(value*2);
+            let value = await aether.recv();
+            aether.send(value*2);
         }"#,
         );
         for i in 0..100 {

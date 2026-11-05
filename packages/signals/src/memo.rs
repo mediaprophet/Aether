@@ -7,7 +7,7 @@ use std::{
     sync::{Arc, atomic::AtomicBool},
 };
 
-use dioxus_core::{
+use aether_core::{
     IntoAttributeValue, IntoDynNode, ReactiveContext, ScopeId, Subscribers, current_scope_id,
     spawn_isomorphic,
 };
@@ -84,11 +84,11 @@ impl<T> Memo<T> {
         memo
     }
 
-    /// Creates a new [`GlobalMemo`] that can be used anywhere inside your dioxus app. This memo will automatically be created once per app the first time you use it.
+    /// Creates a new [`GlobalMemo`] that can be used anywhere inside your aether app. This memo will automatically be created once per app the first time you use it.
     ///
     /// # Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// static SIGNAL: GlobalSignal<i32> = Signal::global(|| 0);
     /// // Create a new global memo that can be used anywhere in your app
     /// static DOUBLED: GlobalMemo<i32> = Memo::global(|| SIGNAL() * 2);
@@ -179,7 +179,7 @@ where
             .swap(false, std::sync::atomic::Ordering::Relaxed);
         let result = if needs_update {
             drop(read);
-            // We shouldn't be subscribed to the value here so we don't trigger the scope we are currently in to rerun even though that scope got the latest value because we synchronously update the value: https://github.com/DioxusLabs/dioxus/issues/2416
+            // We shouldn't be subscribed to the value here so we don't trigger the scope we are currently in to rerun even though that scope got the latest value because we synchronously update the value: https://github.com/AetherLabs/aether/issues/2416
             self.recompute();
             self.inner.inner.try_read_unchecked()
         } else {
@@ -231,7 +231,7 @@ impl<T> IntoAttributeValue for Memo<T>
 where
     T: Clone + IntoAttributeValue + PartialEq + 'static,
 {
-    fn into_value(self) -> dioxus_core::AttributeValue {
+    fn into_value(self) -> aether_core::AttributeValue {
         self.with(|f| f.clone().into_value())
     }
 }
@@ -240,7 +240,7 @@ impl<T> IntoDynNode for Memo<T>
 where
     T: Clone + IntoDynNode + PartialEq + 'static,
 {
-    fn into_dyn_node(self) -> dioxus_core::DynamicNode {
+    fn into_dyn_node(self) -> aether_core::DynamicNode {
         self().into_dyn_node()
     }
 }

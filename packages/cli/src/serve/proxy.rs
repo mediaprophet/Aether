@@ -122,7 +122,7 @@ pub(crate) fn proxy_to(
 ) -> MethodRouter {
     any(move |parts: Parts, mut req: Request<MyBody>| async move {
         // Prevent request loops
-        if req.headers().get("x-proxied-by-dioxus").is_some() {
+        if req.headers().get("x-proxied-by-aether").is_some() {
             return Err(Response::builder()
                 .status(StatusCode::NOT_FOUND)
                 .body(Body::from(
@@ -132,7 +132,7 @@ pub(crate) fn proxy_to(
         }
 
         req.headers_mut().insert(
-            "x-proxied-by-dioxus",
+            "x-proxied-by-aether",
             "true".parse().expect("header value is valid"),
         );
 
@@ -175,7 +175,7 @@ pub(crate) fn proxy_to(
             Ok(res) => {
                 // log assets at a different log level
                 if uri.path().starts_with("/assets/")
-                    || uri.path().starts_with("/_dioxus/")
+                    || uri.path().starts_with("/_aether/")
                     || uri.path().starts_with("/public/")
                     || uri.path().starts_with("/wasm/")
                 {

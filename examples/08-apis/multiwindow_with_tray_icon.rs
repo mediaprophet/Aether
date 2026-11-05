@@ -1,19 +1,19 @@
 //! Multiwindow with tray icon example
 //!
-//! This example shows how to implement a simple multiwindow application and tray icon using dioxus.
+//! This example shows how to implement a simple multiwindow application and tray icon using aether.
 //! This works by rendering a `Window` component when the user clicks a button.
 //!
 //! This is useful for apps that incorporate settings panels or persistent windows like Raycast.
 
-use dioxus::desktop::{
+use aether::desktop::{
     WindowCloseBehaviour,
     trayicon::{default_tray_icon, init_tray_icon},
     window,
 };
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

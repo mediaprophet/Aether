@@ -6,7 +6,7 @@ use super::*;
 ///
 /// # Example
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn RedBackground() -> Element {
 ///     rsx! {
 ///         document::Stylesheet {

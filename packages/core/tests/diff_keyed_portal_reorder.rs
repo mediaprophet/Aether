@@ -1,8 +1,8 @@
 use std::{cell::Cell, collections::BTreeMap};
 
-use dioxus::prelude::*;
-use dioxus_core::{Portal, RenderTargetId, VirtualDom};
-use dioxus_renderer_oracle::{RendererOracle, SnapshotNode};
+use aether::prelude::*;
+use aether_core::{Portal, RenderTargetId, VirtualDom};
+use aether_renderer_oracle::{RendererOracle, SnapshotNode};
 
 /// All text content in a render target's snapshot, in document order.
 fn all_text(nodes: &[SnapshotNode]) -> Vec<String> {
@@ -85,7 +85,7 @@ fn keyed_portal_list_reorder_does_not_push_into_wrong_target() {
     assert!(writer.get(&inner_target).unwrap().is_stack_clean());
 
     ORDER.with(|o| o.set(1));
-    dom.mark_dirty(dioxus_core::ScopeId::APP);
+    dom.mark_dirty(aether_core::ScopeId::APP);
     dom.render_immediate(&mut writer);
 
     // All five reordered bodies must end up in the inner target, and none may

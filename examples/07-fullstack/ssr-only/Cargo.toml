@@ -5,8 +5,8 @@ version.workspace = true
 publish = false
 
 [dependencies]
-dioxus = { workspace = true, features = ["fullstack", "router"] }
+aether = { workspace = true, features = ["fullstack", "router"] }
 
 [features]
 default = ["server"]
-server = ["dioxus/server"]
+server = ["aether/server"]

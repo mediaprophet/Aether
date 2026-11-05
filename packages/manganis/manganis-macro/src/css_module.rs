@@ -104,7 +104,7 @@ pub(crate) fn expand_css_module_struct(
         #[doc(hidden)]
         #[allow(missing_docs, non_snake_case)]
         mod #struct_name_private {
-            use dioxus::prelude::*;
+            use aether::prelude::*;
 
             #linker_tokens;
 
@@ -117,7 +117,7 @@ pub(crate) fn expand_css_module_struct(
                 type Target = str;
 
                 fn deref(&self) -> &Self::Target {
-                    dioxus::document::insert_stylesheet(&ASSET.to_string());
+                    aether::document::insert_stylesheet(&ASSET.to_string());
 
                     self.inner
                 }
@@ -138,9 +138,9 @@ pub(crate) fn expand_css_module_struct(
             #( #values )*
         }
 
-            impl dioxus::core::IntoAttributeValue for #struct_name_private::__CssIdent {
-                fn into_value(self) -> dioxus::core::AttributeValue {
-                    dioxus::core::AttributeValue::Text(self.to_string())
+            impl aether::core::IntoAttributeValue for #struct_name_private::__CssIdent {
+                fn into_value(self) -> aether::core::AttributeValue {
+                    aether::core::AttributeValue::Text(self.to_string())
                 }
             }
     })

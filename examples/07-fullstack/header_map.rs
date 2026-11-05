@@ -6,13 +6,13 @@
 //!
 //! Note that headers returned by the server are not always visible to the client due to CORS.
 //! Headers like `Set-Cookie` are hidden by default, and need to be explicitly allowed
-//! by the server using the `Access-Control-Expose-Headers` header (which dioxus-fullstack does not
+//! by the server using the `Access-Control-Expose-Headers` header (which aether-fullstack does not
 //! currently expose directly).
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -30,7 +30,7 @@ fn app() -> Element {
     }
 }
 
-#[get("/api/example", headers: dioxus::fullstack::HeaderMap)]
+#[get("/api/example", headers: aether::fullstack::HeaderMap)]
 async fn get_headers() -> Result<String> {
     Ok(format!("{:#?}", headers))
 }

@@ -1,4 +1,4 @@
-use dioxus_html_internal_macro::impl_extension_attributes;
+use aether_html_internal_macro::impl_extension_attributes;
 
 #[cfg(feature = "hot-reload-context")]
 macro_rules! mod_method_mapping {
@@ -132,9 +132,9 @@ attribute_group! {
     map_global_attributes;
     map_html_global_attributes_to_rsx;
 
-    #[deprecated(note = "This attribute does nothing. For most renderers, you should prefer calling [`dioxus_core::Event::prevent_default`] on the event instead. For liveview, you can use `\"onclick\": (evt) => evt.prevent_default()` to prevent the default action for this element.")]
-    /// This attribute has been deprecated in favor of [`dioxus_core::Event::prevent_default`]
-    prevent_default: "dioxus-prevent-default";
+    #[deprecated(note = "This attribute does nothing. For most renderers, you should prefer calling [`aether_core::Event::prevent_default`] on the event instead. For liveview, you can use `\"onclick\": (evt) => evt.prevent_default()` to prevent the default action for this element.")]
+    /// This attribute has been deprecated in favor of [`aether_core::Event::prevent_default`]
+    prevent_default: "aether-prevent-default";
 
 
     /// <https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/accesskey>
@@ -159,10 +159,10 @@ attribute_group! {
     ///
     /// ## Multiple Classes
     ///
-    /// If you include multiple classes in a single element dioxus will automatically join them with a space.
+    /// If you include multiple classes in a single element aether will automatically join them with a space.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// rsx! {
     ///     div {
     ///         class: "my-class",
@@ -176,7 +176,7 @@ attribute_group! {
     /// You can include optional attributes with an unterminated if statement as the value of the attribute. This is very useful for conditionally applying css classes:
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// rsx! {
     ///     div {
     ///         class: if true {
@@ -272,9 +272,9 @@ attribute_group! {
     translate;
 
 
-    /// dangerous_inner_html is Dioxus's replacement for using innerHTML in the browser DOM. In general, setting
+    /// dangerous_inner_html is Aether's replacement for using innerHTML in the browser DOM. In general, setting
     /// HTML from code is risky because it’s easy to inadvertently expose your users to a cross-site scripting (XSS)
-    /// attack. So, you can set HTML directly from Dioxus, but you have to type out dangerous_inner_html to remind
+    /// attack. So, you can set HTML directly from Aether, but you have to type out dangerous_inner_html to remind
     /// yourself that it’s dangerous
     dangerous_inner_html;
 
@@ -1668,16 +1668,16 @@ attribute_group! {
     /// which does not support the prevent default method on events.
     ///
     ///
-    /// For most renderers, you should prefer calling [`dioxus_core::Event::prevent_default`] on the event instead.
+    /// For most renderers, you should prefer calling [`aether_core::Event::prevent_default`] on the event instead.
     ///
     ///
     /// For more information, see the MDN docs:
     /// <https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault>
-    prevent_default: "dioxus-prevent-default";
+    prevent_default: "aether-prevent-default";
 
-    /// dangerous_inner_html is Dioxus's replacement for using innerHTML in the browser DOM. In general, setting
+    /// dangerous_inner_html is Aether's replacement for using innerHTML in the browser DOM. In general, setting
     /// HTML from code is risky because it’s easy to inadvertently expose your users to a cross-site scripting (XSS)
-    /// attack. So, you can set HTML directly from Dioxus, but you have to type out dangerous_inner_html to remind
+    /// attack. So, you can set HTML directly from Aether, but you have to type out dangerous_inner_html to remind
     /// yourself that it’s dangerous
     dangerous_inner_html;
 
@@ -2437,14 +2437,14 @@ pub trait GlobalAttributesElement {}
 pub trait SvgAttributesElement {}
 
 impl<Tag, Attributes, Children> GlobalAttributesExtension
-    for dioxus_core::view::ElementBuilder<Tag, Attributes, Children>
+    for aether_core::view::ElementBuilder<Tag, Attributes, Children>
 where
     Tag: GlobalAttributesElement,
 {
 }
 
 impl<Tag, Attributes, Children> SvgAttributesExtension
-    for dioxus_core::view::ElementBuilder<Tag, Attributes, Children>
+    for aether_core::view::ElementBuilder<Tag, Attributes, Children>
 where
     Tag: SvgAttributesElement,
 {

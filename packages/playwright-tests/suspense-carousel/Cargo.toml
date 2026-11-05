@@ -5,11 +5,11 @@ version.workspace = true
 publish = false
 
 [dependencies]
-dioxus = { workspace = true, features = ["fullstack"] }
+aether = { workspace = true, features = ["fullstack"] }
 futures-timer = { version = "3.0.4", features = ["wasm-bindgen"] }
 serde = { workspace = true }
 
 [features]
 default = []
-server = ["dioxus/server"]
-web = ["dioxus/web"]
+server = ["aether/server"]
+web = ["aether/web"]

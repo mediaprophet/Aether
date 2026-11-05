@@ -7,17 +7,17 @@
 
 use std::collections::HashMap;
 
-use dioxus_core::{
+use aether_core::{
     Template, VNode,
     internal::{
         FmtSegment, FmtedSegments, HotReloadAttributeValue, HotReloadDynamicAttribute,
         HotReloadDynamicNode, HotReloadLiteral, HotReloadedTemplate, NamedAttribute,
     },
 };
-use dioxus_core_template::DecodedTemplateOp;
-use dioxus_core_types::HotReloadingContext;
-use dioxus_rsx::CallBody;
-use dioxus_rsx_hotreload::HotReloadResult;
+use aether_core_template::DecodedTemplateOp;
+use aether_core_types::HotReloadingContext;
+use aether_rsx::CallBody;
+use aether_rsx_hotreload::HotReloadResult;
 use proc_macro2::TokenStream;
 use quote::quote;
 

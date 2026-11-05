@@ -246,7 +246,7 @@ impl Route {
                     #[allow(unused)]
                     (#last_index.., Self::#name { #field_name, .. }) => {
                         rsx! {
-                            dioxus_router::components::child_router::ChildRouter {
+                            aether_router::components::child_router::ChildRouter {
                                 route: #field_name,
                                 // Try to parse the current route as a parent route, and then match it as a child route
                                 parse_route_from_root_route: |__route| if let Ok(__route) = __route.parse() {
@@ -282,7 +282,7 @@ impl Route {
                 without breaking the rules of hooks. The router derive is quite complex so this shoves
                 the complexity towards the "leaf" of the codegen rather to its core. In the future though,
                 we should think about restructuring the router macro completely since its codegen
-                makes up nearly 30-40% of the binary size in the dioxus docsite.
+                makes up nearly 30-40% of the binary size in the aether docsite.
                 */
                 use sha2::Digest;
                 let dynamic_segments_receiver = self.dynamic_segments();
@@ -297,7 +297,7 @@ impl Route {
                 quote! {
                     #[allow(unused)]
                     (#last_index, Self::#name { #(#dynamic_segments,)* }) => {
-                        dioxus_config_macros::maybe_wasm_split! {
+                        aether_config_macros::maybe_wasm_split! {
                             if wasm_split {
                                 {
                                     fn #comp_name(args: #router_name) -> Element {

@@ -3,7 +3,7 @@ use crate::{
     event_handlers::WindowEventHandlers, file_upload::NativeFileHover, ipc::UserWindowEvent,
     query::QueryEngine, shortcut::ShortcutRegistry, webview::PendingWebview,
 };
-use dioxus_core::{RenderTargetId, Runtime};
+use aether_core::{RenderTargetId, Runtime};
 use std::{
     cell::{Cell, RefCell},
     rc::Rc,
@@ -54,7 +54,7 @@ impl DesktopAppContext {
         }
     }
 
-    /// Queue a new desktop window from any Dioxus scope.
+    /// Queue a new desktop window from any Aether scope.
     pub fn new_window(self: &Rc<Self>, cfg: WindowConfig) -> crate::PendingDesktopWindow {
         let target_id = Runtime::current().create_render_target();
         let (window, context) = PendingWebview::new(target_id, cfg);

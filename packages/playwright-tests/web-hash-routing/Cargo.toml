@@ -1,10 +1,10 @@
 [package]
-name = "dioxus-playwright-web-hash-routing-test"
+name = "aether-playwright-web-hash-routing-test"
 version = "0.0.1"
 edition = "2024"
-description = "Playwright test for Dioxus Web Routing"
+description = "Playwright test for Aether Web Routing"
 license = "CC-BY-NC-ND-4.0"
 publish = false
 
 [dependencies]
-dioxus = { workspace = true, features = ["web", "router"]}
+aether = { workspace = true, features = ["web", "router"]}

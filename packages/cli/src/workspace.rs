@@ -1,7 +1,7 @@
 use crate::CliSettings;
 use crate::Result;
 use crate::styles::GLOW_STYLE;
-use crate::{AndroidTools, config::DioxusConfig};
+use crate::{AndroidTools, config::AetherConfig};
 use anyhow::{Context, bail};
 use ignore::gitignore::Gitignore;
 use krates::{Cmd, Krates, NodeId};
@@ -125,12 +125,12 @@ impl Workspace {
                • sysroot: {sysroot}
                • rustc version: {rustc_version}
                • workspace root: {workspace_root}
-               • dioxus versions: [{dioxus_versions:?}]"#,
+               • aether versions: [{aether_versions:?}]"#,
             sysroot = workspace.sysroot.display(),
             rustc_version = workspace.rustc_version,
             workspace_root = workspace.workspace_root().display(),
-            dioxus_versions = workspace
-                .dioxus_versions()
+            aether_versions = workspace
+                .aether_versions()
                 .iter()
                 .map(|v| v.to_string())
                 .collect::<Vec<_>>()
@@ -195,32 +195,32 @@ impl Workspace {
         false
     }
 
-    pub fn check_dioxus_version_against_cli(&self) {
+    pub fn check_aether_version_against_cli(&self) {
         let dx_semver = Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
-        let dioxus_versions = self.dioxus_versions();
+        let aether_versions = self.aether_versions();
 
         tracing::trace!("dx version: {}", dx_semver);
-        tracing::trace!("dioxus versions: {:?}", dioxus_versions);
+        tracing::trace!("aether versions: {:?}", aether_versions);
 
-        // if there are no dioxus versions in the workspace, we don't need to check anything
-        // dx is meant to be compatible with non-dioxus projects too.
-        if dioxus_versions.is_empty() {
+        // if there are no aether versions in the workspace, we don't need to check anything
+        // dx is meant to be compatible with non-aether projects too.
+        if aether_versions.is_empty() {
             return;
         }
 
-        let min = dioxus_versions.iter().min().unwrap();
-        let max = dioxus_versions.iter().max().unwrap();
+        let min = aether_versions.iter().min().unwrap();
+        let max = aether_versions.iter().max().unwrap();
 
-        // If the minimum dioxus version is greater than the current cli version, warn the user
+        // If the minimum aether version is greater than the current cli version, warn the user
         if min > &dx_semver
             || max < &dx_semver
-            || dioxus_versions.iter().any(|f| f.pre != dx_semver.pre)
+            || aether_versions.iter().any(|f| f.pre != dx_semver.pre)
         {
             tracing::error!(
-                r#"🚫dx and dioxus versions are incompatible!
+                r#"🚫dx and aether versions are incompatible!
                   • dx version: {dx_semver}
-                  • dioxus versions: [{}]"#,
-                dioxus_versions
+                  • aether versions: [{}]"#,
+                aether_versions
                     .iter()
                     .map(|v| v.to_string())
                     .collect::<Vec<_>>()
@@ -229,11 +229,11 @@ impl Workspace {
         }
     }
 
-    /// Get all the versions of dioxus in the workspace
-    pub fn dioxus_versions(&self) -> Vec<Version> {
+    /// Get all the versions of aether in the workspace
+    pub fn aether_versions(&self) -> Vec<Version> {
         let mut versions = HashSet::new();
         for krate in self.krates.krates() {
-            if krate.name == "dioxus" {
+            if krate.name == "aether" {
                 versions.insert(krate.version.clone());
             }
         }
@@ -413,24 +413,24 @@ impl Workspace {
         Ok(package)
     }
 
-    /// Load the Dioxus.toml configuration for a package.
+    /// Load the Aether.toml configuration for a package.
     ///
     /// Optionally accepts a source file path to extract inline configuration from doc comments.
-    /// Inline config is merged with the base Dioxus.toml, with inline values taking precedence.
+    /// Inline config is merged with the base Aether.toml, with inline values taking precedence.
     ///
     /// This allows examples and binaries to embed config in their doc comments:
     /// ```rust,ignore
-    /// //! ```dioxus.toml
+    /// //! ```aether.toml
     /// //! [bundle]
     /// //! identifier = "com.example.app"
     /// //! ```
     /// ```
-    pub fn load_dioxus_config(
+    pub fn load_aether_config(
         &self,
         package: NodeId,
         source_file: Option<&Path>,
-    ) -> Result<Option<DioxusConfig>> {
-        // Walk up from the cargo.toml to the root of the workspace looking for Dioxus.toml
+    ) -> Result<Option<AetherConfig>> {
+        // Walk up from the cargo.toml to the root of the workspace looking for Aether.toml
         let mut current_dir = self.krates[package]
             .manifest_path
             .parent()
@@ -446,31 +446,31 @@ impl Workspace {
             .to_path_buf()
             .canonicalize()?;
 
-        let mut dioxus_conf_file = None;
+        let mut aether_conf_file = None;
         while current_dir.starts_with(&workspace_path) {
-            let config = ["Dioxus.toml", "dioxus.toml"]
+            let config = ["Aether.toml", "aether.toml"]
                 .into_iter()
                 .map(|file| current_dir.join(file))
                 .find(|path| path.is_file());
 
-            // Try to find Dioxus.toml in the current directory
+            // Try to find Aether.toml in the current directory
             if let Some(new_config) = config {
-                dioxus_conf_file = Some(new_config.as_path().to_path_buf());
+                aether_conf_file = Some(new_config.as_path().to_path_buf());
                 break;
             }
             // If we can't find it, go up a directory
             current_dir = current_dir
                 .parent()
-                .context("Failed to find Dioxus.toml")?
+                .context("Failed to find Aether.toml")?
                 .to_path_buf();
         }
 
-        // Load base config from Dioxus.toml (if it exists)
-        let base_config: Option<DioxusConfig> = match &dioxus_conf_file {
+        // Load base config from Aether.toml (if it exists)
+        let base_config: Option<AetherConfig> = match &aether_conf_file {
             Some(path) => {
                 let content = std::fs::read_to_string(path)?;
                 Some(toml::from_str(&content).map_err(|err| {
-                    anyhow::anyhow!("Failed to parse Dioxus.toml at {path:?}: {err}")
+                    anyhow::anyhow!("Failed to parse Aether.toml at {path:?}: {err}")
                 })?)
             }
             None => None,
@@ -486,8 +486,8 @@ impl Workspace {
                 .map_err(|err| anyhow::anyhow!("Failed to merge inline config: {err}")),
             (Some(base), None) => Ok(Some(base)),
             (None, Some(inline)) => {
-                // No Dioxus.toml, but we have inline config - use defaults + inline
-                let base = DioxusConfig::default();
+                // No Aether.toml, but we have inline config - use defaults + inline
+                let base = AetherConfig::default();
                 crate::config::merge_with_inline_config(&base, inline)
                     .map(Some)
                     .map_err(|err| anyhow::anyhow!("Failed to merge inline config: {err}"))
@@ -611,11 +611,11 @@ impl Workspace {
             .context("Failed to find dx")
     }
 
-    /// Returns the path to the dioxus data directory, used to install tools, store configs, and other things
+    /// Returns the path to the aether data directory, used to install tools, store configs, and other things
     ///
     /// On macOS, we prefer to not put this dir in Application Support, but rather in the home directory.
     /// On Windows, we prefer to keep it in the home directory so the `dx` install dir matches the install script.
-    pub(crate) fn dioxus_data_dir() -> PathBuf {
+    pub(crate) fn aether_data_dir() -> PathBuf {
         static DX_HOME: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
         DX_HOME
             .get_or_init(|| {
@@ -639,16 +639,16 @@ impl Workspace {
     ///
     /// Layout: `~/.dx/tools/{tool-name}-{version}/`
     pub(crate) fn tools_dir() -> PathBuf {
-        Self::dioxus_data_dir().join("tools")
+        Self::aether_data_dir().join("tools")
     }
 
     pub(crate) fn global_settings_file() -> PathBuf {
-        Self::dioxus_data_dir().join("settings.toml")
+        Self::aether_data_dir().join("settings.toml")
     }
 
     /// The path where components downloaded from git are cached
     pub(crate) fn component_cache_dir() -> PathBuf {
-        Self::dioxus_data_dir().join("components")
+        Self::aether_data_dir().join("components")
     }
 
     /// Get the path to a specific component in the cache

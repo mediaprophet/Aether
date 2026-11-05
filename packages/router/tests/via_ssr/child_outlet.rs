@@ -2,9 +2,9 @@
 
 use std::rc::Rc;
 
-use dioxus::prelude::*;
-use dioxus_history::{History, MemoryHistory};
-use dioxus_router::components::HistoryProvider;
+use aether::prelude::*;
+use aether_history::{History, MemoryHistory};
+use aether_router::components::HistoryProvider;
 
 fn prepare(path: impl Into<String>) -> VirtualDom {
     let mut vdom = VirtualDom::new_with_props(
@@ -68,7 +68,7 @@ fn prepare(path: impl Into<String>) -> VirtualDom {
 #[test]
 fn root_index() {
     let vdom = prepare("/");
-    let html = dioxus_ssr::render(&vdom);
+    let html = aether_ssr::render(&vdom);
 
     assert_eq!(
         html,

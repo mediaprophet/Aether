@@ -1,4 +1,4 @@
-//! The dioxus asset system.
+//! The aether asset system.
 //!
 //! This module provides functionality for extracting assets from a binary file and then writing back
 //! their asset hashes directly into the binary file. Previously, we performed asset hashing in the
@@ -14,7 +14,7 @@
 //! symbol table to find symbols that match the `__ASSETS__` prefix. These symbols are ideally data
 //! symbols and contain the BundledAsset data type which implements ConstSerialize and ConstDeserialize.
 //!
-//! When the binary is built, the `dioxus asset!()` macro will emit its metadata into the __ASSETS__
+//! When the binary is built, the `aether asset!()` macro will emit its metadata into the __ASSETS__
 //! symbols, which we process here. After reading the metadata directly from the executable, we then
 //! hash it and write the hash directly into the binary file.
 //!
@@ -577,7 +577,7 @@ pub(crate) async fn extract_symbols_from_file(path: impl AsRef<Path>) -> Result<
             }
         } else {
             tracing::warn!(
-                "Found a symbol at offset {offset} that could not be deserialized. This may be caused by a mismatch between your dioxus and dioxus-cli versions, or the symbol may be in an unsupported format."
+                "Found a symbol at offset {offset} that could not be deserialized. This may be caused by a mismatch between your aether and aether-cli versions, or the symbol may be in an unsupported format."
             );
         }
     }

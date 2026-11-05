@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_core::{ScopeId, generation};
-use dioxus_renderer_oracle::RendererOracle;
+use aether::prelude::*;
+use aether_core::{ScopeId, generation};
+use aether_renderer_oracle::RendererOracle;
 
 /// As we clean up old templates, the ID for the node should cycle
 #[test]

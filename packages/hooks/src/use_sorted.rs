@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 use std::ops::DerefMut;
 
 use crate::use_memo;
-use dioxus_signals::{ReadSignal, Signal};
+use aether_signals::{ReadSignal, Signal};
 
 pub fn use_sorted<V: 'static, T: PartialEq>(
     collection: impl FnMut() -> Signal<V>,

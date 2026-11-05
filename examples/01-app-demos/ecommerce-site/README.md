@@ -1,4 +1,4 @@
-# Dioxus Example: An e-commerce site using the FakeStoreAPI
+# Aether Example: An e-commerce site using the FakeStoreAPI
 
 This example app is a fullstack web application leveraging the FakeStoreAPI and [Tailwind CSS](https://tailwindcss.com/).
 
@@ -12,7 +12,7 @@ This example app is a fullstack web application leveraging the FakeStoreAPI and 
 dx serve
 ```
 
-Note that in Dioxus 0.7, the Tailwind watcher is initialized automatically if a `tailwind.css` file is find in your app's root.
+Note that in Aether 0.7, the Tailwind watcher is initialized automatically if a `tailwind.css` file is find in your app's root.
 
 # Status
 

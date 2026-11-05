@@ -1,6 +1,6 @@
-use dioxus_core::spawn;
-use dioxus_document::Eval;
-use dioxus_history::History;
+use aether_core::spawn;
+use aether_document::Eval;
+use aether_history::History;
 use serde::{Deserialize, Serialize};
 use std::rc::Rc;
 use std::sync::{Mutex, RwLock};
@@ -122,7 +122,7 @@ impl LiveviewHistory {
     ///
     /// # Panics
     ///
-    /// Panics if the function is not called in a dioxus runtime with a Liveview context.
+    /// Panics if the function is not called in a aether runtime with a Liveview context.
     pub(crate) fn new(eval: Rc<dyn Fn(&str) -> Eval>) -> Self {
         Self::new_with_initial_path(
             "/".parse().unwrap_or_else(|err| {
@@ -137,7 +137,7 @@ impl LiveviewHistory {
     ///
     /// # Panics
     ///
-    /// Panics if the function is not called in a dioxus runtime with a Liveview context.
+    /// Panics if the function is not called in a aether runtime with a Liveview context.
     fn new_with_initial_path(initial_path: String, eval: Rc<dyn Fn(&str) -> Eval>) -> Self {
         let (action_tx, mut action_rx) = tokio::sync::mpsc::unbounded_channel::<Action>();
 
@@ -242,7 +242,7 @@ impl LiveviewHistory {
                         sessionStorage.setItem("liveview", '{session}');
 
                         window.addEventListener("popstate", (event) => {{
-                          dioxus.send([
+                          aether.send([
                             document.location.pathname + document.location.search + document.location.hash,
                             event.state,
                           ]);

@@ -118,13 +118,13 @@ impl ToTokens for IfChain {
 
         if !terminated {
             body.append_all(quote! {
-                else { dioxus_core::VNode::empty() }
+                else { aether_core::VNode::empty() }
             });
         }
 
         tokens.append_all(quote! {
             {
-                let ___nodes = dioxus_core::IntoDynNode::into_dyn_node(#body);
+                let ___nodes = aether_core::IntoDynNode::into_dyn_node(#body);
                 ___nodes
             }
         })

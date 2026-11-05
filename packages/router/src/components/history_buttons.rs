@@ -1,6 +1,6 @@
-use dioxus_core::{Element, VNode};
-use dioxus_core_macro::{Props, rsx};
-use dioxus_html::{
+use aether_core::{Element, VNode};
+use aether_core_macro::{Props, rsx};
+use aether_html::{
     elements::{prelude::*, *},
     extensions::*,
 };
@@ -28,7 +28,7 @@ pub struct HistoryButtonProps {
 ///
 /// # Example
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[derive(Clone, Routable)]
 /// enum Route {
 ///     #[route("/")]
@@ -54,7 +54,7 @@ pub struct HistoryButtonProps {
 /// # let mut vdom = VirtualDom::new(App);
 /// # vdom.rebuild_in_place();
 /// # assert_eq!(
-/// #     dioxus_ssr::render(&vdom),
+/// #     aether_ssr::render(&vdom),
 /// #     r#"<button disabled="true">go back</button>"#
 /// # );
 /// ```
@@ -100,7 +100,7 @@ pub fn GoBackButton(props: HistoryButtonProps) -> Element {
 ///
 /// # Example
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #[derive(Clone, Routable)]
 /// enum Route {
 ///     #[route("/")]
@@ -126,7 +126,7 @@ pub fn GoBackButton(props: HistoryButtonProps) -> Element {
 /// # let mut vdom = VirtualDom::new(App);
 /// # vdom.rebuild_in_place();
 /// # assert_eq!(
-/// #     dioxus_ssr::render(&vdom),
+/// #     aether_ssr::render(&vdom),
 /// #     r#"<button disabled="true">go forward</button>"#
 /// # );
 /// ```

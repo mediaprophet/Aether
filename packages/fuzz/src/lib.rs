@@ -1,4 +1,4 @@
-//! Reusable Dioxus VirtualDom fuzzing harness.
+//! Reusable Aether VirtualDom fuzzing harness.
 //!
 //! The `cargo-fuzz` target feeds encoded [`FuzzCase`] values into this crate.
 //! LibFuzzer owns coverage guidance and corpus management; this crate owns the

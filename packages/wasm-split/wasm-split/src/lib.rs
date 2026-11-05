@@ -44,7 +44,7 @@ impl std::fmt::Display for SplitLoaderError {
 ///
 /// ## The `#[component(lazy)]` macro
 ///
-/// If you're using wasm-split with Dioxus, the `#[component(lazy)]` macro is provided that wraps
+/// If you're using wasm-split with Aether, the `#[component(lazy)]` macro is provided that wraps
 /// the lazy loader with suspense. This means that the component will suspense until its body has
 /// been loaded.
 ///

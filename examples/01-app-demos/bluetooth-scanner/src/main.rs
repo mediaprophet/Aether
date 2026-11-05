@@ -1,7 +1,7 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app)
+    aether::launch(app)
 }
 
 fn app() -> Element {
@@ -32,7 +32,7 @@ fn app() -> Element {
         // Sort them by RSSI (signal strength)
         devices.sort_by_key(|p| p.rssi.unwrap_or(-100));
 
-        dioxus::Ok(devices)
+        aether::Ok(devices)
     });
 
     rsx! {

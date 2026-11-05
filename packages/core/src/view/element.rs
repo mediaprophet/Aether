@@ -4,7 +4,7 @@
 use std::marker::PhantomData;
 
 use crate::DynamicValues;
-use dioxus_core_template::TemplateRawTree;
+use aether_core_template::TemplateRawTree;
 
 use super::{IntoViewChild, View, ViewTemplate};
 

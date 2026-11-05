@@ -3,13 +3,13 @@
 //! The primary demonstration here is the properties on the events themselves, hoping to give you some inspiration
 //! on adding interactivity to your own application.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use std::{collections::VecDeque, fmt::Debug, rc::Rc};
 
 const STYLE: Asset = asset!("/examples/assets/events.css");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

@@ -7,13 +7,13 @@ publish = false
 
 [features]
 default = ["desktop"]
-desktop = ["dioxus/desktop"]
-native = ["dioxus/native"]
-tracing = ["dep:tracing-subscriber", "dioxus-native/tracing"]
+desktop = ["aether/desktop"]
+native = ["aether/native"]
+tracing = ["dep:tracing-subscriber", "aether-native/tracing"]
 
 [dependencies]
-dioxus-native = { workspace = true }
-dioxus = { workspace = true }
+aether-native = { workspace = true }
+aether = { workspace = true }
 anyrender = { workspace = true }
 blitz-dom = { workspace = true }
 blitz-traits = { workspace = true }

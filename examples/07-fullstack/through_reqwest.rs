@@ -1,21 +1,21 @@
-//! This example demonstrates that dioxus server functions can be called directly as a Rust
+//! This example demonstrates that aether server functions can be called directly as a Rust
 //! function or via an HTTP request using reqwest.
 //!
-//! Dioxus server functions generated a REST endpoint that can be called using any HTTP client.
+//! Aether server functions generated a REST endpoint that can be called using any HTTP client.
 //! By default, they also support different serialization formats like JSON and CBOR. Try changing
 //! your `accept` header to see the different formats.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
     let mut user_from_server_fn = use_action(get_user);
 
     let mut user_from_reqwest = use_action(move |id: i32| async move {
-        let port = dioxus::cli_config::server_port().unwrap_or(8080);
+        let port = aether::cli_config::server_port().unwrap_or(8080);
         reqwest::get(&format!("http://localhost:{}/api/user/{}", port, id))
             .await?
             .json::<User>()

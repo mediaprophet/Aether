@@ -157,13 +157,13 @@ pub(crate) enum Renderer {
     /// Targeting native renderer
     Native,
 
-    /// Targeting the server platform using Axum and Dioxus-Fullstack
+    /// Targeting the server platform using Axum and Aether-Fullstack
     ///
     /// This is implicitly passed if `fullstack` is enabled as a feature. Using this variant simply
     /// means you're only building the server variant without the `.wasm` to serve.
     Server,
 
-    /// Targeting the static generation platform using SSR and Dioxus-Fullstack
+    /// Targeting the static generation platform using SSR and Aether-Fullstack
     Liveview,
 
     /// Targeting the web-sys renderer
@@ -171,7 +171,7 @@ pub(crate) enum Renderer {
 }
 
 impl Renderer {
-    /// Get the feature name for the platform in the dioxus crate
+    /// Get the feature name for the platform in the aether crate
     pub(crate) fn feature_name(&self, target: &Triple) -> &str {
         match self {
             Renderer::Webview => match (target.environment, target.operating_system) {

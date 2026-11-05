@@ -12,11 +12,11 @@ pub use store::*;
 pub mod scope;
 
 #[cfg(feature = "macro")]
-pub use dioxus_stores_macro::{Store, store};
+pub use aether_stores_macro::{Store, store};
 
 /// Re-exports for the store derive macro
 #[doc(hidden)]
 pub mod macro_helpers {
-    pub use dioxus_core;
-    pub use dioxus_signals;
+    pub use aether_core;
+    pub use aether_signals;
 }

@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[test]
 fn escape_static_values() {
@@ -10,7 +10,7 @@ fn escape_static_values() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<input disabled=\"&#34;&#62;&#60;div&#62;\"/>"
     );
 }
@@ -26,7 +26,7 @@ fn escape_dynamic_values() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<input disabled=\"&#34;&#62;&#60;div&#62;\"/>"
     );
 }
@@ -41,7 +41,7 @@ fn escape_static_style() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<div style=\"width:&#34;&#62;&#60;div&#62;;\"></div>"
     );
 }
@@ -57,7 +57,7 @@ fn escape_dynamic_style() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<div style=\"width:&#34;&#62;&#60;div&#62;;\"></div>"
     );
 }
@@ -76,7 +76,7 @@ fn escape_static_text() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<div>&#34;&#62;&#60;div&#62;</div>"
     );
 }
@@ -96,7 +96,7 @@ fn escape_dynamic_text() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<div>&#34;&#62;&#60;div&#62;</div>"
     );
 }
@@ -115,7 +115,7 @@ fn don_t_escape_static_scripts() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<script>console.log('hello world');</script>"
     );
 }
@@ -135,7 +135,7 @@ fn don_t_escape_dynamic_scripts() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<script>console.log('hello world');</script>"
     );
 }
@@ -154,7 +154,7 @@ fn don_t_escape_static_styles() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<style>body { background-color: red; }</style>"
     );
 }
@@ -174,7 +174,7 @@ fn don_t_escape_dynamic_styles() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<style>body { font-family: \"sans-serif\"; }</style>"
     );
 }
@@ -194,7 +194,7 @@ fn don_t_escape_static_fragment_styles() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<style>body { font-family: \"sans-serif\"; }</style>"
     );
 }
@@ -218,7 +218,7 @@ fn escape_static_component_fragment_div() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<div>body { font-family: &#34;sans-serif&#34;; }</div>"
     );
 }
@@ -243,7 +243,7 @@ fn escape_dynamic_component_fragment_div() {
     dom.rebuild_in_place();
 
     assert_eq!(
-        dioxus_ssr::render(&dom),
+        aether_ssr::render(&dom),
         "<div>body { font-family: &#34;sans-serif&#34;; }</div>"
     );
 }

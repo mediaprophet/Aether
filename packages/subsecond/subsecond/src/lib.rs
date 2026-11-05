@@ -24,20 +24,20 @@
 //! ```
 //!
 //! To actually load patches into your application, a third-party tool that implements the Subsecond
-//! compiler and protocol is required. Subsecond is built and maintained by the Dioxus team, so we
-//! suggest using the dioxus CLI tool to use subsecond.
+//! compiler and protocol is required. Subsecond is built and maintained by the Aether team, so we
+//! suggest using the aether CLI tool to use subsecond.
 //!
-//! To install the Dioxus CLI, we recommend using [`cargo binstall`](https://crates.io/crates/cargo-binstall):
+//! To install the Aether CLI, we recommend using [`cargo binstall`](https://crates.io/crates/cargo-binstall):
 //!
 //! ```sh
-//! cargo binstall dioxus-cli
+//! cargo binstall aether-cli
 //! ```
 //!
-//! The Dioxus CLI provides several tools for development. To run your application with Subsecond enabled,
+//! The Aether CLI provides several tools for development. To run your application with Subsecond enabled,
 //! use `dx serve` - this takes the same arguments as `cargo run` but will automatically hot-reload your
 //! application when changes are detected.
 //!
-//! As of Dioxus 0.7, "--hotpatch" is required to use hotpatching while Subsecond is still experimental.
+//! As of Aether 0.7, "--hotpatch" is required to use hotpatching while Subsecond is still experimental.
 //!
 //! ```sh
 //! dx serve --hotpatch
@@ -82,7 +82,7 @@
 //! - Globals are tracked across patches, but renames are considered to be *new* globals.
 //! - Changes to static initializers will not be observed.
 //!
-//! Subsecond purposefully handles statics this way since many libraries like Dioxus and Tokio rely
+//! Subsecond purposefully handles statics this way since many libraries like Aether and Tokio rely
 //! on persistent global runtimes.
 //!
 //! HUGE WARNING: Currently, thread-locals in the "tip" crate (the one being patched) will seemingly
@@ -105,14 +105,14 @@
 //! encouraged to aggressively dispose of old state that might cause size and alignment changes.
 //!
 //! We'd like to lift this limitation in the future by providing utilities to re-instantiate structs,
-//! but for now it's up to the framework authors to handle this. For example, Dioxus apps simply throw
+//! but for now it's up to the framework authors to handle this. For example, Aether apps simply throw
 //! out the old state and rebuild it from scratch.
 //!
 //! ## Pointer versioning
 //!
 //! Currently, Subsecond does not "version" function pointers. We have plans to provide this metadata
 //! so framework authors can safely memoize changes without much runtime overhead. Frameworks like
-//! Dioxus and Bevy circumvent this issue by using the TypeID of structs passed to hot functions as
+//! Aether and Bevy circumvent this issue by using the TypeID of structs passed to hot functions as
 //! well as the `ptr_address` method on [`HotFn`] to determine if the function pointer has changed.
 //!
 //! Currently, the `ptr_address` method will always return the most up-to-date version of the function
@@ -149,15 +149,15 @@
 //!
 //! ## Applying patches
 //!
-//! When running under the Dioxus CLI, the `dx serve` command will automatically apply patches when
-//! changes are detected. Patches are delivered over the [Dioxus Devtools](https://crates.io/crates/dioxus-devtools)
+//! When running under the Aether CLI, the `dx serve` command will automatically apply patches when
+//! changes are detected. Patches are delivered over the [Aether Devtools](https://crates.io/crates/aether-devtools)
 //! websocket protocol and received by corresponding websocket.
 //!
 //! If you're using Subsecond in your own application that doesn't have a runtime integration, you can
 //! build an integration using the [`apply_patch`] function. This function takes a `JumpTable` which
-//! the dioxus-cli crate can generate.
+//! the aether-cli crate can generate.
 //!
-//! To add support for the Dioxus Devtools protocol to your app, you can use the [dioxus-devtools](https://crates.io/crates/dioxus-devtools)
+//! To add support for the Aether Devtools protocol to your app, you can use the [aether-devtools](https://crates.io/crates/aether-devtools)
 //! crate which provides a `connect` method that will automatically apply patches to your application.
 //!
 //! Unfortunately, one design quirk of Subsecond is that running apps need to communicate the address
@@ -179,7 +179,7 @@
 //! Because ThinLink performs very to little actual linking, it drastically speeds up traditional Rust
 //! development. With a development-optimized profile, ThinLink can shrink an incremental build to less than 500ms.
 //!
-//! ThinLink is automatically integrated into the Dioxus CLI though it's currently not available as
+//! ThinLink is automatically integrated into the Aether CLI though it's currently not available as
 //! a standalone tool.
 //!
 //! ## Limitations
@@ -225,9 +225,9 @@
 //!
 //! ## Supporting this work
 //!
-//! Subsecond is a project by the Dioxus team. If you'd like to support our work, please consider
-//! [sponsoring us on GitHub](https://github.com/sponsors/DioxusLabs) or eventually deploying your
-//! apps with Dioxus Deploy (currently under construction).
+//! Subsecond is a project by the Aether team. If you'd like to support our work, please consider
+//! [sponsoring us on GitHub](https://github.com/sponsors/AetherLabs) or eventually deploying your
+//! apps with Aether Deploy (currently under construction).
 
 pub use subsecond_types::JumpTable;
 
@@ -274,7 +274,7 @@ pub fn call<O>(mut f: impl FnMut() -> O) -> O {
 // with very little overhead. Reading this amounts of a Relaxed atomic load which basically
 // is no overhead. We might want to look into using a thread_local with a stop-the-world approach
 // just in case multiple threads try to call the jump table before synchronization with the runtime.
-// For Dioxus purposes, this is not a big deal, but for libraries like bevy which heavily rely on
+// For Aether purposes, this is not a big deal, but for libraries like bevy which heavily rely on
 // multithreading, it might become an issue.
 static APP_JUMP_TABLE: AtomicPtr<JumpTable> = AtomicPtr::new(std::ptr::null_mut());
 static HOTRELOAD_HANDLERS: Mutex<Vec<Arc<dyn Fn() + Send + Sync>>> = Mutex::new(Vec::new());
@@ -907,7 +907,7 @@ macro_rules! impl_hot_function {
                             // Android implements MTE / pointer tagging and we need to preserve the tag.
                             // If we leave the tag, then indexing our jump table will fail and patching won't work (or crash!)
                             // This is only implemented on 64-bit platforms since pointer tagging is not available on 32-bit platforms
-                            // In dev, Dioxus disables MTE to work around this issue, but we still handle it anyways.
+                            // In dev, Aether disables MTE to work around this issue, but we still handle it anyways.
                             #[cfg(all(target_pointer_width = "64", target_os = "android"))] let nibble  = real as u64 & 0xFF00_0000_0000_0000;
                             #[cfg(all(target_pointer_width = "64", target_os = "android"))] let real    = real as u64 & 0x00FFF_FFF_FFFF_FFFF;
 

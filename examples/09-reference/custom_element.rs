@@ -1,11 +1,11 @@
 //! Define a typed custom element for `rsx!`.
 //!
 //! Use `define_elements!` when your app needs project-specific element names or
-//! attributes that should type-check like built-in Dioxus HTML elements.
+//! attributes that should type-check like built-in Aether HTML elements.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
-dioxus::html::define_elements! {
+aether::html::define_elements! {
     #[element(name = "analytics-panel")]
     analyticsPanel {
         metric,
@@ -15,7 +15,7 @@ dioxus::html::define_elements! {
 }
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

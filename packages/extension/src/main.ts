@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import init, * as dioxus from 'dioxus-ext';
+import init, * as aether from 'aether-ext';
 
 export async function activate(context: vscode.ExtensionContext) {
 	// Load the wasm from the file system
-	const wasmSourceCode = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, "./pkg/dioxus_ext_bg.wasm"));
+	const wasmSourceCode = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, "./pkg/aether_ext_bg.wasm"));
 
 	// Wait for the initialization to finish
 	// This is using the byte buffer directly which won't go through the "fetch" machinery
@@ -14,7 +14,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// Register format-on-save handler using waitUntil() for proper synchronization
 	// This runs alongside (not instead of) other formatters like rust-analyzer,
-	// allowing both rustfmt and Dioxus RSX formatting to work together
+	// allowing both rustfmt and Aether RSX formatting to work together
 	context.subscriptions.push(
 		vscode.workspace.onWillSaveTextDocument(formatOnSave)
 	);
@@ -23,8 +23,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	// I want a paste-handler that translates HTML to RSX whenever HTML is pasted into an Rsx block
 	// Or, a little tooltip that pops up and asks if you want to translate the HTML to RSX
 	context.subscriptions.push(
-		vscode.commands.registerCommand('extension.htmlToDioxusRsx', () => translate(false)),
-		vscode.commands.registerCommand('extension.htmlToDioxusComponent', () => translate(true)),
+		vscode.commands.registerCommand('extension.htmlToAetherRsx', () => translate(false)),
+		vscode.commands.registerCommand('extension.htmlToAetherComponent', () => translate(true)),
 		vscode.commands.registerCommand('extension.formatRsx', fmtSelection),
 		vscode.commands.registerCommand('extension.formatRsxDocument', formatRsxDocument)
 	);
@@ -38,9 +38,9 @@ function formatOnSave(e: vscode.TextDocumentWillSaveEvent) {
 		return;
 	}
 
-	// Check if Dioxus formatting is enabled
-	const dioxusConfig = vscode.workspace.getConfiguration('dioxus', e.document).get('formatOnSave');
-	if (dioxusConfig === 'disabled') {
+	// Check if Aether formatting is enabled
+	const aetherConfig = vscode.workspace.getConfiguration('aether', e.document).get('formatOnSave');
+	if (aetherConfig === 'disabled') {
 		return;
 	}
 
@@ -63,7 +63,7 @@ function formatDocument(document: vscode.TextDocument): Thenable<vscode.TextEdit
 			const tabSize = (typeof editor?.options.tabSize === 'number') ? editor.options.tabSize : 4;
 			const useTabs = editor ? !editor.options.insertSpaces : false;
 
-			const formatted = dioxus.format_file(contents, useTabs, tabSize);
+			const formatted = aether.format_file(contents, useTabs, tabSize);
 
 			if (formatted.length() > 0) {
 				const fullRange = new vscode.Range(
@@ -75,7 +75,7 @@ function formatDocument(document: vscode.TextDocument): Thenable<vscode.TextEdit
 				resolve([]);
 			}
 		} catch (error) {
-			vscode.window.showWarningMessage(`Dioxus formatting error: ${error}`);
+			vscode.window.showWarningMessage(`Aether formatting error: ${error}`);
 			resolve([]);
 		}
 	});
@@ -94,7 +94,7 @@ function translate(component: boolean) {
 	}
 
 	// Translate the HTML to RSX
-	const out = dioxus.translate_rsx(html, component);
+	const out = aether.translate_rsx(html, component);
 	if (out.length > 0) {
 		editor.edit(editBuilder => editBuilder.replace(editor.selection, out));
 	} else {
@@ -179,7 +179,7 @@ function fmtSelection() {
 	let base_indentation = (lines_above.match(/{/g) || []).length - (lines_above.match(/}/g) || []).length - 1;
 
 	try {
-		let formatted = dioxus.format_selection(unformatted, !editor.options.insertSpaces, tabSize, base_indentation);
+		let formatted = aether.format_selection(unformatted, !editor.options.insertSpaces, tabSize, base_indentation);
 		for (let i = 0; i <= base_indentation; i++) {
 			formatted = (editor.options.insertSpaces ? " ".repeat(tabSize) : "\t") + formatted;
 		}
@@ -189,7 +189,7 @@ function fmtSelection() {
 			});
 		}
 	} catch (error) {
-		vscode.window.showErrorMessage(`Errors occurred while formatting. Make sure you have the most recent Dioxus-CLI installed and you have selected valid rsx with your cursor! \n${error}`);
+		vscode.window.showErrorMessage(`Errors occurred while formatting. Make sure you have the most recent Aether-CLI installed and you have selected valid rsx with your cursor! \n${error}`);
 	}
 
 }

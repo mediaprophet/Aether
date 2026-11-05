@@ -2,7 +2,7 @@
 
 use components::home::Home;
 use components::loading::ChildrenOrLoading;
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 mod components {
     pub mod error;
@@ -15,7 +15,7 @@ mod components {
 mod api;
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         rsx! {
             document::Link {
                 rel: "stylesheet",

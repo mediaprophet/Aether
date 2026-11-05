@@ -1,9 +1,9 @@
 #![allow(non_snake_case, non_upper_case_globals)]
-//! This benchmark tests just the overhead of Dioxus itself.
+//! This benchmark tests just the overhead of Aether itself.
 //!
-//! For the JS Framework Benchmark, both the framework and the browser is benchmarked together. Dioxus prepares changes
+//! For the JS Framework Benchmark, both the framework and the browser is benchmarked together. Aether prepares changes
 //! to be made, but the change application phase will be just as performant as the vanilla wasm_bindgen code. In essence,
-//! we are measuring the overhead of Dioxus, not the performance of the "apply" phase.
+//! we are measuring the overhead of Aether, not the performance of the "apply" phase.
 //!
 //!
 //! Pre-templates (Mac M1):
@@ -15,11 +15,11 @@
 //! - 6.2ms to create 10_000 rows
 //!
 //! As pure "overhead", these are amazing good numbers, mostly slowed down by hitting the global allocator.
-//! These numbers don't represent Dioxus with the heuristic engine installed, so I assume it'll be even faster.
+//! These numbers don't represent Aether with the heuristic engine installed, so I assume it'll be even faster.
 
 use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
-use dioxus::prelude::*;
-use dioxus_core::{NoOpMutations, ScopeId};
+use aether::prelude::*;
+use aether_core::{NoOpMutations, ScopeId};
 use rand::prelude::*;
 use std::{cell::RefCell, hint::black_box, option::Option, rc::Rc};
 
@@ -349,10 +349,10 @@ impl RowGenerator {
     }
 }
 
-// A native copy of the keyed Dioxus js-framework-benchmark app:
-// https://github.com/krausest/js-framework-benchmark/blob/master/frameworks/keyed/dioxus/src/main.rs
+// A native copy of the keyed Aether js-framework-benchmark app:
+// https://github.com/krausest/js-framework-benchmark/blob/master/frameworks/keyed/aether/src/main.rs
 // The component and signal structure match the browser implementation, but
-// Criterion drives the actions directly and Dioxus writes NoOpMutations so we
+// Criterion drives the actions directly and Aether writes NoOpMutations so we
 // only measure core.
 fn js_framework_app(props: AppProps) -> Element {
     let mut rows = use_signal(Vec::<RowData>::new);
@@ -367,7 +367,7 @@ fn js_framework_app(props: AppProps) -> Element {
             div { class: "jumbotron",
                 div { class: "row",
                     div { class: "col-md-6",
-                        h1 { "Dioxus" }
+                        h1 { "Aether" }
                     }
                     div { class: "col-md-6",
                         div { class: "row",

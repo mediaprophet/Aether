@@ -1,11 +1,11 @@
 #![allow(unused)] // for whatever reason, the compiler is not recognizing the use of these functions
 
-use dioxus::prelude::*;
-use dioxus_core::Element;
+use aether::prelude::*;
+use aether_core::Element;
 
 pub fn check_app_exits(app: fn() -> Element) {
-    use dioxus_desktop::Config;
-    use dioxus_desktop::tao::window::WindowBuilder;
+    use aether_desktop::Config;
+    use aether_desktop::tao::window::WindowBuilder;
     // This is a deadman's switch to ensure that the app exits
     let should_panic = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(true));
     let should_panic_clone = should_panic.clone();
@@ -17,7 +17,7 @@ pub fn check_app_exits(app: fn() -> Element) {
         }
     });
 
-    dioxus::LaunchBuilder::desktop()
+    aether::LaunchBuilder::desktop()
         .with_cfg(Config::new().with_window(WindowBuilder::new().with_visible(false)))
         .launch(app);
 

@@ -3,7 +3,7 @@
 
 use std::fmt::{Result, Write};
 
-use dioxus_rsx::IfmtInput;
+use aether_rsx::IfmtInput;
 
 use crate::indent::IndentOptions;
 

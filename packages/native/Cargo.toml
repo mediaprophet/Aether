@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-native"
+name = "aether-native"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Native renderer for Dioxus based on blitz"
+description = "Native renderer for Aether based on blitz"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -11,7 +11,7 @@ keywords = ["dom", "ui", "gui", "react"]
 
 [features]
 default = ["accessibility", "hot-reload", "net", "html", "svg", "system-fonts", "clipboard", "file-dialog", "vello-hybrid", "woff", "text-transform-icu", "apple-font-embolden"]
-prelude = ["dep:dioxus-core-macro", "dep:dioxus-hooks", "dep:dioxus-signals", "dep:dioxus-stores", "dep:manganis"]
+prelude = ["dep:aether-core-macro", "dep:aether-hooks", "dep:aether-signals", "dep:aether-stores", "dep:manganis"]
 
 # DOM features
 svg = ["blitz-dom/svg", "blitz-paint/svg"]
@@ -24,7 +24,7 @@ complex-scripts = ["blitz-dom/complex-scripts"]
 # can bundle compressed fonts without extra setup.
 woff = ["blitz-dom/woff"]
 text-transform-icu = ["blitz-dom/text-transform-icu"]
-writing-mode = ["blitz-dom/writing-mode", "dioxus-native-dom/writing-mode"]
+writing-mode = ["blitz-dom/writing-mode", "aether-native-dom/writing-mode"]
 
 # Shell Features
 clipboard = ["blitz-shell/clipboard"]
@@ -50,12 +50,12 @@ scrollbars = ["blitz-paint/scrollbars"]
 
 # Other features
 # No-op on wasm32 (blitz_net::Provider needs tokio's threaded runtime); launch_cfg
-# falls back to the in-process DioxusNativeNetProvider there.
+# falls back to the in-process AetherNativeNetProvider there.
 net = ["dep:tokio", "dep:blitz-net"]
 html = ["dep:blitz-html"]
 
 # Dev
-hot-reload = ["dep:dioxus-devtools"]
+hot-reload = ["dep:aether-devtools"]
 
 # Debug/Logging
 log-times = ["log-phase-times", "log-frame-times"]
@@ -66,7 +66,7 @@ log-frame-times = [
   "anyrender_vello_hybrid?/log_frame_times",
   "anyrender_skia?/log_frame_times",
 ]
-tracing = ["dep:tracing", "dioxus-native-dom/tracing", "blitz-shell/tracing", "blitz-dom/tracing", "blitz-html/tracing", "blitz-net/tracing"]
+tracing = ["dep:tracing", "aether-native-dom/tracing", "blitz-shell/tracing", "blitz-dom/tracing", "blitz-html/tracing", "blitz-net/tracing"]
 
 [dependencies]
 # Blitz dependencies
@@ -87,24 +87,24 @@ anyrender_skia = { workspace = true, optional = true}
 wgpu_context = { workspace = true, optional = true}
 
 # Aether core dependencies
-dioxus-core = { workspace = true }
-dioxus-config-macros = { workspace = true }
-dioxus-html = { workspace = true }
-dioxus-native-dom = { workspace = true }
-dioxus-asset-resolver = { workspace = true, features = ["native"] }
-dioxus-history = { workspace = true }
-dioxus-document = { workspace = true }
-dioxus-cli-config = { workspace = true }
+aether-core = { workspace = true }
+aether-config-macros = { workspace = true }
+aether-html = { workspace = true }
+aether-native-dom = { workspace = true }
+aether-asset-resolver = { workspace = true, features = ["native"] }
+aether-history = { workspace = true }
+aether-document = { workspace = true }
+aether-cli-config = { workspace = true }
 
-# Dioxus hot reload
-dioxus-devtools = { workspace = true, optional = true }
+# Aether hot reload
+aether-devtools = { workspace = true, optional = true }
 
-# Dioxus prelude
-dioxus-hooks = { workspace = true, optional = true }
-dioxus-signals = { workspace = true, optional = true }
-dioxus-stores = { workspace = true, optional = true }
-dioxus-core-macro = { workspace = true, optional = true }
-manganis = { workspace = true, features = ["dioxus"], optional = true }
+# Aether prelude
+aether-hooks = { workspace = true, optional = true }
+aether-signals = { workspace = true, optional = true }
+aether-stores = { workspace = true, optional = true }
+aether-core-macro = { workspace = true, optional = true }
+manganis = { workspace = true, features = ["aether"], optional = true }
 
 # Windowing & Input
 winit = { workspace = true }

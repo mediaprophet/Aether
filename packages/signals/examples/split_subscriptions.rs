@@ -1,10 +1,10 @@
 #![allow(non_snake_case)]
 
-use dioxus::prelude::*;
-use dioxus_signals::Signal;
+use aether::prelude::*;
+use aether_signals::Signal;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 #[derive(Clone, Copy, Default)]

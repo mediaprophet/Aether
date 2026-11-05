@@ -1,12 +1,12 @@
-//! This example showcases how to handle multipart form data uploads in Dioxus.
+//! This example showcases how to handle multipart form data uploads in Aether.
 //!
-//! Dioxus provides the `MultipartFormData` type to allow converting from the websys `FormData`
+//! Aether provides the `MultipartFormData` type to allow converting from the websys `FormData`
 //! type directly into a streaming multipart form data handler.
 
-use dioxus::{fullstack::MultipartFormData, prelude::*};
+use aether::{fullstack::MultipartFormData, prelude::*};
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

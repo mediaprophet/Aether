@@ -9,5 +9,5 @@ the dylib should make it into our bundle and the rlib should just be linked.
 both shouldn't cause access errors or segfaults during hotpatch.
 
 ```sh
-cargo run --package dioxus-cli -- serve --hotpatch
+cargo run --package aether-cli -- serve --hotpatch
 ```

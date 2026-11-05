@@ -7,7 +7,7 @@ The props derive macro allows you to define what props your component accepts an
 ## Example
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[derive(Props, PartialEq, Clone)]
 struct ButtonProps {
     /// The text of the button
@@ -56,7 +56,7 @@ Props also act slightly differently when used with:
 The `default` attribute lets you define a default value for a field if it isn't set when creating the component
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[derive(Props, PartialEq, Clone)]
 struct ButtonProps {
     // The default attributes makes your field optional in the component and uses the default value if it is not set.
@@ -88,7 +88,7 @@ rsx! {
 When defining props, you may want to make a prop optional without defining an explicit default value. Any fields with the type `Option<T>` are automatically optional with a default value of `None`.
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[derive(Props, PartialEq, Clone)]
 struct ButtonProps {
     // Since the `text` field is optional, you don't need to set it when you use the component.
@@ -109,7 +109,7 @@ rsx! {
 If you want to make your `Option<T>` field required, you can use the `!optional` attribute:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[derive(Props, PartialEq, Clone)]
 struct ButtonProps {
     /// You can use the `!optional` attribute on a field with the type `Option<T>` to make it required.
@@ -135,7 +135,7 @@ rsx! {
 You can automatically convert a field into the correct type by using the `into` attribute. Any type you pass into the field will be converted with the [`Into`] trait:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[derive(Props, PartialEq, Clone)]
 struct ButtonProps {
     /// You can use the `into` attribute on a field to convert types you pass in with the Into trait.
@@ -162,7 +162,7 @@ rsx! {
 You can use formatted strings in attributes just like you would in an element. Any prop field with the type `String` can accept a formatted string:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[derive(Props, PartialEq, Clone)]
 struct ButtonProps {
     text: String,
@@ -188,7 +188,7 @@ rsx! {
 Rather than passing the RSX through a regular prop, you may wish to accept children similarly to how elements can have children. The "magic" children prop lets you achieve this:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[derive(PartialEq, Clone, Props)]
 struct ClickableProps {
     href: String,
@@ -209,7 +209,7 @@ fn Clickable(props: ClickableProps) -> Element {
 This makes providing children to the component much simpler: simply put the RSX inside the {} brackets:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # #[derive(PartialEq, Clone, Props)]
 # struct ClickableProps {
 #     href: String,
@@ -237,10 +237,10 @@ rsx! {
 
 ### Reactive Props
 
-In dioxus, when a prop changes, the component will rerun with the new value to update the UI. For example, if count changes from 0 to 1, this component will rerun and update the UI to show "Count: 1":
+In aether, when a prop changes, the component will rerun with the new value to update the UI. For example, if count changes from 0 to 1, this component will rerun and update the UI to show "Count: 1":
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[component]
 fn Counter(count: i32) -> Element {
     rsx! {
@@ -254,7 +254,7 @@ fn Counter(count: i32) -> Element {
 Generally, just rerunning the component is enough to update the UI. However, if you use your prop inside reactive hooks like `use_memo` or `use_resource`, you may also want to restart those hooks when the prop changes:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[component]
 fn Counter(count: i32) -> Element {
     // We can use a memo to calculate the doubled count. Since this memo will only be created the first time the component is run and `count` is not reactive, it will never update when `count` changes.
@@ -272,10 +272,10 @@ To fix this issue you can either:
 
 1. Make the prop reactive by wrapping it in `ReadSignal` (recommended):
 
-`ReadSignal` is a `Copy` reactive value. Dioxus will automatically convert any value into a `ReadSignal` when it is passed as a prop.
+`ReadSignal` is a `Copy` reactive value. Aether will automatically convert any value into a `ReadSignal` when it is passed as a prop.
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[component]
 fn Counter(count: ReadSignal<i32>) -> Element {
     // Since we made count reactive, the memo will automatically rerun when count changes.
@@ -289,10 +289,10 @@ fn Counter(count: ReadSignal<i32>) -> Element {
 }
 ```
 
-2. Explicitly add the prop as a dependency to the reactive hook with [`use_reactive`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/macro.use_reactive.html):
+2. Explicitly add the prop as a dependency to the reactive hook with [`use_reactive`](https://docs.rs/aether-hooks/latest/aether_hooks/macro.use_reactive.html):
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[component]
 fn Counter(count: i32) -> Element {
     // We can add the count prop as an explicit dependency to every reactive hook that uses it with use_reactive.
@@ -312,7 +312,7 @@ fn Counter(count: i32) -> Element {
 The `extends` attribute lets you extend your props with all the attributes from an element or the global element attributes.
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[derive(Props, PartialEq, Clone)]
 struct CardProps {
     /// You can use the `extends` attribute on a field with the type `Vec<Attribute>` to extend the props with all the attributes from an element or the global element attributes.
@@ -341,7 +341,7 @@ rsx! {
 To extend the props with both the global attributes and the attributes of a specific element, you can use the `extends` attribute multiple times:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 
 #[derive(Props, PartialEq, Clone)]
 struct ButtonProps {

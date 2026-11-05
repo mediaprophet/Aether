@@ -1,4 +1,4 @@
-use dioxus_core::AttributeValue;
+use aether_core::AttributeValue;
 
 /// A stable, comparable view of the mock renderer tree.
 #[derive(Clone, Debug, PartialEq, Eq)]

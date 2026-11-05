@@ -3,8 +3,8 @@
 #![doc(html_favicon_url = "https://avatars.githubusercontent.com/u/79236386")]
 
 use convert_case::{Case, Casing};
-use dioxus_html::{map_html_attribute_to_rsx, map_html_element_to_rsx};
-use dioxus_rsx::{
+use aether_html::{map_html_attribute_to_rsx, map_html_element_to_rsx};
+use aether_rsx::{
     Attribute, AttributeName, AttributeValue, BodyNode, CallBody, Component, Element, ElementName,
     HotLiteral, TemplateBody, TextNode,
 };

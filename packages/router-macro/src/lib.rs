@@ -45,7 +45,7 @@ mod segment;
 ///
 /// All features:
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[rustfmt::skip]
 /// #[derive(Clone, Debug, PartialEq, Routable)]
@@ -102,7 +102,7 @@ mod segment;
 /// The next variant will be tied to the component. If you link to that variant, the component will be rendered.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Clone, Debug, PartialEq, Routable)]
 /// enum Route {
@@ -122,7 +122,7 @@ mod segment;
 /// - `function`: A function that takes the parameters from the path and returns a new route
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Clone, Debug, PartialEq, Routable)]
 /// enum Route {
@@ -145,7 +145,7 @@ mod segment;
 /// Nests effect all nests, routes and redirects defined until the next `#[end_nest]` attribute. All children of nests are relative to the nest route and must include all dynamic parameters of the nest.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Clone, Debug, PartialEq, Routable)]
 /// enum Route {
@@ -166,7 +166,7 @@ mod segment;
 /// The `#[end_nest]` attribute is used to end a nest. It takes no parameters.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Clone, Debug, PartialEq, Routable)]
 /// enum Route {
@@ -196,7 +196,7 @@ mod segment;
 /// The layout component allows you to wrap all children of the layout in a component. The child routes are rendered in the Outlet of the layout component. The layout component must take all dynamic parameters of the nests it is nested in.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Clone, Debug, PartialEq, Routable)]
 /// enum Route {
@@ -217,7 +217,7 @@ mod segment;
 /// The `#[end_layout]` attribute is used to end a layout. It takes no parameters.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// #[derive(Clone, Debug, PartialEq, Routable)]
 /// enum Route {
@@ -523,7 +523,7 @@ impl RouteEnum {
             }
 
             impl ::std::str::FromStr for #name {
-                type Err = dioxus_router::routable::RouteParseError<#error_name>;
+                type Err = aether_router::routable::RouteParseError<#error_name>;
 
                 fn from_str(s: &str) -> ::std::result::Result<Self, Self::Err> {
                     let route = s;
@@ -532,14 +532,14 @@ impl RouteEnum {
                     // Remove any trailing slashes. We parse /route/ and /route in the same way
                     // Note: we don't use trim because it includes more code
                     let route = route.strip_suffix('/').unwrap_or(route);
-                    let query = dioxus_router::exports::percent_encoding::percent_decode_str(raw_query)
+                    let query = aether_router::exports::percent_encoding::percent_decode_str(raw_query)
                         .decode_utf8()
                         .unwrap_or(raw_query.into());
-                    let hash = dioxus_router::exports::percent_encoding::percent_decode_str(raw_hash)
+                    let hash = aether_router::exports::percent_encoding::percent_decode_str(raw_hash)
                         .decode_utf8()
                         .unwrap_or(raw_hash.into());
                     let mut segments = route.split('/').map(|s| {
-                        dioxus_router::exports::percent_encoding::percent_decode_str(s)
+                        aether_router::exports::percent_encoding::percent_decode_str(s)
                             .decode_utf8()
                             .unwrap_or(s.into())
                     });
@@ -548,7 +548,7 @@ impl RouteEnum {
                         let _ = segments.next();
                     } else {
                         // if this route does not start with a slash, it is not a valid route
-                        return Err(dioxus_router::routable::RouteParseError {
+                        return Err(aether_router::routable::RouteParseError {
                             attempted_routes: Vec::new(),
                         });
                     }
@@ -556,7 +556,7 @@ impl RouteEnum {
 
                     #(#tokens)*
 
-                    Err(dioxus_router::routable::RouteParseError {
+                    Err(aether_router::routable::RouteParseError {
                         attempted_routes: errors,
                     })
                 }
@@ -676,12 +676,12 @@ impl RouteEnum {
         }
 
         quote! {
-            impl dioxus_router::routable::Routable for #name where Self: Clone {
-                const SITE_MAP: &'static [dioxus_router::routable::SiteMapSegment] = &[
+            impl aether_router::routable::Routable for #name where Self: Clone {
+                const SITE_MAP: &'static [aether_router::routable::SiteMapSegment] = &[
                     #(#site_map,)*
                 ];
 
-                fn render(&self, level: usize) -> dioxus_core::Element {
+                fn render(&self, level: usize) -> aether_core::Element {
                     let myself = self.clone();
                     match (level, myself) {
                         #(#matches)*
@@ -743,7 +743,7 @@ impl ToTokens for SiteMapSegment {
         };
 
         tokens.extend(quote! {
-            dioxus_router::routable::SiteMapSegment {
+            aether_router::routable::SiteMapSegment {
                 segment_type: #segment_type,
                 children: #children,
             }
@@ -763,16 +763,16 @@ impl ToTokens for SegmentType {
     fn to_tokens(&self, tokens: &mut TokenStream2) {
         match self {
             SegmentType::Static(s) => {
-                tokens.extend(quote! { dioxus_router::routable::SegmentType::Static(#s) })
+                tokens.extend(quote! { aether_router::routable::SegmentType::Static(#s) })
             }
             SegmentType::Dynamic(s) => {
-                tokens.extend(quote! { dioxus_router::routable::SegmentType::Dynamic(#s) })
+                tokens.extend(quote! { aether_router::routable::SegmentType::Dynamic(#s) })
             }
             SegmentType::CatchAll(s) => {
-                tokens.extend(quote! { dioxus_router::routable::SegmentType::CatchAll(#s) })
+                tokens.extend(quote! { aether_router::routable::SegmentType::CatchAll(#s) })
             }
             SegmentType::Child(_) => {
-                tokens.extend(quote! { dioxus_router::routable::SegmentType::Child })
+                tokens.extend(quote! { aether_router::routable::SegmentType::Child })
             }
         }
     }

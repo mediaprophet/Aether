@@ -7,7 +7,7 @@ You may have noticed that this struct doesn't have many methods. Most methods fo
 Signals are similar to a copy version of `Rc<RefCell<T>>` built for UIs. You can read and write to a signal like a RefCell:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let mut signal = use_signal(|| 0);
 
 {
@@ -30,7 +30,7 @@ let mut write = signal.write();
 Signals also have a bunch of helper methods to make it easier to use. Calling it like a function will clone the inner value. You can also call a few traits like AddAssign on it directly without writing to it manually:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let mut signal = use_signal(|| 0);
 // This will clone the value
 let clone: i32 = signal();
@@ -55,7 +55,7 @@ For a full list of all the helpers available, check out the [`Readable`], [`Read
 Just like `RefCell<T>`, Signal checks borrows at runtime. If you read and write to the signal at the same time, it will panic:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let mut signal = use_signal(|| 0);
 // If you create a read and hold it while you write to the signal, it will panic
 let read = signal.read_unchecked();
@@ -67,7 +67,7 @@ println!("{}", read);
 To avoid issues with overlapping reads and writes, you can use the `with_*` variants of methods to read and write to the signal in a single scope or wrap your reads and writes inside a block:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let mut signal = use_signal(|| 0);
 {
     // Since this read is inside a block that ends before we write to the signal, the signal will be dropped before the write and it will not panic
@@ -87,7 +87,7 @@ signal.with_mut(|write| *write += 1);
 Because signals check borrows at runtime, you need to be careful when reading and writing to signals inside of async code. If you hold a read or write to a signal over an await point, that read or write may still be open while you run other parts of your app:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # async fn sleep(delay: u32) {}
 async fn double_me_async(value: &mut u32) {
     sleep(100).await;
@@ -111,7 +111,7 @@ rsx!{
 Instead of holding a read or write over an await point, you can clone whatever values you need out of your signal and then set the signal to the result once the async work is done:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 # async fn sleep(delay: u32) {}
 async fn double_me_async(value: u32) -> u32 {
     sleep(100).await;
@@ -138,12 +138,12 @@ rsx! {
 
 Signals are implemented with [generational-box](https://crates.io/crates/generational-box) which makes all values Copy even if the inner value is not Copy.
 
-This is incredibly convenient for UI development, but it does come with some tradeoffs. The lifetime of the signal is tied to the lifetime of the component it was created in. If you drop the component that created the signal, the signal will be dropped as well. You might run into this if you try to pass a signal from a child component to a parent component and drop the child component. To avoid this you can create your signal higher up in your component tree, use global signals, or create a signal in a specific scope (like the `ScopeId::ROOT`) with [`Signal::new_in_scope`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Signal.html#method.new_in_scope)
+This is incredibly convenient for UI development, but it does come with some tradeoffs. The lifetime of the signal is tied to the lifetime of the component it was created in. If you drop the component that created the signal, the signal will be dropped as well. You might run into this if you try to pass a signal from a child component to a parent component and drop the child component. To avoid this you can create your signal higher up in your component tree, use global signals, or create a signal in a specific scope (like the `ScopeId::ROOT`) with [`Signal::new_in_scope`](https://docs.rs/aether/latest/aether/prelude/struct.Signal.html#method.new_in_scope)
 
 TLDR **Don't pass signals up in the component tree**. It will cause issues:
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn MyComponent() -> Element {
     let child_signal = use_signal(|| None);
 

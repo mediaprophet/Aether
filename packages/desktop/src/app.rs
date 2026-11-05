@@ -6,7 +6,7 @@ use crate::{
     waker::create_dom_waker,
     webview::WebviewInstance,
 };
-use dioxus_core::{RenderTargetId, ScopeId, VirtualDom, provide_context};
+use aether_core::{RenderTargetId, ScopeId, VirtualDom, provide_context};
 use futures_util::{FutureExt, pin_mut};
 use std::{
     collections::{BTreeMap, HashMap},
@@ -30,7 +30,7 @@ pub(crate) struct App {
     /// polling the vdom) before `rebuild` runs corrupts the initial render, so they are queued
     /// and replayed right after the first rebuild.
     #[cfg(all(feature = "devtools", debug_assertions))]
-    pub(crate) pending_hot_reload_msgs: Vec<dioxus_devtools::DevserverMsg>,
+    pub(crate) pending_hot_reload_msgs: Vec<aether_devtools::DevserverMsg>,
 
     // Stuff we need mutable access to
     pub(crate) control_flow: ControlFlow,
@@ -74,7 +74,7 @@ impl App {
         };
 
         // Set the event converter
-        dioxus_html::set_event_converter(Box::new(crate::events::SerializedHtmlEventConverter));
+        aether_html::set_event_converter(Box::new(crate::events::SerializedHtmlEventConverter));
 
         // Wire up the global hotkey handler
         #[cfg(any(target_os = "windows", target_os = "linux", target_os = "macos"))]
@@ -117,7 +117,7 @@ impl App {
     #[cfg(any(target_os = "windows", target_os = "linux", target_os = "macos"))]
     pub fn handle_menu_event(&mut self, event: muda::MenuEvent) {
         match event.id().0.as_str() {
-            "dioxus-float-top" => {
+            "aether-float-top" => {
                 for app_webview in self.webviews.values() {
                     app_webview
                         .desktop_context
@@ -126,7 +126,7 @@ impl App {
                 }
                 self.float_all = !self.float_all;
             }
-            "dioxus-toggle-dev-tools" => {
+            "aether-toggle-dev-tools" => {
                 self.show_devtools = !self.show_devtools;
                 for app_webview in self.webviews.values() {
                     let wv = &app_webview.desktop_context.webview;
@@ -167,7 +167,7 @@ impl App {
     #[cfg(all(feature = "devtools", debug_assertions))]
     pub fn connect_hotreload(&self) {
         let proxy = self.app_context.proxy.clone();
-        dioxus_devtools::connect(move |msg| {
+        aether_devtools::connect(move |msg| {
             _ = proxy.send_event(UserWindowEvent::HotReloadEvent(msg));
         })
     }
@@ -210,7 +210,7 @@ impl App {
         self.destroy_window(id);
     }
 
-    /// Tear down one webview after its Dioxus owner has released the target, or
+    /// Tear down one webview after its Aether owner has released the target, or
     /// immediately for root/unowned windows.
     pub(crate) fn destroy_window(&mut self, id: WindowId) {
         let Some(app_webview) = self.webviews.remove(&id) else {
@@ -314,10 +314,10 @@ impl App {
     }
 
     #[cfg(all(feature = "devtools", debug_assertions))]
-    pub fn handle_hot_reload_msg(&mut self, msg: dioxus_devtools::DevserverMsg) {
+    pub fn handle_hot_reload_msg(&mut self, msg: aether_devtools::DevserverMsg) {
         use std::time::Duration;
 
-        use dioxus_devtools::DevserverMsg;
+        use aether_devtools::DevserverMsg;
 
         // Amount of time that toats should be displayed.
         const TOAST_TIMEOUT: Duration = Duration::from_secs(2);
@@ -339,7 +339,7 @@ impl App {
                         #[cfg(target_os = "android")]
                         let _lock = crate::android_sync_lock::android_runtime_lock();
 
-                        if let Err(err) = dioxus_devtools::try_apply_changes(&self.dom, &hr_msg) {
+                        if let Err(err) = aether_devtools::try_apply_changes(&self.dom, &hr_msg) {
                             tracing::error!("Failed to apply hot-patch: {err}");
                             patch_error = Some(err);
                         }
@@ -355,7 +355,7 @@ impl App {
                 }
 
                 if hr_msg.jump_table.is_some()
-                    && hr_msg.for_build_id == Some(dioxus_cli_config::build_id())
+                    && hr_msg.for_build_id == Some(aether_cli_config::build_id())
                 {
                     match patch_error {
                         None => self.send_toast_to_all(
@@ -684,7 +684,7 @@ impl App {
                     && std::env::var("XDG_SESSION_TYPE").unwrap_or_default() == "wayland"
                 {
                     // Gnome Webkit is currently buggy under Wayland and KDE, so we will run it with XWayland mode.
-                    // See: https://github.com/DioxusLabs/dioxus/issues/3667
+                    // See: https://github.com/AetherLabs/aether/issues/3667
                     unsafe {
                         // Disable explicit sync for NVIDIA drivers on Linux when using Way
                         std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
@@ -709,6 +709,6 @@ pub(crate) struct PreservedWindowState {
 
 /// Return the location of a tempfile with our window state in it such that we can restore it later
 pub(crate) fn restore_file() -> std::path::PathBuf {
-    let dir = dioxus_cli_config::session_cache_dir().unwrap_or_else(std::env::temp_dir);
+    let dir = aether_cli_config::session_cache_dir().unwrap_or_else(std::env::temp_dir);
     dir.join("window-state.json")
 }

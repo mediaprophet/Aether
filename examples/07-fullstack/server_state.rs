@@ -3,7 +3,7 @@
 use std::rc::Rc;
 
 use axum_core::extract::{FromRef, FromRequest};
-use dioxus::{
+use aether::{
     fullstack::{FullstackContext, extract::State},
     prelude::*,
 };
@@ -11,8 +11,8 @@ use reqwest::header::HeaderMap;
 
 #[cfg(feature = "server")]
 use {
-    dioxus::fullstack::Lazy,
-    dioxus::fullstack::axum,
+    aether::fullstack::Lazy,
+    aether::fullstack::axum,
     futures::lock::Mutex,
     sqlx::{Executor, Row},
     std::sync::LazyLock,
@@ -41,7 +41,7 @@ async fn read_messages() -> Result<Vec<String>> {
 /*
 Option 2:
 
-For complex async data, we can use the `Lazy` type from Dioxus Fullstack. The `Lazy` type provides
+For complex async data, we can use the `Lazy` type from Aether Fullstack. The `Lazy` type provides
 an interface like `once_cell::Lazy` but supports async initialization. When reading the value from
 a `Lazy<T>`, the value will be initialized synchronously, blocking the current task until the value is ready.
 
@@ -51,7 +51,7 @@ Alternatively, you can create a `Lazy<T>` with `Lazy::lazy` and then initialize 
 #[cfg(feature = "server")]
 static DATABASE: Lazy<sqlx::SqlitePool> = Lazy::new(|| async move {
     use sqlx::sqlite::SqlitePoolOptions;
-    dioxus::Ok(
+    aether::Ok(
         SqlitePoolOptions::new()
             .max_connections(5)
             .connect_with("sqlite::memory:".parse().unwrap())
@@ -151,16 +151,16 @@ async fn app_state() -> Result<()> {
 
 fn main() {
     #[cfg(not(feature = "server"))]
-    dioxus::launch(app);
+    aether::launch(app);
 
-    // When using `Lazy` items, or axum `Extension`s, we need to initialize them in `dioxus::serve`
+    // When using `Lazy` items, or axum `Extension`s, we need to initialize them in `aether::serve`
     // before launching our app.
     #[cfg(feature = "server")]
-    dioxus::serve(|| async move {
-        use dioxus::server::axum::Extension;
+    aether::serve(|| async move {
+        use aether::server::axum::Extension;
 
         // For axum `Extension`s, we can use the `layer` method to add them to our router.
-        let router = dioxus::server::router(app)
+        let router = aether::server::router(app)
             .layer(Extension(tokio::sync::broadcast::channel::<String>(16).0));
 
         // To use our custom app state with `State<MyAppState>`, we need to register it

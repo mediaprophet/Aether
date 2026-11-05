@@ -1,4 +1,4 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -53,7 +53,7 @@ pub fn DogView() -> Element {
             .await?;
         let url = json.message;
 
-        dioxus::Ok(url)
+        aether::Ok(url)
     })?;
 
     rsx! {

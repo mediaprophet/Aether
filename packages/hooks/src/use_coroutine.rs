@@ -1,7 +1,7 @@
 use crate::{UseFuture, use_context_provider, use_future};
-use dioxus_core::Task;
-use dioxus_core::{consume_context, use_hook};
-use dioxus_signals::*;
+use aether_core::Task;
+use aether_core::{consume_context, use_hook};
+use aether_signals::*;
 pub use futures_channel::mpsc::{UnboundedReceiver, UnboundedSender};
 use std::future::Future;
 
@@ -44,7 +44,7 @@ use std::future::Future;
 /// ## Example
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// use futures_util::StreamExt;
 /// enum Action {
 ///     Start,

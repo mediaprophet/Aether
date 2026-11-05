@@ -1,11 +1,11 @@
 //! A simple little clock that updates the time every few milliseconds.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use futures_timer::Delay;
 use web_time::Instant;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

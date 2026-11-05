@@ -95,14 +95,14 @@ impl BuildRequest {
     /// The format of this command roughly follows:
     /// ```
     /// clang
-    ///     /dioxus/target/debug/subsecond-cli
+    ///     /aether/target/debug/subsecond-cli
     ///     /var/folders/zs/gvrfkj8x33d39cvw2p06yc700000gn/T/rustcAqQ4p2/symbols.o
-    ///     /dioxus/target/subsecond-dev/deps/subsecond_harness-acfb69cb29ffb8fa.05stnb4bovskp7a00wyyf7l9s.rcgu.o
-    ///     /dioxus/target/subsecond-dev/deps/subsecond_harness-acfb69cb29ffb8fa.08rgcutgrtj2mxoogjg3ufs0g.rcgu.o
-    ///     /dioxus/target/subsecond-dev/deps/subsecond_harness-acfb69cb29ffb8fa.0941bd8fa2bydcv9hfmgzzne9.rcgu.o
-    ///     /dioxus/target/subsecond-dev/deps/libbincode-c215feeb7886f81b.rlib
-    ///     /dioxus/target/subsecond-dev/deps/libanyhow-e69ac15c094daba6.rlib
-    ///     /dioxus/target/subsecond-dev/deps/libratatui-c3364579b86a1dfc.rlib
+    ///     /aether/target/subsecond-dev/deps/subsecond_harness-acfb69cb29ffb8fa.05stnb4bovskp7a00wyyf7l9s.rcgu.o
+    ///     /aether/target/subsecond-dev/deps/subsecond_harness-acfb69cb29ffb8fa.08rgcutgrtj2mxoogjg3ufs0g.rcgu.o
+    ///     /aether/target/subsecond-dev/deps/subsecond_harness-acfb69cb29ffb8fa.0941bd8fa2bydcv9hfmgzzne9.rcgu.o
+    ///     /aether/target/subsecond-dev/deps/libbincode-c215feeb7886f81b.rlib
+    ///     /aether/target/subsecond-dev/deps/libanyhow-e69ac15c094daba6.rlib
+    ///     /aether/target/subsecond-dev/deps/libratatui-c3364579b86a1dfc.rlib
     ///     /.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/lib/libstd-019f0f6ae6e6562b.rlib
     ///     /.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/lib/libpanic_unwind-7387d38173a2eb37.rlib
     ///     /.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/lib/libobject-2b03cf6ece171d21.rlib
@@ -117,8 +117,8 @@ impl BuildRequest {
     ///     -lm
     ///     -arch arm64
     ///     -mmacosx-version-min=11.0.0
-    ///     -L /dioxus/target/subsecond-dev/build/objc_exception-dc226cad0480ea65/out
-    ///     -o /dioxus/target/subsecond-dev/deps/subsecond_harness-acfb69cb29ffb8fa
+    ///     -L /aether/target/subsecond-dev/build/objc_exception-dc226cad0480ea65/out
+    ///     -o /aether/target/subsecond-dev/deps/subsecond_harness-acfb69cb29ffb8fa
     ///     -nodefaultlibs
     ///     -Wl,-all_load
     /// ```
@@ -961,7 +961,7 @@ impl BuildRequest {
                     // We only trust `.rcgu.o` files to make it into the --all_load archive.
                     // This is a temporary stopgap to prevent issues with libraries that generate
                     // object files that are not compatible with --all_load.
-                    // see https://github.com/DioxusLabs/dioxus/issues/4237
+                    // see https://github.com/AetherLabs/aether/issues/4237
                     if !(name.ends_with(".rcgu.o") || name.ends_with(".obj")) {
                         keep_linker_rlib = true;
                         continue;
@@ -1231,7 +1231,7 @@ impl BuildRequest {
         if triple.architecture == target_lexicon::Architecture::Wasm32 {
             // Make sure we use the dir relative to the public dir, so the web can load it as a proper URL
             //
-            // ie we would've shipped `/Users/foo/Projects/dioxus/target/dx/project/debug/web/public/wasm/lib.wasm`
+            // ie we would've shipped `/Users/foo/Projects/aether/target/dx/project/debug/web/public/wasm/lib.wasm`
             //    but we want to ship `/wasm/lib.wasm`
             jump_table.lib = PathBuf::from(
                 "/".to_string() + base_path.unwrap_or_default().trim_start_matches('/'),

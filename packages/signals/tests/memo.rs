@@ -1,8 +1,8 @@
 #![allow(unused, non_upper_case_globals, non_snake_case)]
-use dioxus::prelude::*;
-use dioxus_core::{ElementId, generation};
-use dioxus_core::{NoOpMutations, ScopeState};
-use dioxus_signals::*;
+use aether::prelude::*;
+use aether_core::{ElementId, generation};
+use aether_core::{NoOpMutations, ScopeState};
+use aether_signals::*;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -146,7 +146,7 @@ fn memos_prevents_component_rerun() {
     });
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/2990
+// Regression test for https://github.com/AetherLabs/aether/issues/2990
 #[test]
 fn memos_sync_rerun_after_unrelated_write() {
     static PASSED: AtomicBool = AtomicBool::new(false);

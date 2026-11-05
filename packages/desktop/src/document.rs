@@ -1,13 +1,13 @@
 use crate::{DesktopContext, WeakDesktopContext, query::Query};
-use dioxus_core::queue_effect;
-use dioxus_document::{
+use aether_core::queue_effect;
+use aether_document::{
     Document, Eval, EvalError, Evaluator, LinkProps, MetaProps, ScriptProps, StyleProps,
     create_element_in_head,
 };
 
 use generational_box::{AnyStorage, GenerationalBox, UnsyncStorage};
 
-/// Code for the Dioxus channel used to communicate between the dioxus and javascript code
+/// Code for the Aether channel used to communicate between the aether and javascript code
 pub const NATIVE_EVAL_JS: &str = include_str!("./js/native_eval.js");
 
 /// Represents the desktop-target's provider of evaluators.

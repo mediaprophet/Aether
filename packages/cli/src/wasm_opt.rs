@@ -155,7 +155,7 @@ async fn find_latest_wasm_opt_download_url() -> anyhow::Result<String> {
     let client = crate::http_client::client();
     let response = client
         .get(url)
-        .header("User-Agent", "dioxus-cli")
+        .header("User-Agent", "aether-cli")
         .send()
         .await?
         .json::<serde_json::Value>()

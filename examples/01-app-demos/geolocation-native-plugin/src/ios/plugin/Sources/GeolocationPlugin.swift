@@ -8,7 +8,7 @@ import Dispatch
 import ActivityKit
 
 /**
- * Simplified GeolocationPlugin for Dioxus that works without Tauri dependencies.
+ * Simplified GeolocationPlugin for Aether that works without Tauri dependencies.
  * This can be shared with Tauri plugins with minimal changes.
  */
 @objc(GeolocationPlugin)

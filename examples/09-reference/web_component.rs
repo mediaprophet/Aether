@@ -1,13 +1,13 @@
-//! Dioxus allows webcomponents to be created with a simple syntax.
+//! Aether allows webcomponents to be created with a simple syntax.
 //!
 //! Read more about webcomponents [here](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
 //!
 //! We typically suggest wrapping webcomponents in a strongly typed interface using a component.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

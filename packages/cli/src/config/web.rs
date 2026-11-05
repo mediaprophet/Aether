@@ -189,5 +189,5 @@ fn false_bool() -> bool {
 }
 
 pub(crate) fn default_title() -> String {
-    "dioxus | ⛺".into()
+    "aether | ⛺".into()
 }

@@ -5,17 +5,17 @@
 // - Hydration
 
 #![allow(non_snake_case)]
-use dioxus::fullstack::{Websocket, commit_initial_chunk};
-use dioxus::{fullstack::WebSocketOptions, prelude::*};
+use aether::fullstack::{Websocket, commit_initial_chunk};
+use aether::{fullstack::WebSocketOptions, prelude::*};
 
 fn main() {
     #[cfg(feature = "server")]
-    dioxus::serve(|| async move {
-        use dioxus::server::axum::{self, Extension};
+    aether::serve(|| async move {
+        use aether::server::axum::{self, Extension};
 
-        let cfg = dioxus::server::ServeConfig::builder().enable_out_of_order_streaming();
+        let cfg = aether::server::ServeConfig::builder().enable_out_of_order_streaming();
         let router = axum::Router::new()
-            .serve_dioxus_application(cfg, app)
+            .serve_aether_application(cfg, app)
             .layer(Extension(1234u32));
 
         Ok(router)
@@ -81,7 +81,7 @@ fn DefaultServerFnCodec() -> Element {
 
 #[cfg(feature = "server")]
 async fn assert_server_context_provided() {
-    use dioxus::{fullstack::FullstackContext, server::axum::Extension};
+    use aether::{fullstack::FullstackContext, server::axum::Extension};
     // Just make sure the server context is provided
     let Extension(id): Extension<u32> = FullstackContext::extract().await.unwrap();
     assert_eq!(id, 1234u32);
@@ -102,7 +102,7 @@ async fn get_server_data() -> ServerFnResult<String> {
 }
 
 // Make sure the default codec work with empty data structures
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/2628
+// Regression test for https://github.com/AetherLabs/aether/issues/2628
 #[server]
 async fn get_server_data_empty_vec(empty_vec: Vec<String>) -> ServerFnResult<Vec<String>> {
     assert_server_context_provided().await;
@@ -112,7 +112,7 @@ async fn get_server_data_empty_vec(empty_vec: Vec<String>) -> ServerFnResult<Vec
 
 #[server]
 async fn server_error() -> ServerFnResult<String> {
-    use dioxus_core::AnyhowContext;
+    use aether_core::AnyhowContext;
     assert_server_context_provided().await;
     tokio::time::sleep(tokio::time::Duration::from_millis(1000)).await;
     Err(None.context("Server error occurred")?)
@@ -124,7 +124,7 @@ fn Errors() -> Element {
     use_hook(commit_initial_chunk);
 
     rsx! {
-        // This is a tricky case for suspense https://github.com/DioxusLabs/dioxus/issues/2570
+        // This is a tricky case for suspense https://github.com/AetherLabs/aether/issues/2570
         // Root suspense boundary is already resolved when the inner suspense boundary throws an error.
         // We need to throw the error from the inner suspense boundary on the server to the hydrated
         // suspense boundary on the client
@@ -156,7 +156,7 @@ pub fn ThrowsError() -> Element {
 #[component]
 fn DocumentElements() -> Element {
     rsx! {
-        document::Meta { id: "meta-head", name: "testing", data: "dioxus-meta-element" }
+        document::Meta { id: "meta-head", name: "testing", data: "aether-meta-element" }
         document::Link {
             id: "link-head",
             rel: "stylesheet",
@@ -233,7 +233,7 @@ async fn echo_ws(options: WebSocketOptions) -> Result<Websocket> {
     info!("Upgrading to websocket");
 
     Ok(options.on_upgrade(
-        |mut tx: dioxus::fullstack::TypedWebsocket<String, String>| async move {
+        |mut tx: aether::fullstack::TypedWebsocket<String, String>| async move {
             while let Ok(msg) = tx.recv().await {
                 let _ = tx.send(msg.to_ascii_uppercase()).await;
             }

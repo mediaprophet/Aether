@@ -1,24 +1,24 @@
-//! This example shows how to use middleware in a fullstack Dioxus app.
+//! This example shows how to use middleware in a fullstack Aether app.
 //!
-//! Dioxus supports two ways of middleware:
+//! Aether supports two ways of middleware:
 //! - Applying layers to the top-level axum router
 //! - Apply `#[middleware]` attributes to individual handlers
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[cfg(feature = "server")]
 use {std::time::Duration, tower_http::timeout::TimeoutLayer};
 
 fn main() {
     #[cfg(not(feature = "server"))]
-    dioxus::launch(app);
+    aether::launch(app);
 
     #[cfg(feature = "server")]
-    dioxus::serve(|| async move {
+    aether::serve(|| async move {
         use axum::{extract::Request, middleware::Next};
-        use dioxus::server::axum;
+        use aether::server::axum;
 
-        Ok(dioxus::server::router(app)
+        Ok(aether::server::router(app)
             // we can apply a layer to the entire router using axum's `.layer` method
             .layer(axum::middleware::from_fn(
                 |request: Request, next: Next| async move {

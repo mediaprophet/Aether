@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/3844
+// Regression test for https://github.com/AetherLabs/aether/issues/3844
 #[test]
 fn forward_spreads() {
     #[derive(Props, Clone, PartialEq)]
@@ -47,7 +47,7 @@ fn forward_spreads() {
         }
     };
     let dom = VirtualDom::prebuilt(merged);
-    let html = dioxus_ssr::render(&dom);
+    let html = aether_ssr::render(&dom);
     // Both forwarded spreads carry width and height through the component chain
     // to both divs (the #3844 regression). The dynamic-attribute slot is
     // normalized by (name, namespace), so the style declarations are sorted.

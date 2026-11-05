@@ -78,7 +78,7 @@ impl ToTokens for ImplExtensionAttributes {
                 /// Static metadata for this generated attribute.
                 pub struct #descriptor;
 
-                impl ::dioxus_core::view::AttributeDescriptor for #descriptor {
+                impl ::aether_core::view::AttributeDescriptor for #descriptor {
                     const NAME: &'static str = #attr_name;
                     const NAMESPACE: ::std::option::Option<&'static str> = #namespace;
                     const VOLATILE: bool = #volatile;
@@ -99,25 +99,25 @@ impl ToTokens for ImplExtensionAttributes {
                 );
                 quote! {
                     #[allow(non_snake_case)]
-                    fn #ident<__DioxusAttributeMarker, __DioxusAttributeValue>(
+                    fn #ident<__AetherAttributeMarker, __AetherAttributeValue>(
                         self,
-                        value: __DioxusAttributeValue,
-                    ) -> <__DioxusAttributeValue as ::dioxus_core::view::IntoAttributeBuilderValue<
+                        value: __AetherAttributeValue,
+                    ) -> <__AetherAttributeValue as ::aether_core::view::IntoAttributeBuilderValue<
                         Self,
                         #descriptor,
-                        __DioxusAttributeMarker,
+                        __AetherAttributeMarker,
                     >>::Output
                     where
-                        __DioxusAttributeValue: ::dioxus_core::view::IntoAttributeBuilderValue<
+                        __AetherAttributeValue: ::aether_core::view::IntoAttributeBuilderValue<
                             Self,
                             #descriptor,
-                            __DioxusAttributeMarker,
+                            __AetherAttributeMarker,
                         >,
                     {
-                        <__DioxusAttributeValue as ::dioxus_core::view::IntoAttributeBuilderValue<
+                        <__AetherAttributeValue as ::aether_core::view::IntoAttributeBuilderValue<
                             Self,
                             #descriptor,
-                            __DioxusAttributeMarker,
+                            __AetherAttributeMarker,
                         >>::append_to(value, self)
                     }
                 }
@@ -139,48 +139,48 @@ impl ToTokens for ImplExtensionAttributes {
             );
 
             quote! {
-                pub trait #extension_name: ::dioxus_core::view::AttributeBuilderTarget + Sized {
+                pub trait #extension_name: ::aether_core::view::AttributeBuilderTarget + Sized {
                     #[allow(non_snake_case)]
-                    fn #ident<__DioxusAttributeMarker, __DioxusAttributeValue>(
+                    fn #ident<__AetherAttributeMarker, __AetherAttributeValue>(
                         self,
-                        value: __DioxusAttributeValue,
-                    ) -> <__DioxusAttributeValue as ::dioxus_core::view::IntoAttributeBuilderValue<
+                        value: __AetherAttributeValue,
+                    ) -> <__AetherAttributeValue as ::aether_core::view::IntoAttributeBuilderValue<
                         Self,
                         #descriptor,
-                        __DioxusAttributeMarker,
+                        __AetherAttributeMarker,
                     >>::Output
                     where
-                        __DioxusAttributeValue: ::dioxus_core::view::IntoAttributeBuilderValue<
+                        __AetherAttributeValue: ::aether_core::view::IntoAttributeBuilderValue<
                             Self,
                             #descriptor,
-                            __DioxusAttributeMarker,
+                            __AetherAttributeMarker,
                         >,
                     {
-                        <__DioxusAttributeValue as ::dioxus_core::view::IntoAttributeBuilderValue<
+                        <__AetherAttributeValue as ::aether_core::view::IntoAttributeBuilderValue<
                             Self,
                             #descriptor,
-                            __DioxusAttributeMarker,
+                            __AetherAttributeMarker,
                         >>::append_to(value, self)
                     }
                 }
 
-                impl<__DioxusTag, __DioxusAttributes, __DioxusChildren> #extension_name
-                    for ::dioxus_core::view::ElementBuilder<
-                        __DioxusTag,
-                        __DioxusAttributes,
-                        __DioxusChildren,
+                impl<__AetherTag, __AetherAttributes, __AetherChildren> #extension_name
+                    for ::aether_core::view::ElementBuilder<
+                        __AetherTag,
+                        __AetherAttributes,
+                        __AetherChildren,
                     >
                 where
-                    __DioxusTag: #group_marker + crate::#marker,
+                    __AetherTag: #group_marker + crate::#marker,
                 {
                 }
 
                 // Spread targets accept every attribute in the group, so they get
                 // gated attributes unconditionally (no per-element marker required).
-                impl<__DioxusSpreadTarget> #extension_name for __DioxusSpreadTarget
+                impl<__AetherSpreadTarget> #extension_name for __AetherSpreadTarget
                 where
-                    __DioxusSpreadTarget:
-                        crate::#spread_marker + ::dioxus_core::view::AttributeBuilderTarget,
+                    __AetherSpreadTarget:
+                        crate::#spread_marker + ::aether_core::view::AttributeBuilderTarget,
                 {
                 }
             }
@@ -193,16 +193,16 @@ impl ToTokens for ImplExtensionAttributes {
             /// implements this marker to receive the group's full attribute extension methods.
             pub trait #spread_marker {}
 
-            pub trait #extension_name: ::dioxus_core::view::AttributeBuilderTarget + Sized {
+            pub trait #extension_name: ::aether_core::view::AttributeBuilderTarget + Sized {
                 #(#impls)*
             }
 
             // Spread targets accept every attribute in the group, so route the (non-gated)
             // umbrella extension through the marker as well.
-            impl<__DioxusSpreadTarget> #extension_name for __DioxusSpreadTarget
+            impl<__AetherSpreadTarget> #extension_name for __AetherSpreadTarget
             where
-                __DioxusSpreadTarget:
-                    #spread_marker + ::dioxus_core::view::AttributeBuilderTarget,
+                __AetherSpreadTarget:
+                    #spread_marker + ::aether_core::view::AttributeBuilderTarget,
             {
             }
 

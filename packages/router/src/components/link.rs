@@ -2,10 +2,10 @@
 
 use std::fmt::Debug;
 
-use dioxus_core::{Attribute, Element, EventHandler, VNode};
-use dioxus_core_macro::{Props, rsx};
-use dioxus_html::{
-    self as dioxus_html, ModifiersInteraction, MountedEvent, MouseEvent, PointerInteraction,
+use aether_core::{Attribute, Element, EventHandler, VNode};
+use aether_core_macro::{Props, rsx};
+use aether_html::{
+    self as aether_html, ModifiersInteraction, MountedEvent, MouseEvent, PointerInteraction,
     elements::{prelude::*, *},
     extensions::*,
 };
@@ -88,7 +88,7 @@ impl Debug for LinkProps {
 ///
 /// # External targets
 /// When the [`Link`]s target is an [`NavigationTarget::External`] target, that is used as the `href` directly. This
-/// means that a [`Link`] can always navigate to an [`NavigationTarget::External`] target, even if the [`dioxus_history::History`] does not support it.
+/// means that a [`Link`] can always navigate to an [`NavigationTarget::External`] target, even if the [`aether_history::History`] does not support it.
 ///
 /// # Panic
 /// - When the [`Link`] is not nested within a [`super::Router`], but
@@ -96,7 +96,7 @@ impl Debug for LinkProps {
 ///
 /// # Example
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 ///
 /// #[derive(Clone, Routable)]
 /// enum Route {
@@ -130,7 +130,7 @@ impl Debug for LinkProps {
 /// # let mut vdom = VirtualDom::new(App);
 /// # vdom.rebuild_in_place();
 /// # assert_eq!(
-/// #     dioxus_ssr::render(&vdom),
+/// #     aether_ssr::render(&vdom),
 /// #     r#"<a href="/" class="link_class active" rel="link_rel" target="_blank" aria-current="page" id="link_id">A fully configured link</a>"#
 /// # );
 /// ```
@@ -209,7 +209,7 @@ pub fn Link(props: LinkProps) -> Element {
             return;
         }
         // Only handle left clicks
-        if event.trigger_button() != Some(dioxus_html::input_data::MouseButton::Primary) {
+        if event.trigger_button() != Some(aether_html::input_data::MouseButton::Primary) {
             return;
         }
 

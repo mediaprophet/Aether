@@ -1,4 +1,4 @@
-use dioxus::prelude::Result;
+use aether::prelude::Result;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 

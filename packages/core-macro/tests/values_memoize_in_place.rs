@@ -1,8 +1,8 @@
-use dioxus::{
+use aether::{
     core::{generation, needs_update},
     prelude::*,
 };
-use dioxus_core::ElementId;
+use aether_core::ElementId;
 use std::{any::Any, rc::Rc};
 
 #[tokio::test]
@@ -45,7 +45,7 @@ async fn values_memoize_in_place() {
         }
     }
 
-    set_event_converter(Box::new(dioxus::html::SerializedHtmlEventConverter));
+    set_event_converter(Box::new(aether::html::SerializedHtmlEventConverter));
     let mut dom = VirtualDom::new(app);
 
     let mutations = dom.rebuild_to_vec();
@@ -62,9 +62,9 @@ async fn values_memoize_in_place() {
             _ = tokio::time::sleep(std::time::Duration::from_millis(20)) => {},
             _ = dom.wait_for_work() => {}
         }
-        dom.render_immediate(&mut dioxus_core::NoOpMutations);
+        dom.render_immediate(&mut aether_core::NoOpMutations);
     }
-    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+    dom.render_immediate(&mut aether_core::NoOpMutations);
     // As we rerun the app, the drop count should be 15 one for each render of the app component
     let drop_count = DROP_COUNT.with(|c| *c.borrow());
     assert_eq!(drop_count, 16);
@@ -91,7 +91,7 @@ fn cloning_event_handler_components_work() {
         }
     }
 
-    set_event_converter(Box::new(dioxus::html::SerializedHtmlEventConverter));
+    set_event_converter(Box::new(aether::html::SerializedHtmlEventConverter));
     let mut dom = VirtualDom::new(app);
 
     let mutations = dom.rebuild_to_vec();
@@ -104,9 +104,9 @@ fn cloning_event_handler_components_work() {
         );
         dom.runtime()
             .handle_event("click", event, ElementId::from_raw(1));
-        dom.render_immediate(&mut dioxus_core::NoOpMutations);
+        dom.render_immediate(&mut aether_core::NoOpMutations);
     }
-    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+    dom.render_immediate(&mut aether_core::NoOpMutations);
 }
 
 #[component]
@@ -138,10 +138,10 @@ fn TakesSignal(sig: ReadSignal<usize>, number: usize) -> Element {
     }
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/2582
+// Regression test for https://github.com/AetherLabs/aether/issues/2582
 #[test]
 fn spreads_memorize_in_place() {
-    use dioxus_core::Properties;
+    use aether_core::Properties;
 
     #[derive(Props, Clone, PartialEq)]
     struct CompProps {
@@ -173,7 +173,7 @@ fn spreads_memorize_in_place() {
     assert_eq!(props.attributes, vec![]);
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/2331
+// Regression test for https://github.com/AetherLabs/aether/issues/2331
 #[test]
 fn cloning_read_signal_components_work() {
     fn app() -> Element {
@@ -205,7 +205,7 @@ fn cloning_read_signal_components_work() {
         rsx! {}
     }
 
-    set_event_converter(Box::new(dioxus::html::SerializedHtmlEventConverter));
+    set_event_converter(Box::new(aether::html::SerializedHtmlEventConverter));
     let mut dom = VirtualDom::new(app);
 
     let mutations = dom.rebuild_to_vec();
@@ -218,15 +218,15 @@ fn cloning_read_signal_components_work() {
         );
         dom.runtime()
             .handle_event("click", event, ElementId::from_raw(1));
-        dom.render_immediate(&mut dioxus_core::NoOpMutations);
+        dom.render_immediate(&mut aether_core::NoOpMutations);
     }
-    dom.render_immediate(&mut dioxus_core::NoOpMutations);
+    dom.render_immediate(&mut aether_core::NoOpMutations);
 }
 
-// Regression test for https://github.com/DioxusLabs/dioxus/issues/5222
+// Regression test for https://github.com/AetherLabs/aether/issues/5222
 #[tokio::test]
 async fn optional_event_handler_diff() {
-    use dioxus_core::Properties;
+    use aether_core::Properties;
 
     #[derive(Props, Clone, PartialEq)]
     struct CompProps {
@@ -238,11 +238,11 @@ async fn optional_event_handler_diff() {
     dom.in_scope(ScopeId::APP, || {
         let none_props = || CompPropsWithOwner {
             inner: CompProps { callback: None },
-            owner: dioxus_core::internal::generational_box::Owner::default(),
+            owner: aether_core::internal::generational_box::Owner::default(),
         };
         let some_props = || {
-            let owner = dioxus_core::internal::generational_box::Owner::default();
-            let callback = dioxus_core::with_owner(owner.clone(), || Callback::new(|_| {}));
+            let owner = aether_core::internal::generational_box::Owner::default();
+            let callback = aether_core::with_owner(owner.clone(), || Callback::new(|_| {}));
             CompPropsWithOwner {
                 inner: CompProps {
                     callback: Some(callback),

@@ -11,7 +11,7 @@ TARGET_DIR=../../../target
 # build the harness
 cargo rustc --package wasm-split-harness --target wasm32-unknown-unknown --profile wasm-split-release -- -Clink-args=--emit-relocs
 
-# for a much smaller compile, you can crank up the flags. However, dioxus relies heavily on location detail, so we can't disable that
+# for a much smaller compile, you can crank up the flags. However, aether relies heavily on location detail, so we can't disable that
 #
 # -Zlocation-detail=none - we could compile with location detail off but if breaks our signals...
 #

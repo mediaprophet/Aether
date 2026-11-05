@@ -1,4 +1,4 @@
-use dioxus_html::HasScrollData;
+use aether_html::HasScrollData;
 use wasm_bindgen::JsCast;
 use web_sys::{Document, Element, Event};
 
@@ -94,7 +94,7 @@ impl HasScrollData for Synthetic<Event> {
     }
 }
 
-impl WebEventExt for dioxus_html::ScrollData {
+impl WebEventExt for aether_html::ScrollData {
     type WebEvent = web_sys::Event;
 
     #[inline(always)]

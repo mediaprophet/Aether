@@ -1,6 +1,6 @@
 use crate::dom::WebsysDom;
-use dioxus_core::{BorrowedAttributeValue, ElementId, WriteMutations};
-use dioxus_core_types::event_bubbles;
+use aether_core::{BorrowedAttributeValue, ElementId, WriteMutations};
+use aether_core_types::event_bubbles;
 #[cfg(feature = "mounted")]
 use wasm_bindgen::JsCast;
 
@@ -18,8 +18,8 @@ impl WebsysDom {
         for id in self.queued_mounted_events.drain(..) {
             let node = self.interpreter.base().get_node(id.raw() as u32);
             if let Some(element) = node.dyn_ref::<web_sys::Element>() {
-                let event = dioxus_core::Event::new(
-                    std::rc::Rc::new(dioxus_html::PlatformEventData::new(Box::new(
+                let event = aether_core::Event::new(
+                    std::rc::Rc::new(aether_html::PlatformEventData::new(Box::new(
                         element.clone(),
                     ))) as std::rc::Rc<dyn std::any::Any>,
                     false,

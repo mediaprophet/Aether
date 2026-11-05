@@ -1,4 +1,4 @@
-use dioxus_html::{HasBeforeInputData, InputType};
+use aether_html::{HasBeforeInputData, InputType};
 use web_sys::{Element, InputEvent};
 
 use super::WebEventExt;
@@ -36,7 +36,7 @@ impl HasBeforeInputData for WebBeforeInputData {
     }
 }
 
-impl WebEventExt for dioxus_html::BeforeInputData {
+impl WebEventExt for aether_html::BeforeInputData {
     type WebEvent = web_sys::InputEvent;
 
     #[inline(always)]

@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-tailwind"
+name = "aether-tailwind"
 version = "0.0.0"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "A tailwindcss example using Dioxus"
+description = "A tailwindcss example using Aether"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -12,9 +12,9 @@ publish = false
 
 [dependencies]
 manganis = { workspace = true }
-dioxus = { workspace = true }
+aether = { workspace = true }
 
 [features]
 default = ["desktop"]
-web = ["dioxus/web"]
-desktop = ["dioxus/desktop"]
+web = ["aether/web"]
+desktop = ["aether/desktop"]

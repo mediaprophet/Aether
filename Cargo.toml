@@ -2,15 +2,6 @@
 resolver = "2"
 members = [
     "packages/aether",
-    "packages/aether-native",
-    "packages/aether-desktop",
-    "packages/aether-web",
-    "packages/aether-core",
-    "packages/aether-signals",
-    "packages/aether-hooks",
-    "packages/aether-html",
-    "packages/aether-router",
-    "packages/dioxus",
     "packages/core",
     "packages/core-template",
     "packages/oracle",
@@ -49,7 +40,7 @@ members = [
     "packages/signals",
     "packages/stores",
     "packages/stores-macro",
-    "packages/dioxus-const-vec",
+    "packages/aether-const-vec",
     "packages/const-serialize",
     "packages/const-serialize-macro",
     "packages/dx-wire-format",
@@ -144,59 +135,50 @@ publish = false
 # dependencies that are shared across packages
 [workspace.dependencies]
 aether = { path = "packages/aether", version = "=0.8.0-alpha.3" }
-aether-native = { path = "packages/aether-native", version = "=0.8.0-alpha.3" }
-aether-desktop = { path = "packages/aether-desktop", version = "=0.8.0-alpha.3", default-features = false }
-aether-web = { path = "packages/aether-web", version = "=0.8.0-alpha.3", default-features = false }
-aether-core = { path = "packages/aether-core", version = "=0.8.0-alpha.3" }
-aether-signals = { path = "packages/aether-signals", version = "=0.8.0-alpha.3" }
-aether-hooks = { path = "packages/aether-hooks", version = "=0.8.0-alpha.3" }
-aether-html = { path = "packages/aether-html", version = "=0.8.0-alpha.3", default-features = false }
-aether-router = { path = "packages/aether-router", version = "=0.8.0-alpha.3" }
-dioxus = { path = "packages/dioxus", version = "=0.8.0-alpha.3" }
-dioxus-core = { path = "packages/core", version = "=0.8.0-alpha.3" }
-dioxus-core-template = { path = "packages/core-template", version = "=0.8.0-alpha.3" }
-dioxus-renderer-oracle = { path = "packages/oracle", version = "=0.8.0-alpha.3" }
-dioxus-core-types = { path = "packages/core-types", version = "=0.8.0-alpha.3" }
-dioxus-core-macro = { path = "packages/core-macro", version = "=0.8.0-alpha.3" }
-dioxus-config-macro = { path = "packages/config-macro", version = "=0.8.0-alpha.3" }
-dioxus-router = { path = "packages/router", version = "=0.8.0-alpha.3" }
-dioxus-router-macro = { path = "packages/router-macro", version = "=0.8.0-alpha.3" }
-dioxus-document = { path = "packages/document", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-history = { path = "packages/history", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-html = { path = "packages/html", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-html-internal-macro = { path = "packages/html-internal-macro", version = "=0.8.0-alpha.3" }
-dioxus-hooks = { path = "packages/hooks", version = "=0.8.0-alpha.3" }
-dioxus-web = { path = "packages/web", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-ssr = { path = "packages/ssr", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-desktop = { path = "packages/desktop", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-interpreter-js = { path = "packages/interpreter", version = "=0.8.0-alpha.3" }
-dioxus-liveview = { path = "packages/liveview", version = "=0.8.0-alpha.3" }
-dioxus-autofmt = { path = "packages/autofmt", version = "=0.8.0-alpha.3" }
-dioxus-rsx = { path = "packages/rsx", version = "=0.8.0-alpha.3" }
-dioxus-rsx-hotreload = { path = "packages/rsx-hotreload", version = "=0.8.0-alpha.3" }
-dioxus-rsx-rosetta = { path = "packages/rsx-rosetta", version = "=0.8.0-alpha.3" }
-dioxus-signals = { path = "packages/signals", version = "=0.8.0-alpha.3" }
-dioxus-stores = { path = "packages/stores", version = "=0.8.0-alpha.3" }
-dioxus-stores-macro = { path = "packages/stores-macro", version = "=0.8.0-alpha.3" }
-dioxus-devtools = { path = "packages/devtools", version = "=0.8.0-alpha.3" }
-dioxus-devtools-types = { path = "packages/devtools-types", version = "=0.8.0-alpha.3" }
-dioxus-fullstack = { path = "packages/fullstack", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-fullstack-core = { path = "packages/fullstack-core", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-fullstack-macro = { path = "packages/fullstack-macro", version = "=0.8.0-alpha.3", default-features = false }
-dioxus-server = { path = "packages/fullstack-server", version = "=0.8.0-alpha.3" }
-dioxus-dx-wire-format = { path = "packages/dx-wire-format", version = "=0.8.0-alpha.3" }
-dioxus-logger = { path = "packages/logger", version = "=0.8.0-alpha.3" }
-dioxus-native = { path = "packages/native", version = "=0.8.0-alpha.3" }
-dioxus-native-dom = { path = "packages/native-dom", version = "=0.8.0-alpha.3" }
-dioxus-asset-resolver = { path = "packages/asset-resolver", version = "=0.8.0-alpha.3" }
-dioxus-config-macros = { path = "packages/config-macros", version = "=0.8.0-alpha.3" }
-dioxus-component-manifest = { path = "packages/component-manifest", version = "=0.8.0-alpha.3" }
+aether-core = { path = "packages/core", version = "=0.8.0-alpha.3" }
+aether-core-template = { path = "packages/core-template", version = "=0.8.0-alpha.3" }
+aether-renderer-oracle = { path = "packages/oracle", version = "=0.8.0-alpha.3" }
+aether-core-types = { path = "packages/core-types", version = "=0.8.0-alpha.3" }
+aether-core-macro = { path = "packages/core-macro", version = "=0.8.0-alpha.3" }
+aether-config-macro = { path = "packages/config-macro", version = "=0.8.0-alpha.3" }
+aether-router = { path = "packages/router", version = "=0.8.0-alpha.3" }
+aether-router-macro = { path = "packages/router-macro", version = "=0.8.0-alpha.3" }
+aether-document = { path = "packages/document", version = "=0.8.0-alpha.3", default-features = false }
+aether-history = { path = "packages/history", version = "=0.8.0-alpha.3", default-features = false }
+aether-html = { path = "packages/html", version = "=0.8.0-alpha.3", default-features = false }
+aether-html-internal-macro = { path = "packages/html-internal-macro", version = "=0.8.0-alpha.3" }
+aether-hooks = { path = "packages/hooks", version = "=0.8.0-alpha.3" }
+aether-web = { path = "packages/web", version = "=0.8.0-alpha.3", default-features = false }
+aether-ssr = { path = "packages/ssr", version = "=0.8.0-alpha.3", default-features = false }
+aether-desktop = { path = "packages/desktop", version = "=0.8.0-alpha.3", default-features = false }
+aether-interpreter-js = { path = "packages/interpreter", version = "=0.8.0-alpha.3" }
+aether-liveview = { path = "packages/liveview", version = "=0.8.0-alpha.3" }
+aether-autofmt = { path = "packages/autofmt", version = "=0.8.0-alpha.3" }
+aether-rsx = { path = "packages/rsx", version = "=0.8.0-alpha.3" }
+aether-rsx-hotreload = { path = "packages/rsx-hotreload", version = "=0.8.0-alpha.3" }
+aether-rsx-rosetta = { path = "packages/rsx-rosetta", version = "=0.8.0-alpha.3" }
+aether-signals = { path = "packages/signals", version = "=0.8.0-alpha.3" }
+aether-stores = { path = "packages/stores", version = "=0.8.0-alpha.3" }
+aether-stores-macro = { path = "packages/stores-macro", version = "=0.8.0-alpha.3" }
+aether-devtools = { path = "packages/devtools", version = "=0.8.0-alpha.3" }
+aether-devtools-types = { path = "packages/devtools-types", version = "=0.8.0-alpha.3" }
+aether-fullstack = { path = "packages/fullstack", version = "=0.8.0-alpha.3", default-features = false }
+aether-fullstack-core = { path = "packages/fullstack-core", version = "=0.8.0-alpha.3", default-features = false }
+aether-fullstack-macro = { path = "packages/fullstack-macro", version = "=0.8.0-alpha.3", default-features = false }
+aether-server = { path = "packages/fullstack-server", version = "=0.8.0-alpha.3" }
+aether-dx-wire-format = { path = "packages/dx-wire-format", version = "=0.8.0-alpha.3" }
+aether-logger = { path = "packages/logger", version = "=0.8.0-alpha.3" }
+aether-native = { path = "packages/native", version = "=0.8.0-alpha.3" }
+aether-native-dom = { path = "packages/native-dom", version = "=0.8.0-alpha.3" }
+aether-asset-resolver = { path = "packages/asset-resolver", version = "=0.8.0-alpha.3" }
+aether-config-macros = { path = "packages/config-macros", version = "=0.8.0-alpha.3" }
+aether-component-manifest = { path = "packages/component-manifest", version = "=0.8.0-alpha.3" }
 generational-box = { path = "packages/generational-box", version = "=0.8.0-alpha.3" }
 lazy-js-bundle = { path = "packages/lazy-js-bundle", version = "=0.8.0-alpha.3" }
 
 # cli
-dioxus-cli-telemetry = { path = "packages/cli-telemetry", version = "=0.8.0-alpha.3" }
-dioxus-cli-config = { path = "packages/cli-config", version = "=0.8.0-alpha.3" }
+aether-cli-telemetry = { path = "packages/cli-telemetry", version = "=0.8.0-alpha.3" }
+aether-cli-config = { path = "packages/cli-config", version = "=0.8.0-alpha.3" }
 
 # subsecond
 subsecond-types = { path = "packages/subsecond/subsecond-types", version = "=0.8.0-alpha.3" }
@@ -217,7 +199,7 @@ manganis-core = { path = "packages/manganis/manganis-core", version = "=0.8.0-al
 manganis-macro = { path = "packages/manganis/manganis-macro", version = "=0.8.0-alpha.3" }
 
 # const-serialize
-dioxus-const-vec = { path = "packages/dioxus-const-vec", version = "=0.8.0-alpha.3" }
+aether-const-vec = { path = "packages/aether-const-vec", version = "=0.8.0-alpha.3" }
 const-serialize = { path = "packages/const-serialize", version = "=0.8.0-alpha.3" }
 const-serialize-macro = { path = "packages/const-serialize-macro", version = "=0.8.0-alpha.3" }
 
@@ -436,9 +418,9 @@ incremental = true
 opt-level = 3
 
 # Keep debug assertions for fuzzing, but compile the reusable fuzzer crate
-# with release-style optimizations. (The libFuzzer binary `dioxus-fuzz` lives
+# with release-style optimizations. (The libFuzzer binary `aether-fuzz` lives
 # in its own sub-workspace under packages/fuzz/fuzz and sets its own profile.)
-[profile.dev.package.dioxus-vdom-fuzz]
+[profile.dev.package.aether-vdom-fuzz]
 opt-level = 3
 
 # ensure we have adversarial setup for tls
@@ -507,10 +489,10 @@ sqlx = { version = "0.9.0", features = [
 wasm-streams = "0.5.0"
 
 [dev-dependencies]
-dioxus = { workspace = true, features = ["router", "fullstack"] }
-dioxus-html = { workspace = true, features = ["serialize"] }
-dioxus-stores = { workspace = true }
-dioxus-ssr = { workspace = true }
+aether = { workspace = true, features = ["router", "fullstack"] }
+aether-html = { workspace = true, features = ["serialize"] }
+aether-stores = { workspace = true }
+aether-ssr = { workspace = true }
 futures-util = { workspace = true }
 separator = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
@@ -546,12 +528,12 @@ tokio = { version = "1.52.1", features = ["full"] }
 # This trims off like 270 dependencies, leading to a significant speedup in compilation time
 [features]
 default = ["desktop"]
-desktop = ["dioxus/desktop"]
-native = ["dioxus/native", "winit"]
-liveview = ["dioxus/liveview"]
-server = ["dioxus/server"]
-mobile = ["dioxus/mobile"]
-web = ["dioxus/web"]
+desktop = ["aether/desktop"]
+native = ["aether/native", "winit"]
+liveview = ["aether/liveview"]
+server = ["aether/server"]
+mobile = ["aether/mobile"]
+web = ["aether/web"]
 gpu = ["dep:ouroboros", "dep:wgpu"]
 
 [[example]]

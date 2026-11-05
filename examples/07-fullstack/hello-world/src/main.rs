@@ -1,4 +1,4 @@
-//! A simple hello world example for Dioxus fullstack
+//! A simple hello world example for Aether fullstack
 //!
 //! Run with:
 //!
@@ -6,17 +6,17 @@
 //! dx serve --web
 //! ```
 //!
-//! This example demonstrates a simple Dioxus fullstack application with a client-side counter
+//! This example demonstrates a simple Aether fullstack application with a client-side counter
 //! and a server function that returns a greeting message.
 //!
 //! The `use_action` hook makes it easy to call async work (like server functions) from the client side
 //! and handle loading and error states.
 
-use dioxus::prelude::*;
-use dioxus_fullstack::get;
+use aether::prelude::*;
+use aether_fullstack::get;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -25,7 +25,7 @@ fn app() -> Element {
 
     rsx! {
         div { style: "padding: 2rem; font-family: Arial, sans-serif;",
-            h1 { "Hello, Dioxus Fullstack!" }
+            h1 { "Hello, Aether Fullstack!" }
 
             // Client-side counter - you can use any client functionality in your app!
             div { style: "margin: 1rem 0;",

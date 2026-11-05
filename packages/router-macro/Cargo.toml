@@ -1,9 +1,9 @@
 [package]
-name = "dioxus-router-macro"
+name = "aether-router-macro"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Macro for Dioxus Router"
+description = "Macro for Aether Router"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -24,7 +24,7 @@ digest = { workspace = true }
 sha2 = { workspace = true }
 
 [dev-dependencies]
-dioxus = { workspace = true, features = ["router"] }
+aether = { workspace = true, features = ["router"] }
 
 [features]
 default = []

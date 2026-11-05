@@ -2,9 +2,9 @@
 
 use std::{cell::RefCell, collections::HashSet, rc::Rc};
 
-use dioxus_core::{Attribute, DynamicNode, Element, RenderError, Runtime, ScopeId, VNodeChild};
-use dioxus_core_macro::*;
-use dioxus_html::extensions::*;
+use aether_core::{Attribute, DynamicNode, Element, RenderError, Runtime, ScopeId, VNodeChild};
+use aether_core_macro::*;
+use aether_html::extensions::*;
 mod link;
 pub use link::*;
 mod stylesheet;
@@ -23,7 +23,7 @@ pub use title::*;
 fn use_update_warning<T: PartialEq + Clone + 'static>(value: &T, name: &'static str) {
     #[cfg(debug_assertions)]
     {
-        use dioxus_core::use_hook;
+        use aether_core::use_hook;
 
         let cloned_value = value.clone();
         let initial = use_hook(move || value.clone());
@@ -109,8 +109,8 @@ fn extract_single_text_node(children: &Element) -> Result<String, ExtractSingleT
 
 #[cfg(test)]
 mod tests {
-    use dioxus_core::{DynamicNode, DynamicValues, VNode, VText};
-    use dioxus_core_template::{TemplateRawTree, TemplateStorage};
+    use aether_core::{DynamicNode, DynamicValues, VNode, VText};
+    use aether_core_template::{TemplateRawTree, TemplateStorage};
 
     use super::*;
 
@@ -177,25 +177,25 @@ impl DeduplicationContext {
     }
 }
 
-/// Extend a list of string attributes with a list of dioxus attribute
+/// Extend a list of string attributes with a list of aether attribute
 pub(crate) fn extend_attributes(
     attributes: &mut Vec<(&'static str, String)>,
     additional_attributes: &[Attribute],
 ) {
     for additional_attribute in additional_attributes {
         let attribute_value_as_string = match &additional_attribute.value {
-            dioxus_core::AttributeValue::Text(v) => v.to_string(),
-            dioxus_core::AttributeValue::Float(v) => v.to_string(),
-            dioxus_core::AttributeValue::Int(v) => v.to_string(),
-            dioxus_core::AttributeValue::Bool(v) => v.to_string(),
-            dioxus_core::AttributeValue::Listener(_) | dioxus_core::AttributeValue::Any(_) => {
+            aether_core::AttributeValue::Text(v) => v.to_string(),
+            aether_core::AttributeValue::Float(v) => v.to_string(),
+            aether_core::AttributeValue::Int(v) => v.to_string(),
+            aether_core::AttributeValue::Bool(v) => v.to_string(),
+            aether_core::AttributeValue::Listener(_) | aether_core::AttributeValue::Any(_) => {
                 tracing::error!(
                     "document::* elements do not support event listeners or any value attributes. Expected displayable attribute, found {:?}",
                     additional_attribute.value
                 );
                 continue;
             }
-            dioxus_core::AttributeValue::None => {
+            aether_core::AttributeValue::None => {
                 continue;
             }
         };

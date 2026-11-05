@@ -3,12 +3,12 @@
 <details>
 <summary>This function is a hook which means you need to <b>follow the rules of hooks</b> when you call it. You can click here to learn more about the rules of hooks.</summary>
 
-Hooks in dioxus need to run in the same order every time you run the component. To make sure you run hooks in a consistent order, you should follow the rules of hooks:
+Hooks in aether need to run in the same order every time you run the component. To make sure you run hooks in a consistent order, you should follow the rules of hooks:
 
 1. Hooks should only be called from the root of a component or another hook
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn App() -> Element {
     // ✅ You can call hooks from the body of a component
     let number = use_signal(|| 1);
@@ -40,7 +40,7 @@ Because hooks should only be called from the root of a component or another hook
 - ❌ Conditionals
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn App() -> Element {
     let number = use_signal(|| 1);
     // ❌ Changing the condition will change the order of the hooks
@@ -63,7 +63,7 @@ fn App() -> Element {
 - ❌ Loops
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn App() -> Element {
     let number = use_signal(|| 1);
     // ❌ Changing the loop will change the order of the hooks
@@ -78,7 +78,7 @@ fn App() -> Element {
 - ❌ Event Handlers
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn App() -> Element {
     rsx! {
         button {
@@ -95,7 +95,7 @@ fn App() -> Element {
 - ❌ Initialization closures in other hooks
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn App() -> Element {
     let number = use_signal(|| {
         // ❌ This closure will only be called when the component is first created. Running the component will change the order of the hooks
@@ -110,12 +110,12 @@ fn App() -> Element {
 <details>
 <summary>Why do hooks need to run in a consistent order?</summary>
 
-Hooks need to be run in a consistent order because dioxus stores hooks in a list and uses the order you run hooks in to determine what part of the state belongs to which hook.
+Hooks need to be run in a consistent order because aether stores hooks in a list and uses the order you run hooks in to determine what part of the state belongs to which hook.
 
 Lets look at an example component:
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 fn App() -> Element {
     let number = use_signal(|| 1); // Hook 1
     let string = use_signal(|| "hello world".to_string()); // Hook 2
@@ -145,7 +145,7 @@ Next time we run the component, we return items from the state list instead of c
 ]
 ```
 
-The order the hooks are run it must be the same because the order determines which hook gets what state! If you run the hooks in a different order, dioxus may panic because it can't turn the state back into the right type or you may just get the wrong state for your hook.
+The order the hooks are run it must be the same because the order determines which hook gets what state! If you run the hooks in a different order, aether may panic because it can't turn the state back into the right type or you may just get the wrong state for your hook.
 
 </details>
 

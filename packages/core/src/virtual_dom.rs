@@ -27,7 +27,7 @@ use tracing::instrument;
 /// Components are defined as simple functions that take [`crate::properties::Properties`] and return an [`Element`].
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 ///
 /// #[derive(Props, PartialEq, Clone)]
 /// struct AppProps {
@@ -45,7 +45,7 @@ use tracing::instrument;
 ///
 /// ```rust
 /// # #![allow(unused)]
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 ///
 /// # #[derive(Props, PartialEq, Clone)]
 /// # struct AppProps {
@@ -87,8 +87,8 @@ use tracing::instrument;
 /// draw the UI.
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
-/// # use dioxus_core::*;
+/// # use aether::prelude::*;
+/// # use aether_core::*;
 /// # fn app() -> Element { rsx! { div {} } }
 ///
 /// let mut vdom = VirtualDom::new(app);
@@ -98,8 +98,8 @@ use tracing::instrument;
 /// To call listeners inside the VirtualDom, call [`Runtime::handle_event`] with the appropriate event data.
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_core::*;
+/// # use aether::prelude::*;
+/// # use aether_core::*;
 /// # fn app() -> Element { rsx! { div {} } }
 /// # let mut vdom = VirtualDom::new(app);
 /// # let runtime = vdom.runtime();
@@ -110,8 +110,8 @@ use tracing::instrument;
 /// While no events are ready, call [`VirtualDom::wait_for_work`] to poll any futures inside the VirtualDom.
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_core::*;
+/// # use aether::prelude::*;
+/// # use aether_core::*;
 /// # fn app() -> Element { rsx! { div {} } }
 /// # let mut vdom = VirtualDom::new(app);
 /// tokio::runtime::Runtime::new().unwrap().block_on(async {
@@ -124,8 +124,8 @@ use tracing::instrument;
 /// handled by the renderer.
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_core::*;
+/// # use aether::prelude::*;
+/// # use aether_core::*;
 /// # fn app() -> Element { rsx! { div {} } }
 /// # let mut vdom = VirtualDom::new(app);
 /// let mut mutations = Mutations::default();
@@ -136,12 +136,12 @@ use tracing::instrument;
 /// To not wait for suspense while diffing the VirtualDom, call [`VirtualDom::render_immediate`].
 ///
 ///
-/// ## Building an event loop around Dioxus:
+/// ## Building an event loop around Aether:
 ///
-/// Putting everything together, you can build an event loop around Dioxus by using the methods outlined above.
+/// Putting everything together, you can build an event loop around Aether by using the methods outlined above.
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_core::*;
+/// # use aether::prelude::*;
+/// # use aether_core::*;
 /// # struct RealDom;
 /// # struct Event {}
 /// # impl RealDom {
@@ -174,7 +174,7 @@ use tracing::instrument;
 ///     tokio::select! {
 ///         _ = dom.wait_for_work() => {}
 ///         evt = real_dom.wait_for_event() => {
-///             let evt = dioxus_core::Event::new(evt, true);
+///             let evt = aether_core::Event::new(evt, true);
 ///             dom.runtime().handle_event_for_target(RenderTargetId::ROOT, "onclick", evt, ElementId::from_raw(0))
 ///         },
 ///     }
@@ -186,13 +186,13 @@ use tracing::instrument;
 ///
 /// ## Waiting for suspense
 ///
-/// Because Dioxus supports suspense, you can use it for server-side rendering, static site generation, and other use cases
+/// Because Aether supports suspense, you can use it for server-side rendering, static site generation, and other use cases
 /// where waiting on portions of the UI to finish rendering is important. To wait for suspense, use the
 /// [`VirtualDom::wait_for_suspense`] method:
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// # use dioxus_core::*;
+/// # use aether::prelude::*;
+/// # use aether_core::*;
 /// # fn app() -> Element { rsx! { div {} } }
 /// tokio::runtime::Runtime::new().unwrap().block_on(async {
 ///     let mut dom = VirtualDom::new(app);
@@ -229,8 +229,8 @@ impl VirtualDom {
     ///
     /// # Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_core::*;
+    /// # use aether::prelude::*;
+    /// # use aether_core::*;
     /// fn Example() -> Element  {
     ///     rsx!( div { "hello world" } )
     /// }
@@ -255,8 +255,8 @@ impl VirtualDom {
     ///
     /// # Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_core::*;
+    /// # use aether::prelude::*;
+    /// # use aether_core::*;
     /// #[derive(PartialEq, Props, Clone)]
     /// struct SomeProps {
     ///     name: &'static str
@@ -272,8 +272,8 @@ impl VirtualDom {
     /// Note: the VirtualDom is not progressed on creation. You must either "run_with_deadline" or use "rebuild" to progress it.
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
-    /// # use dioxus_core::*;
+    /// # use aether::prelude::*;
+    /// # use aether_core::*;
     /// # #[derive(PartialEq, Props, Clone)]
     /// # struct SomeProps {
     /// #     name: &'static str
@@ -346,7 +346,7 @@ impl VirtualDom {
         self.get_scope(ScopeId::ROOT).unwrap()
     }
 
-    /// Run a closure inside the dioxus runtime
+    /// Run a closure inside the aether runtime
     #[instrument(skip(self, f), level = "trace", name = "VirtualDom::in_runtime")]
     pub fn in_runtime<O>(&self, f: impl FnOnce() -> O) -> O {
         let _runtime = RuntimeGuard::new(self.runtime.clone());
@@ -438,7 +438,7 @@ impl VirtualDom {
     /// # Example
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # fn app() -> Element { rsx! { div {} } }
     /// let dom = VirtualDom::new(app);
     /// ```

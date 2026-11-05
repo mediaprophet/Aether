@@ -772,12 +772,12 @@ impl FfiBridgeParser {
                                     #[cfg(target_os = "ios")]
                                     let frameworks_dir = parent.join("Frameworks");
 
-                                    let path = frameworks_dir.join("DioxusSwiftPlugins.framework/DioxusSwiftPlugins");
+                                    let path = frameworks_dir.join("AetherSwiftPlugins.framework/AetherSwiftPlugins");
                                     if path.exists() {
                                         Some(path)
                                     } else {
                                         // Try versioned path for macOS
-                                        let versioned = frameworks_dir.join("DioxusSwiftPlugins.framework/Versions/Current/DioxusSwiftPlugins");
+                                        let versioned = frameworks_dir.join("AetherSwiftPlugins.framework/Versions/Current/AetherSwiftPlugins");
                                         if versioned.exists() {
                                             Some(versioned)
                                         } else {

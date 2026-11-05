@@ -1,11 +1,11 @@
 //! XSS Safety
 //!
-//! This example proves that Dioxus is safe from XSS attacks.
+//! This example proves that Aether is safe from XSS attacks.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -13,7 +13,7 @@ fn app() -> Element {
 
     rsx! {
         div {
-            h1 {"Dioxus is XSS-Safe"}
+            h1 {"Aether is XSS-Safe"}
             h3 { "{contents}" }
             input {
                 value: "{contents}",

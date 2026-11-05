@@ -3,10 +3,10 @@
 // - Errors that originate in the initial render
 
 #![allow(non_snake_case)]
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -24,7 +24,7 @@ async fn server_error() -> ServerFnResult<String> {
 #[component]
 fn Errors() -> Element {
     rsx! {
-        // This is a tricky case for suspense https://github.com/DioxusLabs/dioxus/issues/2570
+        // This is a tricky case for suspense https://github.com/AetherLabs/aether/issues/2570
         // Root suspense boundary is already resolved when the inner suspense boundary throws an error.
         // We need to throw the error from the inner suspense boundary on the server to the hydrated
         // suspense boundary on the client

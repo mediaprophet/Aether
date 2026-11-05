@@ -6,7 +6,7 @@
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(coverage_nightly)', 'cfg(fuzzing)'] }
 
 [package]
-name = "dioxus-core"
+name = "aether-core"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
@@ -21,10 +21,10 @@ rust-version = "1.85.0"
 bench = false
 
 [dependencies]
-dioxus-const-vec = { workspace = true }
-dioxus-core-macro = { workspace = true }
-dioxus-core-template = { workspace = true }
-dioxus-core-types = { workspace = true }
+aether-const-vec = { workspace = true }
+aether-core-macro = { workspace = true }
+aether-core-template = { workspace = true }
+aether-core-types = { workspace = true }
 const_format = { workspace = true }
 futures-channel = { workspace = true }
 generational-box = { workspace = true }
@@ -41,10 +41,10 @@ anyhow = { workspace = true }
 xxhash-rust = { workspace = true, features = ["const_xxh64"] }
 
 [dev-dependencies]
-dioxus = { workspace = true }
-dioxus-renderer-oracle = { workspace = true }
-dioxus-ssr = { workspace = true }
-dioxus-html = { workspace = true, features = ["serialize"] }
+aether = { workspace = true }
+aether-renderer-oracle = { workspace = true }
+aether-ssr = { workspace = true }
+aether-html = { workspace = true, features = ["serialize"] }
 tokio = { workspace = true, features = ["full"] }
 rand = { workspace = true, features = ["small_rng"] }
 reqwest = { workspace = true }
@@ -59,7 +59,7 @@ workspace = true
 features = ["Document", "HtmlElement", "Window"]
 
 [features]
-serialize = ["dep:serde", "dioxus-core-template/serialize"]
+serialize = ["dep:serde", "aether-core-template/serialize"]
 
 [[bench]]
 name = "jsframework"

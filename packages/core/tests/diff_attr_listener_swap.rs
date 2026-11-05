@@ -8,9 +8,9 @@
 //! share a key. The only way to reach that arm is to hand-construct the
 //! attribute lists.
 
-use dioxus::prelude::*;
-use dioxus_core::{AttributeValue, ScopeId, generation};
-use dioxus_renderer_oracle::{RendererOracle, SnapshotNode};
+use aether::prelude::*;
+use aether_core::{AttributeValue, ScopeId, generation};
+use aether_renderer_oracle::{RendererOracle, SnapshotNode};
 
 /// The first element with the given tag in the snapshot.
 fn find_element<'a>(nodes: &'a [SnapshotNode], tag: &str) -> Option<&'a SnapshotNode> {

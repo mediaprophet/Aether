@@ -2,11 +2,11 @@
 
 use crate::{UseWaker, use_callback, use_signal, use_waker};
 
-use dioxus_core::{
+use aether_core::{
     Callback, IntoAttributeValue, IntoDynNode, ReactiveContext, RenderError, Subscribers,
     SuspendedFuture, Task, spawn, use_hook,
 };
-use dioxus_signals::*;
+use aether_signals::*;
 use futures_util::{
     FutureExt, StreamExt,
     future::{self},
@@ -102,18 +102,18 @@ where
 ///
 /// Reading the result of a resource:
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// # use std::time::Duration;
 /// fn App() -> Element {
 ///     let mut revision = use_signal(|| "1d03b42");
 ///     let mut resource = use_resource(move || async move {
 ///         // This will run every time the revision signal changes because we read the count inside the future
-///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
 ///     });
 ///
 ///     // Since our resource may not be ready yet, the value is an Option. Our request may also fail, so the get function returns a Result
 ///     // The complete type we need to match is `Option<Result<String, reqwest::Error>>`
-///     // We can use `read_unchecked` to keep our matching code in one statement while avoiding a temporary variable error (this is still completely safe because dioxus checks the borrows at runtime)
+///     // We can use `read_unchecked` to keep our matching code in one statement while avoiding a temporary variable error (this is still completely safe because aether checks the borrows at runtime)
 ///     match &*resource.read_unchecked() {
 ///         Some(Ok(value)) => rsx! { "{value:?}" },
 ///         Some(Err(err)) => rsx! { "Error: {err}" },
@@ -170,13 +170,13 @@ impl<T> Resource<T> {
     ///
     /// ## Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # use std::time::Duration;
     /// fn App() -> Element {
     ///     let mut revision = use_signal(|| "1d03b42");
     ///     let mut resource = use_resource(move || async move {
     ///         // This will run every time the revision signal changes because we read the count inside the future
-    ///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+    ///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
     ///     });
     ///
     ///     rsx! {
@@ -199,12 +199,12 @@ impl<T> Resource<T> {
     ///
     /// ## Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # use std::time::Duration;
     /// fn App() -> Element {
     ///     let mut revision = use_signal(|| "1d03b42");
     ///     let mut resource = use_resource(move || async move {
-    ///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+    ///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
     ///     });
     ///
     ///     rsx! {
@@ -226,13 +226,13 @@ impl<T> Resource<T> {
     ///
     /// ## Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # use std::time::Duration;
     /// fn App() -> Element {
     ///     let mut revision = use_signal(|| "1d03b42");
     ///     let mut resource = use_resource(move || async move {
     ///         // This will run every time the revision signal changes because we read the count inside the future
-    ///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+    ///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
     ///     });
     ///
     ///     rsx! {
@@ -259,13 +259,13 @@ impl<T> Resource<T> {
     ///
     /// ## Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # use std::time::Duration;
     /// fn App() -> Element {
     ///     let mut revision = use_signal(|| "1d03b42");
     ///     let mut resource = use_resource(move || async move {
     ///         // This will run every time the revision signal changes because we read the count inside the future
-    ///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+    ///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
     ///     });
     ///
     ///     rsx! {
@@ -296,13 +296,13 @@ impl<T> Resource<T> {
     ///
     /// ## Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # use std::time::Duration;
     /// fn App() -> Element {
     ///     let mut revision = use_signal(|| "1d03b42");
     ///     let mut resource = use_resource(move || async move {
     ///         // This will run every time the revision signal changes because we read the count inside the future
-    ///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+    ///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
     ///     });
     ///
     ///     rsx! {
@@ -336,13 +336,13 @@ impl<T> Resource<T> {
     ///
     /// ## Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # use std::time::Duration;
     /// fn App() -> Element {
     ///     let mut revision = use_signal(|| "1d03b42");
     ///     let mut resource = use_resource(move || async move {
     ///         // This will run every time the revision signal changes because we read the count inside the future
-    ///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+    ///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
     ///     });
     ///
     ///     // We can use the `finished` method to check if the future is finished
@@ -368,13 +368,13 @@ impl<T> Resource<T> {
     ///
     /// ## Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # use std::time::Duration;
     /// fn App() -> Element {
     ///     let mut revision = use_signal(|| "1d03b42");
     ///     let mut resource = use_resource(move || async move {
     ///         // This will run every time the revision signal changes because we read the count inside the future
-    ///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+    ///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
     ///     });
     ///
     ///     // We can read the current state of the future with the `state` method
@@ -403,13 +403,13 @@ impl<T> Resource<T> {
     /// ## Example
     ///
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # use std::time::Duration;
     /// fn App() -> Element {
     ///     let mut revision = use_signal(|| "1d03b42");
     ///     let mut resource = use_resource(move || async move {
     ///         // This will run every time the revision signal changes because we read the count inside the future
-    ///         reqwest::get(format!("https://github.com/DioxusLabs/awesome-dioxus/blob/{revision}/awesome.json")).await
+    ///         reqwest::get(format!("https://github.com/AetherLabs/awesome-aether/blob/{revision}/awesome.json")).await
     ///     });
     ///
     ///     // We can get a signal with the value of the resource with the `value` method
@@ -417,7 +417,7 @@ impl<T> Resource<T> {
     ///
     ///     // Since our resource may not be ready yet, the value is an Option. Our request may also fail, so the get function returns a Result
     ///     // The complete type we need to match is `Option<Result<String, reqwest::Error>>`
-    ///     // We can use `read_unchecked` to keep our matching code in one statement while avoiding a temporary variable error (this is still completely safe because dioxus checks the borrows at runtime)
+    ///     // We can use `read_unchecked` to keep our matching code in one statement while avoiding a temporary variable error (this is still completely safe because aether checks the borrows at runtime)
     ///     match &*value.read_unchecked() {
     ///         Some(Ok(value)) => rsx! { "{value:?}" },
     ///         Some(Err(err)) => rsx! { "Error: {err}" },
@@ -520,7 +520,7 @@ impl<T> IntoAttributeValue for Resource<T>
 where
     T: Clone + IntoAttributeValue,
 {
-    fn into_value(self) -> dioxus_core::AttributeValue {
+    fn into_value(self) -> aether_core::AttributeValue {
         self.with(|f| f.clone().into_value())
     }
 }
@@ -529,7 +529,7 @@ impl<T> IntoDynNode for Resource<T>
 where
     T: Clone + IntoDynNode,
 {
-    fn into_dyn_node(self) -> dioxus_core::DynamicNode {
+    fn into_dyn_node(self) -> aether_core::DynamicNode {
         self().into_dyn_node()
     }
 }

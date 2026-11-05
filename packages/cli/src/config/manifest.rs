@@ -8,7 +8,7 @@
 //!
 //! Generate a JSON schema for IDE autocomplete:
 //! ```bash
-//! dx config --schema > dioxus-schema.json
+//! dx config --schema > aether-schema.json
 //! ```
 
 use schemars::JsonSchema;
@@ -383,7 +383,7 @@ pub struct IosConfig {
 /// Widget extensions are compiled as Swift executables and bundled as .appex
 /// bundles in the app's PlugIns folder.
 ///
-/// Example in Dioxus.toml:
+/// Example in Aether.toml:
 /// ```toml
 /// [[ios.widget_extensions]]
 /// source = "src/ios/widget"
@@ -1440,16 +1440,16 @@ pub struct LinuxDebSettings {
 // Schema Generation
 // ============================================================================
 
-/// Generate a JSON schema for the complete Dioxus.toml configuration.
+/// Generate a JSON schema for the complete Aether.toml configuration.
 ///
-/// This can be used for IDE autocomplete when editing Dioxus.toml files.
+/// This can be used for IDE autocomplete when editing Aether.toml files.
 /// The schema includes all configuration: application, web, bundle, permissions,
 /// platform-specific settings, and more.
 ///
 /// Note: Default values are stripped and allOf wrappers simplified to prevent
 /// stack overflow in some TOML LSP implementations (e.g., Taplo's WASM build).
 pub fn generate_manifest_schema() -> schemars::Schema {
-    let mut schema = schemars::schema_for!(super::DioxusConfig);
+    let mut schema = schemars::schema_for!(super::AetherConfig);
 
     // Simplify schema to prevent Taplo WASM LSP stack overflow.
     // 1. Strip default values (large nested objects cause issues)
@@ -1755,7 +1755,7 @@ mod tests {
         let schema = generate_manifest_schema();
         let json = serde_json::to_string_pretty(&schema).unwrap();
 
-        // Verify the schema contains all top-level DioxusConfig types
+        // Verify the schema contains all top-level AetherConfig types
         assert!(json.contains("ApplicationConfig"));
         assert!(json.contains("WebConfig"));
         assert!(json.contains("BundleConfig"));

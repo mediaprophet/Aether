@@ -1,4 +1,4 @@
-use dioxus_core::Event;
+use aether_core::Event;
 
 pub type ImageEvent = Event<ImageData>;
 pub struct ImageData {

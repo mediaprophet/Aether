@@ -4,7 +4,7 @@ use cargo_generate::{GenerateArgs, TemplatePath, Vcs};
 #[derive(Clone, Debug, Default, Deserialize, Parser)]
 #[clap(name = "init")]
 pub struct Init {
-    /// Create a new Dioxus project at PATH
+    /// Create a new Aether project at PATH
     #[arg(default_value = ".")]
     pub path: PathBuf,
 

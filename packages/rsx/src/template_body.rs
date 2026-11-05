@@ -3,7 +3,7 @@
 use self::location::DynIdx;
 use crate::stats::{TemplateStatsBuilder, TemplateStorageStats};
 use crate::*;
-use dioxus_core_template::{TEMPLATE_SLOT_PATH_MAX_PATH_BITS, TEMPLATE_STORAGE_MAX_CAP};
+use aether_core_template::{TEMPLATE_SLOT_PATH_MAX_PATH_BITS, TEMPLATE_STORAGE_MAX_CAP};
 use proc_macro2::{Ident, Span, TokenStream as TokenStream2};
 use proc_macro2_diagnostics::SpanDiagnosticExt;
 use quote::{ToTokens, TokenStreamExt, format_ident, quote, quote_spanned};
@@ -173,13 +173,13 @@ impl ToTokens for TemplateBody {
             && attr_count == 0
             && implicit_key.is_none()
             && !has_literal_pool;
-        let dynamic_values = quote! { dioxus_core::view::dynamic_values(#node_count, #attr_count) };
+        let dynamic_values = quote! { aether_core::view::dynamic_values(#node_count, #attr_count) };
         let value_pushes = match implicit_key {
             Some(key) => quote! {
                 let __key = Some(#key.to_string());
                 #(#node_pushes)*
                 #(#attr_pushes)*
-                dioxus_core::view::set_key(&mut __dynamic, __key);
+                aether_core::view::set_key(&mut __dynamic, __key);
             },
             None => quote! {
                 #(#node_pushes)*
@@ -194,7 +194,7 @@ impl ToTokens for TemplateBody {
         let template_dynamic_cap = template_stats.anchors;
         let release_vnode = |dynamic: TokenStream2| {
             quote! {
-                dioxus_core::view::vnode_with_capacity::<
+                aether_core::view::vnode_with_capacity::<
                     #template_ops_cap,
                     #template_string_cap,
                     #template_dynamic_cap,
@@ -228,9 +228,9 @@ impl ToTokens for TemplateBody {
 
                 #[cfg(debug_assertions)]
                 {
-                    dioxus_signals::render_static_site(
+                    aether_signals::render_static_site(
                         #site,
-                        dioxus_core::view::template_tree(&__view),
+                        aether_core::view::template_tree(&__view),
                     )
                 }
             }
@@ -239,7 +239,7 @@ impl ToTokens for TemplateBody {
             let debug_render = if has_literal_pool {
                 quote! { __hot_reload_site.finish(__tree, __dynamic) }
             } else {
-                quote! { dioxus_signals::render_site(#site, #hot_reload_meta, __tree, __dynamic) }
+                quote! { aether_signals::render_site(#site, #hot_reload_meta, __tree, __dynamic) }
             };
             quote! {
                 let mut __dynamic = #dynamic_values;
@@ -253,7 +253,7 @@ impl ToTokens for TemplateBody {
 
                 #[cfg(debug_assertions)]
                 {
-                    let __tree = dioxus_core::view::template_tree(&__view);
+                    let __tree = aether_core::view::template_tree(&__view);
                     #debug_render
                 }
             }
@@ -266,13 +266,13 @@ impl ToTokens for TemplateBody {
         let release_site = (!pieces.component_value_tokens.is_empty()).then(|| {
             quote! {
                 #[cfg(not(debug_assertions))]
-                let __hot_reload_site = dioxus_core::internal::NoHotReload;
+                let __hot_reload_site = aether_core::internal::NoHotReload;
             }
         });
         let hot_reload_site = has_literal_pool.then(|| {
             quote! {
                 #[cfg(debug_assertions)]
-                let __hot_reload_site = dioxus_signals::HotReloadSite::new(
+                let __hot_reload_site = aether_signals::HotReloadSite::new(
                     #site,
                     #hot_reload_meta,
                     vec![ #( #dynamic_text ),* ],
@@ -284,7 +284,7 @@ impl ToTokens for TemplateBody {
         let diagnostics = &node.diagnostics;
 
         tokens.append_all(quote! {
-            dioxus_core::Element::Ok({
+            aether_core::Element::Ok({
                 #diagnostics
 
                 #key_warnings
@@ -358,7 +358,7 @@ impl ViewBuilderPieces {
         let component_values = self.component_value_tokens.iter();
 
         quote! {
-            dioxus_core::internal::HotReloadSiteMeta {
+            aether_core::internal::HotReloadSiteMeta {
                 key: #key,
                 dynamic_nodes: #node_count,
                 dynamic_attributes: #attr_count,
@@ -420,8 +420,8 @@ impl ViewBuilder {
         if !self.static_strings.is_empty() {
             let strings = &self.static_strings;
             self.definitions.push(quote! {
-                struct __DioxusStrings;
-                impl dioxus_core::view::StaticStrings for __DioxusStrings {
+                struct __AetherStrings;
+                impl aether_core::view::StaticStrings for __AetherStrings {
                     const STRINGS: &'static [&'static str] = &[#(#strings),*];
                 }
             });
@@ -507,7 +507,7 @@ impl ViewBuilder {
             quote! { #tag #attrs }
         } else {
             let children = group_sibling_views(self.visit_sibling_nodes(&element.children, false));
-            quote! { dioxus_core::view::ElementWithChildren(#tag #attrs, #children) }
+            quote! { aether_core::view::ElementWithChildren(#tag #attrs, #children) }
         };
 
         if emit_diagnostics {
@@ -531,7 +531,7 @@ impl ViewBuilder {
                 index
             }
         };
-        quote! { dioxus_core::view::Str::<__DioxusStrings, #index> }
+        quote! { aether_core::view::Str::<__AetherStrings, #index> }
     }
 
     fn static_text(&mut self, text: &TextNode) -> TokenStream2 {
@@ -539,7 +539,7 @@ impl ViewBuilder {
         let marker = self.static_string(span, text.input.to_static().unwrap());
         quote_spanned! {
             span =>
-            dioxus_core::view::StaticTextBuilder::<#marker>(::core::marker::PhantomData)
+            aether_core::view::StaticTextBuilder::<#marker>(::core::marker::PhantomData)
         }
     }
 
@@ -547,21 +547,21 @@ impl ViewBuilder {
         self.dynamic_node_count += 1;
         // The `IntoDynNode` marker is inferred from the value's type.
         self.node_pushes.push(quote! {
-            dioxus_core::view::push_dyn_node(&mut __dynamic, #tokens);
+            aether_core::view::push_dyn_node(&mut __dynamic, #tokens);
         });
-        quote! { dioxus_core::view::DynamicNodeSlot }
+        quote! { aether_core::view::DynamicNodeSlot }
     }
 
     fn dynamic_attr(&mut self, attr: &Attribute) -> TokenStream2 {
         self.track_dynamic_attr(attr);
         let attrs = attr.rendered_as_dynamic_attr();
         if !self.hoist_dynamic_attrs {
-            return quote! { .attribute(dioxus_core::view::dynamic_attributes_builder(#attrs)) };
+            return quote! { .attribute(aether_core::view::dynamic_attributes_builder(#attrs)) };
         }
         self.attr_pushes.push(quote! {
-            dioxus_core::view::push_dyn_attrs(&mut __dynamic, #attrs);
+            aether_core::view::push_dyn_attrs(&mut __dynamic, #attrs);
         });
-        quote! { .attribute(dioxus_core::view::DynamicAttributeSlot) }
+        quote! { .attribute(aether_core::view::DynamicAttributeSlot) }
     }
 
     /// A dynamic attribute set through the element's generated attribute method, which resolves
@@ -585,9 +585,9 @@ impl ViewBuilder {
             return quote! { .#method(#value) };
         }
         self.attr_pushes.push(quote! {
-            dioxus_core::view::push_element_attrs(&mut __dynamic, #tag.#method(#value));
+            aether_core::view::push_element_attrs(&mut __dynamic, #tag.#method(#value));
         });
-        quote! { .attribute(dioxus_core::view::DynamicAttributeSlot) }
+        quote! { .attribute(aether_core::view::DynamicAttributeSlot) }
     }
 
     fn track_dynamic_attr(&mut self, attr: &Attribute) {
@@ -618,16 +618,16 @@ impl ViewBuilder {
             let hot_literal = match literal {
                 HotLiteral::Fmted(fmted) => {
                     let fmted = self.allocate_formatted(fmted);
-                    quote! { dioxus_core::internal::HotReloadLiteralMeta::Fmted(#fmted) }
+                    quote! { aether_core::internal::HotReloadLiteralMeta::Fmted(#fmted) }
                 }
                 HotLiteral::Float(value) => {
-                    quote! { dioxus_core::internal::HotReloadLiteralMeta::Float(#value as _) }
+                    quote! { aether_core::internal::HotReloadLiteralMeta::Float(#value as _) }
                 }
                 HotLiteral::Int(value) => {
-                    quote! { dioxus_core::internal::HotReloadLiteralMeta::Int(#value as _) }
+                    quote! { aether_core::internal::HotReloadLiteralMeta::Int(#value as _) }
                 }
                 HotLiteral::Bool(value) => {
-                    quote! { dioxus_core::internal::HotReloadLiteralMeta::Bool(#value) }
+                    quote! { aether_core::internal::HotReloadLiteralMeta::Bool(#value) }
                 }
             };
 
@@ -658,18 +658,18 @@ impl ViewBuilder {
         value: TokenStream2,
         namespace: TokenStream2,
     ) -> TokenStream2 {
-        let marker = self.next_ident("__DioxusAttr");
+        let marker = self.next_ident("__AetherAttr");
         self.definitions.push(quote_spanned! { span =>
             struct #marker;
-            impl dioxus_core::view::AttributeDescriptor for #marker {
+            impl aether_core::view::AttributeDescriptor for #marker {
                 const NAME: &'static str = #name;
                 const NAMESPACE: Option<&'static str> = #namespace;
             }
-            impl dioxus_core::view::StaticAttributeValue for #marker {
+            impl aether_core::view::StaticAttributeValue for #marker {
                 const VALUE: &'static str = #value;
             }
         });
-        let attr = quote_spanned! { span => dioxus_core::view::static_attribute::<#marker>() };
+        let attr = quote_spanned! { span => aether_core::view::static_attribute::<#marker>() };
         quote! { .attribute(#attr) }
     }
 
@@ -678,18 +678,18 @@ impl ViewBuilder {
             ElementName::Ident(ident) => quote_spanned! { element.name.span() => html::#ident },
             ElementName::Custom(_) => {
                 let tag = self.define_tag(element);
-                quote! { dioxus_core::view::element_builder::<#tag>() }
+                quote! { aether_core::view::element_builder::<#tag>() }
             }
         }
     }
 
     fn define_tag(&mut self, element: &Element) -> Ident {
-        let marker = self.next_ident("__DioxusTag");
+        let marker = self.next_ident("__AetherTag");
         let tag = element.name.tag_name();
         self.definitions
             .push(quote_spanned! { element.name.span() =>
                 struct #marker;
-                impl dioxus_core::view::ElementTag for #marker {
+                impl aether_core::view::ElementTag for #marker {
                     const NAME: &'static str = #tag;
                 }
             });
@@ -726,7 +726,7 @@ impl Element {
                 let marker = builder.static_string(attr.span(), value.to_static().unwrap());
                 return quote! {
                     .#method(
-                        dioxus_core::view::StaticAttributeValueBuilder::<#marker>(
+                        aether_core::view::StaticAttributeValueBuilder::<#marker>(
                             ::core::marker::PhantomData
                         )
                     )
@@ -931,14 +931,14 @@ impl TemplateBody {
         let nodes = texts.iter().map(|text| {
             let value = text.input.to_static().unwrap();
             quote_spanned! { text.input.span() =>
-                &dioxus_core::internal::TemplateRawTree::StaticText(#value)
+                &aether_core::internal::TemplateRawTree::StaticText(#value)
             }
         });
         // A single root lowers to its own node, several to a sequence (as tuple views do).
         let tree = if texts.len() == 1 {
             quote! { #(#nodes)* }
         } else {
-            quote! { &dioxus_core::internal::TemplateRawTree::Sequence(&[#(#nodes),*]) }
+            quote! { &aether_core::internal::TemplateRawTree::Sequence(&[#(#nodes),*]) }
         };
 
         let template_stats = sibling_storage_stats(&self.roots);
@@ -949,26 +949,26 @@ impl TemplateBody {
         let diagnostics = &self.diagnostics;
 
         Some(quote! {
-            dioxus_core::Element::Ok({
+            aether_core::Element::Ok({
                 #diagnostics
 
-                const __TREE: &'static dioxus_core::internal::TemplateRawTree = #tree;
+                const __TREE: &'static aether_core::internal::TemplateRawTree = #tree;
 
                 #[cfg(not(debug_assertions))]
                 {
-                    const __TEMPLATE: &'static dioxus_core::Template =
-                        &dioxus_core::internal::TemplateStorage::<
+                    const __TEMPLATE: &'static aether_core::Template =
+                        &aether_core::internal::TemplateStorage::<
                             #template_ops_cap,
                             #template_string_cap,
                             #template_dynamic_cap,
                         >::build_from_tree(__TREE)
                         .as_template();
-                    dioxus_core::VNode::new(*__TEMPLATE, dioxus_core::view::dynamic_values(0, 0))
+                    aether_core::VNode::new(*__TEMPLATE, aether_core::view::dynamic_values(0, 0))
                 }
 
                 #[cfg(debug_assertions)]
                 {
-                    dioxus_signals::render_static_site(__rsx_location, #index, __TREE)
+                    aether_signals::render_static_site(__rsx_location, #index, __TREE)
                 }
             })
         })

@@ -73,7 +73,7 @@ pub use crate::hooks::*;
 pub use crate::navigation::*;
 pub use crate::routable::*;
 pub use crate::router_cfg::RouterConfig;
-pub use dioxus_router_macro::Routable;
+pub use aether_router_macro::Routable;
 
 #[doc(hidden)]
 /// A component with props used in the macro
@@ -82,7 +82,7 @@ pub trait HasProps {
     type Props;
 }
 
-impl<P> HasProps for dioxus_core::Component<P> {
+impl<P> HasProps for aether_core::Component<P> {
     type Props = P;
 }
 

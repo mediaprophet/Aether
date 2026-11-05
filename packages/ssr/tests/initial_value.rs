@@ -1,9 +1,9 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[test]
 fn initial_value_renders_as_value() {
     assert_eq!(
-        dioxus_ssr::render_element(rsx! {
+        aether_ssr::render_element(rsx! {
             input { initial_value: "hello" }
         }),
         r#"<input value="hello"/>"#
@@ -13,7 +13,7 @@ fn initial_value_renders_as_value() {
 #[test]
 fn initial_checked_renders_as_checked() {
     assert_eq!(
-        dioxus_ssr::render_element(rsx! {
+        aether_ssr::render_element(rsx! {
             input { r#type: "checkbox", initial_checked: true }
         }),
         r#"<input type="checkbox" checked=true/>"#
@@ -23,7 +23,7 @@ fn initial_checked_renders_as_checked() {
 #[test]
 fn initial_selected_renders_as_selected() {
     assert_eq!(
-        dioxus_ssr::render_element(rsx! {
+        aether_ssr::render_element(rsx! {
             option { initial_selected: true }
         }),
         r#"<option selected=true></option>"#
@@ -40,7 +40,7 @@ fn dynamic_initial_value() {
     }
 
     let mut dom = VirtualDom::new(app);
-    dom.rebuild(&mut dioxus_core::NoOpMutations);
+    dom.rebuild(&mut aether_core::NoOpMutations);
 
-    assert_eq!(dioxus_ssr::render(&dom), r#"<input value="dynamic"/>"#);
+    assert_eq!(aether_ssr::render(&dom), r#"<input value="dynamic"/>"#);
 }

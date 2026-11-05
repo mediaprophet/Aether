@@ -4,10 +4,10 @@
 //! in `rsx!` is passed in as `children`. This is how you build reusable layout and container
 //! components like cards, modals, or page shells.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

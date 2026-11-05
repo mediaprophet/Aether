@@ -1,8 +1,8 @@
 Creates a new Memo. The memo will be run immediately and whenever any signal it reads is written to. Memos can be used to efficiently compute derived data from signals.
 
 ```rust
-use dioxus::prelude::*;
-use dioxus_signals::*;
+use aether::prelude::*;
+use aether_signals::*;
 
 fn App() -> Element {
     let mut count = use_signal(|| 0);
@@ -26,7 +26,7 @@ The closure you pass into memos will be called whenever the state you read insid
 Lets dig into some examples to see how this works:
 
 ```rust, no_run
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 let mut count = use_signal(|| 1);
 // double_count will rerun when state we read inside the memo changes (count)
 let double_count = use_memo(move || count() * 2);
@@ -67,7 +67,7 @@ To add non-reactive dependencies, you can use the [`crate::use_reactive()`] hook
 Signals will automatically be added as dependencies, so you don't need to call this method for them.
 
 ```rust
-# use dioxus::prelude::*;
+# use aether::prelude::*;
 #[component]
 fn Comp(count: u32) -> Element {
 // Because the memo subscribes to `count` by adding it as a dependency, the memo will rerun every time `count` changes.

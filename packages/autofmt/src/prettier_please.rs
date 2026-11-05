@@ -1,4 +1,4 @@
-use dioxus_rsx::CallBody;
+use aether_rsx::CallBody;
 use syn::{Expr, File, Item, MacroDelimiter, parse::Parser, visit_mut::VisitMut};
 
 use crate::{IndentOptions, Writer};
@@ -138,7 +138,7 @@ pub fn unparse_expr(expr: &Expr, src: &str, cfg: &IndentOptions) -> String {
             out_fmt.push(' ');
         }
 
-        // Replace the dioxus_autofmt_block__________ token with the formatted block
+        // Replace the aether_autofmt_block__________ token with the formatted block
         out_fmt.push('}');
 
         unparsed = unparsed.replacen(MARKER_REPLACE, &out_fmt, 1);

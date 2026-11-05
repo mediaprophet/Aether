@@ -1,16 +1,16 @@
 //! Example: Reducer Pattern
 //! -----------------
 //!
-//! This example shows how to encapsulate state in dioxus components with the reducer pattern.
+//! This example shows how to encapsulate state in aether components with the reducer pattern.
 //! This pattern is very useful when a single component can handle many types of input that can
 //! be represented by an enum.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 const STYLE: Asset = asset!("/examples/assets/radio.css");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

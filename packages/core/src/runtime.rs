@@ -21,7 +21,7 @@ use std::{
 };
 use tracing::instrument;
 
-use dioxus_core_template::TemplatePath;
+use aether_core_template::TemplatePath;
 
 thread_local! {
     static RUNTIMES: RefCell<Vec<Rc<Runtime>>> = const { RefCell::new(vec![]) };
@@ -116,26 +116,26 @@ impl Runtime {
             .with(|stack| stack.borrow().last().cloned())
             .unwrap_or_else(|| {
                 panic!(
-                    "Must be called from inside a Dioxus runtime.
+                    "Must be called from inside a Aether runtime.
 
-Help: Some APIs in dioxus require a global runtime to be present.
-If you are calling one of these APIs from outside of a dioxus runtime
+Help: Some APIs in aether require a global runtime to be present.
+If you are calling one of these APIs from outside of a aether runtime
 (typically in a web-sys closure or dynamic library), you will need to
 grab the runtime from a scope that has it and then move it into your
 new scope with a runtime guard.
 
-For example, if you are trying to use dioxus apis from a web-sys
+For example, if you are trying to use aether apis from a web-sys
 closure, you can grab the runtime from the scope it is created in:
 
 ```rust
-use dioxus::prelude::*;
+use aether::prelude::*;
 static COUNT: GlobalSignal<i32> = Signal::global(|| 0);
 
 #[component]
 fn MyComponent() -> Element {{
     use_effect(|| {{
         // Grab the runtime from the MyComponent scope
-        let runtime = Runtime::current().expect(\"Components run in the Dioxus runtime\");
+        let runtime = Runtime::current().expect(\"Components run in the Aether runtime\");
         // Move the runtime into the web-sys closure scope
         let web_sys_closure = Closure::new(|| {{
             // Then create a guard to provide the runtime to the closure
@@ -150,7 +150,7 @@ fn MyComponent() -> Element {{
             })
     }
 
-    /// Try to get the current runtime, returning None if it doesn't exist (outside the context of a dioxus app)
+    /// Try to get the current runtime, returning None if it doesn't exist (outside the context of a aether app)
     pub fn try_current() -> Option<Rc<Self>> {
         RUNTIMES.with(|stack| stack.borrow().last().cloned())
     }
@@ -728,13 +728,13 @@ fn MyComponent() -> Element {{
     ///
     /// # Examples
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// fn Component() -> Element {
     ///     let request = spawn(async move {
     ///         match reqwest::get("https://api.example.com").await {
     ///             Ok(_) => unimplemented!(),
     ///             // You can explicitly throw an error into a scope with throw_error
-    ///             Err(err) => dioxus::core::Runtime::current().throw_error(ScopeId::APP, err),
+    ///             Err(err) => aether::core::Runtime::current().throw_error(ScopeId::APP, err),
     ///         }
     ///     });
     ///
@@ -789,8 +789,8 @@ fn has_user_shared_contexts(scope: &Scope) -> bool {
 /// A guard for a new runtime. This must be used to override the current runtime when importing components from a dynamic library that has it's own runtime.
 ///
 /// ```rust
-/// use dioxus::prelude::*;
-/// use dioxus_core::{Runtime, RuntimeGuard};
+/// use aether::prelude::*;
+/// use aether_core::{Runtime, RuntimeGuard};
 ///
 /// fn main() {
 ///     let virtual_dom = VirtualDom::new(app);
@@ -823,7 +823,7 @@ fn has_user_shared_contexts(scope: &Scope) -> bool {
 pub struct RuntimeGuard(());
 
 impl RuntimeGuard {
-    /// Create a new runtime guard that sets the current Dioxus runtime. The runtime will be reset when the guard is dropped
+    /// Create a new runtime guard that sets the current Aether runtime. The runtime will be reset when the guard is dropped
     pub fn new(runtime: Rc<Runtime>) -> Self {
         Runtime::push(runtime);
         Self(())

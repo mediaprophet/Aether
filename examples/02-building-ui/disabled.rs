@@ -2,10 +2,10 @@
 //!
 //! This example also showcases the shorthand syntax for attributes, and how signals themselves implement IntoAttribute
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {

@@ -1,4 +1,4 @@
-//! Dioxus controlled textarea values at the native DOM/Blitz layout boundary.
+//! Aether controlled textarea values at the native DOM/Blitz layout boundary.
 use blitz_dom::{BaseDocument, NodeId};
 
 pub(super) fn rehydrate_clone(doc: &mut BaseDocument, cloned: NodeId) {
@@ -16,7 +16,7 @@ pub(super) fn rehydrate_clone(doc: &mut BaseDocument, cloned: NodeId) {
         }
     });
 }
-/// Dioxus's controlled `value` is a property, while Blitz initializes a
+/// Aether's controlled `value` is a property, while Blitz initializes a
 /// multiline editor from child text during its first layout. Seed that editor
 /// before layout; subsequent updates use Blitz's normal value setter. Leave
 /// uncontrolled textareas and all other element/editor types unchanged.
@@ -36,14 +36,14 @@ pub(super) fn seed_editor(node: &mut blitz_dom::Node, value: &str, cloned: bool)
 
 #[cfg(test)]
 mod tests {
-    use crate::{DioxusDocument, DocumentConfig};
-    use dioxus::prelude::*;
-    fn build(app: fn() -> Element) -> DioxusDocument {
-        let mut doc = DioxusDocument::new(VirtualDom::new(app), DocumentConfig::default());
+    use crate::{AetherDocument, DocumentConfig};
+    use aether::prelude::*;
+    fn build(app: fn() -> Element) -> AetherDocument {
+        let mut doc = AetherDocument::new(VirtualDom::new(app), DocumentConfig::default());
         doc.initial_build();
         doc
     }
-    fn editor_text(doc: &DioxusDocument, selector: &str) -> String {
+    fn editor_text(doc: &AetherDocument, selector: &str) -> String {
         let inner = doc.inner.borrow();
         let id = inner.query_selector(selector).unwrap().unwrap();
         inner

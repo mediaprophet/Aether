@@ -4,20 +4,20 @@ use target_lexicon::Triple;
 use crate::BuildRequest;
 
 impl BuildRequest {
-    pub(crate) fn renderer_enabled_by_dioxus_dependency(
+    pub(crate) fn renderer_enabled_by_aether_dependency(
         package: &krates::cm::Package,
     ) -> Option<(Renderer, String)> {
         let mut renderers = vec![];
 
-        // Attempt to discover the platform directly from the dioxus dependency
+        // Attempt to discover the platform directly from the aether dependency
         //
         // [dependencies]
-        // dioxus = { features = ["web"] }
+        // aether = { features = ["web"] }
         //
-        if let Some(dxs) = package.dependencies.iter().find(|dep| dep.name == "dioxus") {
+        if let Some(dxs) = package.dependencies.iter().find(|dep| dep.name == "aether") {
             for feature in dxs.features.iter() {
                 if let Some(renderer) = Renderer::autodetect_from_cargo_feature(feature) {
-                    renderers.push((renderer, format!("dioxus/{}", feature)));
+                    renderers.push((renderer, format!("aether/{}", feature)));
                 }
             }
         }
@@ -52,13 +52,13 @@ impl BuildRequest {
         // Start searching through the default features
         //
         // [features]
-        // default = ["dioxus/web"]
+        // default = ["aether/web"]
         //
         // or
         //
         // [features]
         // default = ["web"]
-        // web = ["dioxus/web"]
+        // web = ["aether/web"]
         let Some(default) = package.features.get("default") else {
             return renderers;
         };
@@ -67,8 +67,8 @@ impl BuildRequest {
         // TODO: trace all enabled features, not just default features
         for feature in default.iter() {
             // If the user directly specified a platform we can just use that.
-            if feature.starts_with("dioxus/") {
-                let dx_feature = feature.trim_start_matches("dioxus/");
+            if feature.starts_with("aether/") {
+                let dx_feature = feature.trim_start_matches("aether/");
                 let auto = Renderer::autodetect_from_cargo_feature(dx_feature);
                 if let Some(auto) = auto {
                     renderers.push((auto, dx_feature.to_string()));
@@ -79,8 +79,8 @@ impl BuildRequest {
             let internal_feature = package.features.get(feature);
             if let Some(internal_feature) = internal_feature {
                 for feature in internal_feature {
-                    if feature.starts_with("dioxus/") {
-                        let dx_feature = feature.trim_start_matches("dioxus/");
+                    if feature.starts_with("aether/") {
+                        let dx_feature = feature.trim_start_matches("aether/");
                         let auto = Renderer::autodetect_from_cargo_feature(dx_feature);
                         if let Some(auto) = auto {
                             renderers.push((auto, dx_feature.to_string()));
@@ -107,9 +107,9 @@ impl BuildRequest {
         // Only keep the top-level features in the default list that don't point to a platform directly
         // IE we want to drop `web` if default = ["web"]
         'top: for feature in default {
-            // Don't keep features that point to a platform via dioxus/blah
-            if feature.starts_with("dioxus/") {
-                let dx_feature = feature.trim_start_matches("dioxus/");
+            // Don't keep features that point to a platform via aether/blah
+            if feature.starts_with("aether/") {
+                let dx_feature = feature.trim_start_matches("aether/");
                 if Renderer::autodetect_from_cargo_feature(dx_feature).is_some() {
                     tracing::debug!(
                         "Dropping feature {feature} since it points to a platform renderer"
@@ -121,8 +121,8 @@ impl BuildRequest {
             // Don't keep features that point to a platform via an internal feature
             if let Some(internal_feature) = package.features.get(feature) {
                 for feature in internal_feature {
-                    if feature.starts_with("dioxus/") {
-                        let dx_feature = feature.trim_start_matches("dioxus/");
+                    if feature.starts_with("aether/") {
+                        let dx_feature = feature.trim_start_matches("aether/");
                         if Renderer::autodetect_from_cargo_feature(dx_feature).is_some() {
                             tracing::debug!(
                                 "Dropping feature {feature} since it points to a platform renderer transitively"
@@ -146,37 +146,37 @@ impl BuildRequest {
         triple: &Triple,
         renderer: Renderer,
     ) -> Option<String> {
-        // Try to find the feature that activates the dioxus feature for the given platform
-        let dioxus_feature = renderer.feature_name(triple);
+        // Try to find the feature that activates the aether feature for the given platform
+        let aether_feature = renderer.feature_name(triple);
 
         let res = package.features.iter().find_map(|(key, features)| {
             // if the feature is just the name of the platform, we use that
-            if key == dioxus_feature {
+            if key == aether_feature {
                 tracing::debug!("Found feature {key} for renderer {renderer}");
                 return Some(key.clone());
             }
 
-            // Otherwise look for the feature that starts with dioxus/ or dioxus?/ and matches just the single platform
+            // Otherwise look for the feature that starts with aether/ or aether?/ and matches just the single platform
             // we are looking for.
-            let mut dioxus_renderers_enabled = Vec::new();
+            let mut aether_renderers_enabled = Vec::new();
             for feature in features {
-                if let Some((_, after_dioxus)) = feature.split_once("dioxus") {
-                    if let Some(dioxus_feature_enabled) =
-                        after_dioxus.trim_start_matches('?').strip_prefix('/')
+                if let Some((_, after_aether)) = feature.split_once("aether") {
+                    if let Some(aether_feature_enabled) =
+                        after_aether.trim_start_matches('?').strip_prefix('/')
                     {
-                        if Renderer::autodetect_from_cargo_feature(dioxus_feature_enabled).is_some()
+                        if Renderer::autodetect_from_cargo_feature(aether_feature_enabled).is_some()
                         {
-                            dioxus_renderers_enabled.push(dioxus_feature_enabled.to_string());
+                            aether_renderers_enabled.push(aether_feature_enabled.to_string());
                         }
                     }
                 }
             }
 
             // If there is exactly one renderer enabled by this feature, we can use it
-            if let [feature_name] = dioxus_renderers_enabled.as_slice() {
-                if feature_name == dioxus_feature {
+            if let [feature_name] = aether_renderers_enabled.as_slice() {
+                if feature_name == aether_feature {
                     tracing::debug!(
-                        "Found feature {key} for renderer {renderer} which enables dioxus/{renderer}"
+                        "Found feature {key} for renderer {renderer} which enables aether/{renderer}"
                     );
                     return Some(key.clone());
                 }
@@ -186,9 +186,9 @@ impl BuildRequest {
         });
 
         res.or_else(|| {
-            let depends_on_dioxus = package.dependencies.iter().any(|dep| dep.name == "dioxus");
-            if depends_on_dioxus {
-                let fallback = format!("dioxus/{dioxus_feature}");
+            let depends_on_aether = package.dependencies.iter().any(|dep| dep.name == "aether");
+            if depends_on_aether {
+                let fallback = format!("aether/{aether_feature}");
                 tracing::debug!(
                     "Could not find explicit feature for renderer {renderer}, passing `fallback` instead"
                 );

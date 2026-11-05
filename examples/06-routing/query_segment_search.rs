@@ -11,10 +11,10 @@
 //! dx serve --platform web --features web --example query_segment_search -- --no-default-features
 //! ```
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(|| {
+    aether::launch(|| {
         rsx! {
             Router::<Route> {}
         }
@@ -27,7 +27,7 @@ enum Route {
     #[route("/")]
     Home {},
 
-    // The each query segment must implement <https://docs.rs/dioxus-router/latest/dioxus_router/routable/trait.FromQueryArgument.html> and Display.
+    // The each query segment must implement <https://docs.rs/aether-router/latest/aether_router/routable/trait.FromQueryArgument.html> and Display.
     // You can use multiple query segments separated by `&`s.
     #[route("/search?:query&:word_count")]
     Search {
@@ -53,10 +53,10 @@ fn Home() -> Element {
             li {
                 Link {
                     to: Route::Search {
-                        query: "dioxus".to_string(),
+                        query: "aether".to_string(),
                         word_count: 2
                     },
-                    "Search for results containing 'dioxus' and at least two word"
+                    "Search for results containing 'aether' and at least two word"
                 }
             }
         }
@@ -70,8 +70,8 @@ fn Search(query: ReadSignal<String>, word_count: ReadSignal<usize>) -> Element {
         "hello",
         "world",
         "hello world",
-        "hello dioxus",
-        "hello dioxus-router",
+        "hello aether",
+        "hello aether-router",
     ];
 
     // Find all results that contain the query and the right number of words

@@ -12,7 +12,7 @@ use crate::innerlude::*;
 /// ## Example
 ///
 /// ```rust
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// let value = 1;
 /// rsx! {
 ///     Fragment { key: "{value}" }
@@ -36,7 +36,7 @@ pub fn Fragment(cx: FragmentProps) -> Element {
 ///
 /// `children` are the nodes captured by the fragment. A component cannot be automatically memoized
 /// if it borrows nodes from its parent, so a fragment always re-renders when its parent does.
-#[derive(dioxus_core_macro::Props, Clone, PartialEq)]
+#[derive(aether_core_macro::Props, Clone, PartialEq)]
 pub struct FragmentProps {
     children: Element,
 }

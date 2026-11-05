@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Dioxus Build</title>
+  <title>Aether Build</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/79236386?s=200&v=4">
@@ -32,7 +32,7 @@
       margin-top: 20px;
     }
 
-    #header>#dioxus {
+    #header>#aether {
       margin-left: 10px;
       font-weight: 500;
       font-size: 1.3rem;
@@ -237,7 +237,7 @@
 <body>
   <!-- Header -->
   <div id="header">
-    <!-- Dioxus Logo -->
+    <!-- Aether Logo -->
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" xmlns:v="https://vecta.io/nano">
       <path
         d="M22.158 1.783c0 3.077-.851 5.482-2.215 7.377s-3.32 3.557-5.447 5.33-4.425 3.657-6.252 6.195-3.102 5.515-3.102 9.532h4.699c0-3.077.853-5.377 2.217-7.272s3.32-3.557 5.447-5.33 4.425-3.657 6.252-6.195 3.102-5.62 3.102-9.637z"
@@ -250,7 +250,7 @@
         fill="#00a8d6" />
     </svg>
 
-    <h2 id="dioxus">Dioxus</h2>
+    <h2 id="aether">Aether</h2>
 
     <!-- Project platform and name -->
     <h2 id="project-info">N/A | N/A</h2>
@@ -295,9 +295,9 @@
   <!-- Footer Of Links -->
   <div id="footer">
     <h4>
-      <a href="https://docs.rs/dioxus/latest/dioxus/">docs</a>
+      <a href="https://docs.rs/aether/latest/aether/">docs</a>
       |
-      <a href="https://dioxuslabs.com/learn">guides</a>
+      <a href="https://aetherlabs.com/learn">guides</a>
       |
       <a href="https://discord.gg/KrGKhBbU6s">help</a>
     </h4>
@@ -307,7 +307,7 @@
   <script>
     let APPLICATION_NAME = "N/A";
 
-    // Wait for a "Ready" message from the server on the websocket served at /_dioxus/build_status
+    // Wait for a "Ready" message from the server on the websocket served at /_aether/build_status
     let protocol;
     if (window.location.protocol === "https:") {
       protocol = "wss:";
@@ -315,7 +315,7 @@
       protocol = "ws:";
     }
     let url =
-      protocol + "//" + window.location.host + "/_dioxus/build_status";
+      protocol + "//" + window.location.host + "/_aether/build_status";
     let ws = new WebSocket(url);
 
     // WS Message Handling

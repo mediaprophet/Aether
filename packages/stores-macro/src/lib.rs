@@ -23,8 +23,8 @@ mod seal;
 /// For structs, the store macro generates methods for each field that returns a store scoped to that field and a `transpose` method that returns a struct with all fields as stores:
 ///
 /// ```rust, no_run
-/// use dioxus::prelude::*;
-/// use dioxus_stores::*;
+/// use aether::prelude::*;
+/// use aether_stores::*;
 ///
 /// #[derive(Store)]
 /// struct TodoItem {
@@ -68,8 +68,8 @@ mod seal;
 /// has since changed.
 ///
 /// ```rust, no_run
-/// use dioxus::prelude::*;
-/// use dioxus_stores::*;
+/// use aether::prelude::*;
+/// use aether_stores::*;
 ///
 /// #[derive(Store, PartialEq, Clone, Debug)]
 /// enum Enum {
@@ -145,8 +145,8 @@ pub fn derive_store(input: TokenStream) -> TokenStream {
 /// ## Example
 ///
 /// ```rust, no_run
-/// use dioxus::prelude::*;
-/// use dioxus_stores::*;
+/// use aether::prelude::*;
+/// use aether_stores::*;
 ///
 /// #[derive(Store)]
 /// struct TodoItem {

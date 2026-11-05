@@ -1,16 +1,16 @@
 //! This example shows how to use the `file` methods on FormEvent and DragEvent to handle file uploads and drops.
 //!
-//! Dioxus intercepts these events and provides a Rusty interface to the file data. Since we want this interface to
+//! Aether intercepts these events and provides a Rusty interface to the file data. Since we want this interface to
 //! be crossplatform,
 
-use dioxus::html::HasFileData;
-use dioxus::prelude::*;
-use dioxus_html::FileData;
+use aether::html::HasFileData;
+use aether::prelude::*;
+use aether_html::FileData;
 
 const STYLE: Asset = asset!("/examples/assets/file_upload.css");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 struct UploadedFile {

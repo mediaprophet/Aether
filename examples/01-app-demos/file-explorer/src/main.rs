@@ -8,10 +8,10 @@
 use std::env::current_dir;
 use std::path::PathBuf;
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
@@ -62,7 +62,7 @@ fn app() -> Element {
 
 /// A simple little struct to hold the file explorer state
 ///
-/// We don't use any fancy signals or memoization here - Dioxus is so fast that even a file explorer can be done with a
+/// We don't use any fancy signals or memoization here - Aether is so fast that even a file explorer can be done with a
 /// single signal.
 struct Files {
     current_path: PathBuf,

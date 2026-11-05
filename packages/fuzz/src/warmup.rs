@@ -3,8 +3,8 @@
 //! per fuzz process so the coverage-instrumented binary records them.
 
 /// Drive the VirtualDom's pending work to completion synchronously.
-fn drive_render(dom: &mut dioxus_core::VirtualDom) {
-    dom.render_immediate(&mut dioxus_core::Mutations::default());
+fn drive_render(dom: &mut aether_core::VirtualDom) {
+    dom.render_immediate(&mut aether_core::Mutations::default());
 }
 
 thread_local! {
@@ -26,14 +26,14 @@ fn warmup_gen() -> u32 {
 /// and render. Returns the dom and oracle so callers can drive extra custom
 /// rounds.
 fn run_generations(
-    app: fn() -> dioxus_core::Element,
+    app: fn() -> aether_core::Element,
     generations: u32,
 ) -> (
-    dioxus_core::VirtualDom,
-    dioxus_renderer_oracle::RendererOracle,
+    aether_core::VirtualDom,
+    aether_renderer_oracle::RendererOracle,
 ) {
-    use dioxus_core::{ScopeId, VirtualDom};
-    use dioxus_renderer_oracle::RendererOracle;
+    use aether_core::{ScopeId, VirtualDom};
+    use aether_renderer_oracle::RendererOracle;
 
     WARMUP_GEN.with(|c| c.set(0));
     let mut dom = VirtualDom::new(app);
@@ -53,7 +53,7 @@ fn run_generations(
 /// same-render-fn match, exceeding `FRAGMENT_WORK_BATCH`). Also exercises
 /// the `Take` iterator monomorphization via a keyed shared-prefix re-render.
 fn warmup_batched_component_props_diff() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     #[derive(Clone, PartialEq, Props)]
     struct ItemProps {
@@ -98,7 +98,7 @@ fn warmup_batched_component_props_diff() {
 /// the unchecked mount transfer path on the slice picked by the LIS-based
 /// splice.
 fn warmup_keyed_reorder() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     #[derive(Clone, PartialEq, Props)]
     struct ItemProps {
@@ -134,8 +134,8 @@ fn warmup_keyed_reorder() {
 /// they live in the suspended branch and were never materialized in the
 /// renderer arena.
 fn warmup_suspense_hidden_paths() {
-    use dioxus::prelude::*;
-    use dioxus_core::{SuspenseContext, generation};
+    use aether::prelude::*;
+    use aether_core::{SuspenseContext, generation};
     use std::cell::Cell;
 
     thread_local! {
@@ -219,8 +219,8 @@ fn warmup_suspense_hidden_paths() {
 }
 
 fn warmup_empty_fallback_slot_promotion() {
-    use dioxus::prelude::*;
-    use dioxus_core::generation;
+    use aether::prelude::*;
+    use aether_core::generation;
 
     #[component]
     #[allow(non_snake_case)]
@@ -247,8 +247,8 @@ fn warmup_empty_fallback_slot_promotion() {
 }
 
 fn warmup_non_root_dynamic_slot_without_adjacent_anchor() {
-    use dioxus::prelude::*;
-    use dioxus_core::generation;
+    use aether::prelude::*;
+    use aether_core::generation;
 
     fn app() -> Element {
         let g = generation();
@@ -269,8 +269,8 @@ fn warmup_non_root_dynamic_slot_without_adjacent_anchor() {
 }
 
 fn warmup_root_dynamic_slot_anchors() {
-    use dioxus::prelude::*;
-    use dioxus_core::generation;
+    use aether::prelude::*;
+    use aether_core::generation;
 
     fn before_static_root() -> Element {
         let g = generation();
@@ -301,8 +301,8 @@ fn warmup_root_dynamic_slot_anchors() {
 }
 
 fn warmup_keyed_fragment_skip_anchors() {
-    use dioxus::prelude::*;
-    use dioxus_core::generation;
+    use aether::prelude::*;
+    use aether_core::generation;
 
     fn app() -> Element {
         let g = generation();
@@ -327,7 +327,7 @@ fn warmup_keyed_fragment_skip_anchors() {
 }
 
 fn warmup_keyed_fragment_right_edge_anchor() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     fn app() -> Element {
         let order: &[u32] = if warmup_gen() == 0 {
@@ -351,7 +351,7 @@ fn warmup_keyed_fragment_right_edge_anchor() {
 }
 
 fn warmup_keyed_splice_into_static_slot() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     fn app() -> Element {
         let keys: &[u32] = if warmup_gen() == 0 { &[0] } else { &[0, 1] };
@@ -377,8 +377,8 @@ fn warmup_keyed_splice_into_static_slot() {
 /// are also queued, so the descendants are drained as part of the ancestor's
 /// pass instead of being re-run afterwards.
 fn warmup_deferred_subtree_check() {
-    use dioxus::prelude::*;
-    use dioxus_core::{ScopeId, VirtualDom, current_scope_id};
+    use aether::prelude::*;
+    use aether_core::{ScopeId, VirtualDom, current_scope_id};
     use std::cell::RefCell;
 
     thread_local! {
@@ -429,8 +429,8 @@ fn warmup_deferred_subtree_check() {
 /// `dynamic_node_first_element`/`find_element_at_root_in_target` actually
 /// take their `None` branches.
 fn warmup_dropped_scope_anchor_lookup() {
-    use dioxus::prelude::*;
-    use dioxus_core::generation;
+    use aether::prelude::*;
+    use aether_core::generation;
 
     #[derive(Clone, PartialEq, Props)]
     struct InnerProps {
@@ -480,7 +480,7 @@ fn warmup_dropped_scope_anchor_lookup() {
 /// mounted-id lookup paths in `dynamic_node_first_element` /
 /// `find_element_at_root_in_target` when scopes get dropped mid-diff.
 fn warmup_suspense_then_remove() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     #[derive(Clone, PartialEq, Props)]
     struct ChildProps {
@@ -518,7 +518,7 @@ fn warmup_suspense_then_remove() {
 }
 
 /// One-shot warmup that exercises the multi-priority deferred-priority paths in
-/// `dioxus_core::diff::component::diff_vcomponent`. The sync `render_immediate`
+/// `aether_core::diff::component::diff_vcomponent`. The sync `render_immediate`
 /// path used by [`crate::case::run_case`] only ever processes a single priority level at a
 /// time, so the `render_deferred_priority`/`deferred_priority_for_subtree`
 /// branches are unreachable from corpus inputs alone. Calling this once per
@@ -529,9 +529,9 @@ fn warmup_suspense_then_remove() {
 /// fuzz harness's per-input Portal always uses a single target allocated via
 /// `use_hook`, so this branch is otherwise unreachable.
 fn warmup_portal_target_switch() {
-    use dioxus::prelude::*;
-    use dioxus_core::{Portal, RenderTargetId, ScopeId, VirtualDom};
-    use dioxus_renderer_oracle::RendererOracle;
+    use aether::prelude::*;
+    use aether_core::{Portal, RenderTargetId, ScopeId, VirtualDom};
+    use aether_renderer_oracle::RendererOracle;
     use std::{cell::Cell, collections::BTreeMap};
 
     thread_local! {
@@ -608,8 +608,8 @@ fn warmup_portal_target_switch() {
 /// the dropped subtree - unreachable from the fuzz harness because the
 /// model never uses `use_effect`.
 fn warmup_scope_with_pending_effect() {
-    use dioxus::prelude::*;
-    use dioxus_core::{ScopeId, current_scope_id, queue_effect};
+    use aether::prelude::*;
+    use aether_core::{ScopeId, current_scope_id, queue_effect};
     use std::cell::Cell;
 
     thread_local! {
@@ -675,8 +675,8 @@ fn warmup_scope_with_pending_effect() {
 /// captures the child's `ScopeId` on first render and marks the child dirty
 /// to force a re-run that actually iterates the hook lists.
 fn warmup_before_after_render_hooks() {
-    use dioxus::prelude::*;
-    use dioxus_core::{ScopeId, current_scope_id, use_after_render, use_before_render};
+    use aether::prelude::*;
+    use aether_core::{ScopeId, current_scope_id, use_after_render, use_before_render};
     use std::cell::Cell;
 
     thread_local! {
@@ -710,8 +710,8 @@ fn warmup_before_after_render_hooks() {
 /// arm in `run_scope`'s `match render_return` and the error arm in
 /// `handle_element_return` (which calls `throw_error`) both fire.
 fn warmup_throw_error() {
-    use dioxus::prelude::*;
-    use dioxus_core::{CapturedError, RenderError};
+    use aether::prelude::*;
+    use aether_core::{CapturedError, RenderError};
 
     #[component]
     #[allow(non_snake_case)]
@@ -740,7 +740,7 @@ fn warmup_throw_error() {
 /// (`right_offset == 0`): the new middle is created anchored against the old
 /// left sibling before the old middle is removed.
 fn warmup_keyed_left_prefix_splice() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     fn app() -> Element {
         // gen 0: [a, x0, x1, x2]; gen 1: [a, p0, p1, p2].
@@ -766,8 +766,8 @@ fn warmup_keyed_left_prefix_splice() {
 /// restore in `remove_attribute_or_restore_static`: the removed dynamic
 /// attribute's static value is restored instead of cleared.
 fn warmup_static_attribute_restore() {
-    use dioxus::prelude::*;
-    use dioxus_core::Attribute;
+    use aether::prelude::*;
+    use aether_core::Attribute;
 
     fn app() -> Element {
         // The template carries a static `class="static"`. The spread shadows
@@ -797,8 +797,8 @@ fn warmup_static_attribute_restore() {
 /// `diff_dynamic_attribute`: the old value is explicitly cleared before the
 /// listener is installed (installing a listener doesn't overwrite it).
 fn warmup_attribute_value_to_listener() {
-    use dioxus::prelude::*;
-    use dioxus_core::{Attribute, AttributeValue};
+    use aether::prelude::*;
+    use aether_core::{Attribute, AttributeValue};
 
     fn app() -> Element {
         let attrs: Vec<Attribute> = if warmup_gen() == 0 {
@@ -824,9 +824,9 @@ fn warmup_attribute_value_to_listener() {
 /// `push_all_root_nodes` recurse into a portal body whose mount target differs
 /// from the list's target, driving the cross-target dynamic-text-root branch.
 fn warmup_portal_dynamic_text_root() {
-    use dioxus::prelude::*;
-    use dioxus_core::{Portal, RenderTargetId, ScopeId, VirtualDom};
-    use dioxus_renderer_oracle::RendererOracle;
+    use aether::prelude::*;
+    use aether_core::{Portal, RenderTargetId, ScopeId, VirtualDom};
+    use aether_renderer_oracle::RendererOracle;
     use std::{cell::Cell, collections::BTreeMap};
 
     thread_local! {
@@ -872,7 +872,7 @@ fn warmup_portal_dynamic_text_root() {
 /// component roots whose scopes may already have been dropped, driving the
 /// dropped-scope `?` branch in `find_element_at_root_in_target`'s component arm.
 fn warmup_keyed_component_anchor() {
-    use dioxus::prelude::*;
+    use aether::prelude::*;
 
     #[derive(Clone, PartialEq, Props)]
     struct ItemProps {
@@ -925,8 +925,8 @@ pub fn warmup_deferred_priority_paths() {
     warmup_attribute_value_to_listener();
     warmup_portal_dynamic_text_root();
     warmup_keyed_component_anchor();
-    use dioxus::prelude::*;
-    use dioxus_core::ScopeId;
+    use aether::prelude::*;
+    use aether_core::ScopeId;
 
     #[derive(Clone, PartialEq, Props)]
     struct ItemProps {
@@ -939,7 +939,7 @@ pub fn warmup_deferred_priority_paths() {
     }
 
     fn app() -> Element {
-        let generation = dioxus_core::generation();
+        let generation = aether_core::generation();
         rsx! {
             for i in 0..3u32 {
                 Item { value: i + (generation as u32) }

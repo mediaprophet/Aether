@@ -1,6 +1,6 @@
-use dioxus::html::geometry::euclid::Vector3D;
-use dioxus::prelude::*;
-use dioxus_desktop::DesktopContext;
+use aether::html::geometry::euclid::Vector3D;
+use aether::prelude::*;
+use aether_desktop::DesktopContext;
 
 #[path = "./utils.rs"]
 mod utils;
@@ -99,7 +99,7 @@ fn test_button() -> Element {
                 assert!(event.data.held_buttons().is_empty());
                 assert_eq!(
                     event.data.trigger_button(),
-                    Some(dioxus_html::input_data::MouseButton::Primary),
+                    Some(aether_html::input_data::MouseButton::Primary),
                 );
                 RECEIVED_EVENTS.with_mut(|x| *x += 1);
             }
@@ -128,7 +128,7 @@ fn test_mouse_move_div() -> Element {
                     event
                         .data
                         .held_buttons()
-                        .contains(dioxus_html::input_data::MouseButton::Secondary),
+                        .contains(aether_html::input_data::MouseButton::Secondary),
                 );
                 RECEIVED_EVENTS.with_mut(|x| *x += 1);
             }
@@ -158,11 +158,11 @@ fn test_mouse_click_div() -> Element {
                     event
                         .data
                         .held_buttons()
-                        .contains(dioxus_html::input_data::MouseButton::Secondary),
+                        .contains(aether_html::input_data::MouseButton::Secondary),
                 );
                 assert_eq!(
                     event.data.trigger_button(),
-                    Some(dioxus_html::input_data::MouseButton::Secondary),
+                    Some(aether_html::input_data::MouseButton::Secondary),
                 );
                 RECEIVED_EVENTS.with_mut(|x| *x += 1);
             }
@@ -192,17 +192,17 @@ fn test_mouse_dblclick_div() -> Element {
                     event
                         .data
                         .held_buttons()
-                        .contains(dioxus_html::input_data::MouseButton::Primary),
+                        .contains(aether_html::input_data::MouseButton::Primary),
                 );
                 assert!(
                     event
                         .data
                         .held_buttons()
-                        .contains(dioxus_html::input_data::MouseButton::Secondary),
+                        .contains(aether_html::input_data::MouseButton::Secondary),
                 );
                 assert_eq!(
                     event.data.trigger_button(),
-                    Some(dioxus_html::input_data::MouseButton::Secondary),
+                    Some(aether_html::input_data::MouseButton::Secondary),
                 );
                 RECEIVED_EVENTS.with_mut(|x| *x += 1);
             }
@@ -232,11 +232,11 @@ fn test_mouse_down_div() -> Element {
                     event
                         .data
                         .held_buttons()
-                        .contains(dioxus_html::input_data::MouseButton::Secondary),
+                        .contains(aether_html::input_data::MouseButton::Secondary),
                 );
                 assert_eq!(
                     event.data.trigger_button(),
-                    Some(dioxus_html::input_data::MouseButton::Secondary),
+                    Some(aether_html::input_data::MouseButton::Secondary),
                 );
                 RECEIVED_EVENTS.with_mut(|x| *x += 1);
             }
@@ -265,7 +265,7 @@ fn test_mouse_up_div() -> Element {
                 assert!(event.data.held_buttons().is_empty());
                 assert_eq!(
                     event.data.trigger_button(),
-                    Some(dioxus_html::input_data::MouseButton::Primary),
+                    Some(aether_html::input_data::MouseButton::Primary),
                 );
                 RECEIVED_EVENTS.with_mut(|x| *x += 1);
             }
@@ -294,7 +294,7 @@ fn test_mouse_scroll_div() -> Element {
             background_color: "red",
             onwheel: move |event| {
                 println!("{:?}", event.data);
-                let dioxus_html::geometry::WheelDelta::Pixels(delta) = event.data.delta() else {
+                let aether_html::geometry::WheelDelta::Pixels(delta) = event.data.delta() else {
                     panic!("Expected delta to be in pixels")
                 };
                 assert_eq!(delta, Vector3D::new(1.0, 2.0, 3.0));

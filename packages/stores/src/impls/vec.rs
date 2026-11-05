@@ -1,12 +1,12 @@
 use crate::store::Store;
-use dioxus_signals::Writable;
+use aether_signals::Writable;
 
 impl<Lens: Writable<Target = Vec<T>> + 'static, T: 'static> Store<Vec<T>, Lens> {
     /// Pushes an item to the end of the vector. This will only mark the length of the vector as dirty.
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let mut store = use_store(|| vec![1, 2, 3]);
     /// store.push(4);
     /// ```
@@ -20,7 +20,7 @@ impl<Lens: Writable<Target = Vec<T>> + 'static, T: 'static> Store<Vec<T>, Lens> 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let mut store = use_store(|| vec![1, 2, 3]);
     /// let removed = store.remove(1);
     /// assert_eq!(removed, 2);
@@ -36,7 +36,7 @@ impl<Lens: Writable<Target = Vec<T>> + 'static, T: 'static> Store<Vec<T>, Lens> 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let mut store = use_store(|| vec![1, 2, 3]);
     /// store.insert(1, 4);
     /// ```
@@ -50,7 +50,7 @@ impl<Lens: Writable<Target = Vec<T>> + 'static, T: 'static> Store<Vec<T>, Lens> 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let mut store = use_store(|| vec![1, 2, 3]);
     /// store.clear();
     /// ```
@@ -64,7 +64,7 @@ impl<Lens: Writable<Target = Vec<T>> + 'static, T: 'static> Store<Vec<T>, Lens> 
     ///
     /// # Example
     /// ```rust, no_run
-    /// use dioxus_stores::*;
+    /// use aether_stores::*;
     /// let mut store = use_store(|| vec![1, 2, 3, 4, 5]);
     /// store.retain(|&x| x % 2 == 0);
     /// assert_eq!(store.len(), 2);

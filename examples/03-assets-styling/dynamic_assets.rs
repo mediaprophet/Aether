@@ -4,13 +4,13 @@
 //! and respond with your own data. You could use this to load in custom videos, streams, stylesheets, images,
 //! or any asset that isn't known at compile time.
 
-use dioxus::desktop::{use_asset_handler, wry::http::Response};
-use dioxus::prelude::*;
+use aether::desktop::{use_asset_handler, wry::http::Response};
+use aether::prelude::*;
 
 const STYLE: Asset = asset!("/examples/assets/custom_assets.css");
 
 fn main() {
-    dioxus::LaunchBuilder::desktop().launch(app);
+    aether::LaunchBuilder::desktop().launch(app);
 }
 
 fn app() -> Element {

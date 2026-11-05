@@ -1,11 +1,11 @@
 [package]
-name = "dioxus-liveview"
+name = "aether-liveview"
 version = { workspace = true }
 edition = "2024"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "react", "liveview"]
-description = "Build server-side apps with Dioxus"
+description = "Build server-side apps with Aether"
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 license = "CC-BY-NC-ND-4.0"
 
@@ -22,14 +22,14 @@ tokio-stream = { workspace = true, features = ["net"] }
 tokio-util = { workspace = true, features = ["rt"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-dioxus-html = { workspace = true, features = ["serialize"] }
-dioxus-document = { workspace = true }
-dioxus-history = { workspace = true }
+aether-html = { workspace = true, features = ["serialize"] }
+aether-document = { workspace = true }
+aether-history = { workspace = true }
 rustc-hash = { workspace = true }
-dioxus-core = { workspace = true, features = ["serialize"] }
-dioxus-interpreter-js = { workspace = true, features = ["binary-protocol"] }
-dioxus-devtools = { workspace = true, optional = true }
-dioxus-cli-config = { workspace = true }
+aether-core = { workspace = true, features = ["serialize"] }
+aether-interpreter-js = { workspace = true, features = ["binary-protocol"] }
+aether-devtools = { workspace = true, optional = true }
+aether-cli-config = { workspace = true }
 generational-box = { workspace = true }
 
 # axum
@@ -39,13 +39,13 @@ axum = { workspace = true, optional = true, default-features = true, features = 
 tokio = { workspace = true, features = ["full"] }
 axum = { workspace = true, features = ["ws"] }
 tower = { workspace = true }
-dioxus = { workspace = true }
+aether = { workspace = true }
 
 [features]
 default = ["devtools", "multi-thread"]
 axum = ["dep:axum"]
 multi-thread = ["tokio/rt-multi-thread"]
-devtools = ["dep:dioxus-devtools"]
+devtools = ["dep:aether-devtools"]
 
 [[example]]
 name = "axum"

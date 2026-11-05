@@ -1,4 +1,4 @@
-//! Extract and merge inline Dioxus.toml configuration from Rust source files.
+//! Extract and merge inline Aether.toml configuration from Rust source files.
 //!
 //! This module allows examples and tests to embed configuration in their doc comments:
 //!
@@ -6,7 +6,7 @@
 //! #![allow(unused)]
 //! //! This example demonstrates iOS geolocation
 //! //!
-//! //! ```dioxus.toml
+//! //! ```aether.toml
 //! //! [bundle]
 //! //! identifier = "com.example.geolocation"
 //! //!
@@ -15,15 +15,15 @@
 //! //! ```
 //! ```
 //!
-//! The embedded config is deep-merged with the workspace/app Dioxus.toml,
+//! The embedded config is deep-merged with the workspace/app Aether.toml,
 //! with inline values taking precedence.
 
 use std::path::Path;
 
-/// Extract embedded Dioxus.toml configuration from a Rust source file.
+/// Extract embedded Aether.toml configuration from a Rust source file.
 ///
 /// Parses the file's module-level doc comments (`//!`) looking for a fenced
-/// code block marked as `dioxus.toml`. Returns the parsed TOML as a generic
+/// code block marked as `aether.toml`. Returns the parsed TOML as a generic
 /// Value for merging.
 ///
 /// Handles inner attributes (`#![...]`) that may appear before doc comments.
@@ -35,7 +35,7 @@ use std::path::Path;
 /// #![allow(unused)]
 /// //! Example showing permissions
 /// //!
-/// //! ```dioxus.toml
+/// //! ```aether.toml
 /// //! [permissions]
 /// //! camera = { description = "Take photos" }
 /// //! ```
@@ -122,16 +122,16 @@ fn extract_module_doc_comments(source: &str) -> Option<String> {
     }
 }
 
-/// Extract the content of a ```dioxus.toml fenced code block.
+/// Extract the content of a ```aether.toml fenced code block.
 fn extract_toml_block(doc_content: &str) -> Option<String> {
     let mut in_toml_block = false;
     let mut toml_lines = Vec::new();
 
     for line in doc_content.lines() {
         if !in_toml_block {
-            // Look for opening fence with dioxus.toml marker
+            // Look for opening fence with aether.toml marker
             let trimmed = line.trim();
-            if trimmed == "```dioxus.toml" || trimmed == "```toml dioxus.toml" {
+            if trimmed == "```aether.toml" || trimmed == "```toml aether.toml" {
                 in_toml_block = true;
                 continue;
             }
@@ -179,21 +179,21 @@ pub fn merge_toml_values(base: toml::Value, override_val: toml::Value) -> toml::
     }
 }
 
-/// Merge an inline config with a base DioxusConfig.
+/// Merge an inline config with a base AetherConfig.
 ///
 /// The inline config (from doc comments) takes precedence over the base config.
 pub fn merge_with_inline_config(
-    base: &super::DioxusConfig,
+    base: &super::AetherConfig,
     inline: toml::Value,
-) -> Result<super::DioxusConfig, toml::de::Error> {
+) -> Result<super::AetherConfig, toml::de::Error> {
     // Convert base to toml::Value
-    let base_str = toml::to_string(base).expect("DioxusConfig should serialize");
+    let base_str = toml::to_string(base).expect("AetherConfig should serialize");
     let base_value: toml::Value = toml::from_str(&base_str).expect("Should parse back");
 
     // Merge
     let merged = merge_toml_values(base_value, inline);
 
-    // Convert back to DioxusConfig
+    // Convert back to AetherConfig
     merged.try_into()
 }
 
@@ -257,7 +257,7 @@ fn main() {}
     fn test_extract_toml_block() {
         let doc = r#"This is an example
 
-```dioxus.toml
+```aether.toml
 [bundle]
 identifier = "com.test"
 ```
@@ -273,7 +273,7 @@ More text here"#;
     fn test_extract_inline_config() {
         let source = r#"//! Example app
 //!
-//! ```dioxus.toml
+//! ```aether.toml
 //! [bundle]
 //! identifier = "com.example.test"
 //!
@@ -300,7 +300,7 @@ fn main() {}
 #![cfg(target_os = "ios")]
 //! iOS Example
 //!
-//! ```dioxus.toml
+//! ```aether.toml
 //! [bundle]
 //! identifier = "com.example.ios"
 //! ```

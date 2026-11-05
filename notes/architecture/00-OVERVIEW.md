@@ -1,6 +1,6 @@
-# Dioxus Architecture Overview
+# Aether Architecture Overview
 
-This directory contains comprehensive architecture documentation for the Dioxus framework, designed to help future Claude agents (and human contributors) understand the codebase deeply.
+This directory contains comprehensive architecture documentation for the Aether framework, designed to help future Claude agents (and human contributors) understand the codebase deeply.
 
 ## Document Index
 
@@ -20,40 +20,40 @@ This directory contains comprehensive architecture documentation for the Dioxus 
 ## Crate Dependency Overview
 
 ```
-dioxus (umbrella crate)
-├── dioxus-core (VirtualDOM, runtime, scheduler)
+aether (umbrella crate)
+├── aether-core (VirtualDOM, runtime, scheduler)
 │   └── generational-box (Copy semantics for references)
-├── dioxus-rsx (macro parsing)
-│   └── dioxus-autofmt (code formatting)
-├── dioxus-signals (reactive state)
+├── aether-rsx (macro parsing)
+│   └── aether-autofmt (code formatting)
+├── aether-signals (reactive state)
 │   ├── generational-box
-│   └── dioxus-stores (nested reactivity)
-├── dioxus-hooks (use_signal, use_effect, etc.)
-├── dioxus-html (HTML elements, events)
-├── dioxus-router (client-side routing)
+│   └── aether-stores (nested reactivity)
+├── aether-hooks (use_signal, use_effect, etc.)
+├── aether-html (HTML elements, events)
+├── aether-router (client-side routing)
 │
 ├── Renderers:
-│   ├── dioxus-web (WASM/browser)
-│   ├── dioxus-desktop (wry/tao webview)
-│   ├── dioxus-native (blitz/vello GPU)
-│   ├── dioxus-liveview (WebSocket streaming)
-│   └── dioxus-ssr (server-side rendering)
+│   ├── aether-web (WASM/browser)
+│   ├── aether-desktop (wry/tao webview)
+│   ├── aether-native (blitz/vello GPU)
+│   ├── aether-liveview (WebSocket streaming)
+│   └── aether-ssr (server-side rendering)
 │
 ├── Fullstack:
-│   ├── dioxus-fullstack (client/server coordination)
-│   ├── dioxus-fullstack-core (transport, types)
-│   ├── dioxus-fullstack-macro (#[server] macro)
-│   └── dioxus-server (Axum integration)
+│   ├── aether-fullstack (client/server coordination)
+│   ├── aether-fullstack-core (transport, types)
+│   ├── aether-fullstack-macro (#[server] macro)
+│   └── aether-server (Axum integration)
 │
 ├── CLI (dx command):
-│   ├── dioxus-cli (main binary)
-│   ├── dioxus-cli-config (Dioxus.toml parsing)
-│   └── dioxus-cli-opt (optimization passes)
+│   ├── aether-cli (main binary)
+│   ├── aether-cli-config (Aether.toml parsing)
+│   └── aether-cli-opt (optimization passes)
 │
 ├── Hot Reload:
 │   ├── subsecond (hot-patching runtime)
-│   ├── dioxus-rsx-hotreload (template diffing)
-│   └── dioxus-devtools (WebSocket communication)
+│   ├── aether-rsx-hotreload (template diffing)
+│   └── aether-devtools (WebSocket communication)
 │
 ├── Assets:
 │   ├── manganis (asset!() macro)
@@ -70,7 +70,7 @@ dioxus (umbrella crate)
 ## Key Architectural Patterns
 
 ### 1. Copy Semantics for Reactive State
-Dioxus uses `generational-box` to provide `Copy` semantics for references. This enables signals and other reactive primitives to be freely passed around without explicit cloning.
+Aether uses `generational-box` to provide `Copy` semantics for references. This enables signals and other reactive primitives to be freely passed around without explicit cloning.
 
 ### 2. WriteMutations Trait
 All renderers implement `WriteMutations` which defines how VirtualDOM changes translate to real DOM operations. This abstraction enables the same component code to run on web, desktop, mobile, and server.

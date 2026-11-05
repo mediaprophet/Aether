@@ -6,19 +6,19 @@
 //! `FileStream` and `FileDownload` are built on multi-part form data and streams, which we
 //! also showcase here.
 
-use dioxus::{
+use aether::{
     fullstack::{ByteStream, FileStream},
     prelude::*,
 };
-use dioxus_html::{FileData, HasFileData};
+use aether_html::{FileData, HasFileData};
 use futures::StreamExt;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 fn app() -> Element {
-    // Dioxus provides the `FileStream` type for efficiently uploading files in a streaming fashion.
+    // Aether provides the `FileStream` type for efficiently uploading files in a streaming fashion.
     // This approach automatically automatically sets relevant metadata such as headers like
     // Content-Type, Content-Length, and Content-Disposition.
     //
@@ -31,7 +31,7 @@ fn app() -> Element {
         for file in files {
             upload_file_as_filestream(file.into()).await?;
         }
-        dioxus::Ok(())
+        aether::Ok(())
     });
 
     // We can upload files by directly using the `ByteStream` type. With this approach, we need to
@@ -47,7 +47,7 @@ fn app() -> Element {
         for file in files {
             upload_as_bytestream(file.name(), file.size(), file.byte_stream().into()).await?;
         }
-        dioxus::Ok(())
+        aether::Ok(())
     });
 
     let mut download_file = use_action(move || async move {
@@ -60,7 +60,7 @@ fn app() -> Element {
             bytes.extend_from_slice(&chunk);
         }
 
-        dioxus::Ok(String::from_utf8_lossy(&bytes).to_string())
+        aether::Ok(String::from_utf8_lossy(&bytes).to_string())
     });
 
     rsx! {

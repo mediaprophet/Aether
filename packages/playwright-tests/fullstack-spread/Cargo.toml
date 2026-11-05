@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-playwright-fullstack-spread-test"
+name = "aether-playwright-fullstack-spread-test"
 version = "0.1.0"
 edition = "2024"
 publish = false
@@ -7,9 +7,9 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { workspace = true, features = ["fullstack"] }
+aether = { workspace = true, features = ["fullstack"] }
 
 [features]
 default = []
-server = ["dioxus/server"]
-web = ["dioxus/web"]
+server = ["aether/server"]
+web = ["aether/web"]

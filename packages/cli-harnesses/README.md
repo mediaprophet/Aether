@@ -1,6 +1,6 @@
 # Test harnesses
 
-This folder contains a series of CLI harnesses that represent common structures of dioxus apps.
+This folder contains a series of CLI harnesses that represent common structures of aether apps.
 
 We test these projects as a form of smoke testing to ensure our argument resolution works properly.
 
@@ -27,9 +27,9 @@ aren't renderers, and then add the feature for the given renderer (i.e., web/des
 We call this "no-default-features-stripped."
 
 There are a few cases where the user doesn't need to pass a platform.
-- they selected one via `dioxus = { features = ["web"] }`
+- they selected one via `aether = { features = ["web"] }`
 - they have a single platform in their default features `default = ["web"]`
-- there is only a single non-server renderer as a feature `web = ["dioxus/web"], server = ["dioxus/server"]`
+- there is only a single non-server renderer as a feature `web = ["aether/web"], server = ["aether/server"]`
 - they compose the super triple via triple + bundleformat + features
 
 Note that we only use the names of the features to correspond with the platform.
@@ -55,11 +55,11 @@ Fullstack usage is inferred from the presence of the fullstack feature or --full
 
 ## List of harnesses (brainstorming)
 
-- app that doesn't use dioxus
+- app that doesn't use aether
 - simple app where the renderer is used as an explicit feature
 - simple app, same as above, but with fullstack enabled
   - since no `server` feature is present, we don't run the server
 - simple app, same as above, but with a `server` feature
   - server should launch and take precedence over the client
 - simple server-only app
-  - IE you're doing SSR with dioxus
+  - IE you're doing SSR with aether

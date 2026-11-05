@@ -1,6 +1,6 @@
 use super::*;
 use crate::document;
-use dioxus_core::{VNode, use_hook};
+use aether_core::{VNode, use_hook};
 
 #[non_exhaustive]
 /// Props for the [`Meta`] component
@@ -48,14 +48,14 @@ impl MetaProps {
 /// # Example
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
-/// fn RedirectToDioxusHomepageWithoutJS() -> Element {
+/// # use aether::prelude::*;
+/// fn RedirectToAetherHomepageWithoutJS() -> Element {
 ///     rsx! {
 ///         // You can use the meta component to render a meta tag into the head of the page
-///         // This meta tag will redirect the user to the dioxuslabs homepage in 10 seconds
+///         // This meta tag will redirect the user to the aetherlabs homepage in 10 seconds
 ///         document::Meta {
 ///             http_equiv: "refresh",
-///             content: "10;url=https://dioxuslabs.com",
+///             content: "10;url=https://aetherlabs.com",
 ///         }
 ///     }
 /// }

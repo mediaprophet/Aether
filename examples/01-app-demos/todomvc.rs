@@ -1,12 +1,12 @@
-//! The typical TodoMVC app, implemented in Dioxus.
+//! The typical TodoMVC app, implemented in Aether.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 use std::collections::HashMap;
 
 const STYLE: Asset = asset!("/examples/assets/todomvc.css");
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 #[derive(PartialEq, Eq, Clone, Copy)]
@@ -157,7 +157,7 @@ fn TodoEntry(mut todos: WriteSignal<HashMap<u32, TodoItem>>, id: u32) -> Element
 
     rsx! {
         li {
-            // Dioxus lets you use if statements in rsx to conditionally render attributes
+            // Aether lets you use if statements in rsx to conditionally render attributes
             // These will get merged into a single class attribute
             class: if checked() { "completed" },
             class: if is_editing() { "editing" },

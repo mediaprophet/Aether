@@ -70,6 +70,6 @@ Write-Output `
     "RUSTUP_HOME=$($Drive)/.rustup" `
     "CARGO_HOME=$($Drive)/.cargo" `
     "AETHER_WORKSPACE=$($Drive)/aether" `
-    "DIOXUS_WORKSPACE=$($Drive)/aether" `
+    "AETHER_WORKSPACE=$($Drive)/aether" `
     "PATH=$($Drive)/.cargo/bin;$env:PATH" `
     >> $env:GITHUB_ENV

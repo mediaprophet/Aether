@@ -1,5 +1,5 @@
 [package]
-name = "dioxus-playwright-fullstack-error-codes-test"
+name = "aether-playwright-fullstack-error-codes-test"
 version = "0.1.0"
 edition = "2024"
 publish = false
@@ -7,9 +7,9 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dioxus = { workspace = true, features = ["fullstack", "router"] }
+aether = { workspace = true, features = ["fullstack", "router"] }
 
 [features]
 default = ["server", "web"]
-server = ["dioxus/server"]
-web = ["dioxus/web"]
+server = ["aether/server"]
+web = ["aether/web"]

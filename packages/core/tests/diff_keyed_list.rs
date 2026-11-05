@@ -4,9 +4,9 @@
 //!
 //! It does not validate that component lifecycles work properly. This is done in another test file.
 
-use dioxus::prelude::*;
-use dioxus_core::generation;
-use dioxus_renderer_oracle::{
+use aether::prelude::*;
+use aether_core::generation;
+use aether_renderer_oracle::{
     EditSummary, OracleNodeId, RendererOracle, SnapshotAttr, SnapshotNode,
 };
 

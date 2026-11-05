@@ -291,7 +291,7 @@ fn extract_zip(data: &[u8], dest: &Path) -> Result<()> {
 mod tests {
     use super::*;
 
-    const CHILD_PROCESS_ENV: &str = "DIOXUS_TEST_RUNTIME_NO_DOWNLOADS";
+    const CHILD_PROCESS_ENV: &str = "AETHER_TEST_RUNTIME_NO_DOWNLOADS";
 
     #[test]
     fn runtime_no_downloads_applies_to_bundler_tools() {

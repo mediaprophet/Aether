@@ -1,11 +1,11 @@
-# Dioxus VirtualDom Fuzzer
+# Aether VirtualDom Fuzzer
 
 This crate provides the structured operation model and renderer oracle used by
 the local `cargo-fuzz` target in `fuzz/`. LibFuzzer handles coverage guidance,
 corpus scheduling, crash storage, and minimization. Mutatis provides the custom
 structure-aware mutator for encoded `FuzzCase` values.
 
-The fuzzer drives Dioxus `VirtualDom` updates with template, dynamic-node,
+The fuzzer drives Aether `VirtualDom` updates with template, dynamic-node,
 dynamic-attribute, fragment, event-listener, portal/multi-renderer, and suspense
 operations. Each case is applied to per-target incremental renderers and checked
 against stable re-render and fresh rebuild snapshots.

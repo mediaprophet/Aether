@@ -4,9 +4,9 @@ use cross_tls_crate::get_bar;
 use cross_tls_crate_dylib::get_baz;
 
 fn main() {
-    dioxus_devtools::connect_subsecond();
+    aether_devtools::connect_subsecond();
     loop {
-        dioxus_devtools::subsecond::call(|| {
+        aether_devtools::subsecond::call(|| {
             use cross_tls_crate::BAR;
             use cross_tls_crate_dylib::BAZ;
 

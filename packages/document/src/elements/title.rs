@@ -1,4 +1,4 @@
-use dioxus_core::{VNode, use_hook};
+use aether_core::{VNode, use_hook};
 
 use crate::document;
 
@@ -20,7 +20,7 @@ pub struct TitleProps {
 /// # Example
 ///
 /// ```rust, no_run
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// fn App() -> Element {
 ///     rsx! {
 ///         // You can use the Title component to render a title tag into the head of the page or window

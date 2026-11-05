@@ -1,17 +1,17 @@
-# Dioxus Stores
+# Aether Stores
 
-Stores are an extension to the Dioxus signals system for reactive nested data structures. Each store will lazily create signals for each field/member of the data structure as needed.
+Stores are an extension to the Aether signals system for reactive nested data structures. Each store will lazily create signals for each field/member of the data structure as needed.
 
-By default stores act a lot like [`dioxus_signals::Signal`]s, but they provide more granular
-subscriptions without requiring nested signals. You should derive [`Store`](dioxus_stores_macro::Store) on your data
+By default stores act a lot like [`aether_signals::Signal`]s, but they provide more granular
+subscriptions without requiring nested signals. You should derive [`Store`](aether_stores_macro::Store) on your data
 structures to generate selectors that let you scope the store to a specific part of your data structure.
 
 ```rust, no_run
-use dioxus::prelude::*;
-use dioxus_stores::*;
+use aether::prelude::*;
+use aether_stores::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 // Deriving the store trait provides methods to scope the store to specific parts of your data structure.

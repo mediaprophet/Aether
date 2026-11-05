@@ -1,9 +1,9 @@
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 #[test]
 fn spread() {
     let dom = VirtualDom::prebuilt(app);
-    let html = dioxus_ssr::render(&dom);
+    let html = aether_ssr::render(&dom);
 
     // The dynamic-attribute slot is normalized by (name, namespace), so spread
     // attributes and style declarations are emitted in sorted order.

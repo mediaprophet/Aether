@@ -1,6 +1,6 @@
-use dioxus::prelude::*;
-use dioxus_core::*;
-use dioxus_stores::GlobalStore;
+use aether::prelude::*;
+use aether_core::*;
+use aether_stores::GlobalStore;
 use std::{cell::RefCell, rc::Rc};
 
 #[derive(Store, std::fmt::Debug, Clone, Default)]
@@ -68,7 +68,7 @@ fn children_see_parent_write() {
     );
 }
 
-// https://github.com/DioxusLabs/dioxus/issues/5363
+// https://github.com/AetherLabs/aether/issues/5363
 // When a store is written through a child lens, readers of the root store
 // must be notified. A child node's subscriber visit must surface deep
 // subscriptions from ancestor nodes.

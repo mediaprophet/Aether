@@ -27,11 +27,11 @@ impl RouteSegment {
             Self::Dynamic(ident, _) => quote! {
                 {
                     let as_string = #ident.to_string();
-                    write!(f, "/{}", dioxus_router::exports::percent_encoding::utf8_percent_encode(&as_string, dioxus_router::exports::PATH_ASCII_SET))?;
+                    write!(f, "/{}", aether_router::exports::percent_encoding::utf8_percent_encode(&as_string, aether_router::exports::PATH_ASCII_SET))?;
                 }
             },
             Self::CatchAll(ident, _) => quote! {
-                dioxus_router::ToRouteSegments::display_route_segments(#ident,f)?;
+                aether_router::ToRouteSegments::display_route_segments(#ident,f)?;
             },
         }
     }
@@ -82,7 +82,7 @@ impl RouteSegment {
                         let mut segments = segments.clone();
                         let segment = segments.next();
                         let parsed = if let Some(segment) = segment.as_deref() {
-                            <#ty as dioxus_router::routable::FromRouteSegment>::from_route_segment(segment).map_err(|err| #error_enum_name::#error_enum_variant(#inner_parse_enum::#error_name(err)))
+                            <#ty as aether_router::routable::FromRouteSegment>::from_route_segment(segment).map_err(|err| #error_enum_name::#error_enum_variant(#inner_parse_enum::#error_name(err)))
                         } else {
                             Err(#error_enum_name::#error_enum_variant(#inner_parse_enum::#missing_error_name))
                         };
@@ -106,7 +106,7 @@ impl RouteSegment {
                             for segment in &remaining_segments {
                                 new_segments.push(&*segment);
                             }
-                            <#ty as dioxus_router::routable::FromRouteSegments>::from_route_segments(&new_segments).map_err(|err| #error_enum_name::#error_enum_variant(#inner_parse_enum::#error_name(err)))
+                            <#ty as aether_router::routable::FromRouteSegments>::from_route_segments(&new_segments).map_err(|err| #error_enum_name::#error_enum_variant(#inner_parse_enum::#error_name(err)))
                         };
                         match parsed {
                             Ok(#name) => {
@@ -254,7 +254,7 @@ pub(crate) fn create_error_type(
                 );
                 error_variants.push(quote! {
                     #[doc = #comment]
-                    #error_name(<#ty as dioxus_router::routable::FromRouteSegment>::Err)
+                    #error_name(<#ty as aether_router::routable::FromRouteSegment>::Err)
                 });
                 display_match.push(quote! { Self::#error_name(err) => write!(f, "Dynamic segment '({}:{})' did not match: {}", stringify!(#ident), stringify!(#ty), err)? });
                 error_variants.push(quote! {
@@ -270,7 +270,7 @@ pub(crate) fn create_error_type(
                 );
                 error_variants.push(quote! {
                     #[doc = #comment]
-                    #error_name(<#ty as dioxus_router::routable::FromRouteSegments>::Err)
+                    #error_name(<#ty as aether_router::routable::FromRouteSegments>::Err)
                 });
                 display_match.push(quote! { Self::#error_name(err) => write!(f, "Catch-all segment '({}:{})' did not match: {}", stringify!(#ident), stringify!(#ty), err)? });
             }

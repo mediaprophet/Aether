@@ -5,7 +5,7 @@ use crate::{
     components::nav::Nav,
     components::product_item::ProductItem,
 };
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 pub(crate) fn Home() -> Element {
     let products = use_loader(|| fetch_products(10, Sort::Ascending))?;

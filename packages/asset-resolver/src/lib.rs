@@ -1,5 +1,5 @@
 #![warn(missing_docs)]
-//! The asset resolver for the Dioxus bundle format. Each platform has its own way of resolving assets. This crate handles
+//! The asset resolver for the Aether bundle format. Each platform has its own way of resolving assets. This crate handles
 //! resolving assets in a cross-platform way.
 //!
 //! There are two broad locations for assets depending on the platform:
@@ -16,13 +16,13 @@
 //! ## Example
 //! ```rust
 //! # async fn asset_example() {
-//! use dioxus::prelude::*;
+//! use aether::prelude::*;
 //!
 //! // Bundle the static JSON asset into the application
 //! static JSON_ASSET: Asset = asset!("/assets/data.json");
 //!
 //! // Read the bytes of the JSON asset
-//! let bytes = dioxus::asset_resolver::read_asset_bytes(&JSON_ASSET).await.unwrap();
+//! let bytes = aether::asset_resolver::read_asset_bytes(&JSON_ASSET).await.unwrap();
 //!
 //! // Deserialize the JSON data
 //! let json: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
@@ -65,13 +65,13 @@ pub enum AssetPathError {
 ///
 /// ## Example
 /// ```rust
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// // Bundle the static JSON asset into the application
 /// static JSON_ASSET: Asset = asset!("/assets/data.json");
 ///
 /// // Resolve the path of the asset. This will not work in web or Android bundles
-/// let path = dioxus::asset_resolver::asset_path(&JSON_ASSET).unwrap();
+/// let path = aether::asset_resolver::asset_path(&JSON_ASSET).unwrap();
 ///
 /// println!("Asset path: {:?}", path);
 ///
@@ -88,13 +88,13 @@ pub enum AssetPathError {
 /// To resolve an asset from a folder, you can pass the path of the file joined with your folder asset as a string:
 /// ```rust
 /// # async fn asset_example() {
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// // Bundle the whole assets folder into the application
 /// static ASSETS: Asset = asset!("/assets");
 ///
 /// // Resolve the path of the asset. This will not work in web or Android bundles
-/// let path = dioxus::asset_resolver::asset_path(format!("{ASSETS}/data.json")).unwrap();
+/// let path = aether::asset_resolver::asset_path(format!("{ASSETS}/data.json")).unwrap();
 ///
 /// println!("Asset path: {:?}", path);
 ///
@@ -145,13 +145,13 @@ pub enum AssetResolveError {
 ///
 /// ```rust
 /// # async fn asset_example() {
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// // Bundle the static JSON asset into the application
 /// static JSON_ASSET: Asset = asset!("/assets/data.json");
 ///
 /// // Read the bytes of the JSON asset
-/// let bytes = dioxus::asset_resolver::read_asset_bytes(&JSON_ASSET).await.unwrap();
+/// let bytes = aether::asset_resolver::read_asset_bytes(&JSON_ASSET).await.unwrap();
 ///
 /// // Deserialize the JSON data
 /// let json: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
@@ -164,13 +164,13 @@ pub enum AssetResolveError {
 /// To load an asset from a folder, you can pass the path of the file joined with your folder asset as a string:
 /// ```rust
 /// # async fn asset_example() {
-/// use dioxus::prelude::*;
+/// use aether::prelude::*;
 ///
 /// // Bundle the whole assets folder into the application
 /// static ASSETS: Asset = asset!("/assets");
 ///
 /// // Read the bytes of the JSON asset
-/// let bytes = dioxus::asset_resolver::read_asset_bytes(format!("{ASSETS}/data.json")).await.unwrap();
+/// let bytes = aether::asset_resolver::read_asset_bytes(format!("{ASSETS}/data.json")).await.unwrap();
 ///
 /// // Deserialize the JSON data
 /// let json: serde_json::Value = serde_json::from_slice(&bytes).unwrap();

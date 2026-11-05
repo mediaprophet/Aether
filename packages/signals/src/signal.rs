@@ -2,7 +2,7 @@ use crate::{
     CopyValue, Global, GlobalMemo, GlobalSignal, Memo, ReadableRef, WritableRef, default_impl,
     fmt_impls, read::*, write::*, write_impls,
 };
-use dioxus_core::{IntoAttributeValue, IntoDynNode, ReactiveContext, ScopeId, Subscribers};
+use aether_core::{IntoAttributeValue, IntoDynNode, ReactiveContext, ScopeId, Subscribers};
 use generational_box::{BorrowResult, Storage, SyncStorage, UnsyncStorage};
 use std::{collections::HashSet, ops::Deref, sync::Arc, sync::Mutex};
 
@@ -35,7 +35,7 @@ impl<T: 'static> Signal<T> {
     /// This function should generally only be called inside hooks. The signal that this function creates is owned by the current component and will only be dropped when the component is dropped. If you call this function outside of a hook many times, you will leak memory until the component is dropped.
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// fn MyComponent() {
     ///     // ❌ Every time MyComponent runs, it will create a new signal that is only dropped when MyComponent is dropped
     ///     let signal = Signal::new(0);
@@ -57,11 +57,11 @@ impl<T: 'static> Signal<T> {
         Self::new_maybe_sync_in_scope(value, owner)
     }
 
-    /// Creates a new [`GlobalSignal`] that can be used anywhere inside your dioxus app. This signal will automatically be created once per app the first time you use it.
+    /// Creates a new [`GlobalSignal`] that can be used anywhere inside your aether app. This signal will automatically be created once per app the first time you use it.
     ///
     /// # Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// // Create a new global signal that can be used anywhere in your app
     /// static SIGNAL: GlobalSignal<i32> = Signal::global(|| 0);
     ///
@@ -87,11 +87,11 @@ impl<T: 'static> Signal<T> {
 }
 
 impl<T: PartialEq + 'static> Signal<T> {
-    /// Creates a new [`GlobalMemo`] that can be used anywhere inside your dioxus app. This memo will automatically be created once per app the first time you use it.
+    /// Creates a new [`GlobalMemo`] that can be used anywhere inside your aether app. This memo will automatically be created once per app the first time you use it.
     ///
     /// # Example
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// static SIGNAL: GlobalSignal<i32> = Signal::global(|| 0);
     /// // Create a new global memo that can be used anywhere in your app
     /// static DOUBLED: GlobalMemo<i32> = Signal::global_memo(|| SIGNAL() * 2);
@@ -160,7 +160,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
     /// This method can be used to provide the correct caller information for signals that are created in closures:
     ///
     /// ```rust
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// #[track_caller]
     /// fn use_my_signal(function: impl FnOnce() -> i32) -> Signal<i32> {
     ///     // We capture the caller information outside of the closure so that it points to the caller of use_my_custom_hook instead of the closure
@@ -275,7 +275,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
 
     /// **This pattern is no longer recommended. Prefer [`peek`](ReadableExt::peek) or creating new signals instead.**
     ///
-    /// This function is the equivalent of the [write_silent](https://docs.rs/dioxus/latest/dioxus/prelude/struct.UseRef.html#method.write_silent) method on use_ref.
+    /// This function is the equivalent of the [write_silent](https://docs.rs/aether/latest/aether/prelude/struct.UseRef.html#method.write_silent) method on use_ref.
     ///
     /// ## What you should use instead
     ///
@@ -283,7 +283,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
     ///
     /// Reading and writing to the same signal in the same scope will cause that scope to rerun forever:
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// let mut signal = use_signal(|| 0);
     /// // This makes the scope rerun whenever we write to the signal
     /// println!("{}", *signal.read());
@@ -293,7 +293,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
     ///
     /// You may have used the write_silent method to avoid this infinite loop with use_ref like this:
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// let signal = use_signal(|| 0);
     /// // This makes the scope rerun whenever we write to the signal
     /// println!("{}", *signal.read());
@@ -303,7 +303,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
     ///
     /// Instead you can use the [`peek`](ReadableExt::peek) and [`write`](WritableExt::write) methods instead. The peek method will not subscribe to the current scope which will avoid an infinite loop if you are reading and writing to the same signal in the same scope.
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// let mut signal = use_signal(|| 0);
     /// // Peek will read the value but not subscribe to the current scope
     /// println!("{}", *signal.peek());
@@ -323,7 +323,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
     /// Lets take a look at an example:
     /// main.rs:
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # fn Child() -> Element { unimplemented!() }
     /// fn app() -> Element {
     ///     let signal = use_context_provider(|| Signal::new(0));
@@ -343,7 +343,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
     /// ```
     /// child.rs:
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// fn Child() -> Element {
     ///     let signal: Signal<i32> = use_context();
     ///
@@ -359,7 +359,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
     /// Here is the same example using peek:
     /// main.rs:
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// # fn Child() -> Element { unimplemented!() }
     /// fn app() -> Element {
     ///     let mut signal = use_context_provider(|| Signal::new(0));
@@ -379,7 +379,7 @@ impl<T, S: Storage<SignalData<T>>> Signal<T, S> {
     /// ```
     /// child.rs:
     /// ```rust, no_run
-    /// # use dioxus::prelude::*;
+    /// # use aether::prelude::*;
     /// fn Child() -> Element {
     ///     let signal: Signal<i32> = use_context();
     ///
@@ -464,7 +464,7 @@ impl<T> IntoAttributeValue for Signal<T>
 where
     T: Clone + IntoAttributeValue + 'static,
 {
-    fn into_value(self) -> dioxus_core::AttributeValue {
+    fn into_value(self) -> aether_core::AttributeValue {
         self.with(|f| f.clone().into_value())
     }
 }
@@ -473,7 +473,7 @@ impl<T> IntoDynNode for Signal<T>
 where
     T: Clone + IntoDynNode + 'static,
 {
-    fn into_dyn_node(self) -> dioxus_core::DynamicNode {
+    fn into_dyn_node(self) -> aether_core::DynamicNode {
         self().into_dyn_node()
     }
 }

@@ -1,10 +1,10 @@
 use super::*;
 use crate::{CliSettings, TraceSrc, Workspace, settings::SupportedEditor};
 
-/// Dioxus config file controls
+/// Aether config file controls
 #[derive(Clone, Debug, Deserialize, Subcommand)]
 pub(crate) enum Config {
-    /// Init `Dioxus.toml` for project/folder.
+    /// Init `Aether.toml` for project/folder.
     Init {
         /// Init project name
         name: String,
@@ -15,7 +15,7 @@ pub(crate) enum Config {
         force: bool,
     },
 
-    /// Format print Dioxus config.
+    /// Format print Aether config.
     FormatPrint {},
 
     /// Create a custom html file.
@@ -25,7 +25,7 @@ pub(crate) enum Config {
     #[command(subcommand)]
     Set(Setting),
 
-    /// Generate JSON schema for Dioxus.toml configuration.
+    /// Generate JSON schema for Aether.toml configuration.
     /// Useful for IDE autocomplete and validation.
     Schema {
         /// Output file path. If not provided, prints to stdout.
@@ -82,15 +82,15 @@ impl Config {
         let crate_root = Workspace::crate_root_from_path()?;
         match self {
             Config::Init { name, force } => {
-                let conf_path = crate_root.join("Dioxus.toml");
+                let conf_path = crate_root.join("Aether.toml");
                 if conf_path.is_file() && !force {
                     tracing::warn!(
-                        "config file `Dioxus.toml` already exist, use `--force` to overwrite it."
+                        "config file `Aether.toml` already exist, use `--force` to overwrite it."
                     );
                     return Ok(StructuredOutput::Success);
                 }
                 let mut file = File::create(conf_path)?;
-                let content = String::from(include_str!("../../assets/dioxus.toml"))
+                let content = String::from(include_str!("../../assets/aether.toml"))
                     .replace("{{project-name}}", &name);
                 file.write_all(content.as_bytes())?;
                 tracing::info!(dx_src = ?TraceSrc::Dev, "🚩 Init config file completed.");

@@ -1,5 +1,5 @@
 #![allow(non_snake_case, unused)]
-use dioxus::prelude::*;
+use aether::prelude::*;
 // Define the Hackernews API and types
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -12,7 +12,7 @@ use std::{
 fn main() {
     LaunchBuilder::new()
         .with_cfg(server_only! {
-            dioxus::server::ServeConfig::builder().enable_out_of_order_streaming()
+            aether::server::ServeConfig::builder().enable_out_of_order_streaming()
         })
         .launch(|| {
             rsx! {
@@ -60,7 +60,7 @@ fn Stories() -> Element {
             .into_iter()
             .take(30)
             .collect::<Vec<i64>>();
-        dioxus::Ok(stories_ids)
+        aether::Ok(stories_ids)
     })?;
 
     rsx! {
@@ -155,7 +155,7 @@ fn Comment(comment: ReadSignal<i64>) -> Element {
             .await?
             .json::<CommentData>()
             .await?;
-        dioxus::Ok(comment)
+        aether::Ok(comment)
     })?;
 
     let CommentData {

@@ -1,28 +1,28 @@
 [package]
-name = "dioxus-web"
+name = "aether-web"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Web-sys renderer for Dioxus: Build fullstack web, desktop, and mobile apps with a single codebase."
+description = "Web-sys renderer for Aether: Build fullstack web, desktop, and mobile apps with a single codebase."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
 keywords = ["dom", "ui", "gui", "web", "wasm"]
 
 [dependencies]
-dioxus-core = { workspace = true }
-dioxus-core-types = { workspace = true }
-dioxus-cli-config = { workspace = true, features = ["web"] }
-dioxus-html = { workspace = true }
-dioxus-history = { workspace = true }
-dioxus-document = { workspace = true }
-dioxus-devtools = { workspace = true }
-dioxus-signals = { workspace = true }
-dioxus-interpreter-js = { workspace = true, features = [
+aether-core = { workspace = true }
+aether-core-types = { workspace = true }
+aether-cli-config = { workspace = true, features = ["web"] }
+aether-html = { workspace = true }
+aether-history = { workspace = true }
+aether-document = { workspace = true }
+aether-devtools = { workspace = true }
+aether-signals = { workspace = true }
+aether-interpreter-js = { workspace = true, features = [
     "minimal_bindings",
     "webonly",
 ] }
-dioxus-fullstack-core = { workspace = true, features = ["web"], optional = true }
+aether-fullstack-core = { workspace = true, features = ["web"], optional = true }
 generational-box = { workspace = true }
 
 js-sys = { workspace = true }
@@ -95,7 +95,7 @@ lazy-js-bundle = { workspace = true }
 
 [features]
 default = ["mounted", "devtools", "document"]
-hydrate = ["web-sys/Comment", "dep:serde", "dep:dioxus-fullstack-core"]
+hydrate = ["web-sys/Comment", "dep:serde", "dep:aether-fullstack-core"]
 mounted = [
     "web-sys/Element",
     "web-sys/Element",
@@ -111,17 +111,17 @@ devtools = [
   "web-sys/Location",
   "dep:serde_json",
   "dep:serde",
-  "dioxus-core/serialize",
+  "aether-core/serialize",
   "dep:gloo-timers"
 ]
 document = ["dep:serde-wasm-bindgen", "dep:serde_json", "dep:serde"]
 
 [dev-dependencies]
-dioxus = { workspace = true, default-features = true }
+aether = { workspace = true, default-features = true }
 wasm-bindgen-test = { workspace = true }
-dioxus-ssr = { workspace = true, default-features = false }
+aether-ssr = { workspace = true, default-features = false }
 gloo-dialogs = { workspace = true }
-dioxus-web = { path = ".", features = ["hydrate"] }
+aether-web = { path = ".", features = ["hydrate"] }
 
 [package.metadata.docs.rs]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]

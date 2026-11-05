@@ -9,7 +9,7 @@
 ///
 ///
 /// ```
-/// # use dioxus::prelude::*;
+/// # use aether::prelude::*;
 /// #
 /// # #[derive(Props, PartialEq, Clone)]
 /// # struct Props {

@@ -1,6 +1,6 @@
 //! A launch function that creates an axum router for the LaunchBuilder
 
-use crate::{FullstackState, ServeConfig, server::DioxusRouterExt};
+use crate::{FullstackState, ServeConfig, server::AetherRouterExt};
 use anyhow::Context;
 use axum::{
     Router,
@@ -8,10 +8,10 @@ use axum::{
     extract::{Request, State},
     routing::IntoMakeService,
 };
-use dioxus_cli_config::base_path;
-use dioxus_core::{ComponentFunction, Element};
+use aether_cli_config::base_path;
+use aether_core::{ComponentFunction, Element};
 
-use dioxus_devtools::{DevserverMsg, HotReloadMsg};
+use aether_devtools::{DevserverMsg, HotReloadMsg};
 use futures_util::{StreamExt, stream::FusedStream};
 use hyper::body::Incoming;
 use hyper_util::server::conn::auto::Builder as HyperBuilder;
@@ -27,7 +27,7 @@ use tower::{Service, ServiceExt as _};
 
 #[cfg(not(target_arch = "wasm32"))]
 use {
-    dioxus_core::{RenderError, VNode},
+    aether_core::{RenderError, VNode},
     tokio::net::TcpListener,
 };
 
@@ -71,7 +71,7 @@ async fn serve_server(
         let cfg = cfg.clone();
         Box::pin(async move {
             Ok(apply_base_path(
-                Router::new().serve_dioxus_application(cfg.clone(), original_root),
+                Router::new().serve_aether_application(cfg.clone(), original_root),
                 original_root,
                 cfg.clone(),
                 base_path().map(|s| s.to_string()),
@@ -79,16 +79,16 @@ async fn serve_server(
         }) as _
     };
 
-    serve_router(cb, dioxus_cli_config::fullstack_address_or_localhost()).await;
+    serve_router(cb, aether_cli_config::fullstack_address_or_localhost()).await;
 }
 
-/// Create a router that serves the dioxus application at the appropriate base path.
+/// Create a router that serves the aether application at the appropriate base path.
 ///
 /// This method automatically setups up:
 /// - Static asset serving
 /// - Mapping of base paths
 /// - Automatic registration of server functions
-/// - Handler to render the dioxus application
+/// - Handler to render the aether application
 /// - WebSocket handling for live reload and devtools
 /// - Hot-reloading
 /// - Async Runtime
@@ -96,16 +96,16 @@ async fn serve_server(
 pub fn router(app: fn() -> Element) -> Router {
     let cfg = ServeConfig::new();
     apply_base_path(
-        Router::new().serve_dioxus_application(cfg.clone(), app),
+        Router::new().serve_aether_application(cfg.clone(), app),
         app,
         cfg,
         base_path().map(|s| s.to_string()),
     )
 }
 
-/// Serve a fullstack dioxus application with a custom axum router.
+/// Serve a fullstack aether application with a custom axum router.
 ///
-/// This function sets up an async runtime, enables the default dioxus logger, runs the provided initializer,
+/// This function sets up an async runtime, enables the default aether logger, runs the provided initializer,
 /// and then starts an axum server with the returned router.
 ///
 /// The axum router will be bound to the address specified by the `IP` and `PORT` environment variables,
@@ -119,15 +119,15 @@ where
     let cb = move || Box::pin(serve_it()) as _;
 
     block_on(
-        async move { serve_router(cb, dioxus_cli_config::fullstack_address_or_localhost()).await },
+        async move { serve_router(cb, aether_cli_config::fullstack_address_or_localhost()).await },
     );
 
     unreachable!("Serving a fullstack app should never return")
 }
 
-/// Serve a fullstack dioxus application with a custom axum router.
+/// Serve a fullstack aether application with a custom axum router.
 ///
-/// This function enables the dioxus logger and then serves the axum server with hot-reloading support.
+/// This function enables the aether logger and then serves the axum server with hot-reloading support.
 ///
 /// To enable hot-reloading of the router, the provided `serve_callback` should return a new `Router`
 /// each time it is called.
@@ -135,7 +135,7 @@ pub async fn serve_router(
     mut serve_callback: impl FnMut() -> Pin<Box<dyn Future<Output = Result<Router, anyhow::Error>>>>,
     addr: SocketAddr,
 ) {
-    dioxus_logger::initialize_default();
+    aether_logger::initialize_default();
 
     let listener = TcpListener::bind(addr)
         .await
@@ -152,7 +152,7 @@ pub async fn serve_router(
 
     // Wire up the devtools connection. The sender only sends messages in dev.
     let (devtools_tx, mut devtools_rx) = futures_channel::mpsc::unbounded();
-    dioxus_devtools::connect(move |msg| _ = devtools_tx.unbounded_send(msg));
+    aether_devtools::connect(move |msg| _ = devtools_tx.unbounded_send(msg));
 
     let mut hot_serve_callback = HotFn::current(serve_callback);
     let mut make_service = hot_serve_callback
@@ -162,7 +162,7 @@ pub async fn serve_router(
         .unwrap();
 
     let (shutdown_tx, _) = tokio::sync::broadcast::channel(1);
-    let our_build_id = Some(dioxus_cli_config::build_id());
+    let our_build_id = Some(aether_cli_config::build_id());
 
     // Manually loop on accepting connections so we can also respond to devtools messages
     loop {
@@ -226,8 +226,8 @@ pub async fn serve_router(
                 for_build_id,
                 ..
             })) if for_build_id == our_build_id => {
-                // Apply the hot-reload patch to the dioxus devtools first
-                unsafe { dioxus_devtools::subsecond::apply_patch(table).unwrap() };
+                // Apply the hot-reload patch to the aether devtools first
+                unsafe { aether_devtools::subsecond::apply_patch(table).unwrap() };
 
                 // Now recreate the router
                 // We panic here because we don't want their app to continue in a maybe-corrupted state
@@ -277,7 +277,7 @@ fn apply_base_path<M: 'static>(
             &format!("/{base_path}"),
             axum::routing::method_routing::get(
                 |state: State<FullstackState>, mut request: Request<Body>| async move {
-                    // The root of the base path always looks like the root from dioxus fullstack
+                    // The root of the base path always looks like the root from aether fullstack
                     *request.uri_mut() = "/".parse().unwrap();
                     FullstackState::render_handler(state, request).await
                 },

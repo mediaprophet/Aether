@@ -1,4 +1,4 @@
-//! This example shows how to implement a simple drag-and-drop kanban board using Dioxus.
+//! This example shows how to implement a simple drag-and-drop kanban board using Aether.
 //! You can drag items between different categories and edit their contents.
 //!
 //! This example uses the `.data_transfer()` API to handle drag-and-drop events. When an item is dragged,
@@ -8,10 +8,10 @@
 //! Note that in a real-world application, you'll want more sophisticated drop handling, such as visual
 //! feedback during dragging, and better drop-zone detection to allow dropping *between* items.
 
-use dioxus::prelude::*;
+use aether::prelude::*;
 
 fn main() {
-    dioxus::launch(app);
+    aether::launch(app);
 }
 
 struct Item {
