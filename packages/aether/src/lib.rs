@@ -12,6 +12,7 @@
 //! - `router`: exports the [router](https://aetherlabs.com/learn/0.7/essentials/router/) and enables any router features for the current platform
 //! - `third-party-renderer`: Just disables warnings about no active platform when no renderers are enabled
 //! - `logger`: Enable the default tracing subscriber for Aether apps
+//! - `refract`: Re-exports the experimental store/lens runtime (requires Rust 1.88+).
 //!
 //! Platform features (the current platform determines what platform the [`launch()`] function runs):
 //!
@@ -34,6 +35,13 @@ pub use aether_core::{CapturedError, Ok, Result};
 mod launch;
 
 pub use aether_core as core;
+
+/// Store/lens reactivity for fixed-size state projections.
+///
+/// This experimental runtime is separate from the VirtualDOM signal scheduler.
+#[cfg(feature = "refract")]
+#[cfg_attr(docsrs, doc(cfg(feature = "refract")))]
+pub use refract;
 
 #[cfg(feature = "launch")]
 #[cfg_attr(docsrs, doc(cfg(feature = "launch")))]

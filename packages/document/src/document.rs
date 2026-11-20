@@ -1,9 +1,9 @@
-use std::sync::Arc;
+use std::rc::Rc;
 
 use super::*;
 
 /// A context for the document
-pub type DocumentContext = Arc<dyn Document>;
+pub type DocumentContext = Rc<dyn Document>;
 
 fn format_string_for_js(s: &str) -> String {
     let escaped = s
@@ -120,28 +120,7 @@ pub struct NoOpDocument;
 
 impl Document for NoOpDocument {
     fn eval(&self, _: String) -> Eval {
-        let owner = generational_box::Owner::default();
-        struct NoOpEvaluator;
-        impl Evaluator for NoOpEvaluator {
-            fn poll_join(
-                &mut self,
-                _: &mut std::task::Context<'_>,
-            ) -> std::task::Poll<Result<serde_json::Value, EvalError>> {
-                std::task::Poll::Ready(Err(EvalError::Unsupported))
-            }
-
-            fn poll_recv(
-                &mut self,
-                _: &mut std::task::Context<'_>,
-            ) -> std::task::Poll<Result<serde_json::Value, EvalError>> {
-                std::task::Poll::Ready(Err(EvalError::Unsupported))
-            }
-
-            fn send(&self, _data: serde_json::Value) -> Result<(), EvalError> {
-                Err(EvalError::Unsupported)
-            }
-        }
-        Eval::new(owner.insert(Box::new(NoOpEvaluator)))
+        Eval::unsupported()
     }
 
     fn set_title(&self, _: String) {}

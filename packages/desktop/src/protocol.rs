@@ -2,11 +2,11 @@ use std::path::PathBuf;
 
 use crate::{assets::*, webview::WebviewEdits};
 use crate::{document::NATIVE_EVAL_JS, file_upload::FileDialogRequest};
-use base64::prelude::BASE64_STANDARD;
 use aether_core::AnyhowContext;
 use aether_html::{SerializedFileData, SerializedFormObject};
 use aether_interpreter_js::NATIVE_JS;
 use aether_interpreter_js::unified_bindings::SLEDGEHAMMER_JS;
+use base64::prelude::BASE64_STANDARD;
 use wry::{
     RequestAsyncResponder,
     http::{Request, Response, status::StatusCode},
@@ -80,7 +80,9 @@ pub(super) fn desktop_handler(
         }
     }
 
-    match aether_asset_resolver::native::serve_asset(request.uri().path()) {
+    // This WebView is the trusted application compatibility renderer. Remote
+    // browser content must use the host-authorized broker, not this file service.
+    match aether_asset_resolver::native::serve_trusted_asset(request.uri().path()) {
         Ok(res) => responder.respond(res),
         Err(_e) => responder.respond(
             Response::builder()

@@ -9,6 +9,10 @@ use winit::{
 };
 
 /// Register an event handler that runs when a winit event is processed.
+///
+/// Handlers run in registration order. Removing a handler takes effect immediately,
+/// including during dispatch; a new handler starts with the next dispatch. Nested
+/// dispatch skips any handler already running so its mutable closure is not reentered.
 pub fn use_window_event(
     mut handler: impl FnMut(&WindowEvent, &dyn ActiveEventLoop) + 'static,
 ) -> WinitEventHandlerId {

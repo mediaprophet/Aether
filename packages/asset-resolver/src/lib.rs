@@ -52,6 +52,11 @@ pub enum AssetPathError {
     CannotRepresentAsPath,
 }
 
+/// Resolve a trusted application asset reference, including unbundled source files.
+///
+/// Do not expose this Rust helper as a remote file service. Use the contained
+/// native `serve_asset` service for packaged URL requests.
+///
 /// Tries to resolve the path of an asset from a given URI path. Depending on the platform, this may
 /// return an error even if the asset exists because some platforms cannot represent assets as paths.
 /// You should prefer [`read_asset_bytes`] to read the asset bytes directly
@@ -134,6 +139,9 @@ pub enum AssetResolveError {
     UnsupportedPlatform,
 }
 
+/// Read a trusted application asset reference, including unbundled source files.
+/// This Rust helper is not an authorization boundary for remote file requests.
+///
 /// Read the bytes of an asset. This will work on both web and native platforms. On the web,
 /// it will fetch the asset via HTTP, and on native platforms, it will read the asset from the filesystem or bundle.
 ///

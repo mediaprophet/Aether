@@ -1,5 +1,5 @@
-use blitz_shell::{BlitzShellEvent, BlitzShellProxy};
 use aether_document::{Document, NoOpDocument};
+use blitz_shell::{BlitzShellEvent, BlitzShellProxy};
 use winit::window::WindowId;
 
 use crate::AetherNativeEvent;

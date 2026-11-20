@@ -16,8 +16,8 @@ vello = { workspace = true }
 rustc-hash = { workspace = true }
 futures-util = { workspace = true }
 tracing-subscriber = { workspace = true, optional = true }
-wgpu = { workspace = true }
-wgpu_context = { workspace = true }
+etalon = { workspace = true, default-features = true }
+etalon-context = { workspace = true }
 pollster = "0.4"
 bytemuck = "1.25.2"
 blitz-paint = { workspace = true, default-features = true }

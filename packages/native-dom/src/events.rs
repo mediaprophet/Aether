@@ -1,19 +1,11 @@
-use blitz_dom::{
-    BaseDocument, Node, ScrollBehavior as BlitzScrollBehavior,
-    ScrollLogicalPosition as BlitzScrollLogicalPosition,
-};
-use blitz_traits::events::{
-    BlitzKeyEvent, BlitzPointerEvent, BlitzPointerId, BlitzScrollEvent, BlitzWheelDelta,
-    BlitzWheelEvent, MouseEventButton,
-};
 use aether_html::{
     AnimationData, BeforeInputData, CancelData, ClipboardData, CompositionData, DragData,
-    FocusData, FormData, FormValue, HasFileData, HasFocusData, HasFormData, HasKeyboardData,
-    HasMouseData, HasPointerData, HasScrollData, HasTouchData, HasTouchPointData, HasWheelData,
-    HtmlEventConverter, ImageData, KeyboardData, MediaData, MountedData, MountedError,
-    MountedResult, MouseData, PlatformEventData, PointerData, RenderedElementBacking, ResizeData,
-    ScrollBehavior, ScrollData, ScrollLogicalPosition, ScrollToOptions, SelectionData, ToggleData,
-    TouchData, TouchPoint, TransitionData, VisibleData, WheelData,
+    FocusData, FormData, FormValue, HasCompositionData, HasFileData, HasFocusData, HasFormData,
+    HasKeyboardData, HasMouseData, HasPointerData, HasScrollData, HasTouchData, HasTouchPointData,
+    HasWheelData, HtmlEventConverter, ImageData, KeyboardData, MediaData, MountedData,
+    MountedError, MountedResult, MouseData, PlatformEventData, PointerData, RenderedElementBacking,
+    ResizeData, ScrollBehavior, ScrollData, ScrollLogicalPosition, ScrollToOptions, SelectionData,
+    ToggleData, TouchData, TouchPoint, TransitionData, VisibleData, WheelData,
     geometry::{
         ClientPoint, ElementPoint, PagePoint, PixelsRect, PixelsSize, PixelsVector2D, ScreenPoint,
         WheelDelta,
@@ -23,6 +15,14 @@ use aether_html::{
     point_interaction::{
         InteractionElementOffset, InteractionLocation, ModifiersInteraction, PointerInteraction,
     },
+};
+use blitz_dom::{
+    BaseDocument, Node, ScrollBehavior as BlitzScrollBehavior,
+    ScrollLogicalPosition as BlitzScrollLogicalPosition,
+};
+use blitz_traits::events::{
+    BlitzImeEvent, BlitzKeyEvent, BlitzPointerEvent, BlitzPointerId, BlitzScrollEvent,
+    BlitzWheelDelta, BlitzWheelEvent, DomEventData, MouseEventButton,
 };
 use keyboard_types::{Code, Key, Location, Modifiers};
 use std::{
@@ -38,6 +38,208 @@ use crate::NodeId;
 
 pub struct NativeConverter {}
 
+/// A native event for which the current backend supplies no application payload.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct UnsupportedNativeEvent {
+    event_name: String,
+}
+
+impl UnsupportedNativeEvent {
+    fn new(event_name: &str) -> Self {
+        Self {
+            event_name: event_name.to_owned(),
+        }
+    }
+
+    /// The event that could not be supplied by the native backend.
+    pub fn event_name(&self) -> &str {
+        &self.event_name
+    }
+}
+
+impl Display for UnsupportedNativeEvent {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "native event {} is unsupported by the current backend",
+            self.event_name
+        )
+    }
+}
+
+impl std::error::Error for UnsupportedNativeEvent {}
+
+/// Check the native backend's application event capability before requesting an event.
+///
+/// This reports payload/routing support, not platform delivery or web compatibility.
+/// In particular, clipboard, drag, beforeinput and animation events are not emitted.
+pub fn native_event_support(name: &str) -> Result<(), UnsupportedNativeEvent> {
+    match name.strip_prefix("on").unwrap_or(name) {
+        "pointermove" | "pointerdown" | "pointerup" | "pointercancel" | "pointerenter"
+        | "pointerleave" | "pointerover" | "pointerout" | "mousemove" | "mousedown" | "mouseup"
+        | "mouseenter" | "mouseleave" | "mouseover" | "mouseout" | "touchstart" | "touchmove"
+        | "touchend" | "touchcancel" | "scroll" | "wheel" | "click" | "contextmenu"
+        | "dblclick" | "keydown" | "keyup" | "keypress" | "input" | "focus" | "blur"
+        | "focusin" | "focusout" | "mounted" | "compositionstart" | "compositionupdate"
+        | "compositionend" => Ok(()),
+        _ => Err(UnsupportedNativeEvent::new(name)),
+    }
+}
+
+impl NativeConverter {
+    /// This exhaustive boundary pairs each emitted event with its actual native payload.
+    /// IME lifecycle events are expanded by `NativeCompositionState` instead.
+    pub(crate) fn convert_dom_event(
+        event: &DomEventData,
+    ) -> Result<PlatformEventData, UnsupportedNativeEvent> {
+        let data: Box<dyn Any> = match event {
+            DomEventData::PointerMove(event)
+            | DomEventData::PointerDown(event)
+            | DomEventData::PointerUp(event)
+            | DomEventData::PointerCancel(event)
+            | DomEventData::PointerLeave(event)
+            | DomEventData::PointerEnter(event)
+            | DomEventData::PointerOver(event)
+            | DomEventData::PointerOut(event)
+            | DomEventData::MouseMove(event)
+            | DomEventData::MouseDown(event)
+            | DomEventData::MouseUp(event)
+            | DomEventData::MouseLeave(event)
+            | DomEventData::MouseEnter(event)
+            | DomEventData::MouseOver(event)
+            | DomEventData::MouseOut(event)
+            | DomEventData::Click(event)
+            | DomEventData::ContextMenu(event)
+            | DomEventData::DoubleClick(event) => Box::new(NativePointerData(event.clone())),
+            DomEventData::TouchStart(event)
+            | DomEventData::TouchMove(event)
+            | DomEventData::TouchEnd(event)
+            | DomEventData::TouchCancel(event) => Box::new(NativeTouchData(event.clone())),
+            DomEventData::Scroll(event) => Box::new(NativeScrollData(event.clone())),
+            DomEventData::Wheel(event) => Box::new(NativeWheelData(event.clone())),
+            DomEventData::Focus(_)
+            | DomEventData::Blur(_)
+            | DomEventData::FocusIn(_)
+            | DomEventData::FocusOut(_) => Box::new(NativeFocusData),
+            DomEventData::KeyDown(event)
+            | DomEventData::KeyUp(event)
+            | DomEventData::KeyPress(event) => Box::new(BlitzKeyboardData(event.clone())),
+            DomEventData::Input(event) => Box::new(NativeFormData {
+                value: event.value.clone(),
+                values: vec![],
+            }),
+            DomEventData::Ime(_) | DomEventData::AppleStandardKeybinding(_) => {
+                return Err(UnsupportedNativeEvent::new(event.name()));
+            }
+        };
+        native_event_support(event.name())?;
+        Ok(PlatformEventData::new(data))
+    }
+}
+
+/// Text supplied by an actual native composition lifecycle event.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) struct NativeCompositionData(pub(crate) String);
+
+impl HasCompositionData for NativeCompositionData {
+    fn data(&self) -> String {
+        self.0.clone()
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Debug)]
+pub(crate) struct NativeCompositionEvent {
+    pub(crate) target: NodeId,
+    pub(crate) name: &'static str,
+    pub(crate) data: NativeCompositionData,
+}
+
+/// IME availability is distinct from an active composition. Keep this state even
+/// when no listener exists, so listeners added during composition see correct phases.
+#[derive(Default)]
+pub(crate) struct NativeCompositionState {
+    target: Option<NodeId>,
+}
+
+impl NativeCompositionState {
+    pub(crate) fn handle(
+        &mut self,
+        target: NodeId,
+        event: &BlitzImeEvent,
+    ) -> Result<Vec<NativeCompositionEvent>, UnsupportedNativeEvent> {
+        let mut events = Vec::new();
+        if let Some(previous) = self.target.filter(|previous| *previous != target) {
+            if let Some(event) = self.cancel(previous) {
+                events.push(event);
+            }
+        }
+        match event {
+            BlitzImeEvent::Enabled => {}
+            BlitzImeEvent::Preedit(text, _) => {
+                if self.target != Some(target) {
+                    if text.is_empty() {
+                        return Ok(events);
+                    }
+                    self.target = Some(target);
+                    events.push(NativeCompositionEvent {
+                        target,
+                        name: "compositionstart",
+                        data: NativeCompositionData(String::new()),
+                    });
+                }
+                events.push(NativeCompositionEvent {
+                    target,
+                    name: "compositionupdate",
+                    data: NativeCompositionData(text.clone()),
+                });
+            }
+            BlitzImeEvent::Commit(text) => {
+                if self.target.take() == Some(target) {
+                    events.push(NativeCompositionEvent {
+                        target,
+                        name: "compositionend",
+                        data: NativeCompositionData(text.clone()),
+                    });
+                }
+            }
+            BlitzImeEvent::Disabled => {
+                if let Some(event) = self.cancel(target) {
+                    events.push(event);
+                }
+            }
+            // The native editor deletes committed surrounding text and emits
+            // input. This operation leaves the composition lifecycle intact.
+            BlitzImeEvent::DeleteSurrounding { .. } => {}
+        }
+        Ok(events)
+    }
+
+    pub(crate) fn cancel(&mut self, target: NodeId) -> Option<NativeCompositionEvent> {
+        if self.target != Some(target) {
+            return None;
+        }
+        self.target = None;
+        Some(NativeCompositionEvent {
+            target,
+            name: "compositionend",
+            data: NativeCompositionData(String::new()),
+        })
+    }
+
+    pub(crate) fn retain_target(&mut self, mut exists: impl FnMut(NodeId) -> bool) {
+        if self.target.is_some_and(|target| !exists(target)) {
+            self.target = None;
+        }
+    }
+}
+
+// The inherited converter trait is infallible. Unsupported event families cannot
+// return absence here without fabricating payloads. `convert_dom_event` and the
+// composition state machine are the checked dispatch boundary; callers querying
+// capabilities must use `native_event_support` instead of invoking these stubs.
 impl HtmlEventConverter for NativeConverter {
     fn convert_cancel_data(&self, _event: &PlatformEventData) -> CancelData {
         unimplemented!("todo: convert_cancel_data in aether-native. requires support in blitz")
@@ -81,8 +283,12 @@ impl HtmlEventConverter for NativeConverter {
         unimplemented!("todo: convert_clipboard_data in aether-native. requires support in blitz")
     }
 
-    fn convert_composition_data(&self, _event: &PlatformEventData) -> CompositionData {
-        unimplemented!("todo: convert_composition_data in aether-native. requires support in blitz")
+    fn convert_composition_data(&self, event: &PlatformEventData) -> CompositionData {
+        event
+            .downcast::<NativeCompositionData>()
+            .expect("native composition payload")
+            .clone()
+            .into()
     }
 
     fn convert_drag_data(&self, _event: &PlatformEventData) -> DragData {
@@ -686,6 +892,11 @@ mod tests {
         BlitzPointerId, MouseEventButton, MouseEventButtons, Point, PointerCoords, PointerDetails,
     };
 
+    // State-only test identifiers are never used for DOM lookup.
+    fn target_id(raw: u64) -> NodeId {
+        NodeId::from_u64(raw)
+    }
+
     fn finger_event(id: u64, x: f32, y: f32) -> BlitzPointerEvent {
         BlitzPointerEvent {
             id: BlitzPointerId::Finger(id),
@@ -705,6 +916,249 @@ mod tests {
             element: Point::default(),
             active_pointers: Default::default(),
         }
+    }
+
+    fn phases(events: Vec<NativeCompositionEvent>) -> Vec<(&'static str, String)> {
+        events
+            .into_iter()
+            .map(|event| (event.name, event.data.0))
+            .collect()
+    }
+
+    #[test]
+    fn ime_preedit_clear_and_commit_preserve_text_and_phase_order() {
+        let mut state = NativeCompositionState::default();
+        assert!(
+            state
+                .handle(target_id(1), &BlitzImeEvent::Enabled)
+                .unwrap()
+                .is_empty()
+        );
+        assert_eq!(
+            phases(
+                state
+                    .handle(
+                        target_id(1),
+                        &BlitzImeEvent::Preedit("\u{306b}".into(), Some((3, 3)))
+                    )
+                    .unwrap()
+            ),
+            [
+                ("compositionstart", String::new()),
+                ("compositionupdate", "\u{306b}".into())
+            ]
+        );
+        assert_eq!(
+            phases(
+                state
+                    .handle(
+                        target_id(1),
+                        &BlitzImeEvent::Preedit("\u{65e5}\u{672c}".into(), None)
+                    )
+                    .unwrap()
+            ),
+            [("compositionupdate", "\u{65e5}\u{672c}".into())]
+        );
+        // Winit clears preedit immediately before commit. This is an update, not
+        // an end followed by a second, invented composition session.
+        assert_eq!(
+            phases(
+                state
+                    .handle(target_id(1), &BlitzImeEvent::Preedit(String::new(), None))
+                    .unwrap()
+            ),
+            [("compositionupdate", String::new())]
+        );
+        assert_eq!(
+            phases(
+                state
+                    .handle(
+                        target_id(1),
+                        &BlitzImeEvent::Commit("\u{65e5}\u{672c}".into())
+                    )
+                    .unwrap()
+            ),
+            [("compositionend", "\u{65e5}\u{672c}".into())]
+        );
+        assert!(
+            state
+                .handle(target_id(1), &BlitzImeEvent::Disabled)
+                .unwrap()
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn ime_availability_empty_preedit_and_direct_commit_do_not_invent_composition() {
+        let mut state = NativeCompositionState::default();
+        for event in [
+            BlitzImeEvent::Enabled,
+            BlitzImeEvent::Preedit(String::new(), None),
+            BlitzImeEvent::Commit("\u{e9}".into()),
+            BlitzImeEvent::Disabled,
+            BlitzImeEvent::Disabled,
+        ] {
+            assert!(state.handle(target_id(1), &event).unwrap().is_empty());
+        }
+    }
+
+    #[test]
+    fn ime_disable_and_focus_loss_cancel_once_without_leaking_between_targets() {
+        let mut state = NativeCompositionState::default();
+        state
+            .handle(target_id(1), &BlitzImeEvent::Preedit("draft".into(), None))
+            .unwrap();
+        assert_eq!(
+            phases(
+                state
+                    .handle(target_id(1), &BlitzImeEvent::Disabled)
+                    .unwrap()
+            ),
+            [("compositionend", String::new())]
+        );
+        assert!(
+            state
+                .handle(target_id(1), &BlitzImeEvent::Disabled)
+                .unwrap()
+                .is_empty()
+        );
+        state
+            .handle(target_id(1), &BlitzImeEvent::Preedit("draft".into(), None))
+            .unwrap();
+        assert!(state.cancel(target_id(2)).is_none());
+        assert_eq!(state.cancel(target_id(1)).unwrap().name, "compositionend");
+        assert!(state.cancel(target_id(1)).is_none());
+        assert!(
+            state
+                .handle(target_id(2), &BlitzImeEvent::Commit("other".into()))
+                .unwrap()
+                .is_empty()
+        );
+    }
+
+    #[test]
+    fn ime_target_switch_ends_previous_target_and_teardown_clears_stale_state() {
+        let mut state = NativeCompositionState::default();
+        state
+            .handle(target_id(1), &BlitzImeEvent::Preedit("old".into(), None))
+            .unwrap();
+        let switched = state
+            .handle(target_id(2), &BlitzImeEvent::Preedit("new".into(), None))
+            .unwrap();
+        assert_eq!(
+            switched
+                .iter()
+                .map(|event| event.target)
+                .collect::<Vec<_>>(),
+            [target_id(1), target_id(2), target_id(2)]
+        );
+        assert_eq!(
+            phases(switched),
+            [
+                ("compositionend", String::new()),
+                ("compositionstart", String::new()),
+                ("compositionupdate", "new".into()),
+            ]
+        );
+        state.retain_target(|_| false);
+        assert!(
+            state
+                .handle(target_id(2), &BlitzImeEvent::Commit("new".into()))
+                .unwrap()
+                .is_empty()
+        );
+        let restarted = state
+            .handle(target_id(2), &BlitzImeEvent::Preedit("reused".into(), None))
+            .unwrap();
+        assert_eq!(restarted[0].name, "compositionstart");
+        let ended = state
+            .handle(target_id(3), &BlitzImeEvent::Commit("direct".into()))
+            .unwrap();
+        assert_eq!(ended[0].target, target_id(2));
+        assert_eq!(phases(ended), [("compositionend", String::new())]);
+    }
+
+    #[test]
+    fn unsupported_native_events_report_capability_errors_without_fake_data() {
+        for name in [
+            "beforeinput",
+            "copy",
+            "paste",
+            "drag",
+            "animationstart",
+            "resize",
+            "visible",
+            "selectionchange",
+            "toggle",
+            "composition",
+            "not-an-event",
+        ] {
+            assert_eq!(native_event_support(name).unwrap_err().event_name(), name);
+        }
+        for name in [
+            "oninput",
+            "pointerdown",
+            "touchcancel",
+            "compositionstart",
+            "oncompositionupdate",
+            "compositionend",
+            "mounted",
+        ] {
+            assert!(native_event_support(name).is_ok());
+        }
+        assert!(
+            NativeConverter::convert_dom_event(&DomEventData::Ime(BlitzImeEvent::Enabled)).is_err()
+        );
+    }
+
+    #[test]
+    fn surrounding_delete_does_not_end_or_duplicate_composition() {
+        let mut state = NativeCompositionState::default();
+        state
+            .handle(target_id(1), &BlitzImeEvent::Preedit("仮".into(), None))
+            .unwrap();
+        assert!(
+            state
+                .handle(
+                    target_id(1),
+                    &BlitzImeEvent::DeleteSurrounding {
+                        before_bytes: 3,
+                        after_bytes: 0,
+                    }
+                )
+                .unwrap()
+                .is_empty()
+        );
+        assert_eq!(
+            phases(
+                state
+                    .handle(target_id(1), &BlitzImeEvent::Commit("確".into()))
+                    .unwrap()
+            ),
+            [("compositionend", "確".into())]
+        );
+    }
+
+    #[test]
+    fn typed_composition_and_pointer_converters_preserve_real_payloads() {
+        let converter = NativeConverter {};
+        let event = PlatformEventData::new(Box::new(NativeCompositionData(
+            "\u{65e5}\u{672c}\u{8a9e}".into(),
+        )));
+        assert_eq!(
+            converter.convert_composition_data(&event).data(),
+            "\u{65e5}\u{672c}\u{8a9e}"
+        );
+        let raw = DomEventData::PointerDown(finger_event(42, 10.0, 20.0));
+        let event = NativeConverter::convert_dom_event(&raw).unwrap();
+        let pointer = converter.convert_pointer_data(&event);
+        assert_eq!(pointer.pointer_id(), 42);
+        assert_eq!(pointer.pointer_type(), "touch");
+        assert_eq!(pointer.client_coordinates(), ClientPoint::new(10.0, 20.0));
+        assert_eq!(
+            converter.convert_mouse_data(&event).client_coordinates(),
+            pointer.client_coordinates()
+        );
     }
 
     #[test]

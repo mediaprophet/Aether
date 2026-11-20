@@ -161,7 +161,7 @@ Aether 已从一个业余项目发展成为一个小型的全职工程师团队�
       </td>
       <td>
         <ul>
-          <li>使用 Webview 渲染，或实验性地使用 WGPU 或  <a href="https://freyaui.dev">Freya</a> (Skia) 渲染</li>
+          <li>使用 Webview 渲染，或实验性地使用 Etalon 或  <a href="https://freyaui.dev">Freya</a> (Skia) 渲染</li>
           <li>零配置，只需 `cargo run` 或 `dx serve` 即可构建您的应用 </li>
           <li>完全支持原生系统访问，无需 IPC </li>
           <li>支持 MacOS, Linux 和 Windows，或者便携式的 <3mb 的二进制文件 </li>
@@ -174,7 +174,7 @@ Aether 已从一个业余项目发展成为一个小型的全职工程师团队�
       </td>
       <td>
         <ul>
-          <li>使用 Webview 渲染，或实验性地使用 WGPU 或 Skia 渲染</li>
+          <li>使用 Webview 渲染，或实验性地使用 Etalon 或 Skia 渲染</li>
           <li>为 iOS 和 Android 构建 .ipa 和 .apk 文件</li>
           <li>以最小的开销直接调用 Java 和 Objective-C</li>
           <li>从 "hello world" 到在实机设备上运行仅需几秒钟</li>
@@ -291,19 +291,19 @@ egui 是一个跨平台 GUI 库，为 Rust 驱动的工具提供支持，比如 
 
 ### Aether vs Iced
 
-Iced 是一个受 Elm 启发的跨平台 GUI 库。Iced 使用 WGPU 进行原生渲染，并使用 DOM 节点支持 Web。
+Iced 是一个受 Elm 启发的跨平台 GUI 库。Iced 使用 Etalon 进行原生渲染，并使用 DOM 节点支持 Web。
 
 - **Elm 状态管理**: Iced 使用 Elm 的状态管理模型，该模型基于消息传递和 reducers。这不同于 Aether 的状态管理模型，它有时可能会相当冗长。
 
 - **原生体验**: 由于 Aether 使用 Webview 作为其渲染器，它自动获得了原生文本输入、粘贴处理以及其他原生功能（比如无障碍）。Iced 的渲染器目前尚未实现这些功能，使其感觉不那么原生。
 
-- **WGPU**: Aether 的 WGPU 渲染器目前还很不成熟，尚未准备好用于生产环境。Iced 的 WGPU 渲染器则成熟得多，并已在生产中使用。这使得某些需要 GPU 访问的应用可以使用 Iced 构建，而目前无法使用 Aether 构建。
+- **Etalon**: Aether 的 Etalon 渲染器目前还很不成熟，尚未准备好用于生产环境。Iced 的 Etalon 渲染器则成熟得多，并已在生产中使用。这使得某些需要 GPU 访问的应用可以使用 Iced 构建，而目前无法使用 Aether 构建。
 
 ### Aether vs Electron
 
 Aether 和 Electron 是两个目标相似但完全不同的项目。Electron 使开发人员能够使用 HTML、CSS 和 JavaScript 等 Web 技术构建跨平台桌面应用。
 
-- **轻量级**: Aether 使用系统原生 Webview（或者可选 WGPU 渲染器）来渲染 UI。这使得典型的 Aether 应用在 macOS 上大约为 15MB，而 Electron 则为 100MB。Electron 还捆绑了一个嵌入式的 Chromium 实例，它无法像 Aether 那样与宿主操作系统共享系统资源。
+- **轻量级**: Aether 使用系统原生 Webview（或者可选 Etalon 渲染器）来渲染 UI。这使得典型的 Aether 应用在 macOS 上大约为 15MB，而 Electron 则为 100MB。Electron 还捆绑了一个嵌入式的 Chromium 实例，它无法像 Aether 那样与宿主操作系统共享系统资源。
 
 - **成熟度**: Electron 是一个成熟的项目，拥有庞大的社区和许多工具。相比，Aether 与 Electron 相比还很年轻。如果遇到诸如深层链接 (deep-linking) 之类的功能，这些功能需要额外的工作来实现。
 

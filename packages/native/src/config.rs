@@ -1,11 +1,13 @@
+use aether_core::LaunchConfig;
 use anyrender::CompositeAlphaMode;
 use blitz_dom::FontContext;
-use aether_core::LaunchConfig;
 use peniko::Color;
 use winit::window::WindowAttributes;
 
 /// Launch-time configuration for a aether-native application.
 pub struct Config {
+    pub(crate) asset_access: crate::AssetAccess,
+    pub(crate) asset_max_bytes: usize,
     pub(crate) window_attributes: WindowAttributes,
     pub(crate) font_ctx: Option<FontContext>,
     pub(crate) alpha_mode: Option<CompositeAlphaMode>,
@@ -34,6 +36,15 @@ impl Default for Config {
         };
 
         Self {
+            asset_max_bytes: aether_asset_resolver::native::DEFAULT_ASSET_MAX_BYTES,
+            // Match Manganis's source-path contract for ordinary `cargo run`.
+            // Packaged applications use contained assets; remote-content hosts must
+            // explicitly select Packaged even during development.
+            asset_access: if aether_core::is_bundled_app() {
+                crate::AssetAccess::Packaged
+            } else {
+                crate::AssetAccess::TrustedApplicationFiles
+            },
             window_attributes,
             font_ctx: None,
             alpha_mode: None,
@@ -45,6 +56,23 @@ impl Default for Config {
 impl Config {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    /// Select local asset authority. Packaged apps default to `Packaged`; ordinary
+    /// unbundled `cargo run` uses trusted application source files like Manganis.
+    /// A directly launched unbundled binary with Manganis placeholder paths can
+    /// explicitly select `TrustedApplicationFiles` to retain source-file assets.
+    /// Hosts rendering untrusted content must explicitly use `Packaged` in all builds.
+    pub fn with_asset_access(mut self, access: crate::AssetAccess) -> Self {
+        self.asset_access = access;
+        self
+    }
+
+    /// Bound each local asset response. Defaults to 64 MiB; increase explicitly
+    /// for admitted large assets. This does not bound aggregate or decoder memory.
+    pub fn with_asset_max_bytes(mut self, max_bytes: usize) -> Self {
+        self.asset_max_bytes = max_bytes;
+        self
     }
 
     /// Set the configuration for the window.

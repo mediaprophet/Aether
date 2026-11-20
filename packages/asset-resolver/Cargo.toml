@@ -31,6 +31,9 @@ ndk = { version = "0.9.0" }
 ndk-sys = { version = "0.6.0" }
 ndk-context = { version = "0.1.1" }
 
+[target.'cfg(unix)'.dependencies]
+libc = { workspace = true, optional = true }
+
 [dev-dependencies]
 aether = { workspace = true }
 serde_json = { workspace = true }
@@ -38,4 +41,4 @@ serde_json = { workspace = true }
 [features]
 default = []
 web = ["dep:web-sys", "dep:js-sys", "dep:wasm-bindgen-futures"]
-native = ["dep:http", "dep:percent-encoding", "dep:infer", "dep:aether-cli-config", "dep:tokio"]
+native = ["dep:http", "dep:percent-encoding", "dep:infer", "dep:aether-cli-config", "dep:tokio", "dep:libc"]

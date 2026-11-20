@@ -1,0 +1,25 @@
+[package]
+name = "aether-etalon-texture"
+version = "0.0.0"
+edition = "2024"
+license = "CC-BY-NC-ND-4.0"
+publish = false
+
+[features]
+default = ["desktop"]
+desktop = ["aether/desktop"]
+native = ["aether/native"]
+tracing = ["dep:tracing-subscriber", "aether-native/tracing"]
+
+[dependencies]
+aether-native = { workspace = true }
+aether = { workspace = true }
+anyrender = { workspace = true }
+blitz-dom = { workspace = true }
+blitz-traits = { workspace = true }
+peniko = { workspace = true }
+etalon = { workspace = true, default-features = true }
+winit = { workspace = true }
+bytemuck = "1.25.2"
+color = "0.3.3"
+tracing-subscriber = { workspace = true, optional = true }

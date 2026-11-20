@@ -14,6 +14,9 @@
 // components can use the derive instead of hand-written builders.
 extern crate self as aether_core;
 
+/// Whether the CLI has bundled this application (shared with Manganis asset resolution).
+pub use aether_core_types::is_bundled_app;
+
 // Debug assertions document internal invariants, but the standard
 // `debug_assert*` macros leave unreachable `cfg!(debug_assertions)` branches in
 // coverage builds. These compile away completely under `coverage_nightly` so the
@@ -113,9 +116,9 @@ pub(crate) mod innerlude {
     pub use crate::tasks::*;
     pub use crate::virtual_dom::*;
 
+    pub use aether_core_template::Template;
     pub use anyhow::Context as AnyhowContext;
     pub use anyhow::anyhow;
-    pub use aether_core_template::Template;
     // pub use anyhow::Error as AnyhowError;
     // pub type Error = CapturedError;
 

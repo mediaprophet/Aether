@@ -1,6 +1,6 @@
 // RSX and component definition
-pub use aether_core;
 pub use aether_config_macros;
+pub use aether_core;
 pub use aether_core::{
     AnyhowContext, Attribute, Callback, Component, Element, ErrorBoundary, ErrorContext, Event,
     EventHandler, Fragment, HasAttributes, IntoDynNode, RenderError, ScopeId, SuspenseBoundary,

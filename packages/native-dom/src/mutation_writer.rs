@@ -2,10 +2,38 @@
 use crate::{
     NodeId, mutation_buffer::MutationBuffer, qual_name, trace, write_once_attr::WriteOnceAttr,
 };
+use aether_core::{BorrowedAttributeValue, ElementId, WriteMutations};
 use blitz_dom::{BaseDocument, Document, DocumentMutator, Widget};
 use blitz_traits::events::DomEventKind;
-use aether_core::{BorrowedAttributeValue, ElementId, WriteMutations};
 use std::str::FromStr as _;
+
+fn native_event_kind(name: &str) -> Result<DomEventKind, ()> {
+    match name.strip_prefix("on").unwrap_or(name) {
+        "compositionstart" | "compositionupdate" | "compositionend" => Ok(DomEventKind::Ime),
+        _ => DomEventKind::from_str(name),
+    }
+}
+
+#[cfg(test)]
+mod native_event_kind_tests {
+    use super::*;
+
+    #[test]
+    fn composition_listener_aliases_share_the_native_ime_counter() {
+        for name in [
+            "compositionstart",
+            "compositionupdate",
+            "compositionend",
+            "oncompositionstart",
+            "oncompositionupdate",
+            "oncompositionend",
+        ] {
+            assert_eq!(native_event_kind(name), Ok(DomEventKind::Ime));
+        }
+        assert_eq!(native_event_kind("input"), Ok(DomEventKind::Input));
+        assert!(native_event_kind("beforeinput").is_err());
+    }
+}
 
 #[path = "textarea_value.rs"]
 mod textarea_value;
@@ -391,14 +419,14 @@ impl RealDom for BlitzBackend<'_> {
         let value = BorrowedAttributeValue::Text(&value);
         self.set_attribute_impl(node, "data-aether-id", None, value);
 
-        if let Ok(kind) = DomEventKind::from_str(name) {
+        if let Ok(kind) = native_event_kind(name) {
             let idx = kind.discriminant() as usize;
             self.event_handler_counts[idx] += 1;
         }
     }
 
     fn remove_event_listener(&mut self, _node: NodeId, _element_id: ElementId, name: &str) {
-        if let Ok(kind) = DomEventKind::from_str(name) {
+        if let Ok(kind) = native_event_kind(name) {
             let idx = kind.discriminant() as usize;
             self.event_handler_counts[idx] -= 1;
         }
@@ -572,8 +600,8 @@ fn is_bool_attr(name: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use crate::{AetherDocument, DocumentConfig};
-    use blitz_dom::LocalName;
     use aether::prelude::*;
+    use blitz_dom::LocalName;
 
     fn build(app: fn() -> Element) -> AetherDocument {
         let mut doc = AetherDocument::new(VirtualDom::new(app), DocumentConfig::default());

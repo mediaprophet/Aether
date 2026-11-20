@@ -22,8 +22,9 @@ use std::task::Context;
 use vello::{
     RenderParams, Renderer as VelloRenderer, RendererOptions, Scene, peniko::color::AlphaColor,
 };
-use wgpu::TextureFormat;
-use wgpu_context::WGPUContext;
+use etalon::TextureFormat;
+// The immutable shipping adapter retains this historical type spelling.
+use etalon_context::WGPUContext as EtalonContext;
 
 // Constant width, height, scale factor and color schemefor example purposes
 const SCALE_FACTOR: f32 = 1.0;
@@ -61,16 +62,16 @@ fn main() {
         },
     );
 
-    // Setup a WGPU Device and Queue
+    // Setup a Etalon Device and Queue
     //
-    // There is nothing special about WGPUContext. It is just used to
-    // reduce the amount of boilerplate associated with setting up WGPU
-    let mut wgpu_context = WGPUContext::new();
-    let device_id = wgpu_context
+    // There is nothing special about EtalonContext. It is just used to
+    // reduce the amount of boilerplate associated with setting up Etalon
+    let mut etalon_context = EtalonContext::new();
+    let device_id = etalon_context
         .find_or_create_device(None)
         .block_on()
-        .expect("Failed to create WGPU device");
-    let device_handle = &wgpu_context.device_pool[device_id];
+        .expect("Failed to create Etalon device");
+    let device_handle = &etalon_context.device_pool[device_id];
     let device = device_handle.device.clone();
     let queue = device_handle.queue.clone();
 
@@ -83,21 +84,21 @@ fn main() {
     // =============
 
     // Create texture and texture view
-    let texture = device.create_texture(&wgpu::TextureDescriptor {
+    let texture = device.create_texture(&etalon::TextureDescriptor {
         label: None,
-        size: wgpu::Extent3d {
+        size: etalon::Extent3d {
             width: WIDTH,
             height: HEIGHT,
             depth_or_array_layers: 1,
         },
         mip_level_count: 1,
         sample_count: 1,
-        dimension: wgpu::TextureDimension::D2,
-        usage: wgpu::TextureUsages::STORAGE_BINDING | wgpu::TextureUsages::TEXTURE_BINDING,
+        dimension: etalon::TextureDimension::D2,
+        usage: etalon::TextureUsages::STORAGE_BINDING | etalon::TextureUsages::TEXTURE_BINDING,
         format: TextureFormat::Rgba8Unorm,
         view_formats: &[],
     });
-    let texture_view = texture.create_view(&wgpu::TextureViewDescriptor::default());
+    let texture_view = texture.create_view(&etalon::TextureViewDescriptor::default());
 
     // =============
     // EACH FRAME

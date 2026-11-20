@@ -11,8 +11,8 @@ pub use error::*;
 pub use eval::*;
 
 /// Get the document provider for the current platform or a no-op provider if the platform doesn't document functionality.
-pub fn document() -> Rc<dyn Document> {
-    match aether_core::try_consume_context::<Rc<dyn Document>>() {
+pub fn document() -> DocumentContext {
+    match aether_core::try_consume_context::<DocumentContext>() {
         Some(document) => document,
         None => {
             tracing::error!(

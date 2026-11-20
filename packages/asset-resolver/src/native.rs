@@ -6,6 +6,12 @@ use std::path::{Path, PathBuf};
 
 use crate::{AssetPathError, NativeAssetResolveError};
 
+#[path = "asset_policy.rs"]
+mod asset_policy;
+
+/// Default per-request packaged/trusted asset response limit (64 MiB).
+pub const DEFAULT_ASSET_MAX_BYTES: usize = asset_policy::DEFAULT_MAX_BYTES;
+
 /// An error that can occur when serving an asset.
 #[non_exhaustive]
 #[derive(Debug, thiserror::Error)]
@@ -22,7 +28,7 @@ pub enum AssetServeError {
 /// Try to resolve the path of an asset from a given URI path.
 pub(crate) fn resolve_native_asset_path(path: &str) -> Result<PathBuf, AssetPathError> {
     #[allow(clippy::unnecessary_lazy_evaluations)]
-    resolve_asset_path_from_filesystem(path).ok_or_else(|| {
+    resolve_trusted_asset_path(path).ok_or_else(|| {
         #[cfg(target_os = "android")]
         {
             // If the asset exists in the Android asset manager, return the can't be represented as a path
@@ -36,43 +42,9 @@ pub(crate) fn resolve_native_asset_path(path: &str) -> Result<PathBuf, AssetPath
     })
 }
 
-/// Try to resolve the path of an asset from a given URI path.
-fn resolve_asset_path_from_filesystem(path: &str) -> Option<PathBuf> {
-    // If the user provided a custom asset handler, then call it and return the response if the request was handled.
-    // The path is the first part of the URI, so we need to trim the leading slash.
-    let decoded = percent_encoding::percent_decode_str(path)
-        .decode_utf8()
-        .expect("expected URL to be UTF-8 encoded");
-    let decoded = decoded.as_ref();
-
-    let mut uri_path = PathBuf::from(decoded);
-
-    // On Windows, non-bundled asset paths arrive as URL paths like `/C:/Users/.../file.css`.
-    // Strip the leading `/` before the drive letter so it resolves as a valid Windows path.
-    #[cfg(windows)]
-    if !uri_path.exists() {
-        if let Some(stripped) = decoded.strip_prefix('/') {
-            let candidate = PathBuf::from(stripped);
-            if candidate.exists() {
-                return Some(candidate);
-            }
-        }
-    }
-
-    // If the asset doesn't exist, or starts with `/assets/`, then we'll try to serve out of the bundle
-    // This lets us handle both absolute and relative paths without being too "special"
-    // It just means that our macos bundle is a little "special" because we need to place an `assets`
-    // dir in the `Resources` dir.
-    //
-    // If there's no asset root, we use the cargo manifest dir as the root, or the current dir
-    if !uri_path.exists() || uri_path.starts_with("/assets/") {
-        let bundle_root = get_asset_root();
-        let relative_path = uri_path.strip_prefix("/").unwrap();
-        uri_path = bundle_root.join(relative_path);
-    }
-
-    // If the asset exists, return it
-    uri_path.exists().then_some(uri_path)
+/// Explicit compatibility path for trusted application-owned URLs, never web input.
+fn resolve_trusted_asset_path(path: &str) -> Option<PathBuf> {
+    asset_policy::resolve_trusted(get_asset_root().as_deref(), path)
 }
 
 struct ResolvedAsset {
@@ -88,7 +60,7 @@ impl ResolvedAsset {
     fn into_response(self) -> Result<Response<Vec<u8>>, AssetServeError> {
         Ok(Response::builder()
             .header("Content-Type", self.mime_type)
-            .header("Access-Control-Allow-Origin", "*")
+            .header("X-Content-Type-Options", "nosniff")
             .body(self.body)?)
     }
 }
@@ -103,7 +75,7 @@ pub(crate) fn resolve_native_asset(path: &str) -> Result<Vec<u8>, NativeAssetRes
         }
     }
 
-    let Some(uri_path) = resolve_asset_path_from_filesystem(path) else {
+    let Some(uri_path) = resolve_trusted_asset_path(path) else {
         return Err(NativeAssetResolveError::IoError(std::io::Error::new(
             std::io::ErrorKind::NotFound,
             "Asset not found",
@@ -113,26 +85,37 @@ pub(crate) fn resolve_native_asset(path: &str) -> Result<Vec<u8>, NativeAssetRes
 }
 
 /// Resolve the asset and its mime type
-fn resolve_asset(path: &str) -> Result<Option<ResolvedAsset>, NativeAssetResolveError> {
+fn resolve_asset(
+    path: &str,
+    max_bytes: usize,
+) -> Result<Option<ResolvedAsset>, NativeAssetResolveError> {
     // Attempt to serve from the asset dir on android using its loader
     #[cfg(target_os = "android")]
     {
-        if let Some(asset) = to_java_load_asset(path) {
+        if let Some(asset) = to_java_load_asset_bounded(path, max_bytes)? {
             let extension = path.rsplit_once('.').and_then(|(_, ext)| Some(ext));
             let mime_type = get_mime_from_ext(extension);
             return Ok(Some(ResolvedAsset::new(mime_type, asset)));
         }
     }
 
-    let Some(uri_path) = resolve_asset_path_from_filesystem(path) else {
+    let Some(root) = get_asset_root() else {
         return Ok(None);
     };
-    let mime_type = get_mime_from_path(&uri_path)?;
-    let body = std::fs::read(uri_path)?;
+    let Some((uri_path, body)) = asset_policy::read_packaged_with_limit(&root, path, max_bytes)?
+    else {
+        return Ok(None);
+    };
+    let mime_type = get_mime_from_bytes(&uri_path, &body);
     Ok(Some(ResolvedAsset::new(mime_type, body)))
 }
 
-/// Serve an asset from the filesystem or a custom asset handler.
+/// Serve a packaged asset contained by the application asset root.
+///
+/// The root must be trusted and stable during resolution and opening. Windows
+/// validates the opened file handle before reading; Unix uses directory-relative
+/// opens that refuse symlink replacements. This API does not authorize origins.
+/// Use [`serve_trusted_asset`] only for explicit trusted-app compatibility.
 ///
 /// This method properly accesses the asset directory based on the platform and serves the asset
 /// wrapped in an HTTP response.
@@ -142,12 +125,47 @@ fn resolve_asset(path: &str) -> Result<Option<ResolvedAsset>, NativeAssetResolve
 /// - On Android, it attempts to load assets using the Android AssetManager.
 /// - On other platforms, it serves assets from the filesystem.
 pub fn serve_asset(path: &str) -> Result<Response<Vec<u8>>, AssetServeError> {
-    match resolve_asset(path)? {
+    serve_asset_with_limit(path, asset_policy::DEFAULT_MAX_BYTES)
+}
+
+/// Serve a packaged asset with a per-request byte limit. The default in
+/// [`serve_asset`] is 64 MiB. Oversized assets fail before returning partial data.
+/// This bounds response bytes, not decoder allocations or aggregate request load.
+pub fn serve_asset_with_limit(
+    path: &str,
+    max_bytes: usize,
+) -> Result<Response<Vec<u8>>, AssetServeError> {
+    match resolve_asset(path, max_bytes)? {
         Some(asset) => asset.into_response(),
         None => Ok(Response::builder()
             .status(StatusCode::NOT_FOUND)
             .body(String::from("Not Found").into_bytes())?),
     }
+}
+
+/// Serve a trusted application's local file URL, including absolute filesystem paths.
+///
+/// This is intentionally more privileged than [`serve_asset`]. Never connect it
+/// directly to remote pages or an untrusted local-service request. No wildcard CORS
+/// permission is supplied; the host remains responsible for caller authorization.
+pub fn serve_trusted_asset(path: &str) -> Result<Response<Vec<u8>>, AssetServeError> {
+    serve_trusted_asset_with_limit(path, asset_policy::DEFAULT_MAX_BYTES)
+}
+
+/// The explicit trusted-file compatibility API with a per-request byte limit.
+/// The same authority requirements as [`serve_trusted_asset`] apply.
+pub fn serve_trusted_asset_with_limit(
+    path: &str,
+    max_bytes: usize,
+) -> Result<Response<Vec<u8>>, AssetServeError> {
+    let Some(path) = resolve_trusted_asset_path(path) else {
+        return serve_asset_with_limit(path, max_bytes);
+    };
+    let body = std::fs::File::open(&path)
+        .and_then(|file| asset_policy::read_bounded(file, max_bytes))
+        .map_err(NativeAssetResolveError::from)?;
+    let mime_type = get_mime_from_bytes(&path, &body);
+    ResolvedAsset::new(mime_type, body).into_response()
 }
 
 /// Get the asset directory, following tauri/cargo-bundles directory discovery approach
@@ -161,17 +179,12 @@ pub fn serve_asset(path: &str) -> Result<Response<Vec<u8>>, AssetServeError> {
 /// - [x] Linux (deb)
 /// - [x] Android (returns current exe.)
 #[allow(unreachable_code)]
-fn get_asset_root() -> PathBuf {
-    let cur_exe = std::env::current_exe().unwrap();
+fn get_asset_root() -> Option<PathBuf> {
+    let cur_exe = std::env::current_exe().ok()?;
 
     // In macOS bundles, the assets are in the `Resources` directory
     if cfg!(target_os = "macos") {
-        return cur_exe
-            .parent()
-            .unwrap()
-            .parent()
-            .unwrap()
-            .join("Resources");
+        return Some(cur_exe.parent()?.parent()?.join("Resources"));
     }
 
     // In linux bundles, the assets are placed in the lib/$product_name directory
@@ -181,29 +194,10 @@ fn get_asset_root() -> PathBuf {
     //   $product_name/
     //     assets/
     if cfg!(target_os = "linux") {
-        if let Some(lib_dir) = cur_exe
-            .parent()
-            .and_then(|parent| parent.parent())
-            .map(|root| root.join("lib"))
+        if let Some(root) =
+            linux_bundle_root(&cur_exe, aether_cli_config::product_name().as_deref())
         {
-            // Try the product name from the compile-time env var first
-            if let Some(product_name) = aether_cli_config::product_name() {
-                let path = lib_dir.join(&product_name);
-                if path.exists() {
-                    return path;
-                }
-            }
-
-            // Fall back to scanning lib/ for a directory containing an `assets/` subfolder.
-            // This handles debug builds where AETHER_PRODUCT_NAME isn't baked in.
-            if let Ok(entries) = std::fs::read_dir(&lib_dir) {
-                for entry in entries.flatten() {
-                    let path = entry.path();
-                    if path.is_dir() && path.join("assets").is_dir() {
-                        return path;
-                    }
-                }
-            }
+            return Some(root);
         }
     }
 
@@ -211,18 +205,60 @@ fn get_asset_root() -> PathBuf {
     // app.(exe/appimage)
     //   main.exe
     //   assets/
-    cur_exe.parent().unwrap().to_path_buf()
+    Some(cur_exe.parent()?.to_path_buf())
 }
 
-/// Get the mime type from a path-like string
-fn get_mime_from_path(asset: &Path) -> std::io::Result<&'static str> {
-    if asset.extension().is_some_and(|ext| ext == "svg") {
-        return Ok("image/svg+xml");
+fn linux_bundle_root(executable: &Path, product_name: Option<&str>) -> Option<PathBuf> {
+    let name = product_name.or_else(|| executable.file_stem()?.to_str())?;
+    let mut parts = Path::new(name).components();
+    if !matches!(parts.next(), Some(std::path::Component::Normal(_))) || parts.next().is_some() {
+        return None;
     }
+    let candidate = executable.parent()?.parent()?.join("lib").join(name);
+    // Never scan unrelated applications' directories to infer local authority.
+    candidate.is_dir().then_some(candidate)
+}
 
-    match infer::get_from_path(asset)?.map(|f| f.mime_type()) {
-        Some(f) if f != "text/plain" => Ok(f),
-        _other => Ok(get_mime_by_ext(asset)),
+#[cfg(test)]
+mod root_tests {
+    use super::*;
+
+    #[test]
+    fn linux_bundle_discovery_never_selects_an_unrelated_application() {
+        let root = std::env::temp_dir().join(format!(
+            "aether-bundle-root-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::create_dir(&root).unwrap();
+        std::fs::create_dir_all(root.join("lib/unrelated/assets")).unwrap();
+        let executable = root.join("bin/aether-demo");
+        assert!(linux_bundle_root(&executable, None).is_none());
+        std::fs::create_dir_all(root.join("lib/aether-demo/assets")).unwrap();
+        assert_eq!(
+            linux_bundle_root(&executable, None),
+            Some(root.join("lib/aether-demo"))
+        );
+        assert_eq!(
+            linux_bundle_root(&executable, Some("unrelated")),
+            Some(root.join("lib/unrelated"))
+        );
+        assert!(linux_bundle_root(&executable, Some("../unrelated")).is_none());
+        assert!(linux_bundle_root(&executable, Some("")).is_none());
+    }
+}
+
+// Infer from exactly the bytes being returned; do not reopen a checked path.
+fn get_mime_from_bytes(path: &Path, body: &[u8]) -> &'static str {
+    if path.extension().is_some_and(|ext| ext == "svg") {
+        return "image/svg+xml";
+    }
+    match infer::get(body).map(|f| f.mime_type()) {
+        Some(mime) if mime != "text/plain" => mime,
+        _ => get_mime_by_ext(path),
     }
 }
 
@@ -239,6 +275,8 @@ pub fn get_mime_from_ext(ext: Option<&str>) -> &'static str {
         Some("js") => "text/javascript; charset=utf-8",
         Some("css") => "text/css; charset=utf-8",
         Some("json") => "application/json; charset=utf-8",
+        Some("txt") => "text/plain; charset=utf-8",
+        Some("wasm") => "application/wasm",
         Some("svg") => "image/svg+xml; charset=utf-8",
         Some("html") => "text/html; charset=utf-8",
 
@@ -250,8 +288,8 @@ pub fn get_mime_from_ext(ext: Option<&str>) -> &'static str {
         Some("jsonld") => "application/ld+json",
         Some("rtf") => "application/rtf",
         Some("mp4") => "video/mp4",
-        // Assume HTML when a TLD is found for eg. `aether:://aetherlabs.app` | `aether://hello.com`
-        Some(_) => "text/html; charset=utf-8",
+        // Unknown extensions are downloads/data, not implicitly executable HTML.
+        Some(_) => "application/octet-stream",
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
         // using octet stream according to this:
         None => "application/octet-stream",
@@ -260,48 +298,72 @@ pub fn get_mime_from_ext(ext: Option<&str>) -> &'static str {
 
 #[cfg(target_os = "android")]
 pub(crate) fn to_java_load_asset(filepath: &str) -> Option<Vec<u8>> {
-    let normalized = filepath
-        .trim_start_matches("/assets/")
-        .trim_start_matches('/');
+    to_java_load_asset_bounded(filepath, asset_policy::DEFAULT_MAX_BYTES)
+        .ok()
+        .flatten()
+}
 
-    // in debug mode, the asset might be under `/data/local/tmp/dx/` - attempt to read it from there if it exists
-    #[cfg(debug_assertions)]
-    {
-        let path = aether_cli_config::android_session_cache_dir().join(normalized);
-        if path.exists() {
-            return std::fs::read(path).ok();
+#[cfg(target_os = "android")]
+fn to_java_load_asset_bounded(
+    filepath: &str,
+    max_bytes: usize,
+) -> std::io::Result<Option<Vec<u8>>> {
+    // The Option closure represents absent/unavailable assets; explicit read and
+    // size failures remain Result errors instead of becoming an HTTP 404.
+    let load = || -> Option<std::io::Result<Vec<u8>>> {
+        let relative = asset_policy::relative_path(filepath)?;
+        let normalized = relative
+            .to_str()?
+            .strip_prefix("assets/")
+            .unwrap_or(relative.to_str()?);
+
+        // in debug mode, the asset might be under `/data/local/tmp/dx/` - attempt to read it from there if it exists
+        #[cfg(debug_assertions)]
+        {
+            match asset_policy::read_packaged_with_limit(
+                &aether_cli_config::android_session_cache_dir(),
+                normalized,
+                max_bytes,
+            ) {
+                Ok(Some((_, body))) => return Some(Ok(body)),
+                Err(error) => return Some(Err(error)),
+                Ok(None) => {}
+            }
         }
-    }
 
-    use std::ptr::NonNull;
+        use std::ptr::NonNull;
 
-    let ctx = ndk_context::android_context();
-    let vm = unsafe { jni::JavaVM::from_raw(ctx.vm().cast()) }.unwrap();
-    let mut env = vm.attach_current_thread().unwrap();
+        let ctx = ndk_context::android_context();
+        let vm = unsafe { jni::JavaVM::from_raw(ctx.vm().cast()) }.ok()?;
+        let mut env = vm.attach_current_thread().ok()?;
 
-    // Query the Asset Manager
-    let asset_manager_ptr = env
-        .call_method(
-            unsafe { jni::objects::JObject::from_raw(ctx.context().cast()) },
-            "getAssets",
-            "()Landroid/content/res/AssetManager;",
-            &[],
-        )
-        .expect("Failed to get asset manager")
-        .l()
-        .expect("Failed to get asset manager as object");
+        // Query the Asset Manager
+        let asset_manager_ptr = env
+            .call_method(
+                unsafe { jni::objects::JObject::from_raw(ctx.context().cast()) },
+                "getAssets",
+                "()Landroid/content/res/AssetManager;",
+                &[],
+            )
+            .ok()?
+            .l()
+            .ok()?;
 
-    unsafe {
-        let asset_manager =
-            ndk_sys::AAssetManager_fromJava(env.get_native_interface(), *asset_manager_ptr);
+        unsafe {
+            let asset_manager =
+                ndk_sys::AAssetManager_fromJava(env.get_native_interface(), *asset_manager_ptr);
 
-        let asset_manager = ndk::asset::AssetManager::from_ptr(
-            NonNull::new(asset_manager).expect("Invalid asset manager"),
-        );
+            let asset_manager = ndk::asset::AssetManager::from_ptr(NonNull::new(asset_manager)?);
 
-        let cstr = std::ffi::CString::new(normalized).unwrap();
+            let cstr = std::ffi::CString::new(normalized).ok()?;
 
-        let mut asset = asset_manager.open(&cstr)?;
-        Some(asset.buffer().unwrap().to_vec())
-    }
+            let mut asset = asset_manager.open(&cstr)?;
+            let buffer = asset.buffer().ok()?;
+            if buffer.len() > max_bytes {
+                return Some(Err(asset_policy::size_error()));
+            }
+            Some(Ok(buffer.to_vec()))
+        }
+    };
+    load().transpose()
 }

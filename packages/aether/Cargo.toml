@@ -3,7 +3,7 @@ name = "aether"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Build fullstack web, desktop, and mobile apps with a single codebase."
+description = "QualiaDB-native GUI toolkit (Dioxus fork) for Webizen applications. Aether is not the shipped app."
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -26,7 +26,8 @@ aether-web = { workspace = true, default-features = false, optional = true }
 aether-desktop = { workspace = true, default-features = true, optional = true }
 aether-liveview = { workspace = true, optional = true }
 aether-ssr = { workspace = true, optional = true }
-aether-native = { workspace = true, optional = true }
+# Hosts pick the renderer (C1: vello-cpu-softbuffer). Default hybrid/GPU is not implied.
+aether-native = { workspace = true, optional = true, default-features = false }
 aether-server = { workspace = true, default-features = true, optional = true }
 aether-fullstack = { workspace = true, default-features = true, optional = true }
 aether-fullstack-macro = { workspace = true, optional = true }
@@ -36,6 +37,7 @@ aether-logger = { workspace = true, optional = true }
 warnings = { workspace = true, optional = true }
 wasm-splitter = { workspace = true, optional = true }
 subsecond = { workspace = true }
+refract = { path = "../../refract", optional = true }
 
 serde = { workspace = true, optional = true }
 aether-cli-config = { workspace = true, optional = true }
@@ -63,6 +65,8 @@ lib = [
 # The minimal set of features required to use aether renderers for minimal binary size
 minimal = ["macro", "html", "signals", "hooks", "launch"]
 signals = ["dep:aether-signals", "dep:aether-stores"]
+# Experimental store/lens runtime; requires Rust 1.88 or newer.
+refract = ["dep:refract"]
 macro = ["dep:aether-core-macro"]
 html = ["dep:aether-html"]
 hooks = ["dep:aether-hooks"]
@@ -105,7 +109,9 @@ web = [
 ]
 ssr = ["dep:aether-ssr", "aether-config-macro/ssr"]
 liveview = ["dep:aether-liveview", "aether-config-macro/liveview"]
-native = ["dep:aether-native", "aether-config-macro/native"] # todo(jon): decompose the desktop crate such that "webview" is the default and native is opt-in
+# Native Blitz/Etalon window backend. Opt in from host apps (webizen-os-shell).
+# WebView (`desktop`) stays a separate compatibility path.
+native = ["dep:aether-native", "aether-config-macro/native"]
 server = [
   "dep:aether-server",
   "aether-fullstack?/server",

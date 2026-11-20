@@ -8,18 +8,26 @@ use std::task::{Context, Poll};
 
 #[doc = include_str!("../docs/eval.md")]
 pub struct Eval {
-    evaluator: GenerationalBox<Box<dyn Evaluator>>,
+    evaluator: Option<GenerationalBox<Box<dyn Evaluator>>>,
 }
 
 impl Eval {
     /// Create this eval from a dynamic evaluator
     pub fn new(evaluator: GenerationalBox<Box<dyn Evaluator + 'static>>) -> Self {
-        Self { evaluator }
+        Self {
+            evaluator: Some(evaluator),
+        }
+    }
+
+    /// An unsupported platform has no running task or storage owner to retain.
+    pub(crate) fn unsupported() -> Self {
+        Self { evaluator: None }
     }
 
     /// Wait until the javascript task is finished and return the result
     pub async fn join<T: serde::de::DeserializeOwned>(self) -> Result<T, EvalError> {
-        let json_value = poll_fn(|cx| match self.evaluator.try_write() {
+        let evaluator = self.evaluator.ok_or(EvalError::Unsupported)?;
+        let json_value = poll_fn(|cx| match evaluator.try_write() {
             Ok(mut evaluator) => evaluator.poll_join(cx),
             Err(_) => Poll::Ready(Err(EvalError::Finished)),
         })
@@ -29,7 +37,8 @@ impl Eval {
 
     /// Send a message to the javascript task
     pub fn send(&self, data: impl serde::Serialize) -> Result<(), EvalError> {
-        match self.evaluator.try_read() {
+        let evaluator = self.evaluator.ok_or(EvalError::Unsupported)?;
+        match evaluator.try_read() {
             Ok(evaluator) => {
                 evaluator.send(serde_json::to_value(data).map_err(EvalError::Serialization)?)
             }
@@ -39,7 +48,8 @@ impl Eval {
 
     /// Receive a message from the javascript task
     pub async fn recv<T: serde::de::DeserializeOwned>(&mut self) -> Result<T, EvalError> {
-        let json_value = poll_fn(|cx| match self.evaluator.try_write() {
+        let evaluator = self.evaluator.ok_or(EvalError::Unsupported)?;
+        let json_value = poll_fn(|cx| match evaluator.try_write() {
             Ok(mut evaluator) => evaluator.poll_recv(cx),
             Err(_) => Poll::Ready(Err(EvalError::Finished)),
         })

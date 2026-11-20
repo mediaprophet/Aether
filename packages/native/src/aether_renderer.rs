@@ -5,12 +5,17 @@ use std::{any::Any, cell::RefCell};
 use anyrender::{CompositeAlphaMode, RenderContext, RendererConfig, WindowRenderer};
 use peniko::Color;
 
-// Renderer imports
+// Keep GPU configuration types available whenever their feature is enabled, even
+// when a higher-priority CPU/Skia renderer overrides the default hybrid renderer.
+#[cfg(any(feature = "vello", feature = "vello-hybrid"))]
+pub use etalon::{Features, Limits};
+
+// Renderer priority: Vello GPU, Vello CPU, Skia GPU, Skia raster, Vello hybrid.
+// CPU/Skia features intentionally override the default hybrid renderer.
 cfg_if::cfg_if! {
     if #[cfg(feature = "vello")] {
         pub use anyrender_vello::{
             VelloRendererOptions as InnerRendererOptions, VelloWindowRenderer as InnerRenderer,
-            wgpu::{Features, Limits},
         };
     } else if #[cfg(feature = "vello-cpu-base")] {
         use anyrender_vello_cpu::VelloCpuWindowRenderer as InnerRenderer;
@@ -21,7 +26,6 @@ cfg_if::cfg_if! {
     } else if #[cfg(feature = "vello-hybrid")] {
         pub use anyrender_vello_hybrid::{
             VelloHybridRendererOptions as InnerRendererOptions, VelloHybridWindowRenderer as InnerRenderer,
-            wgpu::{Features, Limits},
         };
     } else {
         compile_error!("At least one renderer feature must be enabled");
@@ -32,16 +36,18 @@ cfg_if::cfg_if! {
 ///
 /// Fields that only apply to the GPU-backed `vello`/`vello-hybrid` renderers
 /// (`features`/`limits`) are only present when one of those features is enabled.
+/// If CPU or Skia features override the default hybrid renderer, these fields
+/// remain available for source compatibility but are ignored.
 #[derive(Default)]
 pub struct RendererOptions {
     /// Base (background) color used to clear each frame.
     pub base_color: Option<Color>,
     /// Alpha mode used when compositing the window surface.
     pub alpha_mode: Option<CompositeAlphaMode>,
-    /// wgpu features to request from the GPU adapter.
+    /// Etalon features to request from the GPU adapter.
     #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
     pub features: Option<Features>,
-    /// wgpu limits to request from the GPU adapter.
+    /// Etalon limits to request from the GPU adapter.
     #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
     pub limits: Option<Limits>,
 }
@@ -83,7 +89,17 @@ impl AetherNativeWindowRenderer {
         config.composite_alpha_mode = options.alpha_mode;
 
         cfg_if::cfg_if! {
-            if #[cfg(any(feature = "vello", feature = "vello-hybrid"))] {
+            if #[cfg(any(
+                feature = "vello",
+                all(
+                    feature = "vello-hybrid",
+                    not(any(
+                        feature = "vello-cpu-base",
+                        feature = "skia",
+                        feature = "skia-raster-base",
+                    )),
+                ),
+            ))] {
                 let mut inner_options: InnerRendererOptions = config.into();
                 if let Some(features) = options.features {
                     inner_options = inner_options.features(features);

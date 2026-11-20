@@ -55,6 +55,10 @@ jobs:
               - '.github/**'
               - 'lib.rs'
               - 'Cargo.toml'
+              - 'Cargo.lock'
+              - 'refract/**'
+              - 'scripts/**'
+              - 'vendor/**'
               - 'Makefile.toml'
       - id: toolchains
         run: |
@@ -64,6 +68,101 @@ jobs:
   # ---------------------------------------------------------------------------
   # Language linting — runs on every push
   # ---------------------------------------------------------------------------
+  gpu-policy:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Check | Etalon dependency policy"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check GPU dependency policy
+        run: python3 scripts/check_gpu_policy.py
+      - name: Test GPU dependency policy fixtures
+        run: python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v
+
+  native-assets:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Test | Native assets on ${{ matrix.os }}"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+      - uses: ./.github/actions/rust-cache
+        with:
+          key: native-assets-${{ matrix.os }}
+      - name: Test opened-file containment and bounded asset reads
+        run: cargo test --locked -p aether-asset-resolver --features native --lib --test native_assets
+      - name: Test Windows junction replacement
+        if: runner.os == 'Windows'
+        run: cargo test --locked -p aether-asset-resolver --features native --lib rejects_junction_replacement_between_resolution_and_open -- --ignored
+
+  native-profiles:
+    needs: rust
+    if: github.event.pull_request.draft == false && needs.rust.outputs.rust == 'true'
+    name: "Check | Native ${{ matrix.profile }}"
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - profile: default-hybrid
+            args: ""
+          - profile: gpu-vello
+            args: "--no-default-features --features vello,svg"
+          - profile: cpu-softbuffer
+            args: "--no-default-features --features vello-cpu-softbuffer,svg"
+          - profile: cpu-minimal
+            args: "--no-default-features --features vello-cpu-softbuffer"
+          - profile: default-plus-cpu
+            args: "--features vello-cpu-softbuffer"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ needs.rust.outputs.rust_stable }}
+      - uses: ./.github/actions/rust-cache
+        with:
+          key: native-${{ matrix.profile }}
+      - name: Compile actual native dependencies
+        run: cargo check --locked -p aether-native ${{ matrix.args }}
+      - name: Check public native facade and refract
+        if: matrix.profile == 'default-hybrid'
+        run: cargo check --locked -p aether --features native,refract
+      - name: Run native lifecycle and document regressions
+        if: matrix.profile == 'default-hybrid'
+        run: cargo test --locked --lib --tests -p aether-native -p aether-native-dom -p aether-document -p aether-asset-resolver
+      - name: Test typed network failure and cancellation
+        if: matrix.profile == 'default-hybrid'
+        run: cargo test --locked --lib -p blitz-traits -p blitz-net
+      - name: Test DOM resource failure completion
+        if: matrix.profile == 'default-hybrid'
+        run: cargo test --locked --lib -p blitz-dom completion_tests
+      - name: Test native editor clipboard behavior
+        if: matrix.profile == 'default-hybrid'
+        run: cargo test --locked --lib -p blitz-dom clipboard_tests
+      - name: Test native editor IME surrounding text deletion
+        if: matrix.profile == 'default-hybrid'
+        run: cargo test --locked --lib -p blitz-dom ime_tests
+      - name: Check optional GPU profiler integration
+        if: matrix.profile == 'default-hybrid'
+        run: cargo check --locked -p vector-compute-renderer --features etalon-profiler
+      - name: Qualify Windows junction replacement containment
+        if: matrix.profile == 'default-hybrid'
+        run: cargo test --locked -p aether-asset-resolver --features native rejects_junction_replacement_between_resolution_and_open -- --ignored
+      - name: Check renderer selection contract
+        if: matrix.profile == 'default-hybrid'
+        run: python packages/native/tests/renderer_feature_matrix.py
+      - name: Test bounded native probe process watchdog
+        if: matrix.profile == 'default-hybrid'
+        run: python scripts/test_native_probe_runner.py
+
   typos:
     if: github.event.pull_request.draft == false
     name: "Lint | Typos"

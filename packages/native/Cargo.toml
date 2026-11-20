@@ -3,7 +3,7 @@ name = "aether-native"
 version = { workspace = true }
 authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
 edition = "2024"
-description = "Native renderer for Aether based on blitz"
+description = "Native Blitz/Etalon renderer for the Aether toolkit (not an application)"
 license = "CC-BY-NC-ND-4.0"
 repository = "https://github.com/mediaprophet/Aether"
 homepage = "https://github.com/mediaprophet/Aether"
@@ -33,8 +33,8 @@ accessibility = ["blitz-shell/accessibility", "blitz-dom/accessibility"]
 data-uri = ["blitz-shell/data-uri"]
 
 # Renderer features
-vello = ["dep:anyrender_vello", "dep:wgpu_context"]
-vello-hybrid = ["dep:anyrender_vello_hybrid", "dep:wgpu_context"]
+vello = ["dep:anyrender_vello", "dep:etalon-context", "dep:etalon"]
+vello-hybrid = ["dep:anyrender_vello_hybrid", "dep:etalon-context", "dep:etalon"]
 skia = ["dep:anyrender_skia"]
 skia-pixels = ["skia-raster-base", "anyrender_skia/pixels_window_renderer"]
 skia-softbuffer = ["skia-raster-base", "anyrender_skia/softbuffer_window_renderer"]
@@ -47,6 +47,11 @@ vello-cpu-base = ["dep:anyrender_vello_cpu"]
 font-embolden = ["blitz-paint/font-embolden"]
 apple-font-embolden = ["blitz-paint/apple-font-embolden"]
 scrollbars = ["blitz-paint/scrollbars"]
+
+# Browser engine for Aether-hosted apps is Chora (copied-frame sibling worker).
+# Off by default so B1a window/lifecycle does not link the engine or require
+# a published chora-client. Enable `chora` for B1b; never in-process with Blitz.
+chora = ["dep:aether-chora-client"]
 
 # Other features
 # No-op on wasm32 (blitz_net::Provider needs tokio's threaded runtime); launch_cfg
@@ -66,14 +71,15 @@ log-frame-times = [
   "anyrender_vello_hybrid?/log_frame_times",
   "anyrender_skia?/log_frame_times",
 ]
-tracing = ["dep:tracing", "aether-native-dom/tracing", "blitz-shell/tracing", "blitz-dom/tracing", "blitz-html/tracing", "blitz-net/tracing"]
+tracing = ["dep:tracing", "aether-native-dom/tracing", "blitz-shell/tracing", "blitz-dom/tracing", "blitz-html?/tracing", "blitz-net?/tracing"]
 
 [dependencies]
 # Blitz dependencies
 blitz-dom = { workspace = true, features = ["custom-widget"] }
 blitz-html = { workspace = true, optional = true }
-blitz-net = { workspace = true, optional = true }
-blitz-paint = { workspace = true, optional = true, features = ["custom-widget"] }
+# Painting is required by the shell even without SVG. Match the DOM's custom
+# widget support in every renderer profile, including minimal CPU builds.
+blitz-paint = { workspace = true, features = ["custom-widget"] }
 blitz-traits = { workspace = true }
 blitz-shell = { workspace = true }
 
@@ -84,7 +90,8 @@ anyrender_vello = { workspace = true, optional = true}
 anyrender_vello_hybrid = { workspace = true, optional = true}
 anyrender_vello_cpu = { workspace = true, optional = true}
 anyrender_skia = { workspace = true, optional = true}
-wgpu_context = { workspace = true, optional = true}
+etalon-context = { workspace = true, optional = true }
+etalon = { workspace = true, optional = true, default-features = false }
 
 # Aether core dependencies
 aether-core = { workspace = true }
@@ -111,7 +118,6 @@ winit = { workspace = true }
 keyboard-types = { workspace = true }
 
 # IO & Networking
-tokio = { workspace = true, features = ["rt"], optional = true }
 webbrowser = { workspace = true }
 
 # Other dependencies
@@ -122,7 +128,9 @@ cfg-if = "1.0.4"
 slotmap = { workspace = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+aether-chora-client = { path = "../chora-client", optional = true }
 tokio = { workspace = true, features = ["rt-multi-thread"], optional = true }
+blitz-net = { workspace = true, optional = true }
 
 [target.'cfg(target_os = "android")'.dependencies]
 android-activity = { version = "0.6", default-features = false }
@@ -132,3 +140,13 @@ anyrender_vello_cpu = { workspace = true, features = ["pixels_window_renderer"]}
 
 [package.metadata.docs.rs]
 all-features = true
+
+[[example]]
+name = "native_lifecycle_smoke"
+path = "examples/native_lifecycle_smoke.rs"
+required-features = ["prelude"]
+
+[[example]]
+name = "native_multiwindow_smoke"
+path = "examples/native_multiwindow_smoke.rs"
+required-features = ["prelude"]

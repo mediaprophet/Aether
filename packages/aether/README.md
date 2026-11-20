@@ -129,7 +129,7 @@ Aether deeply integrates with [axum](https://github.com/tokio-rs/axum) to provid
 
 ## Experimental Native Renderer
 
-Render using web-sys, webview, server-side-rendering, liveview, or even with our experimental WGPU-based renderer. Embed Aether in Bevy, WGPU, or even run on embedded Linux!
+Render using web-sys, WebView, server-side rendering, LiveView, or the native Etalon rendering stack. Native build and runtime qualification is tracked in the repository's native production plan.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/AetherLabs/screenshots/refs/heads/main/blitz/native-blitz-wgpu.webp">

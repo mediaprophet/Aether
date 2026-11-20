@@ -1,6 +1,19 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
-//! A native renderer for Aether.
+//! Native window renderer for the **Aether toolkit**.
+//!
+//! Aether is a QualiaDB-native GUI toolkit (the Dioxus / Tauri analogue for
+//! Webizen apps). This crate is not Webizen, not QualiaDB, and not a shipped
+//! application. Host apps (`webizen-os-shell`, Synth operator UI, later Qaps)
+//! consume it. Do not ship Aether window titles, tray items, or default icons
+//! as product identity.
+//!
+//! Two webs: this crate paints **human-centric** native RSX (QualiaDB/VibeScript
+//! hosts). **Chora** in Qualia is the spatial commons canvas, not this renderer.
+//! Old-web https is the Webizen Web Browser Qap, using the Servo-derived MPL
+//! engine as a copied-frame worker (`feature = "chora"` is a code id, B1b).
+//! Not WebView, not Wry. B1a leaves that feature **off**. `Document::eval` may
+//! remain `NoOpDocument`.
 //!
 //! ## Feature flags
 //!  - `default`: Enables the features listed below.
@@ -9,11 +22,15 @@
 //!  - `menu`: Enables the [`muda`](https://docs.rs/muda/latest/muda/) menubar.
 //!  - `tracing`: Enables tracing support.
 
-mod assets;
-mod config;
-mod contexts;
 mod aether_application;
 mod aether_renderer;
+mod assets;
+mod config;
+#[cfg(all(feature = "chora", not(target_arch = "wasm32")))]
+pub mod chora_frame;
+#[cfg(all(feature = "chora", not(target_arch = "wasm32")))]
+pub use aether_chora_client;
+mod contexts;
 mod event_handlers;
 mod hooks;
 mod link_handler;
@@ -21,14 +38,15 @@ mod link_handler;
 #[cfg(feature = "prelude")]
 pub mod prelude;
 
-#[cfg(all(feature = "net", not(target_arch = "wasm32")))]
-use blitz_traits::net::NetProvider;
 #[doc(inline)]
 pub use aether_native_dom::*;
+#[cfg(all(feature = "net", not(target_arch = "wasm32")))]
+use blitz_traits::net::NetProvider;
 
-use assets::AetherNativeNetProvider;
 pub use aether_application::{AetherNativeApplication, AetherNativeEvent};
 pub use aether_renderer::{AetherNativeWindowRenderer, RendererOptions};
+use assets::AetherNativeNetProvider;
+pub use assets::AssetAccess;
 
 #[doc(inline)]
 pub use anyrender::CompositeAlphaMode;
@@ -57,7 +75,7 @@ pub use android_activity::AndroidApp;
 #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
 pub use {
     aether_renderer::{Features, Limits},
-    wgpu_context::DeviceHandle,
+    etalon_context::DeviceHandle,
 };
 
 pub use blitz_dom::{FontContext, Widget, build_single_font_ctx};
@@ -68,12 +86,14 @@ pub use winit;
 pub use winit::dpi::{LogicalSize, PhysicalSize};
 pub use winit::window::WindowAttributes;
 
-use blitz_shell::{BlitzShellEvent, BlitzShellProxy, WindowConfig, create_default_event_loop};
 use aether_core::{ComponentFunction, Element, VirtualDom, consume_context, use_hook};
+use blitz_shell::{BlitzShellEvent, BlitzShellProxy, WindowConfig};
 use link_handler::AetherNativeNavigationProvider;
 use std::any::Any;
 use std::sync::Arc;
 use winit::{
+    error::EventLoopError,
+    event_loop::{ControlFlow, EventLoop},
     raw_window_handle::{HasWindowHandle as _, RawWindowHandle},
     window::Window,
 };
@@ -91,11 +111,74 @@ pub fn use_raw_window_handle() -> RawWindowHandle {
     })
 }
 
-/// Launch an interactive HTML/CSS renderer driven by the Aether virtualdom
+/// A returned failure while creating or running a native application.
+///
+/// These variants preserve the underlying error and the launch stage. They do
+/// not represent panics inside application callbacks, window creation, or GPU
+/// initialization; see [`try_launch_cfg_with_props`] for the remaining limits.
+#[derive(Debug)]
+#[non_exhaustive]
+pub enum LaunchError {
+    /// Failed to create the networking runtime (`net` on native targets).
+    Runtime(std::io::Error),
+    /// Winit returned an error while creating the event loop.
+    EventLoopCreation(EventLoopError),
+    /// Winit returned an error while running the application.
+    EventLoopRun(EventLoopError),
+}
+
+impl std::fmt::Display for LaunchError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Runtime(error) => {
+                write!(f, "failed to create native networking runtime: {error}")
+            }
+            Self::EventLoopCreation(error) => {
+                write!(f, "failed to create native event loop: {error}")
+            }
+            Self::EventLoopRun(error) => write!(f, "native event loop failed: {error}"),
+        }
+    }
+}
+
+impl std::error::Error for LaunchError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Runtime(error) => Some(error),
+            Self::EventLoopCreation(error) | Self::EventLoopRun(error) => Some(error),
+        }
+    }
+}
+
+// Equivalent to Blitz's default builder setup, with its build error preserved.
+// Keep Android activity forwarding and Wait control flow aligned with Blitz.
+fn try_create_default_event_loop() -> Result<EventLoop, LaunchError> {
+    let mut builder = EventLoop::builder();
+    #[cfg(target_os = "android")]
+    {
+        use winit::platform::android::EventLoopBuilderExtAndroid;
+        builder.with_android_app(current_android_app());
+    }
+    let event_loop = builder.build().map_err(LaunchError::EventLoopCreation)?;
+    event_loop.set_control_flow(ControlFlow::Wait);
+    Ok(event_loop)
+}
+
+/// Launch an interactive HTML/CSS renderer driven by the Aether virtualdom.
+///
+/// Panics on returned launch errors. Use [`try_launch`] to handle those errors.
 pub fn launch(app: fn() -> Element) {
     launch_cfg(app, vec![], vec![])
 }
 
+/// Launch an application, returning runtime and event-loop errors.
+///
+/// See [`try_launch_cfg_with_props`] for platform and panic limitations.
+pub fn try_launch(app: fn() -> Element) -> Result<(), LaunchError> {
+    try_launch_cfg(app, vec![], vec![])
+}
+
+/// Launch with contexts and configuration, panicking on returned launch errors.
 pub fn launch_cfg(
     app: fn() -> Element,
     contexts: Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync>>,
@@ -104,13 +187,51 @@ pub fn launch_cfg(
     launch_cfg_with_props(app, (), contexts, cfg)
 }
 
+/// Launch with contexts and configuration, returning runtime/event-loop errors.
+///
+/// See [`try_launch_cfg_with_props`] for platform and panic limitations.
+pub fn try_launch_cfg(
+    app: fn() -> Element,
+    contexts: Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync>>,
+    cfg: Vec<Box<dyn Any>>,
+) -> Result<(), LaunchError> {
+    try_launch_cfg_with_props(app, (), contexts, cfg)
+}
+
 // todo: props shouldn't have the clone bound - should try and match aether-desktop behavior
+/// Launch with component props, panicking on returned launch errors.
 pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
     app: impl ComponentFunction<P, M>,
     props: P,
     contexts: Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync>>,
     configs: Vec<Box<dyn Any>>,
 ) {
+    try_launch_cfg_with_props(app, props, contexts, configs)
+        .expect("failed to launch Aether native application")
+}
+
+/// Launch with component props, returning failures exposed by the underlying APIs.
+///
+/// Returns [`LaunchError`] for event-loop creation, native networking-runtime
+/// creation, and event-loop execution errors. The normal return behavior follows
+/// Winit's platform event loop; on some targets control never returns to the caller.
+/// On the web, returning success only means the event handler was registered;
+/// subsequent asynchronous window or rendering failures are not returned here.
+///
+/// # Panics
+///
+/// Winit's main-thread requirements still apply. Android callers must first set
+/// the activity with `set_android_app` (available on Android). Upstream window
+/// and GPU initialization APIs can panic rather than return errors, and component
+/// or context callbacks can also panic. Those failures are not converted into
+/// [`LaunchError`]. This API does not provide device recovery or report deferred
+/// GPU initialization failures through its return value.
+pub fn try_launch_cfg_with_props<P: Clone + 'static, M: 'static>(
+    app: impl ComponentFunction<P, M>,
+    props: P,
+    contexts: Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync>>,
+    configs: Vec<Box<dyn Any>>,
+) -> Result<(), LaunchError> {
     // Macro to attempt to downcast a type out of a Box<dyn Any>
     macro_rules! try_read_config {
         ($input:ident, $store:ident, $kind:ty) => {
@@ -148,7 +269,7 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
     if let Some(window_attributes) = window_attributes {
         config.window_attributes = window_attributes;
     }
-    let event_loop = create_default_event_loop();
+    let event_loop = try_create_default_event_loop()?;
     let winit_proxy = event_loop.create_proxy();
     let (proxy, event_queue) = BlitzShellProxy::new(winit_proxy);
 
@@ -158,7 +279,7 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
     let rt = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
-        .unwrap();
+        .map_err(LaunchError::Runtime)?;
     #[cfg(feature = "net")]
     #[cfg(not(target_arch = "wasm32"))]
     let _guard = rt.enter();
@@ -188,14 +309,19 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
         let inner_net_provider = Arc::new(blitz_net::Provider::new(net_waker));
         vdom.provide_root_context(Arc::clone(&inner_net_provider));
 
-        Arc::new(AetherNativeNetProvider::with_inner(
-            proxy.clone(),
-            inner_net_provider as _,
-        )) as Arc<dyn NetProvider>
+        Arc::new(
+            AetherNativeNetProvider::with_inner(proxy.clone(), inner_net_provider as _)
+                .with_asset_access(config.asset_access)
+                .with_asset_max_bytes(config.asset_max_bytes),
+        ) as Arc<dyn NetProvider>
     };
 
     #[cfg(any(not(feature = "net"), target_arch = "wasm32"))]
-    let net_provider = AetherNativeNetProvider::shared(proxy.clone());
+    let net_provider = AetherNativeNetProvider::shared_with_access(
+        proxy.clone(),
+        config.asset_access,
+        config.asset_max_bytes,
+    );
 
     vdom.provide_root_context(Arc::clone(&net_provider));
 
@@ -240,5 +366,7 @@ pub fn launch_cfg_with_props<P: Clone + 'static, M: 'static>(
     let application = AetherNativeApplication::new(proxy, event_queue, config);
 
     // Run event loop
-    event_loop.run_app(application).unwrap();
+    event_loop
+        .run_app(application)
+        .map_err(LaunchError::EventLoopRun)
 }

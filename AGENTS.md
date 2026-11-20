@@ -16,7 +16,87 @@ All participating AI agents and contributors must strictly honor this copyright,
 
 # Aether Agent Guide
 
-Aether is a sovereign cross-platform UI and spatial application framework for Rust, powering Webizen OS-Shell and QualiaDB. It compiles to Web (WASM), Desktop (WebView2/Tao with WebGPU compatibility shims), Mobile (iOS/Android), and Native GPU (Blitz + AnyRender + Etalon).
+## Project purpose and priorities
+
+Aether is a fork of Dioxus being overhauled for QualiaDB and Webizen. Prioritize
+production native applications through `packages/native` and `packages/native-dom`,
+with Etalon and the hypermedia-production rendering stack. The Wry/WebView desktop
+backend remains a separate compatibility path; a successful WebView build does not
+establish native readiness.
+
+Etalon is the required GPU implementation. Migrate upstream wgpu dependencies,
+including transitive and optional renderer paths, to the reviewed Etalon stack.
+Check resolved package sources as well as names. Aether-owned dependencies and
+imports use `etalon`; retain old names only at documented compatibility or
+historical-provenance boundaries. Etalon is the substantive GPU and compute
+implementation, including architecture and capabilities moved from QualiaDB.
+Align revisions with QualiaDB and hypermedia-production
+before sharing devices or resources. The old-web (Servo-derived) engine's WebGPU API must retain traditional
+web behavior while its underlying implementation migrates to Etalon.
+
+The entire ecosystem depends on QualiaDB. Treat QualiaDB as the required foundation
+of the target application architecture, not an optional database integration.
+Missing dependency wiring in this fork is an overhaul gap, not an architectural
+choice to make QualiaDB optional. Reuse its canonical SDKs and contracts across
+the UI, scripting and rendering integration.
+
+Webizen uses VibeScript for application scripting in place of JavaScript/V8.
+This applies to works authored for the QualiaDB/Webizen human-centric web.
+The old-web engine must also retain traditional web compatibility, including JavaScript web
+applications. Do not remove that compatibility globally to achieve the native
+application profile. Human-centric works should use canonical QualiaDB/VibeScript
+and Etalon interfaces, introducing historical web dependencies only sparingly for
+an identified compatibility need. Keep compatibility execution and privileged
+ecosystem operations distinct, with explicit host-authorized bridges.
+The canonical language engine is QualiaDB's `crates/vibe`; the sibling `vibe-script`
+repository supplies tooling. Integrate the existing engine and host contracts;
+do not duplicate the engine or assume JavaScript evaluation is a VibeScript API.
+VibeScript already has an SDK: inspect QualiaDB's `crates/vibescript-abi`, including
+`src/sdk.rs`, and the `vibe` engine's public embedding interfaces before designing
+integration code. Reuse provider descriptors, lifecycle and memory contracts;
+do not invent a competing extension ABI or infer execution from tooling discovery.
+Keep script execution, host authority, UI scheduling, and GPU resource ownership
+explicit. Preserve the Dioxus attribution of inherited code.
+
+The sibling `C:/github/chora` repository is **webizen-WWW-engine**
+(Servo-derived, MPL-2.0). Keep its source and workspace separate and follow its
+local `AGENTS.md` when working there. **Chora** in QualiaDB is the
+spatio-temporal commons canvas (Ring B). Do not redefine that product as Servo
+updates. GitHub is still `WebCivics/chora` until renamed to
+`webizen-www-engine`. Ring B's future anti-slavery licence does not relicense
+this engine; composition is a sibling worker built **from the engine tree**.
+If that licence cannot sit beside MPL as a separate program, drop the engine —
+do not mix files. **Known leak:** `packages/chora-worker` path-depends on
+`servo` while declaring CC-BY-NC-ND; E0 closes it. `aether-chora-client` and
+`aether-chora-bridge-protocol` already stay on the Ring B side of the wire.
+
+The engine's generic embedding interfaces are the boundary: QualiaDB/VibeScript host
+integration belongs on the Aether/Webizen side, without adding ecosystem-specific
+dependencies or copying ecosystem code into the engine. The required QualiaDB foundation
+is supplied by the host application. Preserve Servo/MPL attribution on Covered Software.
+The engine's Cargo package name remains `servo`, so select the actual tree explicitly
+rather than assuming a dependency alias selects it.
+The engine currently uses SpiderMonkey. Standard JavaScript web compatibility and
+support for V8-specific or Node.js interfaces are separate requirements; identify
+the actual API requirements before adding a runtime or promising compatibility.
+
+Track evidence and outstanding release gates in
+[`notes/architecture/13-NATIVE-PRODUCTION.md`](notes/architecture/13-NATIVE-PRODUCTION.md).
+Do not present planned integration, compilation alone, or WebView tests as proof
+that the native QualiaDB/VibeScript application path is ready for production.
+
+Aether is a QualiaDB-native GUI toolkit (the Dioxus / Tauri analogue for this stack). It is not Webizen, not QualiaDB, and not a shipped application. Host apps — `webizen-os-shell`, Synth operator UI, later Qaps — consume Aether. Do not ship Aether defaults (window title “Aether App”, fallback tray, demo icons) as product identity.
+
+It compiles to Web (WASM), Desktop (WebView2/Tao with WebGPU compatibility shims), Mobile (iOS/Android), and Native GPU (Blitz + AnyRender + Etalon).
+
+Two webs, two products, two engines:
+
+- **Human-centric web** — QualiaDB, VibeScript, Aether native RSX, Qaps. **Chora** in this ecosystem is the spatio-temporal commons canvas (`qualia://chora/universe`, Qualia `chora/` module). It is not an HTML engine and is not MPL.
+- **Old web** — HTML/CSS/JS. Product is the **Webizen Web Browser** Qap. Intended engine is the **Servo-derived MPL tree** (independent repo, currently named `WebCivics/chora` — that name is a defect). Employ as a sibling worker. Not WebView, not Wry, as the intended engine.
+
+Aether is the toolkit: native RSX for human-centric chrome, copied-frame worker for the old-web engine. Blitz and Servo/Stylo cannot share a process. Never copy Qualia types into the MPL engine. Do not redefine **Chora** as “Servo updates”.
+
+B1a is native window lifecycle (engine feature off) so human-centric chrome can paint. B1b + worker artefact employs the old-web engine for the Web Browser. QualiaDB remains the required application foundation.
 
 ## Quick Overview
 
@@ -28,37 +108,21 @@ Aether is a sovereign cross-platform UI and spatial application framework for Ru
 
 ## Workspace Structure
 
-```text
-packages/
-├── aether/           # Primary sovereign crate re-exporting Aether UI + `refract`
-├── aether-native/    # Sovereign native GPU renderer crate (Blitz + Etalon)
-├── aether-desktop/   # Sovereign Wry/Tao desktop webview renderer crate
-├── aether-web/       # Sovereign WASM renderer crate
-├── aether-core/      # Sovereign core VirtualDOM crate
-├── aether-signals/   # Sovereign reactive signals crate
-├── aether-hooks/     # Sovereign built-in hooks crate
-├── aether-html/      # Sovereign HTML element definitions crate
-├── aether-router/    # Sovereign type-safe routing crate
-├── aether/           # Internal compatibility bridge crate
-├── core/             # VirtualDOM, components, diffing, scheduling implementation
-├── rsx/              # RSX macro parsing and code generation
-├── rsx-hotreload/    # Template diffing for hot-reload
-├── signals/          # Reactive state (Signal, Memo, Store)
-├── hooks/            # Built-in hooks (use_signal, use_effect, etc.)
-├── router/           # Type-safe routing with #[derive(Routable)]
-├── fullstack/        # SSR, hydration, #[server] functions
-├── cli/              # Build tool, dev server, bundling
-├── web/              # WASM renderer implementation
-├── desktop/          # Wry/Tao webview renderer implementation
-├── native/           # Blitz/Etalon GPU renderer implementation
-├── liveview/         # WebSocket streaming renderer
-├── manganis/         # asset!() macro for compile-time assets
-├── subsecond/        # Hot-patching system (jump table indirection)
-├── devtools/         # Dev server communication protocol
-├── interpreter/      # Sledgehammer JS for DOM mutations
-└── wasm-split/       # WASM code splitting
-refract/              # Zero-heap reactive store and lens runtime (`ArrayLens`)
-```
+| Path | Role |
+| --- | --- |
+| `packages/aether` | Public facade, including optional `refract` export |
+| `packages/native`, `packages/native-dom` | Native window renderer and headless DOM |
+| `packages/desktop` | Wry/Tao WebView backend |
+| `packages/web` | Browser/WASM renderer |
+| `packages/core`, `packages/rsx` | VirtualDOM and RSX syntax |
+| `packages/signals`, `packages/hooks`, `packages/stores` | Reactive state |
+| `packages/html`, `packages/router` | Element vocabulary and routing |
+| `packages/fullstack`, `packages/ssr`, `packages/liveview` | Server rendering and streaming |
+| `packages/cli`, `packages/devtools`, `packages/subsecond` | Builds, development tools and hot patching |
+| `packages/manganis`, `packages/asset-resolver` | Assets |
+| `packages/interpreter`, `packages/wasm-split` | JavaScript DOM interpreter and WASM splitting |
+| `refract` | Experimental store/lens runtime |
+| `.github/workflows`, `upstream-licenses` | CI and preserved upstream licensing |
 
 ## Architecture Documentation
 

@@ -1,6 +1,11 @@
 [workspace]
 resolver = "2"
 members = [
+    "vendor/hypermedia/vector-compute-shaders",
+    "vendor/hypermedia/vector-compute-renderer",
+    "vendor/blitz/blitz-traits",
+    "vendor/blitz/blitz-dom",
+    "vendor/blitz/blitz-net",
     "packages/aether",
     "packages/core",
     "packages/core-template",
@@ -112,14 +117,27 @@ members = [
     # Integrations
     "examples/10-integrations/tailwind",
     "examples/10-integrations/pwa",
-    "examples/10-integrations/wgpu-texture",
+    "examples/10-integrations/etalon-texture",
     "examples/10-integrations/native-headless",
 
     # Experiments
     "refract",
 ]
-exclude = ["packages/stores/tests/visibility-helper"]
+# Host composition has its own canonical SDK graph and qualification workspace.
+exclude = ["packages/stores/tests/visibility-helper", "packages/qualia-host", "packages/chora-client", "packages/chora-bridge-protocol", "packages/chora-worker", "vendor/hypermedia/gpu-command-profiler"]
 
+
+# Local attributed fixes preserve network and renderer dependency contracts.
+# Dependency consumers must opt in to these patches at their own workspace root.
+[patch."https://github.com/mediaprophet/hypermedia-production.git"]
+vector-compute-shaders = { path = "vendor/hypermedia/vector-compute-shaders" }
+vector-compute-renderer = { path = "vendor/hypermedia/vector-compute-renderer" }
+gpu-command-profiler = { path = "vendor/hypermedia/gpu-command-profiler" }
+
+[patch.crates-io]
+blitz-traits = { path = "vendor/blitz/blitz-traits" }
+blitz-dom = { path = "vendor/blitz/blitz-dom" }
+blitz-net = { path = "vendor/blitz/blitz-net" }
 
 [workspace.package]
 version = "0.8.0-alpha.3"
@@ -218,8 +236,8 @@ anyrender_vello = { package = "vector-gpu-render-adapter", version = "=0.15.0", 
 anyrender_vello_cpu = { package = "vector-cpu-render-adapter", version = "=0.18.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
 anyrender_vello_hybrid = { package = "vector-hybrid-render-adapter", version = "=0.11.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
 anyrender_skia = { package = "vector-skia-render-adapter", version = "=0.12.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
-wgpu_context = { package = "gpu-device-context", version = "=0.10.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
-wgpu = { package = "etalon", version = "=0.0.2", git = "https://github.com/mediaprophet/etalon.git", rev = "575bab54accf1aafb24f67e9ba810c0f3f745aea" }
+etalon-context = { package = "gpu-device-context", version = "=0.10.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
+etalon = { default-features = false, version = "=0.0.2", git = "https://github.com/mediaprophet/etalon.git", rev = "575bab54accf1aafb24f67e9ba810c0f3f745aea" }
 vello = { package = "vector-compute-renderer", version = "=0.11.0", git = "https://github.com/mediaprophet/hypermedia-production.git", branch = "0.0.40.8.1" }
 winit = { version = "=0.31.0-beta.3" }
 atomic_refcell = "0.1.13"
@@ -472,7 +490,7 @@ reqwest = { workspace = true, features = ["json"] }
 ciborium = { workspace = true, optional = true }
 base64 = { workspace = true, optional = true }
 http-range = { version = "0.1.5" }
-wgpu = { workspace = true, optional = true }
+etalon = { workspace = true, optional = true, default-features = true }
 winit = { workspace = true, optional = true }
 ouroboros = { version = "*", optional = true }
 wasm-splitter = { workspace = true }
@@ -534,7 +552,7 @@ liveview = ["aether/liveview"]
 server = ["aether/server"]
 mobile = ["aether/mobile"]
 web = ["aether/web"]
-gpu = ["dep:ouroboros", "dep:wgpu"]
+gpu = ["dep:ouroboros", "dep:etalon"]
 
 [[example]]
 name = "websocket_chat"
@@ -1043,8 +1061,8 @@ path = "examples/08-apis/scroll_to_top.rs"
 doc-scrape-examples = true
 
 [[example]]
-name = "wgpu_child_window"
-path = "examples/08-apis/wgpu_child_window.rs"
+name = "etalon_child_window"
+path = "examples/08-apis/etalon_child_window.rs"
 required-features = ["gpu", "desktop"]
 doc-scrape-examples = true
 
@@ -1139,4 +1157,3 @@ doc-scrape-examples = true
 [[example]]
 name = "__scrape_example_list"
 path = "examples/scripts/scrape_examples.rs"
-

@@ -18,7 +18,7 @@ use crate::prelude::*;
 /// - `mobile`: Enables the mobile (ios + android webview) platform.
 /// - `server`: Enables the server (axum + server-side-rendering) platform.
 /// - `liveview`: Enables the liveview (websocke) platform.
-/// - `native`: Enables the native (wgpu + winit renderer) platform.
+/// - `native`: Enables the native (Etalon + winit renderer) platform.
 ///
 /// Currently `native` is its own platform that is not compatible with desktop or mobile since it
 /// unifies both platforms into one. If "desktop" and "native" are enabled, then the native renderer
