@@ -1,0 +1,24 @@
+   Compiling windows_x86_64_msvc v0.52.6
+    Checking vector-compute-renderer v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-renderer)
+   Compiling windows-targets v0.52.6
+   Compiling windows-sys v0.52.0
+    Checking winit v0.31.0-beta.3
+   Compiling winapi-util v0.1.11
+   Compiling same-file v1.0.6
+    Checking gpu-device-context v0.10.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+   Compiling walkdir v2.5.0
+    Checking vector-gpu-render-adapter v0.15.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+   Compiling stylo v0.22.0
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_asset_resolver-1x3x3rdwd8oiu\s-ho36fjk9gn-0dnjy0f-working`
+
+warning: `aether-asset-resolver` (lib) generated 1 warning
+    Checking aether-document v0.8.0-alpha.3 (C:\github\Aether\packages\document)
+    Checking aether-history v0.8.0-alpha.3 (C:\github\Aether\packages\history)
+    Checking webbrowser v1.2.4
+    Checking stylo_taffy v0.3.0-beta.4
+    Checking blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+    Checking blitz-paint v0.3.0-beta.4
+    Checking aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+    Checking blitz-shell v0.3.0-beta.4
+    Checking aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4m 09s

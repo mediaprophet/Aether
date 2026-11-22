@@ -1,0 +1,32 @@
+   Compiling stylo v0.22.0
+   Compiling stylo_taffy v0.3.0-beta.4
+   Compiling blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+   Compiling aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6m 00s
+     Running unittests src\lib.rs (target\debug\deps\aether_native_dom-46b02c8b983b3d9a.exe)
+
+running 21 tests
+test events::tests::ime_preedit_clear_and_commit_preserve_text_and_phase_order ... ok
+test events::tests::ime_disable_and_focus_loss_cancel_once_without_leaking_between_targets ... ok
+test events::tests::ime_target_switch_ends_previous_target_and_teardown_clears_stale_state ... ok
+test events::tests::surrounding_delete_does_not_end_or_duplicate_composition ... ok
+test events::tests::touches_is_empty_when_no_pointers_are_active ... ok
+test events::tests::ime_availability_empty_preedit_and_direct_commit_do_not_invent_composition ... ok
+test events::tests::touches_reports_all_active_pointers ... ok
+test events::tests::typed_composition_and_pointer_converters_preserve_real_payloads ... ok
+test mutation_writer::native_event_kind_tests::composition_listener_aliases_share_the_native_ime_counter ... ok
+test events::tests::unsupported_native_events_report_capability_errors_without_fake_data ... ok
+test aether_document::tests::task_polled_during_render_can_access_document ... ok
+test mutation_writer::textarea_value::tests::controlled_static_and_dynamic_template_clones_retain_values ... ok
+test mutation_writer::tests::falsy_boolean_attributes_are_removed ... ok
+test aether_document::tests::mounted_data_of_removed_element_reports_error ... ok
+test aether_document::tests::suspended_nodes_are_dropped_and_recreated ... ok
+test aether_document::tests::removed_nodes_are_dropped ... ok
+test mutation_writer::textarea_value::tests::controlled_textarea_value_is_ready_before_first_layout_and_survives_layout ... ok
+test mutation_writer::textarea_value::tests::controlled_empty_value_dominates_children_and_uncontrolled_uses_children ... ok
+test aether_document::tests::ime_composition_routes_to_typed_handlers_and_commits_input_once ... ok
+test aether_document::tests::keyed_nodes_do_not_crash ... ok
+test aether_document::tests::todo_like_stress ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.06s
+

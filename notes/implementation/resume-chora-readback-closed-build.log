@@ -1,0 +1,11 @@
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_bridge_protocol-17083qnm7lno0\s-ho4xzge452-1trbgz1-working`
+
+warning: `aether-chora-bridge-protocol` (lib) generated 1 warning
+   Compiling aether-chora-client v0.1.0 (C:\github\Aether\packages\chora-client)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_client-2x1015t2e054a\s-ho520dn85k-153pj02-working`
+
+warning: `aether-chora-client` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\worker_readback-0p3dcod3wuoyo\s-ho520hph3z-1qj35ju-working`
+
+warning: `aether-chora-client` (example "worker_readback") generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 18.32s

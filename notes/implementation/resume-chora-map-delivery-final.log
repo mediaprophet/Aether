@@ -1,0 +1,13 @@
+   Compiling chora-etalon-api-probe v0.0.0 (C:\github\chora\support\etalon\api-probe)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\target\api-probe\debug\incremental\chora_etalon_api_probe-0coa5zluk5fjk\s-ho34elsvqp-1uy89xe-working`
+
+warning: `chora-etalon-api-probe` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 23.80s
+     Running unittests src\lib.rs (C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\target\api-probe\debug\deps\chora_etalon_api_probe-b35a004a9106307b.exe)
+
+running 2 tests
+test map_delivery::tests::ipc_sizes_cannot_expand_truncate_or_overflow_the_actual_mapping ... ok
+test chora_closed_device::tests::map_delivery_retains_only_acknowledged_successful_mappings ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.02s
+

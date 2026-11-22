@@ -1,0 +1,16 @@
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+   Compiling bytemuck_derive v1.12.1
+   Compiling cfg-if v1.0.5
+   Compiling libm v0.2.16
+   Compiling autocfg v1.5.1
+   Compiling equivalent v1.0.3
+   Compiling indexmap v2.14.2
+   Compiling num-traits v0.2.19
+   Compiling bytemuck v1.25.2
+   Compiling syn v2.0.119
+   Compiling rustc-hash v1.1.0
+   Compiling zerocopy v0.8.63

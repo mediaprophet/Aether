@@ -1,0 +1,209 @@
+    Checking chora-etalon-api-probe v0.0.0 (C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\support\etalon\api-probe)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\target\api-probe\debug\incremental\chora_etalon_api_probe-3cag8atmln5m0\s-ho2tcv3pmb-0bnapp2-working`
+
+warning: unused imports: `Adapter`, `BindGroupLayout`, `BindGroup`, `Buffer`, `CommandBuffer`, `CommandEncoder`, `ComputePassEncoder`, `ComputePipeline`, `Device`, `ExternalTexture`, `PipelineLayout`, `QuerySet`, `Queue`, `RenderBundleEncoder`, `RenderBundle`, `RenderPassEncoder`, `RenderPipeline`, `Sampler`, `ShaderModule`, `TextureView`, and `Texture`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:9:9
+   |
+ 9 |         Adapter, BindGroup, BindGroupLayout, Buffer, CommandBuffer, CommandEncoder,
+   |         ^^^^^^^  ^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^
+10 |         ComputePassEncoder, ComputePipeline, Device, ExternalTexture, PipelineLayout, QuerySet,
+   |         ^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^
+11 |         Queue, RenderBundle, RenderBundleEncoder, RenderPassEncoder, RenderPipeline, Sampler,
+   |         ^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^
+12 |         ShaderModule, Texture, TextureView,
+   |         ^^^^^^^^^^^^  ^^^^^^^  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `AdapterId`, `BindGroupId`, `BindGroupLayoutId`, `BufferId`, `CommandBufferId`, `CommandEncoderId`, `ComputePassEncoderId`, `ComputePipelineId`, `DeviceId`, `ExternalTextureId`, `PipelineLayoutId`, `QuerySetId`, `QueueId`, `RenderBundleEncoderId`, `RenderBundleId`, `RenderPassEncoderId`, `RenderPipelineId`, `SamplerId`, `ShaderModuleId`, `TextureId`, and `TextureViewId`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:17:9
+   |
+17 |         AdapterId, BindGroupId, BindGroupLayoutId, BufferId, CommandBufferId, CommandEncoderId,
+   |         ^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+18 |         ComputePassEncoderId, ComputePipelineId, DeviceId, ExternalTextureId, PipelineLayoutId,
+   |         ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^
+19 |         QuerySetId, QueueId, RenderBundleEncoderId, RenderBundleId, RenderPassEncoderId,
+   |         ^^^^^^^^^^  ^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^
+20 |         RenderPipelineId, SamplerId, ShaderModuleId, TextureId, TextureViewId,
+   |         ^^^^^^^^^^^^^^^^  ^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^^  ^^^^^^^^^^^^^
+
+warning: unused import: `etalon_core_remote_types::Label`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:23:9
+   |
+23 | pub use etalon_core_remote_types::Label;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `BindGroupDescriptor`, `BindGroupEntry`, `BindGroupLayoutDescriptor`, `BindGroupLayoutEntry`, `BindingResource`, `BufferBindingLayout`, `BufferBinding`, `SamplerBindingLayout`, `StorageTextureBindingLayout`, and `TextureBindingLayout`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:25:5
+   |
+25 |     BindGroupDescriptor, BindGroupEntry, BindGroupLayoutDescriptor, BindGroupLayoutEntry,
+   |     ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+26 |     BindingResource, BufferBinding, BufferBindingLayout, SamplerBindingLayout,
+   |     ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+27 |     StorageTextureBindingLayout, TextureBindingLayout,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ComputePassDescriptor`, `LoadOp`, `PassChannel`, `PassTimestampWrites`, `RenderBundleDescriptor`, `RenderBundleEncoderDescriptor`, `RenderPassColorAttachment`, `RenderPassDepthStencilAttachment`, `RenderPassDescriptor`, `TexelCopyBufferInfo`, and `TexelCopyTextureInfo`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:30:5
+   |
+30 |     ComputePassDescriptor, LoadOp, PassChannel, PassTimestampWrites, RenderBundleDescriptor,
+   |     ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^
+31 |     RenderBundleEncoderDescriptor, RenderPassColorAttachment, RenderPassDepthStencilAttachment,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+32 |     RenderPassDescriptor, TexelCopyBufferInfo, TexelCopyTextureInfo,
+   |     ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `wgpu_types::MapMode as HostMap`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:35:9
+   |
+35 | pub use wgpu_types::MapMode as HostMap;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `etalon_core_remote_types::BufferMapError as BufferAccessError`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:43:9
+   |
+43 | pub use etalon_core_remote_types::BufferMapError as BufferAccessError;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `etalon_core_remote_types::ImplementedLanguageExtension`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:44:9
+   |
+44 | pub use etalon_core_remote_types::ImplementedLanguageExtension;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `etalon_core_remote_types::RequestAdapterOptions`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:45:9
+   |
+45 | pub use etalon_core_remote_types::RequestAdapterOptions;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `etalon_core_remote_types::identity::IdentityManager`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:46:9
+   |
+46 | pub use etalon_core_remote_types::identity::IdentityManager;
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `ComputePipelineDescriptor`, `FragmentState`, `ProgrammableStageDescriptor`, `RenderPipelineDescriptor`, `VertexBufferLayout`, and `VertexState`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:48:5
+   |
+48 |     ComputePipelineDescriptor, FragmentState, ProgrammableStageDescriptor,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+49 |     RenderPipelineDescriptor, VertexBufferLayout, VertexState,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: unused imports: `BufferDescriptor`, `PipelineLayoutDescriptor`, `QuerySetDescriptor`, `SamplerDescriptor`, `ShaderModuleDescriptor`, `TextureDescriptor`, and `TextureViewDescriptor`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:52:5
+   |
+52 |     BufferDescriptor, PipelineLayoutDescriptor, QuerySetDescriptor, SamplerDescriptor,
+   |     ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+53 |     ShaderModuleDescriptor, TextureDescriptor, TextureViewDescriptor,
+   |     ^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `AdapterInfo`, `AddressMode`, `AstcBlock`, `AstcChannel`, `BindingType`, `BlendComponent`, `BlendFactor`, `BlendOperation`, `BlendState`, `BufferAddress`, `BufferBindingType`, `BufferSize`, `BufferUsagesWebGPU as BufferUsages`, `COPY_BUFFER_ALIGNMENT`, `ColorTargetState`, `ColorWrites`, `Color`, `CommandBufferDescriptor`, `CommandEncoderDescriptor`, `CompareFunction`, `DepthBiasState`, `DepthStencilState`, `DeviceDescriptor`, `DeviceType`, `ExperimentalFeatures`, `Extent3d`, `Face`, `Features`, `FilterMode`, `FrontFace`, `ImageSubresourceRange`, `IndexFormat`, `Limits`, `MAP_ALIGNMENT`, `MemoryHints`, `MipmapFilterMode`, `MultisampleState`, `Origin2d`, `Origin3d`, `PowerPreference`, `PredefinedColorSpace`, `PrimitiveState`, `PrimitiveTopology`, `QueryType`, `RenderBundleDepthStencil`, `SamplerBindingType`, `ShaderStagesWebGPU as ShaderStages`, `StencilFaceState`, `StencilOperation`, `StencilState`, `StorageTextureAccess`, `StoreOp`, `TexelCopyBufferLayout`, `TextureAspect`, `TextureDimension`, `TextureFormat`, `TextureSampleType`, `TextureUsages`, `TextureViewDimension`, `Trace`, `VertexAttribute`, `VertexFormat`, and `VertexStepMode`
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:56:5
+   |
+56 |     AdapterInfo, AddressMode, AstcBlock, AstcChannel, BindingType, BlendComponent, BlendFactor,
+   |     ^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^^^^
+57 |     BlendOperation, BlendState, BufferAddress, BufferBindingType, BufferSize,
+   |     ^^^^^^^^^^^^^^  ^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^
+58 |     BufferUsagesWebGPU as BufferUsages, COPY_BUFFER_ALIGNMENT, Color, ColorTargetState,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^  ^^^^^  ^^^^^^^^^^^^^^^^
+59 |     ColorWrites, CommandBufferDescriptor, CommandEncoderDescriptor, CompareFunction,
+   |     ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^
+60 |     DepthBiasState, DepthStencilState, DeviceDescriptor, DeviceType, ExperimentalFeatures,
+   |     ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^
+61 |     Extent3d, Face, Features, FilterMode, FrontFace, ImageSubresourceRange, IndexFormat, Limits,
+   |     ^^^^^^^^  ^^^^  ^^^^^^^^  ^^^^^^^^^^  ^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^
+62 |     MAP_ALIGNMENT, MemoryHints, MipmapFilterMode, MultisampleState, Origin2d, Origin3d,
+   |     ^^^^^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^  ^^^^^^^^
+63 |     PowerPreference, PredefinedColorSpace, PrimitiveState, PrimitiveTopology, QueryType,
+   |     ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^  ^^^^^^^^^
+64 |     RenderBundleDepthStencil, SamplerBindingType, ShaderStagesWebGPU as ShaderStages,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+65 |     StencilFaceState, StencilOperation, StencilState, StorageTextureAccess, StoreOp,
+   |     ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^
+66 |     TexelCopyBufferLayout, TextureAspect, TextureDimension, TextureFormat, TextureSampleType,
+   |     ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+67 |     TextureUsages, TextureViewDimension, Trace, VertexAttribute, VertexFormat, VertexStepMode,
+   |     ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^^^^^^^  ^^^^^^^^^^^^^^
+
+warning: method `cancel_all` is never used
+  --> src\..\..\..\..\components\webgpu\owner_queue.rs:46:19
+   |
+20 | impl<T: 'static, R: Send + 'static> OwnerQueue<T, R> {
+   | ---------------------------------------------------- method in this implementation
+...
+46 |     pub(crate) fn cancel_all(&self, owner: &T, mut result: impl FnMut() -> R) {
+   |                   ^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `handle_render_pass_command` is never used
+  --> src\..\..\..\..\components\webgpu\encoders.rs:14:15
+   |
+14 | pub(crate) fn handle_render_pass_command(
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `handle_render_bundle_command` is never used
+   --> src\..\..\..\..\components\webgpu\encoders.rs:149:15
+    |
+149 | pub(crate) fn handle_render_bundle_command(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `handle_compute_pass_command` is never used
+   --> src\..\..\..\..\components\webgpu\encoders.rs:258:15
+    |
+258 | pub(crate) fn handle_compute_pass_command(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `handle_command_encoder_command` is never used
+   --> src\..\..\..\..\components\webgpu\encoders.rs:312:15
+    |
+312 | pub(crate) fn handle_command_encoder_command(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `ffi_option` is never used
+  --> src\..\..\..\..\components\shared\webgpu\types.rs:37:8
+   |
+37 | pub fn ffi_option<T>(value: Option<T>) -> FfiOption<T> {
+   |        ^^^^^^^^^^
+
+warning: struct `ErrorScope` is never constructed
+  --> src\..\..\..\..\components\shared\webgpu\error.rs:14:12
+   |
+14 | pub struct ErrorScope {
+   |            ^^^^^^^^^^
+
+warning: associated function `new` is never used
+  --> src\..\..\..\..\components\shared\webgpu\error.rs:20:12
+   |
+19 | impl ErrorScope {
+   | --------------- associated function in this implementation
+20 |     pub fn new(filter: ErrorFilter) -> Self {
+   |            ^^^
+
+warning: enum `ErrorFilter` is never used
+  --> src\..\..\..\..\components\shared\webgpu\error.rs:30:10
+   |
+30 | pub enum ErrorFilter {
+   |          ^^^^^^^^^^^
+
+warning: associated items `filter` and `from_wgpu_error` are never used
+  --> src\..\..\..\..\components\shared\webgpu\error.rs:57:12
+   |
+56 | impl Error {
+   | ---------- associated items in this implementation
+57 |     pub fn filter(&self) -> ErrorFilter {
+   |            ^^^^^^
+...
+76 |     pub fn from_wgpu_error<E: WebGpuError>(error: E) -> Option<Self> {
+   |            ^^^^^^^^^^^^^^^
+
+warning: enum `PopError` is never used
+  --> src\..\..\..\..\components\shared\webgpu\error.rs:87:10
+   |
+87 | pub enum PopError {
+   |          ^^^^^^^^
+
+warning: `chora-etalon-api-probe` (lib) generated 25 warnings (run `cargo fix --lib -p chora-etalon-api-probe` to apply 13 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.03s

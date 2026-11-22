@@ -6,6 +6,9 @@
 //! entirely by the borrow checker. No `RefCell`, no runtime borrow counting.
 
 /// Maximum number of structural segments stored inline on the stack.
+///
+/// A Quin slot and its word consume three segments, leaving five for the
+/// window's parent path.
 pub const MAX_INLINE_PATH_DEPTH: usize = 8;
 
 /// A zero-heap, stack-allocated structural path into the state tree.
@@ -37,13 +40,25 @@ impl InlinePath {
     /// Panics if the path depth exceeds [`MAX_INLINE_PATH_DEPTH`].
     #[inline]
     pub fn push(&mut self, segment: u32) {
-        let idx = self.len as usize;
         assert!(
-            idx < MAX_INLINE_PATH_DEPTH,
+            self.try_push(segment as usize),
             "InlinePath depth exceeded MAX_INLINE_PATH_DEPTH ({MAX_INLINE_PATH_DEPTH})"
         );
-        self.segments[idx] = segment;
+    }
+
+    /// Try appending a segment that fits in a u32 without exceeding the depth limit.
+    /// A failed append leaves the path unchanged.
+    #[inline]
+    pub fn try_push(&mut self, index: usize) -> bool {
+        let Ok(segment) = u32::try_from(index) else {
+            return false;
+        };
+        let Some(slot) = self.segments.get_mut(self.len as usize) else {
+            return false;
+        };
+        *slot = segment;
         self.len += 1;
+        true
     }
 
     /// Return the number of active segments in the path.

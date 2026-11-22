@@ -1,0 +1,12 @@
+    Checking aether-chora-client v0.1.0 (C:\github\Aether\packages\chora-client)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_chora_client-26r2c495sr6v8\s-ho50f7bwuo-1ob95l1-working`
+
+warning: `aether-chora-client` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_asset_resolver-1x3x3rdwd8oiu\s-ho36fjk9gn-0dnjy0f-working`
+
+warning: `aether-asset-resolver` (lib) generated 1 warning
+    Checking aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_native-38o4dj6f0o8jr\s-ho50f8l6qs-0hoen8t-working`
+
+warning: `aether-native` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 32.02s

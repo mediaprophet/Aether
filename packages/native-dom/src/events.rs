@@ -1,4 +1,20 @@
 use aether_html::{
+    DataTransfer, FileData, HasAnimationData, HasBeforeInputData, HasCancelData, HasClipboardData,
+    HasDataTransferData, HasDragData, HasImageData, HasMediaData, HasResizeData, HasSelectionData,
+    HasToggleData, HasTransitionData, HasVisibleData, InputType,
+    NativeDataTransfer as DataTransferBacking, ResizeResult, SelectionDirection, TextSelection,
+    VisibleResult,
+};
+use blitz_traits::events::{
+    BlitzBeforeInputEvent, BlitzImageEvent, BlitzResizeEvent, BlitzSelectionEvent, BlitzToggleEvent,
+};
+use std::{
+    collections::BTreeMap,
+    sync::{Arc, Mutex},
+    time::SystemTime,
+};
+
+use aether_html::{
     AnimationData, BeforeInputData, CancelData, ClipboardData, CompositionData, DragData,
     FocusData, FormData, FormValue, HasCompositionData, HasFileData, HasFocusData, HasFormData,
     HasKeyboardData, HasMouseData, HasPointerData, HasScrollData, HasTouchData, HasTouchPointData,
@@ -71,8 +87,7 @@ impl std::error::Error for UnsupportedNativeEvent {}
 
 /// Check the native backend's application event capability before requesting an event.
 ///
-/// This reports payload/routing support, not platform delivery or web compatibility.
-/// In particular, clipboard, drag, beforeinput and animation events are not emitted.
+/// Reports events backed by an input source or an operation in the native document.
 pub fn native_event_support(name: &str) -> Result<(), UnsupportedNativeEvent> {
     match name.strip_prefix("on").unwrap_or(name) {
         "pointermove" | "pointerdown" | "pointerup" | "pointercancel" | "pointerenter"
@@ -81,7 +96,9 @@ pub fn native_event_support(name: &str) -> Result<(), UnsupportedNativeEvent> {
         | "touchend" | "touchcancel" | "scroll" | "wheel" | "click" | "contextmenu"
         | "dblclick" | "keydown" | "keyup" | "keypress" | "input" | "focus" | "blur"
         | "focusin" | "focusout" | "mounted" | "compositionstart" | "compositionupdate"
-        | "compositionend" => Ok(()),
+        | "compositionend" | "copy" | "cut" | "paste" | "beforeinput" | "select"
+        | "selectionchange" | "beforetoggle" | "toggle" | "resize" | "load" | "error"
+        | "change" | "submit" | "reset" | "cancel" => Ok(()),
         _ => Err(UnsupportedNativeEvent::new(name)),
     }
 }
@@ -128,6 +145,29 @@ impl NativeConverter {
                 value: event.value.clone(),
                 values: vec![],
             }),
+            DomEventData::Copy(event) | DomEventData::Cut(event) | DomEventData::Paste(event) => {
+                Box::new(NativeClipboardData(NativeDataTransfer::with_text(
+                    event.text.clone(),
+                )))
+            }
+            DomEventData::BeforeInput(event) => Box::new(NativeBeforeInputData(event.clone())),
+            DomEventData::Select(event) | DomEventData::SelectionChange(event) => {
+                Box::new(NativeSelectionData(event.clone()))
+            }
+            DomEventData::BeforeToggle(event) | DomEventData::Toggle(event) => {
+                Box::new(NativeToggleData(event.clone()))
+            }
+            DomEventData::Resize(event) => Box::new(NativeResizeData(event.clone())),
+            DomEventData::Load(event) | DomEventData::Error(event) => {
+                Box::new(NativeImageData(event.clone()))
+            }
+            DomEventData::Change(event)
+            | DomEventData::Submit(event)
+            | DomEventData::Reset(event) => Box::new(NativeFormData {
+                value: event.value.clone(),
+                values: vec![],
+            }),
+            DomEventData::Cancel(_) => Box::new(NativeCancelData),
             DomEventData::Ime(_) | DomEventData::AppleStandardKeybinding(_) => {
                 return Err(UnsupportedNativeEvent::new(event.name()));
             }
@@ -236,13 +276,14 @@ impl NativeCompositionState {
     }
 }
 
-// The inherited converter trait is infallible. Unsupported event families cannot
-// return absence here without fabricating payloads. `convert_dom_event` and the
-// composition state machine are the checked dispatch boundary; callers querying
-// capabilities must use `native_event_support` instead of invoking these stubs.
+// The checked converter selects the payload before the infallible HTML conversion.
 impl HtmlEventConverter for NativeConverter {
-    fn convert_cancel_data(&self, _event: &PlatformEventData) -> CancelData {
-        unimplemented!("todo: convert_cancel_data in aether-native. requires support in blitz")
+    fn convert_cancel_data(&self, event: &PlatformEventData) -> CancelData {
+        event
+            .downcast::<NativeCancelData>()
+            .expect("native cancel payload")
+            .clone()
+            .into()
     }
 
     fn convert_form_data(&self, event: &PlatformEventData) -> FormData {
@@ -269,18 +310,28 @@ impl HtmlEventConverter for NativeConverter {
         NativeFocusData {}.into()
     }
 
-    fn convert_animation_data(&self, _event: &PlatformEventData) -> AnimationData {
-        unimplemented!("todo: convert_animation_data in aether-native. requires support in blitz")
+    fn convert_animation_data(&self, event: &PlatformEventData) -> AnimationData {
+        event
+            .downcast::<NativeAnimationData>()
+            .expect("native animation payload")
+            .clone()
+            .into()
     }
 
-    fn convert_before_input_data(&self, _event: &PlatformEventData) -> BeforeInputData {
-        unimplemented!(
-            "todo: convert_before_input_data in aether-native. requires support in blitz"
-        )
+    fn convert_before_input_data(&self, event: &PlatformEventData) -> BeforeInputData {
+        event
+            .downcast::<NativeBeforeInputData>()
+            .expect("native before input payload")
+            .clone()
+            .into()
     }
 
-    fn convert_clipboard_data(&self, _event: &PlatformEventData) -> ClipboardData {
-        unimplemented!("todo: convert_clipboard_data in aether-native. requires support in blitz")
+    fn convert_clipboard_data(&self, event: &PlatformEventData) -> ClipboardData {
+        event
+            .downcast::<NativeClipboardData>()
+            .expect("native clipboard payload")
+            .clone()
+            .into()
     }
 
     fn convert_composition_data(&self, event: &PlatformEventData) -> CompositionData {
@@ -291,16 +342,28 @@ impl HtmlEventConverter for NativeConverter {
             .into()
     }
 
-    fn convert_drag_data(&self, _event: &PlatformEventData) -> DragData {
-        unimplemented!("todo: convert_drag_data in aether-native. requires support in blitz")
+    fn convert_drag_data(&self, event: &PlatformEventData) -> DragData {
+        event
+            .downcast::<NativeDragData>()
+            .expect("native drag payload")
+            .clone()
+            .into()
     }
 
-    fn convert_image_data(&self, _event: &PlatformEventData) -> ImageData {
-        unimplemented!("todo: convert_image_data in aether-native. requires support in blitz")
+    fn convert_image_data(&self, event: &PlatformEventData) -> ImageData {
+        event
+            .downcast::<NativeImageData>()
+            .expect("native image payload")
+            .clone()
+            .into()
     }
 
-    fn convert_media_data(&self, _event: &PlatformEventData) -> MediaData {
-        unimplemented!("todo: convert_media_data in aether-native. requires support in blitz")
+    fn convert_media_data(&self, event: &PlatformEventData) -> MediaData {
+        event
+            .downcast::<NativeMediaData>()
+            .expect("native media payload")
+            .clone()
+            .into()
     }
 
     fn convert_mounted_data(&self, event: &PlatformEventData) -> MountedData {
@@ -319,32 +382,367 @@ impl HtmlEventConverter for NativeConverter {
         event.downcast::<NativeScrollData>().unwrap().clone().into()
     }
 
-    fn convert_selection_data(&self, _event: &PlatformEventData) -> SelectionData {
-        unimplemented!("todo: convert_selection_data in aether-native. requires support in blitz")
+    fn convert_selection_data(&self, event: &PlatformEventData) -> SelectionData {
+        event
+            .downcast::<NativeSelectionData>()
+            .expect("native selection payload")
+            .clone()
+            .into()
     }
 
-    fn convert_toggle_data(&self, _event: &PlatformEventData) -> ToggleData {
-        unimplemented!("todo: convert_toggle_data in aether-native. requires support in blitz")
+    fn convert_toggle_data(&self, event: &PlatformEventData) -> ToggleData {
+        event
+            .downcast::<NativeToggleData>()
+            .expect("native toggle payload")
+            .clone()
+            .into()
     }
 
     fn convert_touch_data(&self, event: &PlatformEventData) -> TouchData {
         event.downcast::<NativeTouchData>().unwrap().clone().into()
     }
 
-    fn convert_transition_data(&self, _event: &PlatformEventData) -> TransitionData {
-        unimplemented!("todo: convert_transition_data in aether-native. requires support in blitz")
+    fn convert_transition_data(&self, event: &PlatformEventData) -> TransitionData {
+        event
+            .downcast::<NativeTransitionData>()
+            .expect("native transition payload")
+            .clone()
+            .into()
     }
 
     fn convert_wheel_data(&self, event: &PlatformEventData) -> WheelData {
         event.downcast::<NativeWheelData>().unwrap().clone().into()
     }
 
-    fn convert_resize_data(&self, _event: &PlatformEventData) -> ResizeData {
-        unimplemented!("todo: convert_resize_data in aether-native. requires support in blitz")
+    fn convert_resize_data(&self, event: &PlatformEventData) -> ResizeData {
+        event
+            .downcast::<NativeResizeData>()
+            .expect("native resize payload")
+            .clone()
+            .into()
     }
 
-    fn convert_visible_data(&self, _event: &PlatformEventData) -> VisibleData {
-        unimplemented!("todo: convert_visible_data in aether-native. requires support in blitz")
+    fn convert_visible_data(&self, event: &PlatformEventData) -> VisibleData {
+        event
+            .downcast::<NativeVisibleData>()
+            .expect("native visible payload")
+            .clone()
+            .into()
+    }
+}
+
+#[derive(Clone)]
+struct NativeCancelData;
+impl HasCancelData for NativeCancelData {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeBeforeInputData(BlitzBeforeInputEvent);
+impl HasBeforeInputData for NativeBeforeInputData {
+    fn input_type(&self) -> InputType {
+        InputType::from(self.0.input_type.as_str())
+    }
+    fn data(&self) -> Option<String> {
+        self.0.data.clone()
+    }
+    fn is_composing(&self) -> bool {
+        self.0.is_composing
+    }
+    fn value(&self) -> String {
+        self.0.value.clone()
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone, Default)]
+struct NativeDataTransfer(Arc<Mutex<TransferContents>>);
+
+#[derive(Default)]
+struct TransferContents {
+    items: BTreeMap<String, String>,
+    files: Vec<FileData>,
+    effect_allowed: Option<String>,
+    drop_effect: Option<String>,
+}
+
+impl NativeDataTransfer {
+    fn with_text(text: String) -> Self {
+        Self(Arc::new(Mutex::new(TransferContents {
+            items: BTreeMap::from([("text/plain".into(), text)]),
+            ..Default::default()
+        })))
+    }
+
+    fn contents(&self) -> std::sync::MutexGuard<'_, TransferContents> {
+        self.0.lock().unwrap_or_else(|poison| poison.into_inner())
+    }
+}
+
+impl DataTransferBacking for NativeDataTransfer {
+    fn get_data(&self, format: &str) -> Option<String> {
+        self.contents().items.get(format).cloned()
+    }
+    fn set_data(&self, format: &str, data: &str) -> Result<(), String> {
+        self.contents().items.insert(format.into(), data.into());
+        Ok(())
+    }
+    fn clear_data(&self, format: Option<&str>) -> Result<(), String> {
+        let mut contents = self.contents();
+        if let Some(format) = format {
+            contents.items.remove(format);
+        } else {
+            contents.items.clear();
+        }
+        Ok(())
+    }
+    fn effect_allowed(&self) -> String {
+        self.contents()
+            .effect_allowed
+            .clone()
+            .unwrap_or_else(|| "uninitialized".into())
+    }
+    fn set_effect_allowed(&self, effect: &str) {
+        self.contents().effect_allowed = Some(effect.into());
+    }
+    fn drop_effect(&self) -> String {
+        self.contents()
+            .drop_effect
+            .clone()
+            .unwrap_or_else(|| "none".into())
+    }
+    fn set_drop_effect(&self, effect: &str) {
+        self.contents().drop_effect = Some(effect.into());
+    }
+    fn files(&self) -> Vec<FileData> {
+        self.contents().files.clone()
+    }
+}
+
+/// Native clipboard payload with a snapshot of the text formats in the transfer.
+#[derive(Clone)]
+pub struct NativeClipboardData(NativeDataTransfer);
+
+impl NativeClipboardData {
+    /// Return the current MIME-format and text pairs from this event transfer.
+    pub fn items(&self) -> Vec<(String, String)> {
+        self.0
+            .contents()
+            .items
+            .iter()
+            .map(|(format, text)| (format.clone(), text.clone()))
+            .collect()
+    }
+}
+impl HasFileData for NativeClipboardData {
+    fn files(&self) -> Vec<FileData> {
+        self.0.files()
+    }
+}
+impl HasDataTransferData for NativeClipboardData {
+    fn data_transfer(&self) -> DataTransfer {
+        DataTransfer::new(self.0.clone())
+    }
+}
+impl HasClipboardData for NativeClipboardData {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeDragData {
+    pointer: NativePointerData,
+    transfer: NativeDataTransfer,
+}
+impl InteractionLocation for NativeDragData {
+    fn client_coordinates(&self) -> ClientPoint {
+        self.pointer.client_coordinates()
+    }
+    fn screen_coordinates(&self) -> ScreenPoint {
+        self.pointer.screen_coordinates()
+    }
+    fn page_coordinates(&self) -> PagePoint {
+        self.pointer.page_coordinates()
+    }
+}
+impl InteractionElementOffset for NativeDragData {
+    fn element_coordinates(&self) -> ElementPoint {
+        self.pointer.element_coordinates()
+    }
+}
+impl ModifiersInteraction for NativeDragData {
+    fn modifiers(&self) -> Modifiers {
+        self.pointer.modifiers()
+    }
+}
+impl PointerInteraction for NativeDragData {
+    fn trigger_button(&self) -> Option<MouseButton> {
+        self.pointer.trigger_button()
+    }
+    fn held_buttons(&self) -> MouseButtonSet {
+        self.pointer.held_buttons()
+    }
+}
+impl HasMouseData for NativeDragData {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+impl HasFileData for NativeDragData {
+    fn files(&self) -> Vec<FileData> {
+        self.transfer.files()
+    }
+}
+impl HasDataTransferData for NativeDragData {
+    fn data_transfer(&self) -> DataTransfer {
+        DataTransfer::new(self.transfer.clone())
+    }
+}
+impl HasDragData for NativeDragData {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeImageData(BlitzImageEvent);
+impl HasImageData for NativeImageData {
+    fn load_error(&self) -> bool {
+        self.0.load_error
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeMediaData;
+impl HasMediaData for NativeMediaData {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeSelectionData(BlitzSelectionEvent);
+impl HasSelectionData for NativeSelectionData {
+    fn selection(&self) -> Option<TextSelection> {
+        Some(TextSelection::new(
+            self.0.start_offset..self.0.end_offset,
+            SelectionDirection::None,
+        ))
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+/// Boolean state carried by native beforetoggle and toggle handlers.
+#[derive(Clone)]
+pub struct NativeToggleData(pub BlitzToggleEvent);
+impl HasToggleData for NativeToggleData {
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeTransitionData {
+    property_name: String,
+    pseudo_element: String,
+    elapsed_time: f32,
+}
+impl HasTransitionData for NativeTransitionData {
+    fn property_name(&self) -> String {
+        self.property_name.clone()
+    }
+    fn pseudo_element(&self) -> String {
+        self.pseudo_element.clone()
+    }
+    fn elapsed_time(&self) -> f32 {
+        self.elapsed_time
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeAnimationData {
+    animation_name: String,
+    pseudo_element: String,
+    elapsed_time: f32,
+}
+impl HasAnimationData for NativeAnimationData {
+    fn animation_name(&self) -> String {
+        self.animation_name.clone()
+    }
+    fn pseudo_element(&self) -> String {
+        self.pseudo_element.clone()
+    }
+    fn elapsed_time(&self) -> f32 {
+        self.elapsed_time
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeResizeData(BlitzResizeEvent);
+impl HasResizeData for NativeResizeData {
+    fn get_border_box_size(&self) -> ResizeResult<PixelsSize> {
+        Ok(Size2D::new(
+            self.0.border_box_width,
+            self.0.border_box_height,
+        ))
+    }
+    fn get_content_box_size(&self) -> ResizeResult<PixelsSize> {
+        Ok(Size2D::new(
+            self.0.content_box_width,
+            self.0.content_box_height,
+        ))
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
+    }
+}
+
+#[derive(Clone)]
+struct NativeVisibleData {
+    bounds: PixelsRect,
+    intersection: PixelsRect,
+    root: PixelsRect,
+    ratio: f64,
+    intersecting: bool,
+    time: SystemTime,
+}
+impl HasVisibleData for NativeVisibleData {
+    fn get_bounding_client_rect(&self) -> VisibleResult<PixelsRect> {
+        Ok(self.bounds)
+    }
+    fn get_intersection_ratio(&self) -> VisibleResult<f64> {
+        Ok(self.ratio)
+    }
+    fn get_intersection_rect(&self) -> VisibleResult<PixelsRect> {
+        Ok(self.intersection)
+    }
+    fn is_intersecting(&self) -> VisibleResult<bool> {
+        Ok(self.intersecting)
+    }
+    fn get_root_bounds(&self) -> VisibleResult<PixelsRect> {
+        Ok(self.root)
+    }
+    fn get_time(&self) -> VisibleResult<SystemTime> {
+        Ok(self.time)
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 }
 
@@ -1079,17 +1477,106 @@ mod tests {
     }
 
     #[test]
+    fn native_dom_events_round_trip_into_typed_payloads() {
+        use blitz_traits::events::{BlitzCancelEvent, BlitzClipboardEvent, BlitzFormActionEvent};
+        let convert = |event| NativeConverter::convert_dom_event(&event).unwrap();
+        for event in [DomEventData::Copy, DomEventData::Cut, DomEventData::Paste] {
+            let data = convert(event(BlitzClipboardEvent {
+                text: "selected".into(),
+            }));
+            let clipboard = NativeConverter {}.convert_clipboard_data(&data);
+            let transfer = clipboard.data_transfer();
+            assert_eq!(transfer.get_as_text().as_deref(), Some("selected"));
+            transfer.set_data("text/plain", "changed").unwrap();
+            assert_eq!(
+                clipboard.data_transfer().get_as_text().as_deref(),
+                Some("changed")
+            );
+        }
+        let data = convert(DomEventData::BeforeInput(BlitzBeforeInputEvent {
+            input_type: "insertText".into(),
+            data: Some("x".into()),
+            is_composing: true,
+            value: "old".into(),
+        }));
+        let edit = NativeConverter {}.convert_before_input_data(&data);
+        assert_eq!(edit.input_type().as_str(), "insertText");
+        assert_eq!(edit.data().as_deref(), Some("x"));
+        assert_eq!(edit.value(), "old");
+        assert!(edit.is_composing());
+        for event in [DomEventData::Select, DomEventData::SelectionChange] {
+            let data = convert(event(BlitzSelectionEvent {
+                selected_text: "x".into(),
+                start_offset: 1,
+                end_offset: 2,
+            }));
+            assert_eq!(
+                NativeConverter {}
+                    .convert_selection_data(&data)
+                    .selection()
+                    .unwrap()
+                    .range(),
+                1..2
+            );
+        }
+        for event in [DomEventData::BeforeToggle, DomEventData::Toggle] {
+            let data = convert(event(BlitzToggleEvent {
+                old_state: false,
+                new_state: true,
+            }));
+            let toggle = NativeConverter {}.convert_toggle_data(&data);
+            assert!(toggle.downcast::<NativeToggleData>().unwrap().0.new_state);
+        }
+        for (event, load_error) in [
+            (DomEventData::Load as fn(_) -> _, false),
+            (DomEventData::Error, true),
+        ] {
+            let data = convert(event(BlitzImageEvent { load_error }));
+            assert_eq!(
+                NativeConverter {}.convert_image_data(&data).load_error(),
+                load_error
+            );
+        }
+        let data = convert(DomEventData::Resize(BlitzResizeEvent {
+            border_box_width: 20.0,
+            border_box_height: 10.0,
+            content_box_width: 18.0,
+            content_box_height: 8.0,
+        }));
+        let resize = NativeConverter {}.convert_resize_data(&data);
+        assert_eq!(
+            resize.get_border_box_size().unwrap(),
+            Size2D::new(20.0, 10.0)
+        );
+        assert_eq!(
+            resize.get_content_box_size().unwrap(),
+            Size2D::new(18.0, 8.0)
+        );
+        for event in [
+            DomEventData::Change,
+            DomEventData::Submit,
+            DomEventData::Reset,
+        ] {
+            let data = convert(event(BlitzFormActionEvent {
+                value: "value".into(),
+            }));
+            assert_eq!(NativeConverter {}.convert_form_data(&data).value(), "value");
+        }
+        let data = convert(DomEventData::Cancel(BlitzCancelEvent));
+        assert!(
+            NativeConverter {}
+                .convert_cancel_data(&data)
+                .downcast::<NativeCancelData>()
+                .is_some()
+        );
+    }
+
+    #[test]
     fn unsupported_native_events_report_capability_errors_without_fake_data() {
         for name in [
-            "beforeinput",
-            "copy",
-            "paste",
             "drag",
             "animationstart",
-            "resize",
             "visible",
-            "selectionchange",
-            "toggle",
             "composition",
             "not-an-event",
         ] {
@@ -1097,6 +1584,12 @@ mod tests {
         }
         for name in [
             "oninput",
+            "beforeinput",
+            "copy",
+            "paste",
+            "resize",
+            "selectionchange",
+            "toggle",
             "pointerdown",
             "touchcancel",
             "compositionstart",

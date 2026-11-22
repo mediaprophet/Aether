@@ -1,0 +1,25 @@
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_bridge_protocol-17083qnm7lno0\s-ho4xzge452-1trbgz1-working`
+
+warning: `aether-chora-bridge-protocol` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_client-14jubxn56slxt\s-ho4yu5lv6g-1fd3q2a-working`
+
+warning: `aether-chora-client` (lib) generated 1 warning
+   Compiling aether-chora-client v0.1.0 (C:\github\Aether\packages\chora-client)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\process-2gapeg11g2qh3\s-ho4z403xex-1nlc91o-working`
+
+warning: `aether-chora-client` (test "process") generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\transport_fixture-0fvwtrnm0ga5f\s-ho4z456ygy-02hsvpz-working`
+
+warning: `aether-chora-client` (bin "transport_fixture") generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.77s
+     Running tests\process.rs (target/chora-client\debug\deps\process-a6aaf2a566552f42.exe)
+
+running 3 tests
+transport fixture diagnostic: stdout is not the protocol pipe
+transport fixture diagnostic: stdout is not the protocol pipe
+test worker_input_watchdog_terminates_when_parent_pipe_disappears ... ok
+test wrong_session_on_private_pipe_closes_and_reaps_worker ... ok
+test real_private_pipes_deliver_frames_and_reap_uncooperative_child ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.17s
+

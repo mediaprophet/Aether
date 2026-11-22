@@ -1,0 +1,30 @@
+     Locking 25 packages to highest compatible versions
+      Adding etalon v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-apple v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-emscripten v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-linux-android-bsd v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-wasm v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-windows v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding gpu-command-profiler v0.28.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#af57e821)
+    Updating gpu-device-context v0.10.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+      Adding naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Updating pixel-buffer-output v0.17.2 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+    Updating pixel-window-render-adapter v0.9.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+    Updating rustix v1.1.4 -> v1.1.6
+    Updating vector-cpu-render-adapter v0.18.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+    Updating vector-gpu-render-adapter v0.15.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+    Updating vector-hybrid-render-adapter v0.11.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+    Updating vector-hybrid-renderer v0.3.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+    Updating vector-hybrid-shaders v0.3.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+    Updating vector-skia-render-adapter v0.12.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) -> #af57e821
+    Updating xattr v1.6.1 -> v1.7.0
+error: failed to download `libloading v0.7.4`
+
+Caused by:
+  attempting to make an HTTP request, but --offline was specified

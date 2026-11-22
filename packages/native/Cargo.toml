@@ -43,6 +43,8 @@ vello-cpu = ["vello-cpu-pixels"]
 vello-cpu-pixels = ["vello-cpu-base", "anyrender_vello_cpu/pixels_window_renderer"]
 vello-cpu-softbuffer = ["vello-cpu-base", "anyrender_vello_cpu/softbuffer_window_renderer"]
 vello-cpu-base = ["dep:anyrender_vello_cpu"]
+# Software presentation after a native renderer initialization failure.
+gpu-cpu-fallback = ["dep:anyrender_vello_cpu", "anyrender_vello_cpu/softbuffer_window_renderer"]
 
 font-embolden = ["blitz-paint/font-embolden"]
 apple-font-embolden = ["blitz-paint/apple-font-embolden"]
@@ -81,7 +83,7 @@ blitz-html = { workspace = true, optional = true }
 # widget support in every renderer profile, including minimal CPU builds.
 blitz-paint = { workspace = true, features = ["custom-widget"] }
 blitz-traits = { workspace = true }
-blitz-shell = { workspace = true }
+blitz-shell = { workspace = true, features = ["custom-widget"] }
 
 # AnyRender dependencies
 anyrender = { workspace = true }

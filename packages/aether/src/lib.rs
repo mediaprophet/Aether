@@ -42,6 +42,8 @@ pub use aether_core as core;
 #[cfg(feature = "refract")]
 #[cfg_attr(docsrs, doc(cfg(feature = "refract")))]
 pub use refract;
+#[cfg(feature = "refract")]
+pub mod refract_bridge;
 
 #[cfg(feature = "launch")]
 #[cfg_attr(docsrs, doc(cfg(feature = "launch")))]
@@ -150,6 +152,9 @@ pub use subsecond;
 pub use aether_asset_resolver as asset_resolver;
 
 pub mod prelude {
+    #[cfg(feature = "refract")]
+    pub use crate::refract_bridge::*;
+
     pub use aether_config_macros;
 
     #[cfg(feature = "document")]
@@ -216,6 +221,12 @@ pub mod prelude {
     #[cfg_attr(docsrs, doc(cfg(feature = "desktop")))]
     #[doc(inline)]
     pub use aether_desktop::{Window, WindowConfig, WindowProps};
+
+    #[cfg(feature = "native")]
+    pub use aether_native::{
+        Config as NativeConfig, NativeAppHandle, WindowClosePolicy, WindowRole, use_native_app,
+        use_window,
+    };
 
     #[cfg(feature = "devtools")]
     #[cfg_attr(docsrs, doc(cfg(feature = "devtools")))]

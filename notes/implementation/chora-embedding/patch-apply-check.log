@@ -1,0 +1,4 @@
+git apply --check exit: 0
+
+git apply exit: 0
+PASS every applied C2 file matches exported candidate after newline normalization

@@ -1168,6 +1168,7 @@ impl<'doc> DocumentMutator<'doc> {
                         SpecialElementData::Image(Box::new(cached_image.clone()));
                     node.clear_layout_cache();
                     node.insert_damage(ALL_DAMAGE);
+                    self.doc.queue_image_event(target_id, false);
                     return;
                 }
 
@@ -1175,7 +1176,12 @@ impl<'doc> DocumentMutator<'doc> {
                 if let Some(waiting_list) = self.doc.pending_images.get_mut(src_string) {
                     #[cfg(feature = "tracing")]
                     tracing::info!("Image {src_string} already pending, queueing node {target_id}");
-                    waiting_list.push((target_id, ImageType::Image));
+                    if !waiting_list
+                        .iter()
+                        .any(|(id, kind)| *id == target_id && matches!(kind, ImageType::Image))
+                    {
+                        waiting_list.push((target_id, ImageType::Image));
+                    }
                     return;
                 }
 
@@ -1349,6 +1355,8 @@ impl Drop for ViewportMut<'_> {
 
         let changes = DeviceChanges::from_viewports(&self.initial_viewport, &self.doc.viewport);
         self.doc.queue_device_changes(changes);
+        self.doc
+            .queue_viewport_resize(self.initial_viewport.logical_size());
     }
 }
 

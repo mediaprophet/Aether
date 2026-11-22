@@ -90,6 +90,8 @@ pub struct DomEvent {
     /// which is true if the event can be canceled.
     pub cancelable: bool,
 
+    /// The initiating control, when an action targets its owning form.
+    pub related_target: Option<NodeId>,
     pub data: DomEventData,
     pub request_redraw: bool,
 }
@@ -100,6 +102,7 @@ impl DomEvent {
             target,
             bubbles: data.bubbles(),
             cancelable: data.cancelable(),
+            related_target: None,
             data,
             request_redraw: false,
         }
@@ -155,8 +158,26 @@ pub enum DomEventKind {
     FocusOut,
 
     AppleStandardKeybinding,
+
+    Copy,
+    Cut,
+    Paste,
+    BeforeInput,
+    Select,
+    SelectionChange,
+    BeforeToggle,
+    Toggle,
+    Resize,
+    Load,
+    Error,
+    Change,
+    Submit,
+    Reset,
+    Cancel,
 }
 impl DomEventKind {
+    pub const COUNT: usize = Self::Cancel as usize + 1;
+
     pub fn discriminant(self) -> u8 {
         self as u8
     }
@@ -164,7 +185,7 @@ impl DomEventKind {
 impl FromStr for DomEventKind {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, ()> {
-        match s.trim_start_matches("on") {
+        match s.strip_prefix("on").unwrap_or(s) {
             "pointermove" => Ok(Self::PointerMove),
             "pointerdown" => Ok(Self::PointerDown),
             "pointerup" => Ok(Self::PointerUp),
@@ -204,6 +225,22 @@ impl FromStr for DomEventKind {
             "blur" => Ok(Self::Blur),
             "focusin" => Ok(Self::FocusIn),
             "focusout" => Ok(Self::FocusOut),
+            "applekeybinding" => Ok(Self::AppleStandardKeybinding),
+            "copy" => Ok(Self::Copy),
+            "cut" => Ok(Self::Cut),
+            "paste" => Ok(Self::Paste),
+            "beforeinput" => Ok(Self::BeforeInput),
+            "select" => Ok(Self::Select),
+            "selectionchange" => Ok(Self::SelectionChange),
+            "beforetoggle" => Ok(Self::BeforeToggle),
+            "toggle" => Ok(Self::Toggle),
+            "resize" => Ok(Self::Resize),
+            "load" => Ok(Self::Load),
+            "error" => Ok(Self::Error),
+            "change" => Ok(Self::Change),
+            "submit" => Ok(Self::Submit),
+            "reset" => Ok(Self::Reset),
+            "cancel" => Ok(Self::Cancel),
             _ => Err(()),
         }
     }
@@ -253,6 +290,22 @@ pub enum DomEventData {
     FocusOut(BlitzFocusEvent),
 
     AppleStandardKeybinding(SmolStr),
+
+    Copy(BlitzClipboardEvent),
+    Cut(BlitzClipboardEvent),
+    Paste(BlitzClipboardEvent),
+    BeforeInput(BlitzBeforeInputEvent),
+    Select(BlitzSelectionEvent),
+    SelectionChange(BlitzSelectionEvent),
+    BeforeToggle(BlitzToggleEvent),
+    Toggle(BlitzToggleEvent),
+    Resize(BlitzResizeEvent),
+    Load(BlitzImageEvent),
+    Error(BlitzImageEvent),
+    Change(BlitzFormActionEvent),
+    Submit(BlitzFormActionEvent),
+    Reset(BlitzFormActionEvent),
+    Cancel(BlitzCancelEvent),
 }
 impl DomEventData {
     pub fn discriminant(&self) -> u8 {
@@ -308,6 +361,21 @@ impl DomEventData {
             Self::FocusOut { .. } => "focusout",
 
             Self::AppleStandardKeybinding { .. } => "applekeybinding",
+            Self::Copy(..) => "copy",
+            Self::Cut(..) => "cut",
+            Self::Paste(..) => "paste",
+            Self::BeforeInput(..) => "beforeinput",
+            Self::Select(..) => "select",
+            Self::SelectionChange(..) => "selectionchange",
+            Self::BeforeToggle(..) => "beforetoggle",
+            Self::Toggle(..) => "toggle",
+            Self::Resize(..) => "resize",
+            Self::Load(..) => "load",
+            Self::Error(..) => "error",
+            Self::Change(..) => "change",
+            Self::Submit(..) => "submit",
+            Self::Reset(..) => "reset",
+            Self::Cancel(..) => "cancel",
         }
     }
 
@@ -354,6 +422,21 @@ impl DomEventData {
             Self::FocusOut { .. } => DomEventKind::FocusOut,
 
             Self::AppleStandardKeybinding { .. } => DomEventKind::AppleStandardKeybinding,
+            Self::Copy(..) => DomEventKind::Copy,
+            Self::Cut(..) => DomEventKind::Cut,
+            Self::Paste(..) => DomEventKind::Paste,
+            Self::BeforeInput(..) => DomEventKind::BeforeInput,
+            Self::Select(..) => DomEventKind::Select,
+            Self::SelectionChange(..) => DomEventKind::SelectionChange,
+            Self::BeforeToggle(..) => DomEventKind::BeforeToggle,
+            Self::Toggle(..) => DomEventKind::Toggle,
+            Self::Resize(..) => DomEventKind::Resize,
+            Self::Load(..) => DomEventKind::Load,
+            Self::Error(..) => DomEventKind::Error,
+            Self::Change(..) => DomEventKind::Change,
+            Self::Submit(..) => DomEventKind::Submit,
+            Self::Reset(..) => DomEventKind::Reset,
+            Self::Cancel(..) => DomEventKind::Cancel,
         }
     }
 
@@ -400,6 +483,21 @@ impl DomEventData {
             Self::FocusOut { .. } => false,
 
             Self::AppleStandardKeybinding { .. } => true,
+            Self::Copy(..) => true,
+            Self::Cut(..) => true,
+            Self::Paste(..) => true,
+            Self::BeforeInput(..) => true,
+            Self::Select(..) => false,
+            Self::SelectionChange(..) => false,
+            Self::BeforeToggle(..) => true,
+            Self::Toggle(..) => false,
+            Self::Resize(..) => false,
+            Self::Load(..) => false,
+            Self::Error(..) => false,
+            Self::Change(..) => false,
+            Self::Submit(..) => true,
+            Self::Reset(..) => true,
+            Self::Cancel(..) => true,
         }
     }
 
@@ -446,6 +544,21 @@ impl DomEventData {
             Self::FocusOut { .. } => true,
 
             Self::AppleStandardKeybinding { .. } => false,
+            Self::Copy(..) => true,
+            Self::Cut(..) => true,
+            Self::Paste(..) => true,
+            Self::BeforeInput(..) => true,
+            Self::Select(..) => true,
+            Self::SelectionChange(..) => true,
+            Self::BeforeToggle(..) => false,
+            Self::Toggle(..) => false,
+            Self::Resize(..) => false,
+            Self::Load(..) => false,
+            Self::Error(..) => false,
+            Self::Change(..) => true,
+            Self::Submit(..) => true,
+            Self::Reset(..) => true,
+            Self::Cancel(..) => false,
         }
     }
 }
@@ -778,4 +891,162 @@ pub enum BlitzImeEvent {
     /// also stop issuing IME related requests like `Window::set_ime_cursor_area` and clear
     /// pending preedit text.
     Disabled,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct BlitzClipboardEvent {
+    pub text: String,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct BlitzBeforeInputEvent {
+    pub input_type: String,
+    pub data: Option<String>,
+    pub is_composing: bool,
+    pub value: String,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct BlitzSelectionEvent {
+    pub selected_text: String,
+    pub start_offset: usize,
+    pub end_offset: usize,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct BlitzToggleEvent {
+    pub old_state: bool,
+    pub new_state: bool,
+}
+
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct BlitzResizeEvent {
+    pub border_box_width: f64,
+    pub border_box_height: f64,
+    pub content_box_width: f64,
+    pub content_box_height: f64,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct BlitzImageEvent {
+    pub load_error: bool,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct BlitzCancelEvent;
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct BlitzFormActionEvent {
+    pub value: String,
+}
+
+#[cfg(test)]
+mod platform_event_tests {
+    use super::*;
+
+    #[test]
+    fn event_kinds_match_payload_tags_and_names() {
+        let pointer = BlitzPointerEvent {
+            id: BlitzPointerId::Mouse,
+            is_primary: true,
+            coords: PointerCoords {
+                page_x: 0.0,
+                page_y: 0.0,
+                screen_x: 0.0,
+                screen_y: 0.0,
+                client_x: 0.0,
+                client_y: 0.0,
+            },
+            button: MouseEventButton::Main,
+            buttons: MouseEventButtons::empty(),
+            mods: Modifiers::empty(),
+            details: PointerDetails::default(),
+            element: Point::default(),
+            active_pointers: Default::default(),
+        };
+        let key = BlitzKeyEvent {
+            key: Key::Character(String::new()),
+            code: Code::Unidentified,
+            modifiers: Modifiers::empty(),
+            location: Location::Standard,
+            is_auto_repeating: false,
+            is_composing: false,
+            state: KeyState::Pressed,
+            text: None,
+        };
+        let events = [
+            DomEventData::PointerMove(pointer.clone()),
+            DomEventData::PointerDown(pointer.clone()),
+            DomEventData::PointerUp(pointer.clone()),
+            DomEventData::PointerCancel(pointer.clone()),
+            DomEventData::PointerEnter(pointer.clone()),
+            DomEventData::PointerLeave(pointer.clone()),
+            DomEventData::PointerOver(pointer.clone()),
+            DomEventData::PointerOut(pointer.clone()),
+            DomEventData::MouseMove(pointer.clone()),
+            DomEventData::MouseDown(pointer.clone()),
+            DomEventData::MouseUp(pointer.clone()),
+            DomEventData::MouseEnter(pointer.clone()),
+            DomEventData::MouseLeave(pointer.clone()),
+            DomEventData::MouseOver(pointer.clone()),
+            DomEventData::MouseOut(pointer.clone()),
+            DomEventData::TouchStart(pointer.clone()),
+            DomEventData::TouchMove(pointer.clone()),
+            DomEventData::TouchEnd(pointer.clone()),
+            DomEventData::TouchCancel(pointer.clone()),
+            DomEventData::Scroll(BlitzScrollEvent {
+                scroll_top: 0.0,
+                scroll_left: 0.0,
+                scroll_width: 0,
+                scroll_height: 0,
+                client_width: 0,
+                client_height: 0,
+            }),
+            DomEventData::Wheel(BlitzWheelEvent {
+                delta: BlitzWheelDelta::Pixels(0.0, 0.0),
+                coords: pointer.coords,
+                mods: pointer.mods,
+                element: pointer.element,
+                buttons: pointer.buttons,
+            }),
+            DomEventData::Click(pointer.clone()),
+            DomEventData::ContextMenu(pointer.clone()),
+            DomEventData::DoubleClick(pointer.clone()),
+            DomEventData::KeyPress(key.clone()),
+            DomEventData::KeyDown(key.clone()),
+            DomEventData::KeyUp(key.clone()),
+            DomEventData::Input(BlitzInputEvent {
+                value: String::new(),
+            }),
+            DomEventData::Ime(BlitzImeEvent::Enabled),
+            DomEventData::Focus(BlitzFocusEvent),
+            DomEventData::Blur(BlitzFocusEvent),
+            DomEventData::FocusIn(BlitzFocusEvent),
+            DomEventData::FocusOut(BlitzFocusEvent),
+            DomEventData::AppleStandardKeybinding(SmolStr::default()),
+            DomEventData::Copy(BlitzClipboardEvent::default()),
+            DomEventData::Cut(BlitzClipboardEvent::default()),
+            DomEventData::Paste(BlitzClipboardEvent::default()),
+            DomEventData::BeforeInput(BlitzBeforeInputEvent::default()),
+            DomEventData::Select(BlitzSelectionEvent::default()),
+            DomEventData::SelectionChange(BlitzSelectionEvent::default()),
+            DomEventData::BeforeToggle(BlitzToggleEvent::default()),
+            DomEventData::Toggle(BlitzToggleEvent::default()),
+            DomEventData::Resize(BlitzResizeEvent::default()),
+            DomEventData::Load(BlitzImageEvent::default()),
+            DomEventData::Error(BlitzImageEvent::default()),
+            DomEventData::Change(BlitzFormActionEvent::default()),
+            DomEventData::Submit(BlitzFormActionEvent::default()),
+            DomEventData::Reset(BlitzFormActionEvent::default()),
+            DomEventData::Cancel(BlitzCancelEvent::default()),
+        ];
+        assert_eq!(events.len(), DomEventKind::COUNT);
+        for (index, event) in events.into_iter().enumerate() {
+            assert_eq!(event.discriminant() as usize, index);
+            assert_eq!(event.kind().discriminant(), event.discriminant());
+            assert_eq!(event.name().parse(), Ok(event.kind()));
+            assert_eq!(format!("on{}", event.name()).parse(), Ok(event.kind()));
+        }
+        assert!("ononclick".parse::<DomEventKind>().is_err());
+    }
 }

@@ -8,6 +8,35 @@ use crate::ui::Ctx;
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct NodeId(usize);
 
+/// A borrowed view of a mounted node and its child IDs.
+pub enum DomNodeRef<'a> {
+    /// A retained HTML element.
+    Element {
+        /// ID in the owning arena.
+        id: NodeId,
+        /// Element name.
+        tag: &'a str,
+        /// Current attribute values.
+        attrs: &'a [(String, String)],
+        /// Children in rendering order.
+        children: &'a [NodeId],
+    },
+    /// A text node and its current contents.
+    Text {
+        /// ID in the owning arena.
+        id: NodeId,
+        /// Current text.
+        text: &'a str,
+    },
+    /// An anonymous container for a dynamic child list.
+    Fragment {
+        /// ID in the owning arena.
+        id: NodeId,
+        /// Children in rendering order.
+        children: &'a [NodeId],
+    },
+}
+
 pub(crate) enum RetainedNode {
     Element {
         tag: String,
@@ -63,6 +92,35 @@ impl<S: 'static> Dom<S> {
     pub(crate) fn set_fragment_children(&mut self, id: NodeId, children: Vec<NodeId>) {
         if let RetainedNode::Fragment { children: c } = &mut self.nodes[id.0] {
             *c = children;
+        }
+    }
+
+    pub(crate) fn visit(&self, id: NodeId, visit: &mut impl FnMut(DomNodeRef<'_>)) {
+        let children = match &self.nodes[id.0] {
+            RetainedNode::Text(text) => {
+                visit(DomNodeRef::Text { id, text });
+                return;
+            }
+            RetainedNode::Element {
+                tag,
+                attrs,
+                children,
+            } => {
+                visit(DomNodeRef::Element {
+                    id,
+                    tag,
+                    attrs,
+                    children,
+                });
+                children
+            }
+            RetainedNode::Fragment { children } => {
+                visit(DomNodeRef::Fragment { id, children });
+                children
+            }
+        };
+        for &child in children {
+            self.visit(child, visit);
         }
     }
 

@@ -1,0 +1,9 @@
+    Blocking waiting for file lock on build directory
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\blitz_dom-2xsqrekzwru9d\s-ho36afspyt-1f1k9q1-working`
+
+warning: `blitz-dom` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_native_dom-18cmu5uk8mz2y\s-ho36azr7wc-1i1k7ef-working`
+
+warning: `aether-native-dom` (lib) generated 1 warning
+   Compiling aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 32s

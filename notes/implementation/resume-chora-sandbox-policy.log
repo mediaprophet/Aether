@@ -1,0 +1,11 @@
+
+running 6 tests
+test tests::admitted_request_requires_the_platform_launch_and_activation_path ... ok
+test tests::launch_errors_retain_the_unsupported_io_classification ... ok
+test tests::windows_never_admits_required_content_sandboxing ... ok
+test tests::sandbox_request_cannot_silently_use_in_process_content ... ok
+test tests::sandbox_request_cannot_silently_use_a_single_process_build ... ok
+test tests::explicitly_unsandboxed_embedding_remains_available ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

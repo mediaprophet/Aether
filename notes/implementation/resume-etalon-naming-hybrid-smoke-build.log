@@ -1,0 +1,38 @@
+   Compiling windows_x86_64_msvc v0.52.6
+   Compiling windows_x86_64_msvc v0.53.1
+   Compiling windows-targets v0.53.5
+   Compiling windows-targets v0.52.6
+   Compiling windows-sys v0.52.0
+   Compiling windows-sys v0.60.2
+   Compiling winapi-util v0.1.11
+   Compiling same-file v1.0.6
+   Compiling walkdir v2.5.0
+   Compiling term v1.2.1
+   Compiling ascii-canvas v4.0.0
+   Compiling lalrpop v0.22.2
+   Compiling socket2 v0.6.3
+   Compiling tokio v1.52.3
+   Compiling stylo v0.22.0
+   Compiling wgsl-parse v0.4.0
+   Compiling stylo_taffy v0.3.0-beta.4
+   Compiling wesl v0.4.0
+   Compiling hyper v1.12.0
+   Compiling blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+   Compiling vector-hybrid-shaders v0.3.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+   Compiling tower v0.5.3
+   Compiling hyper-util v0.1.20
+   Compiling tokio-native-tls v0.3.1
+   Compiling hyper-tls v0.6.0
+   Compiling tower-http v0.6.11
+   Compiling arboard v3.7.0
+   Compiling blitz-paint v0.3.0-beta.4
+   Compiling vector-hybrid-renderer v0.3.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+   Compiling reqwest v0.13.5
+   Compiling vector-hybrid-render-adapter v0.11.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+   Compiling blitz-html v0.3.0-beta.4
+   Compiling blitz-shell v0.3.0-beta.4
+   Compiling blitz-net v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-net)
+   Compiling aether-asset-resolver v0.8.0-alpha.3 (C:\github\Aether\packages\asset-resolver)
+   Compiling aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+   Compiling aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9m 01s

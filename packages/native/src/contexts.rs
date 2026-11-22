@@ -2,7 +2,55 @@ use aether_document::{Document, NoOpDocument};
 use blitz_shell::{BlitzShellEvent, BlitzShellProxy};
 use winit::window::WindowId;
 
-use crate::AetherNativeEvent;
+use crate::{AetherNativeEvent, AetherNativeWindowRenderer, Config, RendererOptions, WindowConfig};
+use aether_core::{Element, VirtualDom, consume_context, use_hook};
+use std::{
+    cell::RefCell,
+    collections::VecDeque,
+    rc::{Rc, Weak},
+};
+
+type PendingWindows = RefCell<VecDeque<WindowConfig<AetherNativeWindowRenderer>>>;
+pub(crate) type NativeWindowQueue = Rc<PendingWindows>;
+
+/// UI-thread handle for opening and managing native windows.
+#[derive(Clone)]
+pub struct NativeAppHandle {
+    pub(crate) proxy: BlitzShellProxy,
+    pub(crate) queue: Weak<PendingWindows>,
+}
+
+impl NativeAppHandle {
+    fn send(&self, event: AetherNativeEvent) {
+        self.proxy
+            .send_event(BlitzShellEvent::embedder_event(event));
+    }
+
+    /// Queue a new window from the UI thread.
+    pub fn open_window(&self, vdom: VirtualDom, config: Config) {
+        if let Some(queue) = self.queue.upgrade() {
+            let window = crate::build_window(vdom, config, &self.proxy, RendererOptions::default());
+            queue.borrow_mut().push_back(window);
+            self.send(AetherNativeEvent::OpenAuxiliaryWindow);
+        }
+    }
+
+    pub fn open_component_window(&self, app: fn() -> Element, config: Config) {
+        self.open_window(VirtualDom::new(app), config);
+    }
+
+    pub fn request_close(&self, window_id: WindowId) {
+        self.send(AetherNativeEvent::CloseWindow(window_id));
+    }
+
+    pub fn set_window_visible(&self, window: WindowId, visible: bool) {
+        self.send(AetherNativeEvent::SetWindowVisible { window, visible });
+    }
+}
+
+pub fn use_native_app() -> NativeAppHandle {
+    use_hook(consume_context::<NativeAppHandle>)
+}
 
 pub struct AetherNativeDocument {
     pub(crate) proxy: BlitzShellProxy,

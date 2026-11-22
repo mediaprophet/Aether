@@ -1,0 +1,22 @@
+   Compiling chora-etalon-api-probe v0.0.0 (C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\support\etalon\api-probe)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\target\api-probe\debug\incremental\chora_etalon_api_probe-36m3p25ffzsbv\s-ho2upnb4zz-0loigzc-working`
+
+warning: `chora-etalon-api-probe` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25.28s
+     Running unittests src\lib.rs (target\api-probe\debug\deps\chora_etalon_api_probe-e6ea947fdbbbd639.exe)
+
+running 11 tests
+test chora_device_ready::tests::live_registration_and_retirement_bound_callbacks ... ok
+test chora_device_ready::tests::retirement_cancels_early_loss ... ok
+test owner_queue::tests::cancellation_completes_pending_once_and_ignores_late_signal ... ok
+test owner_queue::tests::cancellation_preserves_registration_order ... ok
+test chora_device_ready::tests::loss_waits_for_registration_and_is_delivered_once ... ok
+test owner_queue::tests::worker_signal_runs_callback_on_owner_thread ... ok
+test owner_queue::tests::teardown_cancels_local_callback_and_late_signal_is_harmless ... ok
+test chora_closed_device::tests::map_completion_precedes_queue_done_after_owner_marshalling ... ok
+test chora_closed_device::tests::lost_async_pipeline_resolves_with_registered_invalid_resource ... ok
+test chora_closed_device::tests::closed_resources_are_private_and_complete_without_execution ... ok
+test chora_closed_device::tests::cross_device_reference_to_closed_resource_is_validation_error ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

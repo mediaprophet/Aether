@@ -1,0 +1,317 @@
+[
+  {
+    "path": "AETHER-WORK-COPY.txt",
+    "new": true,
+    "bytes": 235
+  },
+  {
+    "path": "Cargo.toml",
+    "new": false,
+    "bytes": 23245
+  },
+  {
+    "path": "components/constellation/constellation.rs",
+    "new": false,
+    "bytes": 277561
+  },
+  {
+    "path": "components/net/Cargo.toml",
+    "new": false,
+    "bytes": 3889
+  },
+  {
+    "path": "components/net/connector.rs",
+    "new": false,
+    "bytes": 34518
+  },
+  {
+    "path": "components/net/http_loader.rs",
+    "new": false,
+    "bytes": 124336
+  },
+  {
+    "path": "components/net/resource_thread.rs",
+    "new": false,
+    "bytes": 44105
+  },
+  {
+    "path": "components/net/tests/main.rs",
+    "new": false,
+    "bytes": 7081
+  },
+  {
+    "path": "components/net/tests/tls_configuration.rs",
+    "new": true,
+    "bytes": 13650
+  },
+  {
+    "path": "components/script/dom/choramessaging.rs",
+    "new": true,
+    "bytes": 5218
+  },
+  {
+    "path": "components/script/dom/mod.rs",
+    "new": false,
+    "bytes": 13477
+  },
+  {
+    "path": "components/script/dom/globalscope/globalscope.rs",
+    "new": false,
+    "bytes": 132293
+  },
+  {
+    "path": "components/script/dom/navigator/navigator.rs",
+    "new": false,
+    "bytes": 28996
+  },
+  {
+    "path": "components/script/event_loop/script_thread.rs",
+    "new": false,
+    "bytes": 199032
+  },
+  {
+    "path": "components/script_bindings/codegen/Bindings.conf",
+    "new": false,
+    "bytes": 43814
+  },
+  {
+    "path": "components/script_bindings/webidls/ChoraMessaging.webidl",
+    "new": true,
+    "bytes": 506
+  },
+  {
+    "path": "components/script_webgpu/gpu.rs",
+    "new": false,
+    "bytes": 6905
+  },
+  {
+    "path": "components/script_webgpu/gpuadapter.rs",
+    "new": false,
+    "bytes": 14204
+  },
+  {
+    "path": "components/script_webgpu/gpubuffer.rs",
+    "new": false,
+    "bytes": 19290
+  },
+  {
+    "path": "components/script_webgpu/gpucommandencoder.rs",
+    "new": false,
+    "bytes": 15354
+  },
+  {
+    "path": "components/script_webgpu/gpucomputepipeline.rs",
+    "new": false,
+    "bytes": 5872
+  },
+  {
+    "path": "components/script_webgpu/gpuconvert.rs",
+    "new": false,
+    "bytes": 40832
+  },
+  {
+    "path": "components/script_webgpu/gpudevice.rs",
+    "new": false,
+    "bytes": 32410
+  },
+  {
+    "path": "components/script_webgpu/gpurenderbundleencoder.rs",
+    "new": false,
+    "bytes": 18687
+  },
+  {
+    "path": "components/script_webgpu/gpusampler.rs",
+    "new": false,
+    "bytes": 5096
+  },
+  {
+    "path": "components/script_webgpu/gputexture.rs",
+    "new": false,
+    "bytes": 10936
+  },
+  {
+    "path": "components/script_webgpu/identityhub.rs",
+    "new": false,
+    "bytes": 7022
+  },
+  {
+    "path": "components/servo/lib.rs",
+    "new": false,
+    "bytes": 8073
+  },
+  {
+    "path": "components/servo/network_manager.rs",
+    "new": false,
+    "bytes": 4100
+  },
+  {
+    "path": "components/servo/servo.rs",
+    "new": false,
+    "bytes": 67907
+  },
+  {
+    "path": "components/servo/webview_delegate.rs",
+    "new": false,
+    "bytes": 56613
+  },
+  {
+    "path": "components/shared/constellation/Cargo.toml",
+    "new": false,
+    "bytes": 1615
+  },
+  {
+    "path": "components/shared/constellation/from_script_message.rs",
+    "new": false,
+    "bytes": 40068
+  },
+  {
+    "path": "components/shared/constellation/lib.rs",
+    "new": false,
+    "bytes": 12700
+  },
+  {
+    "path": "components/shared/embedder/chora_messaging.rs",
+    "new": true,
+    "bytes": 8002
+  },
+  {
+    "path": "components/shared/embedder/lib.rs",
+    "new": false,
+    "bytes": 43141
+  },
+  {
+    "path": "components/shared/embedder/message_lifecycle.rs",
+    "new": true,
+    "bytes": 5471
+  },
+  {
+    "path": "components/shared/webgpu/Cargo.toml",
+    "new": false,
+    "bytes": 666
+  },
+  {
+    "path": "components/shared/webgpu/error.rs",
+    "new": false,
+    "bytes": 2815
+  },
+  {
+    "path": "components/shared/webgpu/ids.rs",
+    "new": false,
+    "bytes": 2448
+  },
+  {
+    "path": "components/shared/webgpu/lib.rs",
+    "new": false,
+    "bytes": 5106
+  },
+  {
+    "path": "components/shared/webgpu/types.rs",
+    "new": true,
+    "bytes": 3714
+  },
+  {
+    "path": "components/shared/webgpu/messages/recv.rs",
+    "new": false,
+    "bytes": 11489
+  },
+  {
+    "path": "components/shared/webgpu/messages/to_script.rs",
+    "new": false,
+    "bytes": 2003
+  },
+  {
+    "path": "components/webgpu/canvas_context.rs",
+    "new": false,
+    "bytes": 28497
+  },
+  {
+    "path": "components/webgpu/Cargo.toml",
+    "new": false,
+    "bytes": 1349
+  },
+  {
+    "path": "components/webgpu/closed_device.rs",
+    "new": true,
+    "bytes": 16647
+  },
+  {
+    "path": "components/webgpu/device_ready.rs",
+    "new": true,
+    "bytes": 2168
+  },
+  {
+    "path": "components/webgpu/encoders.rs",
+    "new": false,
+    "bytes": 13911
+  },
+  {
+    "path": "components/webgpu/lib.rs",
+    "new": false,
+    "bytes": 2110
+  },
+  {
+    "path": "components/webgpu/owner_queue.rs",
+    "new": true,
+    "bytes": 4678
+  },
+  {
+    "path": "components/webgpu/pipeline_creation.rs",
+    "new": true,
+    "bytes": 1362
+  },
+  {
+    "path": "components/webgpu/poll_thread.rs",
+    "new": false,
+    "bytes": 2597
+  },
+  {
+    "path": "components/webgpu/resource_errors.rs",
+    "new": true,
+    "bytes": 1342
+  },
+  {
+    "path": "components/webgpu/wgpu_thread.rs",
+    "new": false,
+    "bytes": 66424
+  },
+  {
+    "path": "ffi/capi/lib.rs",
+    "new": false,
+    "bytes": 15318
+  },
+  {
+    "path": "ffi/capi/owned_handle.rs",
+    "new": true,
+    "bytes": 1586
+  },
+  {
+    "path": "support/etalon/check_gpu_sources.py",
+    "new": true,
+    "bytes": 3216
+  },
+  {
+    "path": "support/etalon/test_gpu_sources.py",
+    "new": true,
+    "bytes": 1789
+  },
+  {
+    "path": "support/etalon/api-probe/Cargo.lock",
+    "new": true,
+    "bytes": 38835
+  },
+  {
+    "path": "support/etalon/api-probe/Cargo.toml",
+    "new": true,
+    "bytes": 1388
+  },
+  {
+    "path": "support/etalon/api-probe/src/lib.rs",
+    "new": true,
+    "bytes": 7188
+  },
+  {
+    "path": "tests/wpt/mozilla/tests/chora-messaging/default-deny.https.html",
+    "new": true,
+    "bytes": 1520
+  }
+]

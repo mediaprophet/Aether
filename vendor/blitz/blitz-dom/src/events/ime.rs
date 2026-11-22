@@ -29,3 +29,21 @@ pub(crate) fn handle_ime_event<F: FnMut(DomEvent)>(
         }
     }
 }
+
+pub(super) fn editing_operation(event: &BlitzImeEvent) -> Option<(&'static str, Option<String>)> {
+    match event {
+        BlitzImeEvent::Commit(text) => Some(("insertCompositionText", Some(text.clone()))),
+        BlitzImeEvent::DeleteSurrounding {
+            before_bytes,
+            after_bytes,
+        } if *before_bytes != 0 || *after_bytes != 0 => Some((
+            if *before_bytes != 0 {
+                "deleteContentBackward"
+            } else {
+                "deleteContentForward"
+            },
+            None,
+        )),
+        _ => None,
+    }
+}

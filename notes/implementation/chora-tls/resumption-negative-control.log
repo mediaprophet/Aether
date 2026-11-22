@@ -1,0 +1,24 @@
+   Compiling chora-tls-configuration-verification v0.0.0 (C:\github\Aether\target\production-audit\chora-tls-tests)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.66s
+     Running unittests lib.rs (target\production-audit\chora-tls-tests\target\debug\deps\net_negative_control-95ca791e1d8fa7e7.exe)
+
+running 1 test
+test tls_configuration::prepared_profiles_have_independent_tls_resumption_stores ... FAILED
+
+failures:
+
+---- tls_configuration::prepared_profiles_have_independent_tls_resumption_stores stdout ----
+
+thread 'tls_configuration::prepared_profiles_have_independent_tls_resumption_stores' (42880) panicked at tls_configuration.rs:395:5:
+assertion `left == right` failed
+  left: Full
+ right: Resumed
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tls_configuration::prepared_profiles_have_independent_tls_resumption_stores
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.35s
+
+error: test failed, to rerun pass `--lib`

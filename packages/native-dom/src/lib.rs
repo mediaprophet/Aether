@@ -17,8 +17,8 @@ mod write_once_attr;
 pub use aether_document::AetherDocument;
 pub use blitz_dom::DocumentConfig;
 pub use events::{
-    NodeHandle, UnsupportedNativeEvent, native_event_support, synthetic_click_event,
-    synthetic_form_event,
+    NativeClipboardData, NativeToggleData, NodeHandle, UnsupportedNativeEvent,
+    native_event_support, synthetic_click_event, synthetic_form_event,
 };
 pub use write_once_attr::{CustomWidgetAttr, SubDocumentAttr};
 

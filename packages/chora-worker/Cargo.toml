@@ -1,0 +1,48 @@
+# Copyright (c) 2026 Timothy Charles Holborn. Repository licensing applies.
+#
+# RING-FENCE LEAK: this crate declares CC-BY-NC-ND-4.0 and path-depends on MPL
+# Covered Software (`servo` / webizen-WWW-engine). E0 builds the worker binary
+# from C:\github\chora (MPL) and leaves Aether with client + protocol only.
+# See webizenai/docs/planning/05-licence-ring-fence.md.
+[package]
+name = "aether-chora-worker"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "CC-BY-NC-ND-4.0"
+description = "Private-process old-web engine worker for Aether (leak: links MPL servo; E0 moves binary into the engine tree)"
+
+[dependencies]
+# Select the actual engine tree; its inherited Cargo package name is still servo.
+chora = { package = "servo", path = "../../../chora/components/servo", default-features = false, features = ["embedded_library"] }
+protocol = { package = "aether-chora-bridge-protocol", path = "../chora-bridge-protocol" }
+serde_json = "1"
+dpi = "0.1"
+url = "2.5"
+euclid = "0.22"
+libc = "0.2"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_System_Console", "Win32_Foundation", "Win32_System_Threading"] }
+
+# The worker must remain outside the native workspace: its SpiderMonkey ICU and
+# Stylo graph cannot be unified with the native text/rendering graph.
+[workspace]
+resolver = "2"
+
+# Retain Chora's attributed af57 source overlay and its reviewed Etalon 8e8 pin.
+[patch."https://github.com/mediaprophet/hypermedia-production.git"]
+vector-compute-renderer = { path = "../../../chora/vendor/hypermedia/crates/vector-compute-renderer" }
+vector-compute-shaders = { path = "../../../chora/vendor/hypermedia/crates/vector-compute-shaders" }
+gpu-command-profiler = { path = "../../../chora/vendor/hypermedia/crates/gpu-command-profiler" }
+
+# Preserve the embedding fork's build requirements across this workspace boundary.
+# In particular the Windows script rlib can exceed 4 GiB at Cargo's default units.
+[profile.dev.package.servo-script]
+codegen-units = 16
+
+[profile.dev.package.crypto-bigint]
+opt-level = 3
+
+[profile.dev.package.tikv-jemalloc-sys]
+opt-level = 1

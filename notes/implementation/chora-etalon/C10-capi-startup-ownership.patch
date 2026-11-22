@@ -1,0 +1,138 @@
+--- a/ffi/capi/lib.rs
++++ b/ffi/capi/lib.rs
+@@ -3,6 +3,7 @@
+  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+ 
+ mod options;
++mod owned_handle;
+ mod preferences;
+ mod rendering_context;
+ mod servo;
+@@ -216,7 +217,9 @@
+ /// The ownership of `builder` is transferred to the function. The
+ /// caller must not use or free `builder` again.
+ ///
+-/// Returns a newly allocated `Servo` handle. The ownership of the
++/// Returns null on startup configuration failure or a caught Rust panic.
++/// The builder is consumed on every path; it must never be freed again.
++/// Otherwise returns a newly allocated `Servo` handle. The ownership of the
+ /// returned handle is transferred to the caller, who must free it with
+ /// [`servo_free`]. The resulting `Servo` instance is tied to the thread
+ /// that called this function and must only be used from that thread.
+@@ -228,25 +231,35 @@
+ /// another API that takes ownership of it.
+ #[unsafe(no_mangle)]
+ pub unsafe extern "C" fn servo_builder_build(builder: *mut ServoBuilder) -> *mut servo_api::Servo {
+-    assert!(!builder.is_null(), "builder pointer must not be null");
+-    let mut rust_builder = servo_api::ServoBuilder::default();
+-
+-    // SAFETY: The caller is assumed to uphold the safety requirements
+-    // for `builder` documented above.
+-    let builder = unsafe { &mut *builder };
+-
+-    if let Some(options) = builder.options.take() {
+-        rust_builder = rust_builder.opts(*options);
+-    }
+-
+-    if let Some(preferences) = builder.preferences.take() {
+-        rust_builder = rust_builder.preferences(*preferences);
+-    }
+-
+-    rust_builder = rust_builder.event_loop_waker(Box::new(builder.event_loop_waker));
+-
+-    let servo = rust_builder.build();
+-    Box::into_raw(Box::new(servo))
++    if builder.is_null() {
++        log::error!("Cannot build Chora from a null builder handle");
++        return std::ptr::null_mut();
++    }
++    // SAFETY: The caller transfers this unique handle exactly once. Reclaim
++    // its Box before any fallible Rust startup, including builder defaults.
++    let mut builder = unsafe { owned_handle::take(builder) };
++    let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(move || {
++        let mut rust_builder = servo_api::ServoBuilder::default();
++        if let Some(options) = builder.options.take() {
++            rust_builder = rust_builder.opts(*options);
++        }
++        if let Some(preferences) = builder.preferences.take() {
++            rust_builder = rust_builder.preferences(*preferences);
++        }
++        rust_builder = rust_builder.event_loop_waker(Box::new(builder.event_loop_waker));
++        rust_builder.try_build()
++    }));
++    match result {
++        Ok(Ok(servo)) => Box::into_raw(Box::new(servo)),
++        Ok(Err(error)) => {
++            log::error!("Chora startup configuration failed: {error}");
++            std::ptr::null_mut()
++        },
++        Err(_) => {
++            log::error!("Chora startup panicked; no unwind may cross the C ABI");
++            std::ptr::null_mut()
++        },
++    }
+ }
+ 
+ /// Destroys `builder` and frees its memory.
+@@ -349,9 +362,7 @@
+ /// another API that takes ownership of it.
+ #[unsafe(no_mangle)]
+ pub unsafe extern "C" fn chora_builder_build(builder: *mut ChoraBuilder) -> *mut Chora {
+-    unsafe {
+-        servo_builder_build(builder)
+-    }
++    unsafe { servo_builder_build(builder) }
+ }
+ 
+ /// Destroys `builder` and frees its memory.
+--- /dev/null
++++ b/ffi/capi/owned_handle.rs
+@@ -0,0 +1,48 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
++
++/// Consume an owned C handle and reclaim its allocation before startup begins.
++///
++/// # Safety
++/// `handle` must come from `Box::into_raw` and must not have been consumed before.
++pub(crate) unsafe fn take<T>(handle: *mut T) -> T {
++    // SAFETY: The caller transfers its unique ownership of the allocation.
++    unsafe { *Box::from_raw(handle) }
++}
++
++#[cfg(test)]
++mod tests {
++    use std::cell::Cell;
++    use std::rc::Rc;
++
++    struct Payload(Rc<Cell<usize>>);
++
++    impl Drop for Payload {
++        fn drop(&mut self) {
++            self.0.set(self.0.get() + 1);
++        }
++    }
++
++    #[test]
++    fn consume_handle_transfers_payload_exactly_once() {
++        let drops = Rc::new(Cell::new(0));
++        let handle = Box::into_raw(Box::new(Payload(drops.clone())));
++        let payload = unsafe { super::take(handle) };
++        assert_eq!(drops.get(), 0);
++        drop(payload);
++        assert_eq!(drops.get(), 1);
++    }
++
++    #[test]
++    fn startup_failure_still_drops_consumed_payload() {
++        let drops = Rc::new(Cell::new(0));
++        let handle = Box::into_raw(Box::new(Payload(drops.clone())));
++        let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
++            let _payload = unsafe { super::take(handle) };
++            panic!("simulated Rust startup failure");
++        }));
++        assert!(result.is_err());
++        assert_eq!(drops.get(), 1);
++    }
++}

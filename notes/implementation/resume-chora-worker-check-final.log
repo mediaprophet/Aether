@@ -1,0 +1,754 @@
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+warning: patch `vector-compute-renderer v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-renderer)` was not used in the crate graph
+warning: patch `vector-compute-shaders v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-shaders)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: profile package spec `tikv-jemalloc-sys` in profile `dev` did not match any packages
+    Checking servo-paint-api v0.7.0 (C:\github\chora\components\shared\paint)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\paint_api-1qm536mcl4flp\s-ho50tqpyc2-0db9onv-working`
+
+warning: `servo-paint-api` (lib) generated 1 warning
+    Checking servo-net-traits v0.7.0 (C:\github\chora\components\shared\net)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\net_traits-00t7qhqs8ocvb\s-ho50ttgfxk-0brsyd7-working`
+
+warning: `servo-net-traits` (lib) generated 1 warning
+    Checking servo-constellation-traits v0.7.0 (C:\github\chora\components\shared\constellation)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_constellation_traits-0vwv89h9ked4r\s-ho50txhl0c-1xzsh4k-working`
+
+warning: `servo-constellation-traits` (lib) generated 1 warning
+warning: servo-script-bindings@0.7.0: `uv ["run", "--frozen", "python"]` failed with WARN Retrying to persist temporary file to `C:\Users\Hp\AppData\Local\Packages\sandbox.{46bc2969-250b-4166-8c3a-bab289111731}\AC\uv\cache\interpreter-v4\681671c6460fa7c0\296f2f82bf422644.msgpack`: failed to persist temporary file: Access is denied. (os error 5)
+warning: servo-script-bindings@0.7.0: `uv` not found - Falling back to the default python! If the build fails, please install uv and make sure it is in your PATH or make sure to provision a python environment >= python 3.11.
+    Checking servo-media-thread v0.7.0 (C:\github\chora\components\media\media-thread)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\media-1495yfqz7ksw7\s-ho50u1y1oc-0ivryni-working`
+
+warning: `servo-media-thread` (lib) generated 1 warning
+    Checking servo-fonts v0.7.0 (C:\github\chora\components\fonts)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\fonts-0f7vprqidxjuc\s-ho50u3v6vy-1lmwfun-working`
+
+warning: `servo-fonts` (lib) generated 1 warning
+    Checking servo-script-traits v0.7.0 (C:\github\chora\components\shared\script)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_traits-0c2x9fscnjkcm\s-ho50u6p89e-09zqy66-working`
+
+warning: `servo-script-traits` (lib) generated 1 warning
+    Checking servo-script-bindings v0.7.0 (C:\github\chora\components\script_bindings)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_bindings-2e6cr243li1wv\s-ho50uagwdl-0j7ml2l-working`
+
+warning: `servo-script-bindings` (lib) generated 1 warning
+    Checking servo-layout-api v0.7.0 (C:\github\chora\components\shared\layout)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\layout_api-3f9wzf8qvqi1p\s-ho50wabrot-0o4330s-working`
+
+warning: `servo-layout-api` (lib) generated 1 warning
+    Checking servo-script-webcrypto v0.7.0 (C:\github\chora\components\script_webcrypto)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_webcrypto-01ml9bzbi9edi\s-ho50wcrenb-1b41lzf-working`
+
+warning: variant `HostKeystore` is never constructed
+  --> C:\github\chora\components\script_webcrypto\cryptokey.rs:86:5
+   |
+46 | pub(crate) enum Handle {
+   |                 ------ variant in this enum
+...
+86 |     HostKeystore { key_id: String, algorithm: String },
+   |     ^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `servo-script-webcrypto` (lib) generated 2 warnings
+    Checking servo-webgpu v0.7.0 (C:\github\chora\components\webgpu)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\webgpu-121erdoe69vii\s-ho50wissuw-0p7d0kn-working`
+
+warning: `servo-webgpu` (lib) generated 1 warning
+    Checking servo-script-webgpu v0.7.0 (C:\github\chora\components\script_webgpu)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_webgpu-0tfw1rqklf7o8\s-ho50wku1ug-1yjfqm9-working`
+
+warning: `servo-script-webgpu` (lib) generated 1 warning
+    Checking servo-metrics v0.7.0 (C:\github\chora\components\metrics)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\metrics-09ns9zbzcuomd\s-ho50wp5j4g-0mxwr9u-working`
+
+warning: `servo-metrics` (lib) generated 1 warning
+    Checking servo-net v0.7.0 (C:\github\chora\components\net)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\net-352d3yeobdrih\s-ho50wqm9ry-10qil98-working`
+
+warning: unused variable: `request_id`
+   --> C:\github\chora\components\net\http_loader.rs:541:5
+    |
+541 |     request_id: Option<&Uuid>,
+    |     ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_request_id`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `devtools_bytes`
+   --> C:\github\chora\components\net\http_loader.rs:757:5
+    |
+757 |     devtools_bytes: Option<StdArc<Mutex<Vec<u8>>>>,
+    |     ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_devtools_bytes`
+
+warning: unused variable: `msg`
+    --> C:\github\chora\components\net\http_loader.rs:2225:27
+     |
+2225 |     let (response_stream, msg) = match &request.mode {
+     |                           ^^^ help: if this is intentional, prefix it with an underscore: `_msg`
+
+warning: field `devtools_sender` is never read
+   --> C:\github\chora\components\net\resource_thread.rs:842:5
+    |
+841 | pub struct CoreResourceManager {
+    |            ------------------- field in this struct
+842 |     devtools_sender: Option<crossbeam_channel::Sender<DevtoolsMessage>>,
+    |     ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `servo-net` (lib) generated 5 warnings (run `cargo fix --lib -p servo-net` to apply 3 suggestions)
+    Checking servo-script v0.7.0 (C:\github\chora\components\script)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script-39fytpc52mnrh\s-ho50wvist9-0h04qtr-working`
+
+warning: unused import: `ObjectValue`
+  --> C:\github\chora\components\script\dom\console.rs:21:29
+   |
+21 | use js::jsval::{Int32Value, ObjectValue, UndefinedValue};
+   |                             ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `JS_GetPrototype`
+  --> C:\github\chora\components\script\dom\console.rs:38:75
+   |
+38 |     GetPropertyKeys, JS_GetOwnPropertyDescriptorById, JS_GetPropertyById, JS_GetPrototype,
+   |                                                                           ^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::dom::globalscope::GlobalScope`
+   --> C:\github\chora\components\script\dom\element\element.rs:133:5
+    |
+133 | use crate::dom::globalscope::GlobalScope;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ShadowRootMode`
+  --> C:\github\chora\components\script\dom\node\node.rs:67:5
+   |
+67 |     ShadowRootMode, SlotAssignmentMode,
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `std::borrow::ToOwned`
+ --> C:\github\chora\components\script\dom\window\window.rs:7:5
+  |
+7 | use std::borrow::ToOwned;
+  |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `FxHashSet`
+  --> C:\github\chora\components\script\dom\window\window.rs:70:44
+   |
+70 | use rustc_hash::{FxBuildHasher, FxHashMap, FxHashSet};
+   |                                            ^^^^^^^^^
+
+warning: unused import: `GenericCallback`
+  --> C:\github\chora\components\script\dom\window\window.rs:84:41
+   |
+84 | use servo_base::generic_channel::{self, GenericCallback, GenericSender};
+   |                                         ^^^^^^^^^^^^^^^
+
+warning: unused import: `GenericReceiver`
+  --> C:\github\chora\components\script\dom\workers\dedicatedworkerglobalscope.rs:31:41
+   |
+31 | use servo_base::generic_channel::{self, GenericReceiver, GenericSender, RoutedReceiver};
+   |                                         ^^^^^^^^^^^^^^^
+
+warning: unused import: `servo_base::generic_channel`
+  --> C:\github\chora\components\script\dom\workers\sharedworker.rs:20:5
+   |
+20 | use servo_base::generic_channel;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `GenericReceiver`
+  --> C:\github\chora\components\script\dom\workers\sharedworkerglobalscope.rs:31:35
+   |
+31 | use servo_base::generic_channel::{GenericReceiver, RoutedReceiver};
+   |                                   ^^^^^^^^^^^^^^^
+
+warning: unused import: `servo_base::generic_channel`
+  --> C:\github\chora\components\script\dom\workers\worker.rs:22:5
+   |
+22 | use servo_base::generic_channel;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `script_bindings::conversions::root_from_handlevalue`
+  --> C:\github\chora\components\script\dom\workers\workerglobalscope.rs:38:5
+   |
+38 | use script_bindings::conversions::root_from_handlevalue;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `script_bindings::root::rooted_heap_handle`
+  --> C:\github\chora\components\script\dom\workers\workerglobalscope.rs:41:5
+   |
+41 | use script_bindings::root::rooted_heap_handle;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `GenericSender`
+  --> C:\github\chora\components\script\dom\workers\workerglobalscope.rs:44:48
+   |
+44 | use servo_base::generic_channel::{GenericSend, GenericSender, RoutedReceiver};
+   |                                                ^^^^^^^^^^^^^
+
+warning: unused import: `servo_base::generic_channel::GenericCallback`
+  --> C:\github\chora\components\script\dom\worklet\workletglobalscope.rs:22:5
+   |
+22 | use servo_base::generic_channel::GenericCallback;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `WorkerId`
+  --> C:\github\chora\components\script\event_loop\script_thread.rs:90:33
+   |
+90 |     ServiceWorkerId, WebViewId, WorkerId,
+   |                                 ^^^^^^^^
+
+warning: unused import: `crate::dom::bindings::codegen::Bindings::DocumentBinding::DocumentMethods`
+   --> C:\github\chora\components\script\event_loop\script_thread.rs:121:5
+    |
+121 | use crate::dom::bindings::codegen::Bindings::DocumentBinding::DocumentMethods;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Dom`
+   --> C:\github\chora\components\script\event_loop\script_thread.rs:129:34
+    |
+129 | use crate::dom::bindings::root::{Dom, DomRoot};
+    |                                  ^^^
+
+warning: unused import: `Node`
+   --> C:\github\chora\components\script\event_loop\script_thread.rs:142:24
+    |
+142 | use crate::dom::node::{Node, NodeTraits};
+    |                        ^^^^
+
+warning: unused import: `GenericCallback`
+  --> C:\github\chora\components\script\messaging.rs:21:35
+   |
+21 | use servo_base::generic_channel::{GenericCallback, GenericSender, RoutedReceiver};
+   |                                   ^^^^^^^^^^^^^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:452:22
+    |
+452 |                 f64::NAN,
+    |                      ^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:453:22
+    |
+453 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:454:22
+    |
+454 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:455:22
+    |
+455 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:456:22
+    |
+456 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:457:22
+    |
+457 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:458:22
+    |
+458 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:459:22
+    |
+459 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:460:22
+    |
+460 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:461:22
+    |
+461 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:462:22
+    |
+462 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:463:22
+    |
+463 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:464:22
+    |
+464 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:465:22
+    |
+465 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:466:22
+    |
+466 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:467:22
+    |
+467 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:997:26
+    |
+997 |                     f64::NAN,
+    |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:998:26
+    |
+998 |                     f64::NAN,
+    |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:1001:26
+     |
+1001 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:1002:26
+     |
+1002 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:1003:26
+     |
+1003 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:1004:26
+     |
+1004 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:1005:26
+     |
+1005 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:1006:26
+     |
+1006 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:1009:26
+     |
+1009 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\geometry\dommatrixreadonly.rs:1010:26
+     |
+1010 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:437:38
+    |
+437 |             duration: Cell::new(f64::NAN),
+    |                                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:443:51
+    |
+443 |             current_seek_position: Cell::new(f64::NAN),
+    |                                                   ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:1856:49
+     |
+1856 |             self.current_seek_position.set(f64::NAN);
+     |                                                 ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:1871:36
+     |
+1871 |             self.duration.set(f64::NAN);
+     |                                    ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:2068:45
+     |
+2068 |         self.current_seek_position.set(f64::NAN);
+     |                                             ^^^
+
+warning: use of deprecated constant `std::f64::MAX`: replaced by the `MAX` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:2098:50
+     |
+2098 |         let mut nearest_seekable_distance = f64::MAX;
+     |                                                  ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:2166:45
+     |
+2166 |         self.current_seek_position.set(f64::NAN);
+     |                                             ^^^
+
+warning: use of deprecated constant `std::f64::INFINITY`: replaced by the `INFINITY` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:2664:30
+     |
+2664 |                 .map_or(f64::INFINITY, |duration| duration.as_secs_f64()),
+     |                              ^^^^^^^^
+
+warning: use of deprecated constant `std::f64::INFINITY`: replaced by the `INFINITY` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\html\embedded_content\htmlmediaelement.rs:2736:45
+     |
+2736 |         let duration = duration.map_or(f64::INFINITY, |duration| duration.as_secs_f64());
+     |                                             ^^^^^^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> C:\github\chora\components\script\dom\html\form_controls\htmlinputelement.rs:1373:29
+     |
+1373 |             .unwrap_or(f64::NAN)
+     |                             ^^^
+
+warning: unused import: `js::conversions::ToJSValConvertible`
+  --> C:\github\chora\components\script\dom\workers\workerglobalscope.rs:24:5
+   |
+24 | use js::conversions::ToJSValConvertible;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `script_bindings::reflector::DomObject`
+  --> C:\github\chora\components\script\dom\workers\workerglobalscope.rs:40:5
+   |
+40 | use script_bindings::reflector::DomObject;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::dom::bindings::codegen::Bindings::NodeListBinding::NodeListMethods`
+  --> C:\github\chora\components\script\dom\node\node.rs:64:5
+   |
+64 | use crate::dom::bindings::codegen::Bindings::NodeListBinding::NodeListMethods;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `servo_url::origin::DomainComparable`
+  --> C:\github\chora\components\script\dom\choramessaging.rs:16:5
+   |
+16 | use servo_url::origin::DomainComparable;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `include_stacktrace`
+  --> C:\github\chora\components\script\dom\console.rs:89:9
+   |
+89 |         include_stacktrace: IncludeStackTrace,
+   |         ^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_include_stacktrace`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `document`
+    --> C:\github\chora\components\script\dom\document\document.rs:7341:40
+     |
+7341 |     fn call(&self, cx: &mut JSContext, document: &Document, now: f64) {
+     |                                        ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_document`
+
+warning: variable does not need to be mutable
+   --> C:\github\chora\components\script\dom\serviceworker\serviceworker_manager.rs:779:5
+    |
+779 |     mut scope_things: ScopeThings,
+    |     ----^^^^^^^^^^^^
+    |     |
+    |     help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `debugger_global`
+   --> C:\github\chora\components\script\dom\serviceworker\serviceworkerglobalscope.rs:288:9
+    |
+288 |         debugger_global: Option<&WorkerDebuggerGlobalScope>,
+    |         ^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_debugger_global`
+
+warning: unused variable: `devtools_receiver`
+   --> C:\github\chora\components\script\dom\serviceworker\serviceworkerglobalscope.rs:327:9
+    |
+327 |         devtools_receiver: Option<GenericReceiver<WorkerDevtoolsControlMsg>>,
+    |         ^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_devtools_receiver`
+
+warning: unused variable: `pipeline_id`
+   --> C:\github\chora\components\script\dom\workers\dedicatedworkerglobalscope.rs:465:21
+    |
+465 |                     pipeline_id,
+    |                     ^^^^^^^^^^^ help: try ignoring the field: `pipeline_id: _`
+
+warning: unused variable: `debugger_global`
+   --> C:\github\chora\components\script\dom\workers\sharedworkerglobalscope.rs:252:9
+    |
+252 |         debugger_global: Option<&WorkerDebuggerGlobalScope>,
+    |         ^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_debugger_global`
+
+warning: unused variable: `pipeline_id`
+   --> C:\github\chora\components\script\dom\workers\sharedworkerglobalscope.rs:412:21
+    |
+412 |                     pipeline_id,
+    |                     ^^^^^^^^^^^ help: try ignoring the field: `pipeline_id: _`
+
+warning: unused variable: `devtools_enabled`
+   --> C:\github\chora\components\script\dom\workers\sharedworkerglobalscope.rs:466:69
+    |
+466 |                 let (devtools_mpsc_port, debugger_global_for_scope, devtools_enabled) =
+    |                                                                     ^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_devtools_enabled`
+
+warning: unused variable: `devtools_receiver`
+   --> C:\github\chora\components\script\dom\workers\workerglobalscope.rs:417:9
+    |
+417 |         devtools_receiver: Option<RoutedReceiver<WorkerDevtoolsControlMsg>>,
+    |         ^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_devtools_receiver`
+
+warning: variable does not need to be mutable
+   --> C:\github\chora\components\script\event_loop\script_thread.rs:863:13
+    |
+863 |         let mut cx = unsafe { runtime.cx() };
+    |             ----^^
+    |             |
+    |             help: remove this `mut`
+
+warning: unused variable: `is_top_level_global`
+    --> C:\github\chora\components\script\event_loop\script_thread.rs:3846:13
+     |
+3846 |         let is_top_level_global = incomplete_browsing_context_id == incomplete.browsing_context_id;
+     |             ^^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_is_top_level_global`
+
+warning: method `advance_specific` is never used
+  --> C:\github\chora\components\script\dom\animations\animationtimeline.rs:42:19
+   |
+26 | impl AnimationTimeline {
+   | ---------------------- method in this implementation
+...
+42 |     pub(crate) fn advance_specific(&self, by: Duration) {
+   |                   ^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `advance_specific` is never used
+  --> C:\github\chora\components\script\dom\animations\documenttimeline.rs:80:19
+   |
+34 | impl DocumentTimeline {
+   | --------------------- method in this implementation
+...
+80 |     pub(crate) fn advance_specific(&self, by: Duration) {
+   |                   ^^^^^^^^^^^^^^^^
+
+warning: method `set` is never used
+  --> C:\github\chora\components\script\dom\bindings\weakref.rs:33:19
+   |
+24 | impl<T: WeakReferenceable> MutableWeakRef<T> {
+   | -------------------------------------------- method in this implementation
+...
+33 |     pub(crate) fn set(&self, value: Option<&T>) {
+   |                   ^^^
+
+warning: method `block_id` is never used
+  --> C:\github\chora\components\script\dom\css\cssstylerule.rs:97:19
+   |
+39 | impl CSSStyleRule {
+   | ----------------- method in this implementation
+...
+97 |     pub(crate) fn block_id(&self) -> usize {
+   |                   ^^^^^^^^
+
+warning: methods `href`, `title`, `get_rule_count`, and `origin` are never used
+   --> C:\github\chora\components\script\dom\css\cssstylesheet.rs:175:19
+    |
+ 87 | impl CSSStyleSheet {
+    | ------------------ methods in this implementation
+...
+175 |     pub(crate) fn href(&self) -> Option<DOMString> {
+    |                   ^^^^
+...
+179 |     pub(crate) fn title(&self) -> DOMString {
+    |                   ^^^^^
+...
+183 |     pub(crate) fn get_rule_count(&self) -> u32 {
+    |                   ^^^^^^^^^^^^^^
+...
+189 |     pub(crate) fn origin(&self) -> Origin {
+    |                   ^^^^^^
+
+warning: methods `advance_animation_timeline_for_testing`, `highlight_dom_node`, and `set_theme_override` are never used
+    --> C:\github\chora\components\script\dom\document\document.rs:5048:19
+     |
+4110 | impl Document {
+     | ------------- methods in this implementation
+...
+5048 |     pub(crate) fn advance_animation_timeline_for_testing(&self, delta: TimeDuration) {
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+5313 |     pub(crate) fn highlight_dom_node(&self, node: Option<&Node>) {
+     |                   ^^^^^^^^^^^^^^^^^^
+...
+5453 |     pub(crate) fn set_theme_override(&self, new_theme: Option<Theme>) {
+     |                   ^^^^^^^^^^^^^^^^^^
+
+warning: method `unique_id_if_already_present` is never used
+    --> C:\github\chora\components\script\dom\node\node.rs:1860:19
+     |
+ 713 | impl Node {
+     | --------- method in this implementation
+...
+1860 |     pub(crate) fn unique_id_if_already_present(&self) -> Option<String> {
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: methods `advance_animation_clock`, `live_devtools_updates`, and `set_devtools_wants_updates` are never used
+    --> C:\github\chora\components\script\dom\window\window.rs:2640:19
+     |
+2416 | impl Window {
+     | ----------- methods in this implementation
+...
+2640 |     pub(crate) fn advance_animation_clock(&self, no_gc: &NoGC, delta: TimeDuration) {
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^
+...
+4139 |     pub(crate) fn live_devtools_updates(&self) -> bool {
+     |                   ^^^^^^^^^^^^^^^^^^^^^
+...
+4143 |     pub(crate) fn set_devtools_wants_updates(&self, value: bool) {
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: method `perform_a_worklet_task` is never used
+   --> C:\github\chora\components\script\dom\worklet\worklet.rs:280:8
+    |
+250 | pub trait WorkletThreadPool: JSTraceable {
+    |           ----------------- method in this trait
+...
+280 |     fn perform_a_worklet_task(&self, worklet_id: WorkletId, worklet_task: WorkletTask);
+    |        ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: associated items `handle_tick_all_animations_for_testing`, `handle_navigate_to`, and `handle_traverse_history` are never used
+    --> C:\github\chora\components\script\event_loop\script_thread.rs:3383:19
+     |
+ 544 | impl ScriptThread {
+     | ----------------- associated items in this implementation
+...
+3383 |     pub(crate) fn handle_tick_all_animations_for_testing(no_gc: &NoGC, id: PipelineId) {
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+4505 |     fn handle_navigate_to(&self, pipeline_id: PipelineId, url: ServoUrl) {
+     |        ^^^^^^^^^^^^^^^^^^
+...
+4524 |     fn handle_traverse_history(&self, pipeline_id: PipelineId, direction: TraversalDirection) {
+     |        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: this lint expectation is unfulfilled
+   --> C:\github\chora\components\script\dom\bindings\mod.rs:179:14
+    |
+179 |     #[expect(non_camel_case_types)]
+    |              ^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(unfulfilled_lint_expectations)]` on by default
+
+warning: `servo-script` (lib) generated 84 warnings (run `cargo fix --lib -p servo-script` to apply 32 suggestions)
+    Checking servo-webgl v0.7.0 (C:\github\chora\components\webgl)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\webgl-2xunjz5mbids0\s-ho50y6ctdz-019nkdv-working`
+
+warning: `servo-webgl` (lib) generated 1 warning
+    Checking servo-canvas v0.7.0 (C:\github\chora\components\canvas)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_canvas-059ogcd74i50g\s-ho50y7oy5g-03vctym-working`
+
+warning: `servo-canvas` (lib) generated 1 warning
+    Checking servo-layout v0.7.0 (C:\github\chora\components\layout)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\layout-3q2nldcrbooyv\s-ho50y9a5kz-1x7tl7s-working`
+
+warning: `servo-layout` (lib) generated 1 warning
+    Checking servo-constellation v0.7.0 (C:\github\chora\components\constellation)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_constellation-2tda7mprn8ftr\s-ho50ygc0qt-15akijv-working`
+
+warning: unused import: `HangAlert`
+  --> C:\github\chora\components\constellation\event_loop.rs:13:68
+   |
+13 | use background_hang_monitor_api::{BackgroundHangMonitorControlMsg, HangAlert};
+   |                                                                    ^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `Deserialize` and `Serialize`
+  --> C:\github\chora\components\constellation\event_loop.rs:19:13
+   |
+19 | use serde::{Deserialize, Serialize};
+   |             ^^^^^^^^^^^  ^^^^^^^^^
+
+warning: unused import: `GenericReceiver`
+  --> C:\github\chora\components\constellation\event_loop.rs:20:35
+   |
+20 | use servo_base::generic_channel::{GenericReceiver, GenericSender, SendError};
+   |                                   ^^^^^^^^^^^^^^^
+
+warning: `servo-constellation` (lib) generated 4 warnings (run `cargo fix --lib -p servo-constellation` to apply 3 suggestions)
+    Checking servo-paint v0.7.0 (C:\github\chora\components\paint)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\paint-0ywao5u7qf2tz\s-ho50yjhiqm-0fmxsys-working`
+
+warning: `servo-paint` (lib) generated 1 warning
+    Checking servo-storage v0.7.0 (C:\github\chora\components\storage)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\storage-2t0h9est9338u\s-ho50ym3v7z-1bkltni-working`
+
+warning: `servo-storage` (lib) generated 1 warning
+    Checking servo v0.7.0 (C:\github\chora\components\servo)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo-2n4gv7c30ho8p\s-ho50yo3e5z-103n1eg-working`
+
+warning: unused import: `GenericSender`
+  --> C:\github\chora\components\servo\servo.rs:62:52
+   |
+62 | use servo_base::generic_channel::{GenericCallback, GenericSender, RoutedReceiver, SendError};
+   |                                                    ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+    --> C:\github\chora\components\servo\servo.rs:1083:13
+     |
+1083 |         let mut devtools_sender: Option<Sender<DevtoolsMessage>> = None;
+     |             ----^^^^^^^^^^^^^^^
+     |             |
+     |             help: remove this `mut`
+     |
+     = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `create_sandbox` is never used
+    --> C:\github\chora\components\servo\servo.rs:1591:4
+     |
+1591 | fn create_sandbox() {
+     |    ^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `servo` (lib) generated 4 warnings (run `cargo fix --lib -p servo` to apply 2 suggestions)
+    Checking aether-chora-worker v0.1.0 (C:\github\Aether\packages\chora-worker)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5m 41s

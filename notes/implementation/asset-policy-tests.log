@@ -1,0 +1,1 @@
+Superseded by asset-api-tests.log: six actual path-policy tests and two public API tests passed in the locked isolated assets graph. Windows handle validation is included; Unix symlink test is not executed on this host.

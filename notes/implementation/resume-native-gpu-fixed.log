@@ -1,0 +1,39 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Checking stylo_taffy v0.3.0-beta.4
+   Compiling vector-compute-shaders v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-shaders)
+    Checking blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits)
+    Checking blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+    Checking aether-hooks v0.8.0-alpha.3 (C:\github\Aether\packages\hooks)
+    Checking etalon v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+    Checking vello_encoding v0.11.0
+    Checking winit-common v0.31.0-beta.3
+    Checking futures-intrusive v0.5.0
+    Checking winit-win32 v0.31.0-beta.3
+    Checking aether-html v0.8.0-alpha.3 (C:\github\Aether\packages\html)
+    Checking anyrender_svg v0.15.0
+    Checking vector-compute-renderer v0.11.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+error[E0063]: missing field `swizzle` in initializer of `etalon::etalon_types::TextureViewDescriptor<Option<&str>>`
+   --> C:\github\Aether\target\production-audit\cargo-home\git\checkouts\hypermedia-production-644a36e9db8698f0\a46b4e2\crates\vector-compute-renderer\src\wgpu_engine.rs:447:61
+    |
+447 |                     let texture_view = texture.create_view(&wgpu::TextureViewDescriptor {
+    |                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `swizzle`
+
+error[E0063]: missing field `swizzle` in initializer of `etalon::etalon_types::TextureViewDescriptor<Option<&str>>`
+   --> C:\github\Aether\target\production-audit\cargo-home\git\checkouts\hypermedia-production-644a36e9db8698f0\a46b4e2\crates\vector-compute-renderer\src\wgpu_engine.rs:955:57
+    |
+955 |                 let texture_view = texture.create_view(&wgpu::TextureViewDescriptor {
+    |                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `swizzle`
+
+error[E0063]: missing field `swizzle` in initializer of `etalon::etalon_types::TextureViewDescriptor<Option<&str>>`
+    --> C:\github\Aether\target\production-audit\cargo-home\git\checkouts\hypermedia-production-644a36e9db8698f0\a46b4e2\crates\vector-compute-renderer\src\wgpu_engine.rs:1144:65
+     |
+1144 |                         let texture_view = texture.create_view(&wgpu::TextureViewDescriptor {
+     |                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `swizzle`
+
+For more information about this error, try `rustc --explain E0063`.
+error: could not compile `vector-compute-renderer` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...

@@ -1,0 +1,12 @@
+Command: cargo check --offline --manifest-path C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\components\shared\embedder\Cargo.toml
+Exit: 101
+error: failed to get `servo_arc` as a dependency of package `servo-malloc-size-of v0.7.0 (C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\components\malloc_size_of)`
+
+Caused by:
+  failed to load source for dependency `servo_arc`
+
+Caused by:
+  unable to update https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff
+
+Caused by:
+  can't checkout from 'https://github.com/servo/stylo': you are in the offline mode (--offline)

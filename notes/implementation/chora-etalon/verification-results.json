@@ -1,0 +1,105 @@
+[
+  {
+    "name": "api-probe-core",
+    "command": [
+      "C:\\Users\\Hp\\.rustup\\toolchains\\1.96.1-x86_64-pc-windows-msvc\\bin\\cargo.exe",
+      "check",
+      "--manifest-path",
+      "support/etalon/api-probe/Cargo.toml",
+      "--offline",
+      "--locked",
+      "--no-default-features"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "api-probe-canvas",
+    "command": [
+      "C:\\Users\\Hp\\.rustup\\toolchains\\1.96.1-x86_64-pc-windows-msvc\\bin\\cargo.exe",
+      "check",
+      "--manifest-path",
+      "support/etalon/api-probe/Cargo.toml",
+      "--offline",
+      "--locked",
+      "--features",
+      "canvas"
+    ],
+    "exit_code": 101
+  },
+  {
+    "name": "root-webgpu",
+    "command": [
+      "C:\\Users\\Hp\\.rustup\\toolchains\\1.96.1-x86_64-pc-windows-msvc\\bin\\cargo.exe",
+      "check",
+      "-p",
+      "servo-webgpu",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 101
+  },
+  {
+    "name": "source-policy-root",
+    "command": [
+      "python",
+      "support/etalon/check_gpu_sources.py",
+      "Cargo.lock"
+    ],
+    "exit_code": 1
+  },
+  {
+    "name": "api-probe-runtime",
+    "command": [
+      "C:\\Users\\Hp\\.rustup\\toolchains\\1.96.1-x86_64-pc-windows-msvc\\bin\\cargo.exe",
+      "test",
+      "--manifest-path",
+      "support/etalon/api-probe/Cargo.toml",
+      "--offline",
+      "--locked",
+      "--no-default-features",
+      "--lib"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "owned-handle-compile",
+    "command": [
+      "C:\\Users\\Hp\\.rustup\\toolchains\\1.96.1-x86_64-pc-windows-msvc\\bin\\rustc.exe",
+      "--test",
+      "--edition=2024",
+      "ffi/capi/owned_handle.rs",
+      "-o",
+      "target/etalon-audit/owned_handle_tests.exe"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "owned-handle-runtime",
+    "command": [
+      "C:\\Users\\Hp\\AppData\\Local\\Temp\\chora-etalon-overhaul\\target\\etalon-audit\\owned_handle_tests.exe"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "source-policy-tests",
+    "command": [
+      "python",
+      "support/etalon/test_gpu_sources.py"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "source-policy-probe",
+    "command": [
+      "python",
+      "support/etalon/check_gpu_sources.py",
+      "support/etalon/api-probe/Cargo.lock"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "rustfmt-check",
+    "command": "direct Rust 1.96.1 rustfmt --edition 2024 --check (owned changed Rust files)",
+    "exit_code": 0
+  }
+]

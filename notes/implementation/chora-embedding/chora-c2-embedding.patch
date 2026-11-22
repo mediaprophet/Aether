@@ -1,0 +1,1596 @@
+diff --git a/components/constellation/constellation.rs b/components/constellation/constellation.rs
+--- a/components/constellation/constellation.rs
++++ b/components/constellation/constellation.rs
+@@ -106,6 +106,7 @@
+     ChromeToDevtoolsControlMsg, DevtoolsControlMsg, DevtoolsPageInfo, NavigationState,
+     ScriptToDevtoolsControlMsg,
+ };
++use embedder_traits::message_lifecycle::{PendingRequest, PendingRequests};
+ use embedder_traits::resources::{self, Resource};
+ use embedder_traits::user_contents::{UserContentManagerId, UserContents};
+ use embedder_traits::{
+@@ -115,6 +116,10 @@
+     MediaSessionEvent, MediaSessionPlaybackState, MouseButtonAction, MouseButtonEvent,
+     NewWebViewDetails, PaintHitTestResult, Theme, ViewportDetails, WakeLockDelegate, WakeLockType,
+     WebDriverCommandMsg, WebDriverLoadStatus, WebDriverScriptCommand,
++};
++use embedder_traits::{
++    ChoraCallerContext, ChoraEngineInstanceId, ChoraMessageError, ChoraMessageId,
++    ChoraMessageResponse, ChoraNavigationEpoch, EmbedderMsg,
+ };
+ use euclid::default::Size2D as UntypedSize2D;
+ use fonts::SystemFontServiceProxy;
+@@ -268,8 +273,8 @@
+             // avoiding a synchronous wait here in the middle of Constellation operation. If
+             // it becomes necessary in the future these receivers could be waited on asynchronously
+             // via polling.
+-            if let Some((sender, _)) = generic_channel::oneshot() &&
+-                let Err(error) = webgpu.exit(sender)
++            if let Some((sender, _)) = generic_channel::oneshot()
++                && let Err(error) = webgpu.exit(sender)
+             {
+                 warn!("Failed to request WebGPU exit: {error}.");
+             }
+@@ -368,6 +373,15 @@
+ 
+     /// Bookkeeping data for all webviews in the constellation.
+     webviews: FxHashMap<WebViewId, ConstellationWebView>,
++
++    /// Engine-owned host-message routes. Epochs rotate when the active document changes.
++    chora_engine_instance: ChoraEngineInstanceId,
++    chora_routes: HashMap<WebViewId, (PipelineId, ChoraNavigationEpoch, ServoUrl)>,
++    pending_chora_messages: PendingRequests<
++        ChoraMessageId,
++        ChoraCallerContext,
++        servo_base::generic_channel::GenericCallback<ChoraMessageResponse>,
++    >,
+ 
+     /// Channels for the constellation to send messages to the public
+     /// resource-related threads. There are two groups of resource threads: one
+@@ -705,6 +719,12 @@
+                     constellation_to_embedder_proxy: state.constellation_to_embedder_proxy,
+                     paint_proxy: state.paint_proxy,
+                     webviews: Default::default(),
++                    chora_engine_instance: ChoraEngineInstanceId::new(),
++                    chora_routes: Default::default(),
++                    pending_chora_messages: PendingRequests::new(
++                        embedder_traits::CHORA_MESSAGE_MAX_PENDING,
++                        std::time::Duration::from_secs(embedder_traits::CHORA_MESSAGE_TIMEOUT_SECS),
++                    ),
+                     #[cfg(feature = "devtools")]
+                     devtools_sender: state.devtools_sender,
+                     #[cfg(feature = "devtools")]
+@@ -804,6 +824,8 @@
+             // Randomly close a pipeline if --random-pipeline-closure-probability is set
+             // This is for testing the hardening of the constellation.
+             self.maybe_close_random_pipeline();
++            self.sync_chora_message_routes();
++            self.expire_chora_messages();
+             self.handle_request();
+             self.finish_completed_session_history_traversal_requests();
+             self.clean_up_finished_script_event_loops();
+@@ -1147,10 +1169,158 @@
+             .insert(browsing_context_id, browsing_context);
+ 
+         // If this context is a nested container, attach it to parent pipeline.
+-        if let Some(parent_pipeline_id) = parent_pipeline_id &&
+-            let Some(parent) = self.pipelines.get_mut(&parent_pipeline_id)
++        if let Some(parent_pipeline_id) = parent_pipeline_id
++            && let Some(parent) = self.pipelines.get_mut(&parent_pipeline_id)
+         {
+             parent.add_child(browsing_context_id);
++        }
++    }
++
++    /// Refresh route identity after every constellation operation, including BFCache traversal.
++    fn sync_chora_message_routes(&mut self) {
++        let active: HashMap<_, _> = self
++            .webviews
++            .keys()
++            .filter_map(|webview_id| {
++                let context = self
++                    .browsing_contexts
++                    .get(&BrowsingContextId::from(*webview_id))?;
++                let pipeline = self.pipelines.get(&context.pipeline_id)?;
++                (context.pipelines.contains(&context.pipeline_id)
++                    && self.get_activity(context.pipeline_id) == DocumentActivity::FullyActive)
++                    .then_some((*webview_id, (context.pipeline_id, pipeline.url.clone())))
++            })
++            .collect();
++        // Exact URL changes also invalidate same-document push/replace/fragment
++        // navigation, even when the pipeline is reused.
++        self.chora_routes
++            .retain(|webview_id, (pipeline_id, _, url)| {
++                active
++                    .get(webview_id)
++                    .is_some_and(|(active_pipeline, active_url)| {
++                        active_pipeline == pipeline_id && active_url == url
++                    })
++            });
++        for (webview_id, (pipeline_id, url)) in active {
++            self.chora_routes
++                .entry(webview_id)
++                .or_insert_with(|| (pipeline_id, ChoraNavigationEpoch::new(), url));
++        }
++        let routes = &self.chora_routes;
++        let pending = self.pending_chora_messages.cancel_where(|route| {
++            !routes
++                .get(&route.webview_id())
++                .is_some_and(|(pipeline, epoch, _)| {
++                    *pipeline == route.pipeline_id() && *epoch == route.navigation_epoch()
++                })
++        });
++        self.reject_chora_messages(pending, ChoraMessageError::Cancelled);
++    }
++
++    fn reject_chora_messages(
++        &self,
++        pending: Vec<
++            PendingRequest<
++                ChoraMessageId,
++                ChoraCallerContext,
++                servo_base::generic_channel::GenericCallback<ChoraMessageResponse>,
++            >,
++        >,
++        reason: ChoraMessageError,
++    ) {
++        for entry in pending {
++            let _ = entry.responder.send(Err(reason));
++            self.embedder_proxy.send(EmbedderMsg::ChoraMessageCancelled(
++                entry.route.webview_id(),
++                entry.id,
++                reason,
++            ));
++        }
++    }
++
++    fn expire_chora_messages(&mut self) {
++        let pending = self
++            .pending_chora_messages
++            .expire(std::time::Instant::now());
++        self.reject_chora_messages(pending, ChoraMessageError::TimedOut);
++    }
++
++    fn handle_chora_message(
++        &mut self,
++        webview_id: WebViewId,
++        pipeline_id: PipelineId,
++        document_origin: servo_url::ImmutableOrigin,
++        channel: String,
++        payload: String,
++        responder: servo_base::generic_channel::GenericCallback<ChoraMessageResponse>,
++    ) {
++        if let Err(error) = embedder_traits::validate_chora_message(&channel, &payload) {
++            let _ = responder.send(Err(error));
++            return;
++        }
++        self.sync_chora_message_routes();
++        let context = (|| {
++            if self.shutting_down {
++                return None;
++            }
++            let pipeline = self.pipelines.get(&pipeline_id)?;
++            let browsing_context = self
++                .browsing_contexts
++                .get(&BrowsingContextId::from(webview_id))?;
++            if pipeline.webview_id != webview_id
++                || pipeline.browsing_context_id != BrowsingContextId::from(webview_id)
++                || browsing_context.parent_pipeline_id.is_some()
++                || browsing_context.pipeline_id != pipeline_id
++                || !browsing_context.pipelines.contains(&pipeline_id)
++                || self.get_activity(pipeline_id) != DocumentActivity::FullyActive
++            {
++                return None;
++            }
++            // Use the engine's final URL, not a caller-supplied origin string.
++            // Compare to the actual document security origin as well: inherited,
++            // opaque and sandboxed-origin documents cannot masquerade as URL origins.
++            let origin =
++                embedder_traits::validate_chora_document_origin(&document_origin, &pipeline.url)
++                    .ok()?;
++            let (active_pipeline, epoch, _) = self.chora_routes.get(&webview_id)?;
++            if *active_pipeline != pipeline_id {
++                return None;
++            }
++            Some(ChoraCallerContext::from_engine_route(
++                self.chora_engine_instance,
++                webview_id,
++                pipeline_id,
++                *epoch,
++                origin,
++                browsing_context.is_private,
++            ))
++        })();
++        let Some(context) = context else {
++            let _ = responder.send(Err(ChoraMessageError::InvalidContext));
++            return;
++        };
++        let id = ChoraMessageId::new();
++        if let Err(responder) = self.pending_chora_messages.insert(
++            id,
++            context.clone(),
++            responder,
++            std::time::Instant::now(),
++        ) {
++            let _ = responder.send(Err(ChoraMessageError::Busy));
++            return;
++        }
++        self.embedder_proxy
++            .send(EmbedderMsg::ChoraMessage(context, id, channel, payload));
++    }
++
++    fn handle_chora_message_reply(&mut self, id: ChoraMessageId, reply: ChoraMessageResponse) {
++        self.sync_chora_message_routes();
++        self.expire_chora_messages();
++        // A consumed, cancelled, expired or cross-instance request has no reply owner.
++        if let Some(pending) = self.pending_chora_messages.take(id) {
++            let _ = pending
++                .responder
++                .send(embedder_traits::bound_chora_reply(reply));
+         }
+     }
+ 
+@@ -1192,7 +1362,18 @@
+         let request = {
+             let oper = {
+                 let _span = profile_traits::trace_span!("handle_request::select").entered();
+-                sel.select()
++                if let Some(timeout) = self
++                    .pending_chora_messages
++                    .wait_duration(std::time::Instant::now())
++                {
++                    match sel.select_timeout(timeout) {
++                        Ok(operation) => operation,
++                        // The next run-loop turn expires requests, even without another page event.
++                        Err(_) => return,
++                    }
++                } else {
++                    sel.select()
++                }
+             };
+             let index = oper.index();
+ 
+@@ -1302,6 +1483,9 @@
+     fn handle_request_from_embedder(&mut self, message: EmbedderToConstellationMessage) {
+         trace_msg_from_embedder!(message, "{message:?}");
+         match message {
++            EmbedderToConstellationMessage::ChoraMessageReply(id, reply) => {
++                self.handle_chora_message_reply(id, reply);
++            },
+             EmbedderToConstellationMessage::Exit => {
+                 self.handle_exit();
+             },
+@@ -1563,8 +1747,8 @@
+         &self,
+         message: BackgroundHangMonitorControlMsg,
+     ) {
+-        if let Some(background_monitor_control_sender) = &self.background_monitor_control_sender &&
+-            let Err(error) = background_monitor_control_sender.send(message.clone())
++        if let Some(background_monitor_control_sender) = &self.background_monitor_control_sender
++            && let Err(error) = background_monitor_control_sender.send(message.clone())
+         {
+             error!("Could not send message ({message:?}) to BHM: {error}");
+         }
+@@ -1619,6 +1803,16 @@
+         trace_script_msg!(content, "{source_pipeline_id}: {content:?}");
+ 
+         match content {
++            ScriptToConstellationMessage::ChoraMessage(origin, channel, payload, responder) => {
++                self.handle_chora_message(
++                    webview_id,
++                    source_pipeline_id,
++                    origin,
++                    channel,
++                    payload,
++                    responder,
++                );
++            },
+             ScriptToConstellationMessage::CompleteMessagePortTransfer(router_id, ports) => {
+                 self.handle_complete_message_port_transfer(router_id, ports);
+             },
+@@ -1985,9 +2179,9 @@
+                 // The last media session claiming to be in playing state is set to
+                 // the active media session.
+                 // Events coming from inactive media sessions are discarded.
+-                if self.active_media_session.is_some() &&
+-                    let MediaSessionEvent::PlaybackStateChange(ref state) = event &&
+-                    !matches!(
++                if self.active_media_session.is_some()
++                    && let MediaSessionEvent::PlaybackStateChange(ref state) = event
++                    && !matches!(
+                         state,
+                         MediaSessionPlaybackState::Playing | MediaSessionPlaybackState::Paused
+                     )
+@@ -2030,8 +2224,8 @@
+                 self.handle_finish_javascript_evaluation(evaluation_id, result)
+             },
+             ScriptToConstellationMessage::ForwardKeyboardScroll(pipeline_id, scroll) => {
+-                if let Some(pipeline) = self.pipelines.get(&pipeline_id) &&
+-                    let Err(error) =
++                if let Some(pipeline) = self.pipelines.get(&pipeline_id)
++                    && let Err(error) =
+                         pipeline
+                             .event_loop
+                             .send(ScriptThreadMessage::ForwardKeyboardScroll(
+@@ -2059,8 +2253,8 @@
+             ScriptToConstellationMessage::AcquireWakeLock(type_) => match type_ {
+                 WakeLockType::Screen => {
+                     self.screen_wake_lock_count += 1;
+-                    if self.screen_wake_lock_count == 1 &&
+-                        let Err(e) = self.wake_lock_provider.acquire(type_)
++                    if self.screen_wake_lock_count == 1
++                        && let Err(e) = self.wake_lock_provider.acquire(type_)
+                     {
+                         warn!("Failed to acquire screen wake lock: {e}");
+                     }
+@@ -2069,8 +2263,8 @@
+             ScriptToConstellationMessage::ReleaseWakeLock(type_) => match type_ {
+                 WakeLockType::Screen => {
+                     self.screen_wake_lock_count = self.screen_wake_lock_count.saturating_sub(1);
+-                    if self.screen_wake_lock_count == 0 &&
+-                        let Err(e) = self.wake_lock_provider.release(type_)
++                    if self.screen_wake_lock_count == 0
++                        && let Err(e) = self.wake_lock_provider.release(type_)
+                     {
+                         warn!("Failed to release screen wake lock: {e}");
+                     }
+@@ -2325,8 +2519,8 @@
+                         entangled_with: entry.entangled_with,
+                     }
+                 },
+-                TransferState::CompletionFailed(buffer) |
+-                TransferState::CompletionRequested(_, buffer) => {
++                TransferState::CompletionFailed(buffer)
++                | TransferState::CompletionRequested(_, buffer) => {
+                     // If the completion had already failed,
+                     // this is a request coming from a global to complete a new transfer,
+                     // but we're still awaiting the return of the buffer
+@@ -2491,8 +2685,8 @@
+         if let Some(info) = self.message_ports.get_mut(&port2) {
+             info.entangled_with = None;
+             match &mut info.state {
+-                TransferState::Managed(router_id) |
+-                TransferState::CompletionInProgress(router_id) => {
++                TransferState::Managed(router_id)
++                | TransferState::CompletionInProgress(router_id) => {
+                     // We try to disentangle the other port now,
+                     // and if it has been transfered out by the time the message is received,
+                     // it will be ignored,
+@@ -2632,8 +2826,8 @@
+             // and, if type is "session", whose relevant settings object's associated Document's
+             // node navigable's traversable navigable is thisDocument's node navigable's
+             // traversable navigable."
+-            if storage == WebStorageType::Session &&
+-                pipeline.webview_id != source_pipeline.webview_id
++            if storage == WebStorageType::Session
++                && pipeline.webview_id != source_pipeline.webview_id
+             {
+                 continue;
+             }
+@@ -2658,6 +2852,8 @@
+     #[servo_tracing::instrument(skip_all)]
+     fn handle_exit(&mut self) {
+         debug!("Handling exit.");
++        let pending = self.pending_chora_messages.cancel_where(|_| true);
++        self.reject_chora_messages(pending, ChoraMessageError::Unavailable);
+ 
+         // TODO: add a timer, which forces shutdown if threads aren't responsive.
+         if self.shutting_down {
+@@ -2752,8 +2948,8 @@
+ 
+         // In single process mode, join on the background hang monitor worker thread.
+         drop(self.background_monitor_register.take());
+-        if let Some(join_handle) = self.background_monitor_register_join_handle.take() &&
+-            join_handle.join().is_err()
++        if let Some(join_handle) = self.background_monitor_register_join_handle.take()
++            && join_handle.join().is_err()
+         {
+             error!("Failed to join on the bhm background thread.");
+         }
+@@ -3809,8 +4005,8 @@
+                 self.handle_change_document_animation_frame_provider_state(pipeline_id, false);
+             },
+             AnimationState::AnimationsPresent | AnimationState::NoAnimationsPresent => {
+-                if let Some(pipeline) = self.pipelines.get_mut(&pipeline_id) &&
+-                    pipeline.animation_state != animation_state
++                if let Some(pipeline) = self.pipelines.get_mut(&pipeline_id)
++                    && pipeline.animation_state != animation_state
+                 {
+                     pipeline.animation_state = animation_state;
+                     self.paint_proxy
+@@ -4140,8 +4336,8 @@
+                         pending.target_snapshot_params,
+                     );
+                 } else {
+-                    if let Some((sender, id)) = &self.webdriver_load_status_sender &&
+-                        pipeline_id == *id
++                    if let Some((sender, id)) = &self.webdriver_load_status_sender
++                        && pipeline_id == *id
+                     {
+                         let _ = sender.send(WebDriverLoadStatus::NavigationStop);
+                     }
+@@ -4180,6 +4376,13 @@
+         history_handling: NavigationHistoryBehavior,
+         target_snapshot_params: TargetSnapshotParams,
+     ) -> Option<PipelineId> {
++        let pending = self
++            .pending_chora_messages
++            .cancel_where(|route| route.webview_id() == webview_id);
++        self.reject_chora_messages(pending, ChoraMessageError::Cancelled);
++        if let Some((_, epoch, _)) = self.chora_routes.get_mut(&webview_id) {
++            *epoch = ChoraNavigationEpoch::new();
++        }
+         debug!(
+             "{}: Loading ({}replacing): {}",
+             source_id,
+@@ -4252,8 +4455,8 @@
+                 };
+                 if let Err(e) = result {
+                     self.handle_send_error(parent_pipeline_id, e);
+-                } else if let Some((sender, id)) = &self.webdriver_load_status_sender &&
+-                    source_id == *id
++                } else if let Some((sender, id)) = &self.webdriver_load_status_sender
++                    && source_id == *id
+                 {
+                     let _ = sender.send(WebDriverLoadStatus::NavigationStop);
+                 }
+@@ -4262,8 +4465,8 @@
+             },
+             None => {
+                 // Make sure no pending page would be overridden.
+-                if let Some(webview) = self.webviews.get(&webview_id) &&
+-                    webview.pending_changes.iter().any(|pending_change| {
++                if let Some(webview) = self.webviews.get(&webview_id)
++                    && webview.pending_changes.iter().any(|pending_change| {
+                         pending_change.browsing_context_id == browsing_context_id
+                     })
+                 {
+@@ -4567,8 +4770,8 @@
+         let pipelines_awaiting_activation: FxHashSet<_> = browsing_context_changes
+             .drain()
+             .filter_map(|(browsing_context_id, mut pipeline_reloader)| {
+-                if let NeedsToReload::Yes(pipeline_id, ref mut load_data) = pipeline_reloader &&
+-                    let Some(url) = url_to_load.get(&pipeline_id)
++                if let NeedsToReload::Yes(pipeline_id, ref mut load_data) = pipeline_reloader
++                    && let Some(url) = url_to_load.get(&pipeline_id)
+                 {
+                     load_data.url = url.clone();
+                 }
+@@ -5156,8 +5359,8 @@
+         for &pipeline in new_focus_chain_pipelines.iter().rev() {
+             // Don't send a message to the browsing context that initiated this
+             // focus operation. It already knows that it has gotten focus.
+-            if Some(pipeline.id) != initiator_pipeline_id &&
+-                let Err(error) = pipeline.event_loop.send(
++            if Some(pipeline.id) != initiator_pipeline_id
++                && let Err(error) = pipeline.event_loop.send(
+                     ScriptThreadMessage::FocusDocumentAsPartOfFocusingSteps(
+                         pipeline.id,
+                         pipeline.focus_sequence,
+@@ -5170,15 +5373,16 @@
+             child_browsing_context_id = Some(pipeline.browsing_context_id);
+         }
+ 
+-        if let Some(pipeline) = first_common_pipeline_in_chain &&
+-            Some(pipeline.id) != initiator_pipeline_id &&
+-            let Err(error) = pipeline.event_loop.send(
+-                ScriptThreadMessage::FocusDocumentAsPartOfFocusingSteps(
+-                    pipeline.id,
+-                    pipeline.focus_sequence,
+-                    child_browsing_context_id,
+-                ),
+-            )
++        if let Some(pipeline) = first_common_pipeline_in_chain
++            && Some(pipeline.id) != initiator_pipeline_id
++            && let Err(error) =
++                pipeline
++                    .event_loop
++                    .send(ScriptThreadMessage::FocusDocumentAsPartOfFocusingSteps(
++                        pipeline.id,
++                        pipeline.focus_sequence,
++                        child_browsing_context_id,
++                    ))
+         {
+             send_errors.push((pipeline.id, error));
+         }
+@@ -5276,18 +5480,18 @@
+                     "ScriptCommand after closure",
+                 );
+             },
+-            WebDriverCommandMsg::CloseWebView(..) |
+-            WebDriverCommandMsg::NewWindow(..) |
+-            WebDriverCommandMsg::SelectWebViewForInteraction(..) |
+-            WebDriverCommandMsg::IsWebViewOpen(..) |
+-            WebDriverCommandMsg::GetWindowRect(..) |
+-            WebDriverCommandMsg::GetViewportSize(..) |
+-            WebDriverCommandMsg::SetWindowRect(..) |
+-            WebDriverCommandMsg::MaximizeWebView(..) |
+-            WebDriverCommandMsg::LoadUrl(..) |
+-            WebDriverCommandMsg::Refresh(..) |
+-            WebDriverCommandMsg::InputEvent(..) |
+-            WebDriverCommandMsg::TakeScreenshot(..) => {
++            WebDriverCommandMsg::CloseWebView(..)
++            | WebDriverCommandMsg::NewWindow(..)
++            | WebDriverCommandMsg::SelectWebViewForInteraction(..)
++            | WebDriverCommandMsg::IsWebViewOpen(..)
++            | WebDriverCommandMsg::GetWindowRect(..)
++            | WebDriverCommandMsg::GetViewportSize(..)
++            | WebDriverCommandMsg::SetWindowRect(..)
++            | WebDriverCommandMsg::MaximizeWebView(..)
++            | WebDriverCommandMsg::LoadUrl(..)
++            | WebDriverCommandMsg::Refresh(..)
++            | WebDriverCommandMsg::InputEvent(..)
++            | WebDriverCommandMsg::TakeScreenshot(..) => {
+                 unreachable!("This command should be send directly to the embedder.");
+             },
+             _ => {
+@@ -5441,8 +5645,8 @@
+         // If the currently focused browsing context is a child of the browsing
+         // context in which the page is being loaded, then update the focused
+         // browsing context to be the one where the page is being loaded.
+-        if self.focused_browsing_context_is_descendant_of(&change) &&
+-            let Some(webview) = self.webviews.get_mut(&change.webview_id)
++        if self.focused_browsing_context_is_descendant_of(&change)
++            && let Some(webview) = self.webviews.get_mut(&change.webview_id)
+         {
+             webview.focused_browsing_context_id = change.browsing_context_id;
+         }
+@@ -5620,8 +5824,9 @@
+             .get(&change.webview_id)
+             .map(|webview| webview.focused_browsing_context_id);
+         focused_browsing_context_id.is_some_and(|focused_browsing_context_id| {
+-            focused_browsing_context_id == change.browsing_context_id ||
+-                self.fully_active_descendant_browsing_contexts_iter(change.browsing_context_id)
++            focused_browsing_context_id == change.browsing_context_id
++                || self
++                    .fully_active_descendant_browsing_contexts_iter(change.browsing_context_id)
+                     .any(|nested_ctx| nested_ctx.id == focused_browsing_context_id)
+         })
+     }
+@@ -5712,8 +5917,8 @@
+                 },
+             },
+         };
+-        if let Some(parent_pipeline_id) = parent_pipeline_id &&
+-            let Some(parent_pipeline) = self.pipelines.get(&parent_pipeline_id)
++        if let Some(parent_pipeline_id) = parent_pipeline_id
++            && let Some(parent_pipeline) = self.pipelines.get(&parent_pipeline_id)
+         {
+             let msg = ScriptThreadMessage::UpdatePipelineId(
+                 parent_pipeline_id,
+@@ -5769,10 +5974,10 @@
+     fn get_activity(&self, pipeline_id: PipelineId) -> DocumentActivity {
+         let mut ancestor_id = pipeline_id;
+         loop {
+-            if let Some(ancestor) = self.pipelines.get(&ancestor_id) &&
+-                let Some(browsing_context) =
+-                    self.browsing_contexts.get(&ancestor.browsing_context_id) &&
+-                browsing_context.pipeline_id == ancestor_id
++            if let Some(ancestor) = self.pipelines.get(&ancestor_id)
++                && let Some(browsing_context) =
++                    self.browsing_contexts.get(&ancestor.browsing_context_id)
++                && browsing_context.pipeline_id == ancestor_id
+             {
+                 if let Some(parent_pipeline_id) = browsing_context.parent_pipeline_id {
+                     ancestor_id = parent_pipeline_id;
+@@ -6061,6 +6266,10 @@
+         exit_mode: ExitPipelineMode,
+     ) {
+         debug!("{}: Closing", pipeline_id);
++        let pending = self
++            .pending_chora_messages
++            .cancel_where(|route| route.pipeline_id() == pipeline_id);
++        self.reject_chora_messages(pending, ChoraMessageError::Cancelled);
+ 
+         // Sever connection to browsing context
+         let Some((webview_id, browsing_context_id)) = self
+@@ -6139,15 +6348,15 @@
+         // In order to get repeatability, we sort the pipeline ids.
+         let mut pipeline_ids: Vec<&PipelineId> = self.pipelines.keys().collect();
+         pipeline_ids.sort_unstable();
+-        if let Some((ref mut rng, probability)) = self.random_pipeline_closure &&
+-            let Some(pipeline_id) = pipeline_ids.choose(rng) &&
+-            let Some(pipeline) = self.pipelines.get(pipeline_id)
++        if let Some((ref mut rng, probability)) = self.random_pipeline_closure
++            && let Some(pipeline_id) = pipeline_ids.choose(rng)
++            && let Some(pipeline) = self.pipelines.get(pipeline_id)
+         {
+             if self
+                 .webviews
+                 .values()
+-                .any(|webview| webview.pipeline_is_pending(pipeline.id)) &&
+-                probability <= rng.random::<f32>()
++                .any(|webview| webview.pipeline_is_pending(pipeline.id))
++                && probability <= rng.random::<f32>()
+             {
+                 // We tend not to close pending pipelines, as that almost always
+                 // results in pipelines being closed early in their lifecycle,
+diff --git a/components/script/dom/choramessaging.rs b/components/script/dom/choramessaging.rs
+new file mode 100644
+--- /dev/null
++++ b/components/script/dom/choramessaging.rs
+@@ -0,0 +1,137 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
++
++use std::cell::Cell;
++
++use dom_struct::dom_struct;
++use embedder_traits::{
++    CHORA_MESSAGE_MAX_PENDING, ChoraMessageError, ChoraMessageResponse, validate_chora_message,
++};
++use js::context::JSContext;
++use js::realm::CurrentRealm;
++use script_bindings::reflector::{Reflector, reflect_dom_object};
++use servo_base::generic_channel::GenericCallback;
++use servo_constellation_traits::ScriptToConstellationMessage;
++use servo_url::origin::DomainComparable;
++
++use crate::dom::bindings::codegen::Bindings::ChoraMessagingBinding::ChoraMessagingMethods;
++use crate::dom::bindings::codegen::Bindings::WindowBinding::Window_Binding::WindowMethods;
++use crate::dom::bindings::refcounted::{Trusted, TrustedPromise};
++use crate::dom::bindings::reflector::DomGlobal;
++use crate::dom::bindings::root::DomRoot;
++use crate::dom::bindings::str::DOMString;
++use crate::dom::globalscope::GlobalScope;
++use crate::dom::promise::{Promise, RootedPromise};
++use crate::routed_promise::RoutedPromiseListener;
++
++#[dom_struct]
++pub(crate) struct ChoraMessaging {
++    reflector_: Reflector,
++    pending: Cell<usize>,
++}
++
++impl ChoraMessaging {
++    pub(crate) fn new(cx: &mut JSContext, global: &GlobalScope) -> DomRoot<Self> {
++        reflect_dom_object(
++            cx,
++            Box::new(Self {
++                reflector_: Reflector::new(),
++                pending: Cell::new(0),
++            }),
++            global,
++        )
++    }
++}
++
++impl ChoraMessagingMethods<crate::DomTypeHolder> for ChoraMessaging {
++    fn Request(
++        &self,
++        cx: &mut CurrentRealm,
++        channel: DOMString,
++        payload: DOMString,
++    ) -> RootedPromise {
++        let promise = Promise::new_in_realm(cx);
++        let global = self.global();
++        let window = global.as_window();
++        let document = window.Document();
++        let channel = channel.to_string();
++        let payload = payload.to_string();
++        let origin = global.origin().immutable().clone();
++        let error = validate_chora_message(&channel, &payload)
++            .err()
++            .or_else(|| {
++                if !window.is_top_level()
++                    || !document.is_fully_active()
++                    || !document
++                        .creation_sandboxing_flag_set_considering_parent_iframe()
++                        .is_empty()
++                    || !matches!(global.get_url().scheme(), "https" | "http")
++                    || !matches!(origin.scheme(), Some("https" | "http"))
++                {
++                    Some(ChoraMessageError::InvalidContext)
++                } else if self.pending.get() >= CHORA_MESSAGE_MAX_PENDING {
++                    Some(ChoraMessageError::Busy)
++                } else {
++                    None
++                }
++            });
++        if let Some(error) = error {
++            promise.reject_native(cx, &error.to_string());
++            return promise;
++        }
++        self.pending.set(self.pending.get() + 1);
++        let source = global
++            .task_manager()
++            .dom_manipulation_task_source()
++            .to_sendable();
++        let mut trusted_promise = Some(TrustedPromise::from(&promise));
++        let trusted_receiver = Trusted::new(self);
++        let callback =
++            match GenericCallback::new(move |message: Result<ChoraMessageResponse, _>| {
++                let Some(trusted) = trusted_promise.take() else {
++                    return;
++                };
++                let receiver = trusted_receiver.clone();
++                // Channel teardown rejects instead of panicking in a routed task.
++                let response = message.unwrap_or(Err(ChoraMessageError::Unavailable));
++                source.queue(task!(chora_message_reply: move |cx| {
++                    let promise = trusted.root(cx);
++                    receiver.root().handle_response(cx, response, &promise);
++                }));
++            }) {
++                Ok(callback) => callback,
++                Err(_) => {
++                    self.pending.set(self.pending.get().saturating_sub(1));
++                    promise.reject_native(cx, &ChoraMessageError::Unavailable.to_string());
++                    return promise;
++                },
++            };
++        let response_on_failure = callback.clone();
++        if global
++            .script_to_constellation_chan()
++            .send(ScriptToConstellationMessage::ChoraMessage(
++                origin, channel, payload, callback,
++            ))
++            .is_err()
++        {
++            let _ = response_on_failure.send(Err(ChoraMessageError::Unavailable));
++        }
++        promise
++    }
++}
++
++impl RoutedPromiseListener<crate::DomTypeHolder, ChoraMessageResponse> for ChoraMessaging {
++    fn handle_response(
++        &self,
++        cx: &mut JSContext,
++        response: ChoraMessageResponse,
++        promise: &RootedPromise,
++    ) {
++        self.pending.set(self.pending.get().saturating_sub(1));
++        match response {
++            Ok(body) => promise.resolve_native(cx, &body),
++            Err(error) => promise.reject_native(cx, &error.to_string()),
++        }
++    }
++}
+diff --git a/components/script/dom/mod.rs b/components/script/dom/mod.rs
+--- a/components/script/dom/mod.rs
++++ b/components/script/dom/mod.rs
+@@ -309,6 +309,7 @@
+ pub(crate) mod selection_range;
+ pub(crate) mod serviceworker;
+ pub(crate) use self::serviceworker::*;
++pub(crate) mod choramessaging;
+ pub(crate) mod servointernals;
+ pub(crate) mod servoparser;
+ pub(crate) mod shadowroot;
+diff --git a/components/script/dom/navigator/navigator.rs b/components/script/dom/navigator/navigator.rs
+--- a/components/script/dom/navigator/navigator.rs
++++ b/components/script/dom/navigator/navigator.rs
+@@ -42,6 +42,7 @@
+ use crate::dom::bindings::utils::to_frozen_array;
+ #[cfg(feature = "bluetooth")]
+ use crate::dom::bluetooth::Bluetooth;
++use crate::dom::choramessaging::ChoraMessaging;
+ use crate::dom::clipboard::Clipboard;
+ use crate::dom::credentialmanagement::credentialscontainer::CredentialsContainer;
+ use crate::dom::csp::{GlobalCspReporting, Violation};
+@@ -139,6 +140,7 @@
+     #[cfg(feature = "gamepad")]
+     has_gamepad_gesture: Cell<bool>,
+     servo_internals: MutNullableDom<ServoInternals>,
++    chora: MutNullableDom<ChoraMessaging>,
+     user_activation: MutNullableDom<UserActivation>,
+     wake_lock: MutNullableDom<WakeLock>,
+ }
+@@ -167,6 +169,7 @@
+             #[cfg(feature = "gamepad")]
+             has_gamepad_gesture: Cell::new(false),
+             servo_internals: Default::default(),
++            chora: Default::default(),
+             user_activation: Default::default(),
+             wake_lock: Default::default(),
+         }
+@@ -299,6 +302,11 @@
+ }
+ 
+ impl NavigatorMethods<crate::DomTypeHolder> for Navigator {
++    fn Chora(&self, cx: &mut JSContext) -> DomRoot<ChoraMessaging> {
++        self.chora
++            .or_init(|| ChoraMessaging::new(cx, &self.global()))
++    }
++
+     /// <https://html.spec.whatwg.org/multipage/#dom-navigator-product>
+     fn Product(&self) -> DOMString {
+         navigatorinfo::Product()
+diff --git a/components/script_bindings/codegen/Bindings.conf b/components/script_bindings/codegen/Bindings.conf
+--- a/components/script_bindings/codegen/Bindings.conf
++++ b/components/script_bindings/codegen/Bindings.conf
+@@ -957,7 +957,7 @@
+ },
+ 
+ 'Navigator': {
+-    'cx': ['Bluetooth', 'Credentials', 'Clipboard', 'Geolocation', 'Gpu', 'MimeTypes', 'Languages', 'SendBeacon', 'ServiceWorker', 'Servo',
++    'cx': ['Chora', 'Bluetooth', 'Credentials', 'Clipboard', 'Geolocation', 'Gpu', 'MimeTypes', 'Languages', 'SendBeacon', 'ServiceWorker', 'Servo',
+         'Storage', 'Plugins', 'UserActivation', 'WakeLock', 'Xr', 'MediaDevices', 'MediaSession', 'Permissions', 'GetGamepads'],
+ },
+ 
+@@ -1137,6 +1137,10 @@
+ 
+ 'ServiceWorkerRegistration': {
+     'cx': ['Cookies', 'NavigationPreload', 'Unregister'],
++},
++
++'ChoraMessaging': {
++    'realm': ['Request'],
+ },
+ 
+ 'ServoInternals': {
+diff --git a/components/script_bindings/webidls/ChoraMessaging.webidl b/components/script_bindings/webidls/ChoraMessaging.webidl
+new file mode 100644
+--- /dev/null
++++ b/components/script_bindings/webidls/ChoraMessaging.webidl
+@@ -0,0 +1,13 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
++
++// This transport confers no host capability. Unhandled requests are denied.
++[Exposed=Window]
++interface ChoraMessaging {
++    Promise<DOMString> request(DOMString channel, DOMString payload);
++};
++
++partial interface Navigator {
++    [SameObject] readonly attribute ChoraMessaging chora;
++};
+diff --git a/components/servo/lib.rs b/components/servo/lib.rs
+--- a/components/servo/lib.rs
++++ b/components/servo/lib.rs
+@@ -127,9 +127,9 @@
+ pub use crate::webview::{WebView, WebViewBuilder};
+ pub use crate::webview_delegate::{
+     AlertDialog, AllowOrDenyRequest, AuthenticationRequest, BluetoothDeviceSelectionRequest,
+-    ColorPicker, ConfirmDialog, ContextMenu, CreateNewWebViewRequest, EmbedderControl, FilePicker,
+-    InputMethodControl, NavigationRequest, PermissionRequest, PromptDialog, SelectElement,
+-    SimpleDialog, WebResourceLoad, WebViewDelegate,
++    ColorPicker, ConfirmDialog, ContextMenu, CreateNewWebViewRequest, EmbedderControl,
++    EmbedderMessageRequest, FilePicker, InputMethodControl, NavigationRequest, PermissionRequest,
++    PromptDialog, SelectElement, SimpleDialog, WebResourceLoad, WebViewDelegate,
+ };
+ 
+ #[cfg(feature = "webxr")]
+diff --git a/components/servo/servo.rs b/components/servo/servo.rs
+--- a/components/servo/servo.rs
++++ b/components/servo/servo.rs
+@@ -258,6 +258,9 @@
+     paint: Rc<RefCell<Paint>>,
+     constellation_proxy: ConstellationProxy,
+     embedder_receiver: Receiver<EmbedderMsg>,
++    // Weak cancellation tokens cannot keep WebViews or host request handles alive.
++    chora_message_tokens:
++        RefCell<FxHashMap<ChoraMessageId, std::sync::Weak<std::sync::atomic::AtomicBool>>>,
+     net_embedder_receiver: Receiver<NetToEmbedderMsg>,
+     constellation_embedder_receiver: Receiver<ConstellationToEmbedderMsg>,
+     network_manager: Rc<RefCell<NetworkManager>>,
+@@ -503,6 +506,56 @@
+ 
+     fn handle_embedder_message(&self, message: EmbedderMsg) {
+         match message {
++            EmbedderMsg::ChoraMessage(caller, id, channel, payload) => {
++                if self.shutdown_state.get() != ShutdownState::NotShuttingDown {
++                    self.constellation_proxy.send(
++                        EmbedderToConstellationMessage::ChoraMessageReply(
++                            id,
++                            Err(ChoraMessageError::Unavailable),
++                        ),
++                    );
++                    return;
++                }
++                if let Some(webview) = self.get_webview_handle(caller.webview_id()) {
++                    let cancellation = Arc::new(std::sync::atomic::AtomicBool::new(false));
++                    {
++                        let mut tokens = self.chora_message_tokens.borrow_mut();
++                        tokens.retain(|_, token| token.strong_count() > 0);
++                        tokens.insert(id, Arc::downgrade(&cancellation));
++                    }
++                    let request = crate::EmbedderMessageRequest::new(
++                        caller,
++                        id,
++                        channel,
++                        payload,
++                        self.constellation_proxy.clone(),
++                        cancellation,
++                    );
++                    webview.delegate().notify_embedder_message(webview, request);
++                } else {
++                    self.constellation_proxy.send(
++                        EmbedderToConstellationMessage::ChoraMessageReply(
++                            id,
++                            Err(ChoraMessageError::Unavailable),
++                        ),
++                    );
++                }
++            },
++            EmbedderMsg::ChoraMessageCancelled(webview_id, id, reason) => {
++                if let Some(token) = self
++                    .chora_message_tokens
++                    .borrow_mut()
++                    .remove(&id)
++                    .and_then(|token| token.upgrade())
++                {
++                    token.store(true, std::sync::atomic::Ordering::Release);
++                }
++                if let Some(webview) = self.get_webview_handle(webview_id) {
++                    webview
++                        .delegate()
++                        .notify_embedder_message_cancelled(webview, id, reason);
++                }
++            },
+             EmbedderMsg::Status(webview_id, status_text) => {
+                 if let Some(webview) = self.get_webview_handle(webview_id) {
+                     webview.set_status_text(status_text);
+@@ -893,11 +946,28 @@
+ 
+ impl Drop for ServoInner {
+     fn drop(&mut self) {
++        for token in self
++            .chora_message_tokens
++            .get_mut()
++            .values()
++            .filter_map(|token| token.upgrade())
++        {
++            token.store(true, std::sync::atomic::Ordering::Release);
++        }
+         self.constellation_proxy
+             .send(EmbedderToConstellationMessage::Exit);
+         self.shutdown_state.set(ShutdownState::ShuttingDown);
+         while self.spin_event_loop() {
+             std::thread::sleep(Duration::from_micros(500));
++        }
++        // Never leave a retained host handle looking live after engine teardown.
++        for token in self
++            .chora_message_tokens
++            .get_mut()
++            .values()
++            .filter_map(|token| token.upgrade())
++        {
++            token.store(true, std::sync::atomic::Ordering::Release);
+         }
+     }
+ }
+@@ -1077,6 +1147,7 @@
+             ))),
+             constellation_proxy,
+             embedder_receiver,
++            chora_message_tokens: RefCell::new(FxHashMap::default()),
+             net_embedder_receiver,
+             constellation_embedder_receiver,
+             shutdown_state,
+diff --git a/components/servo/webview_delegate.rs b/components/servo/webview_delegate.rs
+--- a/components/servo/webview_delegate.rs
++++ b/components/servo/webview_delegate.rs
+@@ -326,8 +326,8 @@
+ 
+ impl Drop for InterceptedWebResourceLoad {
+     fn drop(&mut self) {
+-        if !self.finished &&
+-            let Err(error) = self
++        if !self.finished
++            && let Err(error) = self
+                 .response_sender
+                 .send(WebResourceResponseMsg::FinishLoad)
+         {
+@@ -911,32 +911,79 @@
+     }
+ }
+ 
+-/// A structured message sent from a page or injected script to the host embedder.
++/// A bounded engine-originated request to the host. The host must authorize each
++/// operation using `caller()` and its own profile/grant policy; payload identity
++/// text has no authority. Delivered on the thread that spins Chora's event loop.
++///
++/// Dropping this request denies it. The constellation owns the 30-second timeout
++/// and invalidates outstanding requests on navigation, teardown and shutdown.
++/// A retained request cannot make a stale reply valid. Cancellation notifications
++/// let the host stop work that it has already scheduled.
+ pub struct EmbedderMessageRequest {
+-    pub origin: Url,
++    caller: embedder_traits::ChoraCallerContext,
++    id: embedder_traits::ChoraMessageId,
+     pub channel: String,
+     pub payload: String,
+-    response_sender: Option<tokio::sync::oneshot::Sender<Result<String, String>>>,
++    constellation_proxy: ConstellationProxy,
++    response_sent: bool,
++    cancellation: std::sync::Arc<std::sync::atomic::AtomicBool>,
+ }
+ 
+ impl EmbedderMessageRequest {
+-    pub fn new(
+-        origin: Url,
++    pub(crate) fn new(
++        caller: embedder_traits::ChoraCallerContext,
++        id: embedder_traits::ChoraMessageId,
+         channel: String,
+         payload: String,
+-        response_sender: Option<tokio::sync::oneshot::Sender<Result<String, String>>>,
++        constellation_proxy: ConstellationProxy,
++        cancellation: std::sync::Arc<std::sync::atomic::AtomicBool>,
+     ) -> Self {
+         Self {
+-            origin,
++            caller,
++            id,
+             channel,
+             payload,
+-            response_sender,
+-        }
+-    }
+-
+-    pub fn respond(mut self, reply: Result<String, String>) {
+-        if let Some(sender) = self.response_sender.take() {
+-            let _ = sender.send(reply);
++            constellation_proxy,
++            response_sent: false,
++            cancellation,
++        }
++    }
++    pub fn caller(&self) -> &embedder_traits::ChoraCallerContext {
++        &self.caller
++    }
++    pub fn id(&self) -> embedder_traits::ChoraMessageId {
++        self.id
++    }
++    /// Observable even after the WebView or engine has been dropped. Process
++    /// cancellation messages by spinning the engine's event loop while it lives.
++    pub fn is_cancelled(&self) -> bool {
++        self.cancellation.load(std::sync::atomic::Ordering::Acquire)
++    }
++    pub fn respond(mut self, reply: embedder_traits::ChoraMessageResponse) {
++        if self.is_cancelled() {
++            self.response_sent = true;
++            return;
++        }
++        self.constellation_proxy
++            .send(EmbedderToConstellationMessage::ChoraMessageReply(
++                self.id,
++                embedder_traits::bound_chora_reply(reply),
++            ));
++        self.response_sent = true;
++    }
++    pub fn cancel(self) {
++        self.respond(Err(embedder_traits::ChoraMessageError::Cancelled));
++    }
++}
++
++impl Drop for EmbedderMessageRequest {
++    fn drop(&mut self) {
++        if !self.response_sent && !self.is_cancelled() {
++            self.constellation_proxy
++                .send(EmbedderToConstellationMessage::ChoraMessageReply(
++                    self.id,
++                    Err(embedder_traits::ChoraMessageError::Denied),
++                ));
+         }
+     }
+ }
+@@ -1118,6 +1165,15 @@
+ 
+     /// Called when an injected script or privileged page sends a structured message to the host embedder.
+     fn notify_embedder_message(&self, _webview: WebView, _request: EmbedderMessageRequest) {}
++    /// Stop host work for a request cancelled by navigation, close or its deadline.
++    /// These callbacks run on the thread that spins Chora's event loop.
++    fn notify_embedder_message_cancelled(
++        &self,
++        _webview: WebView,
++        _id: embedder_traits::ChoraMessageId,
++        _reason: embedder_traits::ChoraMessageError,
++    ) {
++    }
+ }
+ 
+ pub(crate) struct DefaultWebViewDelegate;
+diff --git a/components/shared/constellation/from_script_message.rs b/components/shared/constellation/from_script_message.rs
+--- a/components/shared/constellation/from_script_message.rs
++++ b/components/shared/constellation/from_script_message.rs
+@@ -851,6 +851,13 @@
+     IFrameSizes(Vec<IFrameSizeMsg>),
+     /// Request results from the memory reporter.
+     ReportMemory(GenericCallback<MemoryReportResult>),
++    /// Page body plus engine security origin; the constellation validates the active route.
++    ChoraMessage(
++        servo_url::ImmutableOrigin,
++        String,
++        String,
++        GenericCallback<embedder_traits::ChoraMessageResponse>,
++    ),
+     /// Return the result of the evaluated JavaScript with the given [`JavaScriptEvaluationId`].
+     FinishJavaScriptEvaluation(
+         JavaScriptEvaluationId,
+diff --git a/components/shared/constellation/lib.rs b/components/shared/constellation/lib.rs
+--- a/components/shared/constellation/lib.rs
++++ b/components/shared/constellation/lib.rs
+@@ -46,6 +46,11 @@
+ /// from `libservo` itself.
+ #[derive(IntoStaticStr)]
+ pub enum EmbedderToConstellationMessage {
++    /// Complete or cancel one engine-owned host request; stale IDs are ignored.
++    ChoraMessageReply(
++        embedder_traits::ChoraMessageId,
++        embedder_traits::ChoraMessageResponse,
++    ),
+     /// Exit the constellation.
+     Exit,
+     /// Whether to allow script to navigate.
+diff --git a/components/shared/embedder/chora_messaging.rs b/components/shared/embedder/chora_messaging.rs
+new file mode 100644
+--- /dev/null
++++ b/components/shared/embedder/chora_messaging.rs
+@@ -0,0 +1,237 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
++
++//! Generic page-to-host messages. Data in a message never grants host authority.
++
++use std::fmt;
++
++use serde::{Deserialize, Serialize};
++use servo_base::id::{PipelineId, WebViewId};
++use servo_url::{ImmutableOrigin, ServoUrl};
++use uuid::Uuid;
++
++pub const CHORA_MESSAGE_MAX_CHANNEL_BYTES: usize = 128;
++pub const CHORA_MESSAGE_MAX_PAYLOAD_BYTES: usize = 16 * 1024;
++pub const CHORA_MESSAGE_MAX_REPLY_BYTES: usize = 64 * 1024;
++pub const CHORA_MESSAGE_MAX_PENDING: usize = 64;
++pub const CHORA_MESSAGE_TIMEOUT_SECS: u64 = 30;
++
++macro_rules! opaque_id {
++    ($name:ident) => {
++        #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
++        pub struct $name(Uuid);
++        impl $name {
++            #[doc(hidden)]
++            pub fn new() -> Self {
++                Self(Uuid::new_v4())
++            }
++            pub fn as_bytes(&self) -> &[u8; 16] {
++                self.0.as_bytes()
++            }
++        }
++    };
++}
++opaque_id!(ChoraEngineInstanceId);
++opaque_id!(ChoraNavigationEpoch);
++opaque_id!(ChoraMessageId);
++
++/// The route established by the engine, separate from the page-controlled body.
++///
++/// The host associates `engine_instance` and private-browsing state with its own
++/// profile. These identifiers do not themselves authorize any host operation.
++/// The initial producer supports active top-level HTTP(S) documents only;
++/// subframes, workers, inherited and opaque origins are denied before dispatch.
++#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
++pub struct ChoraCallerContext {
++    engine_instance: ChoraEngineInstanceId,
++    webview_id: WebViewId,
++    pipeline_id: PipelineId,
++    navigation_epoch: ChoraNavigationEpoch,
++    origin: ImmutableOrigin,
++    private_browsing: bool,
++}
++
++impl ChoraCallerContext {
++    #[doc(hidden)]
++    pub fn from_engine_route(
++        engine_instance: ChoraEngineInstanceId,
++        webview_id: WebViewId,
++        pipeline_id: PipelineId,
++        navigation_epoch: ChoraNavigationEpoch,
++        origin: ImmutableOrigin,
++        private_browsing: bool,
++    ) -> Self {
++        Self {
++            engine_instance,
++            webview_id,
++            pipeline_id,
++            navigation_epoch,
++            origin,
++            private_browsing,
++        }
++    }
++    pub fn engine_instance(&self) -> ChoraEngineInstanceId {
++        self.engine_instance
++    }
++    pub fn webview_id(&self) -> WebViewId {
++        self.webview_id
++    }
++    /// The active top-level document/frame identity.
++    pub fn pipeline_id(&self) -> PipelineId {
++        self.pipeline_id
++    }
++    pub fn navigation_epoch(&self) -> ChoraNavigationEpoch {
++        self.navigation_epoch
++    }
++    pub fn origin(&self) -> &ImmutableOrigin {
++        &self.origin
++    }
++    pub fn is_private_browsing(&self) -> bool {
++        self.private_browsing
++    }
++}
++
++#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
++pub enum ChoraMessageError {
++    Denied,
++    Cancelled,
++    TimedOut,
++    Unavailable,
++    TooLarge,
++    InvalidContext,
++    Busy,
++}
++
++impl fmt::Display for ChoraMessageError {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        f.write_str(match self {
++            Self::Denied => "host denied the message",
++            Self::Cancelled => "message route was cancelled",
++            Self::TimedOut => "host message timed out",
++            Self::Unavailable => "host messaging is unavailable",
++            Self::TooLarge => "host message exceeds its size limit",
++            Self::InvalidContext => "document is not eligible for host messaging",
++            Self::Busy => "too many pending host messages",
++        })
++    }
++}
++impl std::error::Error for ChoraMessageError {}
++
++pub type ChoraMessageResponse = Result<String, ChoraMessageError>;
++
++pub fn validate_chora_message(channel: &str, payload: &str) -> Result<(), ChoraMessageError> {
++    if channel.len() > CHORA_MESSAGE_MAX_CHANNEL_BYTES
++        || payload.len() > CHORA_MESSAGE_MAX_PAYLOAD_BYTES
++    {
++        return Err(ChoraMessageError::TooLarge);
++    }
++    if channel.is_empty()
++        || !channel
++            .bytes()
++            .all(|b| b.is_ascii_alphanumeric() || matches!(b, b'.' | b'_' | b'-'))
++    {
++        return Err(ChoraMessageError::Denied);
++    }
++    Ok(())
++}
++
++pub fn bound_chora_reply(reply: ChoraMessageResponse) -> ChoraMessageResponse {
++    match reply {
++        Ok(body) if body.len() > CHORA_MESSAGE_MAX_REPLY_BYTES => Err(ChoraMessageError::TooLarge),
++        other => other,
++    }
++}
++
++/// Validate the document security origin against the engine's final pipeline URL.
++/// Callers must obtain both values from engine state, never from the message body.
++#[doc(hidden)]
++pub fn validate_chora_document_origin(
++    document_origin: &ImmutableOrigin,
++    pipeline_url: &ServoUrl,
++) -> Result<ImmutableOrigin, ChoraMessageError> {
++    let origin = pipeline_url.origin();
++    if !matches!(pipeline_url.scheme(), "https" | "http")
++        || !matches!(origin.scheme(), Some("https" | "http"))
++        || &origin != document_origin
++    {
++        return Err(ChoraMessageError::InvalidContext);
++    }
++    Ok(origin)
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn origin_validation_uses_exact_scheme_host_port_and_rejects_opaque_contexts() {
++        let pipeline = ServoUrl::parse("https://example.test/page").unwrap();
++        assert_eq!(
++            validate_chora_document_origin(&pipeline.origin(), &pipeline),
++            Ok(pipeline.origin())
++        );
++        let other = ServoUrl::parse("https://other.test/page").unwrap();
++        assert_eq!(
++            validate_chora_document_origin(&other.origin(), &pipeline),
++            Err(ChoraMessageError::InvalidContext)
++        );
++        let different_port = ServoUrl::parse("https://example.test:8443/").unwrap();
++        assert_eq!(
++            validate_chora_document_origin(&different_port.origin(), &pipeline),
++            Err(ChoraMessageError::InvalidContext)
++        );
++        let first = ImmutableOrigin::new_opaque();
++        let second = ImmutableOrigin::new_opaque();
++        assert_ne!(first, second);
++        assert_eq!(
++            validate_chora_document_origin(&first, &pipeline),
++            Err(ChoraMessageError::InvalidContext)
++        );
++        let blob =
++            ServoUrl::parse("blob:https://example.test/00000000-0000-0000-0000-000000000001")
++                .unwrap();
++        assert_eq!(
++            validate_chora_document_origin(&pipeline.origin(), &blob),
++            Err(ChoraMessageError::InvalidContext)
++        );
++        let data = ServoUrl::parse("data:text/html,hello").unwrap();
++        assert_eq!(
++            validate_chora_document_origin(&pipeline.origin(), &data),
++            Err(ChoraMessageError::InvalidContext)
++        );
++        let blank = ServoUrl::parse("about:blank").unwrap();
++        assert_eq!(
++            validate_chora_document_origin(&pipeline.origin(), &blank),
++            Err(ChoraMessageError::InvalidContext)
++        );
++    }
++
++    #[test]
++    fn message_and_reply_limits_are_enforced_in_bytes() {
++        assert_eq!(
++            validate_chora_message("app.read", &"x".repeat(CHORA_MESSAGE_MAX_PAYLOAD_BYTES)),
++            Ok(())
++        );
++        assert_eq!(
++            validate_chora_message("app.read", &"x".repeat(CHORA_MESSAGE_MAX_PAYLOAD_BYTES + 1)),
++            Err(ChoraMessageError::TooLarge)
++        );
++        assert_eq!(
++            validate_chora_message(
++                "identity
++spoof",
++                "body"
++            ),
++            Err(ChoraMessageError::Denied)
++        );
++        assert_eq!(
++            bound_chora_reply(Ok("x".repeat(CHORA_MESSAGE_MAX_REPLY_BYTES + 1))),
++            Err(ChoraMessageError::TooLarge)
++        );
++        assert_eq!(
++            bound_chora_reply(Err(ChoraMessageError::Denied)),
++            Err(ChoraMessageError::Denied)
++        );
++    }
++}
+diff --git a/components/shared/embedder/lib.rs b/components/shared/embedder/lib.rs
+--- a/components/shared/embedder/lib.rs
++++ b/components/shared/embedder/lib.rs
+@@ -8,9 +8,12 @@
+ //! is not exposed in the API or doesn't involve messages sent to the embedding/libservo layer, it
+ //! is probably a better fit for the `servo_constellation_traits` crate.
+ 
++pub mod chora_messaging;
+ pub mod embedder_controls;
+ pub mod input_events;
+ pub mod keystore;
++#[doc(hidden)]
++pub mod message_lifecycle;
+ pub mod resources;
+ pub mod user_contents;
+ pub mod webdriver;
+@@ -50,6 +53,7 @@
+     DeviceVector2D, LayoutPoint, LayoutRect, LayoutSize, LayoutVector2D,
+ };
+ 
++pub use crate::chora_messaging::*;
+ pub use crate::embedder_controls::*;
+ pub use crate::input_events::*;
+ pub use crate::keystore::*;
+@@ -469,6 +473,10 @@
+ /// Messages towards the embedder.
+ #[derive(Deserialize, IntoStaticStr, Serialize)]
+ pub enum EmbedderMsg {
++    /// A bounded request whose caller and navigation route were checked by the constellation.
++    ChoraMessage(ChoraCallerContext, ChoraMessageId, String, String),
++    /// Notification that a previously dispatched host operation must be abandoned.
++    ChoraMessageCancelled(WebViewId, ChoraMessageId, ChoraMessageError),
+     /// A status message to be displayed by the browser chrome.
+     Status(WebViewId, Option<String>),
+     /// Alerts the embedder that the current page has changed its title.
+diff --git a/components/shared/embedder/message_lifecycle.rs b/components/shared/embedder/message_lifecycle.rs
+new file mode 100644
+--- /dev/null
++++ b/components/shared/embedder/message_lifecycle.rs
+@@ -0,0 +1,158 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
++
++//! Bounded engine-owned request storage, independent of IPC and DOM runtimes.
++
++use std::collections::HashMap;
++use std::hash::Hash;
++use std::time::{Duration, Instant};
++
++pub struct PendingRequest<I, R, S> {
++    pub id: I,
++    pub route: R,
++    pub responder: S,
++    deadline: Instant,
++}
++
++pub struct PendingRequests<I, R, S> {
++    entries: HashMap<I, PendingRequest<I, R, S>>,
++    capacity: usize,
++    timeout: Duration,
++}
++
++impl<I: Copy + Eq + Hash, R, S> PendingRequests<I, R, S> {
++    pub fn new(capacity: usize, timeout: Duration) -> Self {
++        Self {
++            entries: HashMap::new(),
++            capacity,
++            timeout,
++        }
++    }
++    /// Failure returns the responder to the caller so it can reject explicitly.
++    pub fn insert(&mut self, id: I, route: R, responder: S, now: Instant) -> Result<(), S> {
++        if self.entries.len() >= self.capacity || self.entries.contains_key(&id) {
++            return Err(responder);
++        }
++        self.entries.insert(
++            id,
++            PendingRequest {
++                id,
++                route,
++                responder,
++                deadline: now + self.timeout,
++            },
++        );
++        Ok(())
++    }
++    pub fn take(&mut self, id: I) -> Option<PendingRequest<I, R, S>> {
++        self.entries.remove(&id)
++    }
++    /// The constellation uses this as a select timeout, so an idle page also expires.
++    pub fn wait_duration(&self, now: Instant) -> Option<Duration> {
++        self.entries
++            .values()
++            .map(|entry| entry.deadline.saturating_duration_since(now))
++            .min()
++    }
++    pub fn expire(&mut self, now: Instant) -> Vec<PendingRequest<I, R, S>> {
++        let ids: Vec<_> = self
++            .entries
++            .iter()
++            .filter_map(|(id, entry)| (entry.deadline <= now).then_some(*id))
++            .collect();
++        ids.into_iter()
++            .filter_map(|id| self.entries.remove(&id))
++            .collect()
++    }
++    pub fn cancel_where(
++        &mut self,
++        mut cancelled: impl FnMut(&R) -> bool,
++    ) -> Vec<PendingRequest<I, R, S>> {
++        let ids: Vec<_> = self
++            .entries
++            .iter()
++            .filter_map(|(id, entry)| cancelled(&entry.route).then_some(*id))
++            .collect();
++        ids.into_iter()
++            .filter_map(|id| self.entries.remove(&id))
++            .collect()
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn response_is_consumed_once_and_capacity_recovers() {
++        let now = Instant::now();
++        let mut pending = PendingRequests::new(1, Duration::from_secs(30));
++        pending.insert(1, "route", "first", now).unwrap();
++        assert_eq!(pending.insert(2, "route", "busy", now), Err("busy"));
++        assert_eq!(pending.take(1).unwrap().responder, "first");
++        assert!(pending.take(1).is_none());
++        pending.insert(2, "route", "second", now).unwrap();
++    }
++
++    #[test]
++    fn idle_deadline_is_observable_and_expires_without_another_request() {
++        let now = Instant::now();
++        let mut pending = PendingRequests::new(2, Duration::from_secs(30));
++        pending.insert(1, "route", "reply", now).unwrap();
++        assert_eq!(pending.wait_duration(now), Some(Duration::from_secs(30)));
++        assert!(pending.expire(now + Duration::from_secs(29)).is_empty());
++        assert_eq!(
++            pending
++                .expire(now + Duration::from_secs(30))
++                .pop()
++                .unwrap()
++                .responder,
++            "reply"
++        );
++        assert!(pending.take(1).is_none());
++        assert_eq!(pending.wait_duration(now), None);
++    }
++
++    #[test]
++    fn navigation_and_profile_change_invalidate_only_the_affected_route() {
++        let now = Instant::now();
++        let mut pending = PendingRequests::new(4, Duration::from_secs(30));
++        pending.insert(1, (10, 1), "old epoch", now).unwrap();
++        pending.insert(2, (10, 2), "current epoch", now).unwrap();
++        pending.insert(3, (20, 1), "other engine", now).unwrap();
++        assert_eq!(
++            pending
++                .cancel_where(|route| *route == (10, 1))
++                .pop()
++                .unwrap()
++                .responder,
++            "old epoch"
++        );
++        assert!(pending.take(1).is_none());
++        assert_eq!(pending.take(2).unwrap().responder, "current epoch");
++        assert_eq!(pending.take(3).unwrap().responder, "other engine");
++    }
++
++    #[test]
++    fn duplicate_ids_cannot_replace_the_original_reply_owner() {
++        let now = Instant::now();
++        let mut pending = PendingRequests::new(4, Duration::from_secs(30));
++        pending.insert(1, "route", "original", now).unwrap();
++        assert_eq!(
++            pending.insert(1, "other route", "replacement", now),
++            Err("replacement")
++        );
++        assert_eq!(pending.take(1).unwrap().responder, "original");
++    }
++
++    #[test]
++    fn shutdown_drains_all_reply_owners() {
++        let now = Instant::now();
++        let mut pending = PendingRequests::new(4, Duration::from_secs(30));
++        pending.insert(1, "a", (), now).unwrap();
++        pending.insert(2, "b", (), now).unwrap();
++        assert_eq!(pending.cancel_where(|_| true).len(), 2);
++        assert_eq!(pending.wait_duration(now), None);
++    }
++}
+diff --git a/tests/wpt/mozilla/tests/chora-messaging/default-deny.https.html b/tests/wpt/mozilla/tests/chora-messaging/default-deny.https.html
+new file mode 100644
+--- /dev/null
++++ b/tests/wpt/mozilla/tests/chora-messaging/default-deny.https.html
+@@ -0,0 +1,32 @@
++<!doctype html>
++<!-- This Source Code Form is subject to the terms of the Mozilla Public
++     License, v. 2.0. If a copy of the MPL was not distributed with this
++     file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
++<meta charset="utf-8">
++<title>Chora generic messaging fails closed without a host handler</title>
++<script src="/resources/testharness.js"></script>
++<script src="/resources/testharnessreport.js"></script>
++<body>
++<script>
++promise_test(async t => {
++  assert_true("chora" in navigator);
++  await promise_rejects_exactly(t, "host denied the message",
++      navigator.chora.request("test.echo", '{"origin":"https://spoof.invalid"}'));
++}, "An unhandled page request is denied; identity text in the body grants nothing");
++
++promise_test(async t => {
++  await promise_rejects_exactly(t, "host message exceeds its size limit",
++      navigator.chora.request("test.echo", "x".repeat(16385)));
++}, "Oversized messages are rejected before dispatch");
++
++promise_test(async t => {
++  const frame = document.createElement("iframe");
++  const loaded = new Promise(resolve => frame.onload = resolve);
++  frame.srcdoc = "<!doctype html><title>child</title>";
++  document.body.append(frame);
++  t.add_cleanup(() => frame.remove());
++  await loaded;
++  await promise_rejects_exactly(t, "document is not eligible for host messaging",
++      frame.contentWindow.navigator.chora.request("test.echo", "child"));
++}, "A same-origin subframe cannot use the initial top-level-only profile");
++</script>

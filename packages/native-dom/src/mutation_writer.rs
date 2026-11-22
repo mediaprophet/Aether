@@ -31,7 +31,11 @@ mod native_event_kind_tests {
             assert_eq!(native_event_kind(name), Ok(DomEventKind::Ime));
         }
         assert_eq!(native_event_kind("input"), Ok(DomEventKind::Input));
-        assert!(native_event_kind("beforeinput").is_err());
+        assert_eq!(
+            native_event_kind("beforeinput"),
+            Ok(DomEventKind::BeforeInput)
+        );
+        assert!(native_event_kind("drag").is_err());
     }
 }
 
@@ -271,7 +275,7 @@ pub struct AetherState {
     /// Stack machine state for applying aether mutations
     stack: StackState<NodeId>,
     /// Count of each handler type (indexed by `DomEventKind` discriminant)
-    pub(crate) event_handler_counts: [u32; 64],
+    pub(crate) event_handler_counts: [u32; 96],
     /// Mounted events queued as elements are mounted
     pub(crate) queued_mounted_events: Vec<ElementId>,
     /// Mutations written by the VirtualDom which have not yet been applied to the document
@@ -283,7 +287,7 @@ impl AetherState {
     pub fn create(root_id: NodeId) -> Self {
         Self {
             stack: StackState::new(root_id),
-            event_handler_counts: [0; 64],
+            event_handler_counts: [0; 96],
             queued_mounted_events: Vec::new(),
             buffered_mutations: MutationBuffer::default(),
         }
@@ -331,7 +335,7 @@ pub(crate) struct BlitzBackend<'a> {
     /// The realdom mutation handle associated with this writer
     docm: DocumentMutator<'a>,
     /// Count of each handler type, kept so event dispatch can skip unused kinds
-    event_handler_counts: &'a mut [u32; 64],
+    event_handler_counts: &'a mut [u32; 96],
     /// Mounted events queued as elements are mounted
     queued_mounted_events: &'a mut Vec<ElementId>,
 }
@@ -670,3 +674,5 @@ mod tests {
         assert_eq!(attr(&doc, "#off", "title").as_deref(), Some("false"));
     }
 }
+
+const _: () = assert!(blitz_traits::events::DomEventKind::COUNT <= 96);

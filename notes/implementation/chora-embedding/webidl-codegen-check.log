@@ -1,0 +1,12 @@
+Exit: 0
+PASS actual WebIDL parse and ChoraMessaging binding generation
+PASS Request binding generated with CurrentRealm and Promise result
+PASS concrete ChoraMessaging DOM type mapped to choramessaging module
+PASS Navigator::Chora getter generated with required JSContext
+fn Request(&self, r#realm: &mut CurrentRealm, r#channel: DOMString, r#payload: DOMString) -> <D::Promise as PromiseHelpers<D>>::StackRoot;
+}
+pub(crate) static sMethods_specs: ThreadUnsafeOnceLock<&[&[JSFunctionSpec]]> = ThreadUnsafeOnceLock::new();
+
+pub(crate) fn init_sMethods_specs<D: DomTypes>() {
+    sMethods_specs.set(Box::leak(Box::new([&Box::leak(Box::new([
+    JSFunction

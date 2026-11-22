@@ -1,6 +1,9 @@
 .aether
 .claude/settings.local.json
 /target
+/target-*
+**/target/
+**/target-*/
 /packages/playwright-tests/cli-optimization/monaco-editor-0.52.2
 /packages/playwright-tests/web/dist
 /packages/playwright-tests/fullstack/dist

@@ -1,0 +1,624 @@
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_config-1avr9640x6w1u\s-ho3bfh5f5x-1deg7j9-working`
+warning: `servo-config` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_base-3cxdfkg2d4850\s-ho3bfm1c2n-1dquvg6-working`
+warning: `servo-base` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\pixels-0o585eqec661w\s-ho3bfqkjg5-10xadk9-working`
+warning: `servo-pixels` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\profile_traits-2vsei6747qfzl\s-ho3bfqnhuk-07au3d5-working`
+warning: `servo-profile-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\embedder_traits-00810chtkfqj6\s-ho3bfu3nxl-1j9to2p-working`
+warning: `servo-embedder-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\paint_api-358kdkvkjsevu\s-ho3bg13ymq-0vpru2l-working`
+warning: `servo-paint-api` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\fonts_traits-0pg1lk3jrixai\s-ho3bftzafs-03plv49-working`
+warning: `servo-fonts-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\net_traits-2qli75qkl74pf\s-ho3bg51r54-07sfkk9-working`
+warning: `servo-net-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_webxr_api-08c3o4a8a0nck\s-ho3bg2y0c2-0edjld9-working`
+warning: `servo-webxr-api` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_canvas_traits-1sossuv6k8b3s\s-ho3bg7p99l-1wqbsrn-working`
+warning: `servo-canvas-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\webgpu_traits-1hvdhj2azeybw\s-ho3bfxaakh-0kfxm8v-working`
+warning: `servo-webgpu-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\storage_traits-15t30n4fas1v8\s-ho3bgbxiyk-0ahalby-working`
+warning: `servo-storage-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_media_player-3r0jkmsu4zw3t\s-ho3bgdocxp-1c5higq-working`
+warning: `servo-media-player` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_media_audio-34ylphxihumde\s-ho3bgg6tww-1vc9hvf-working`
+warning: `servo-media-audio` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_constellation_traits-22zcivs17dbx2\s-ho3bgg1ibt-0uygtl9-working`
+warning: `servo-constellation-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_media-0u4457ei2gfvp\s-ho3bgk26bz-106rq1c-working`
+warning: `servo-media` (lib) generated 1 warning
+warning: servo-script-bindings@0.7.0: `uv ["run", "--frozen", "python"]` failed with Downloading cpython-3.11.18-windows-x86_64-none (download) (24.0MiB)
+warning: servo-script-bindings@0.7.0: `uv` not found - Falling back to the default python! If the build fails, please install uv and make sure it is in your PATH or make sure to provision a python environment >= python 3.11.
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\media-0hlx8apkladq4\s-ho3bgm9bv2-1js931x-working`
+warning: `servo-media-thread` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\fonts-1iwqundhoc9rk\s-ho3bgml1n6-0z3sunr-working`
+warning: `servo-fonts` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_traits-0wdthfw3j8r0x\s-ho3bgphaqi-04oof3v-working`
+warning: `servo-script-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\background_hang_monitor_api-0gxlwmdc9rho5\s-ho3bgrnqb6-1168uki-working`
+warning: `servo-background-hang-monitor-api` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_bindings-2rwno5xuzxn2s\s-ho3bgtoues-1gibf9g-working`
+warning: `servo-script-bindings` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\layout_api-0tnp51k0sl8nu\s-ho3bguaaru-066ycuf-working`
+warning: `servo-layout-api` (lib) generated 1 warning
+    Checking servo-script-webcrypto v0.7.0 (C:\github\chora\components\script_webcrypto)
+warning: variant `HostKeystore` is never constructed
+  --> components\script_webcrypto\cryptokey.rs:86:5
+   |
+46 | pub(crate) enum Handle {
+   |                 ------ variant in this enum
+...
+86 |     HostKeystore { key_id: String, algorithm: String },
+   |     ^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `servo-script-webcrypto` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\webgpu-0d5eml9ea0p1g\s-ho3bh4s6p7-0wwp7h4-working`
+warning: `servo-webgpu` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_webxr-2zos9xa1q3c7j\s-ho3bh1tizx-0ipms0s-working`
+warning: `servo-webxr` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\metrics-38hvyid4kmzry\s-ho3bgyfyxd-00q9ef7-working`
+warning: `servo-metrics` (lib) generated 1 warning
+    Checking servo-script v0.7.0 (C:\github\chora\components\script)
+warning: unused import: `ObjectValue`
+  --> components\script\dom\console.rs:21:29
+   |
+21 | use js::jsval::{Int32Value, ObjectValue, UndefinedValue};
+   |                             ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `JS_GetPrototype`
+  --> components\script\dom\console.rs:38:75
+   |
+38 |     GetPropertyKeys, JS_GetOwnPropertyDescriptorById, JS_GetPropertyById, JS_GetPrototype,
+   |                                                                           ^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::dom::globalscope::GlobalScope`
+   --> components\script\dom\element\element.rs:133:5
+    |
+133 | use crate::dom::globalscope::GlobalScope;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ShadowRootMode`
+  --> components\script\dom\node\node.rs:67:5
+   |
+67 |     ShadowRootMode, SlotAssignmentMode,
+   |     ^^^^^^^^^^^^^^
+
+warning: unused import: `std::borrow::ToOwned`
+ --> components\script\dom\window\window.rs:7:5
+  |
+7 | use std::borrow::ToOwned;
+  |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `FxHashSet`
+  --> components\script\dom\window\window.rs:70:44
+   |
+70 | use rustc_hash::{FxBuildHasher, FxHashMap, FxHashSet};
+   |                                            ^^^^^^^^^
+
+warning: unused import: `GenericCallback`
+  --> components\script\dom\window\window.rs:84:41
+   |
+84 | use servo_base::generic_channel::{self, GenericCallback, GenericSender};
+   |                                         ^^^^^^^^^^^^^^^
+
+warning: unused import: `GenericReceiver`
+  --> components\script\dom\workers\dedicatedworkerglobalscope.rs:31:41
+   |
+31 | use servo_base::generic_channel::{self, GenericReceiver, GenericSender, RoutedReceiver};
+   |                                         ^^^^^^^^^^^^^^^
+
+warning: unused import: `servo_base::generic_channel`
+  --> components\script\dom\workers\sharedworker.rs:20:5
+   |
+20 | use servo_base::generic_channel;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `GenericReceiver`
+  --> components\script\dom\workers\sharedworkerglobalscope.rs:31:35
+   |
+31 | use servo_base::generic_channel::{GenericReceiver, RoutedReceiver};
+   |                                   ^^^^^^^^^^^^^^^
+
+warning: unused import: `servo_base::generic_channel`
+  --> components\script\dom\workers\worker.rs:22:5
+   |
+22 | use servo_base::generic_channel;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `script_bindings::conversions::root_from_handlevalue`
+  --> components\script\dom\workers\workerglobalscope.rs:38:5
+   |
+38 | use script_bindings::conversions::root_from_handlevalue;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `script_bindings::root::rooted_heap_handle`
+  --> components\script\dom\workers\workerglobalscope.rs:41:5
+   |
+41 | use script_bindings::root::rooted_heap_handle;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `GenericSender`
+  --> components\script\dom\workers\workerglobalscope.rs:44:48
+   |
+44 | use servo_base::generic_channel::{GenericSend, GenericSender, RoutedReceiver};
+   |                                                ^^^^^^^^^^^^^
+
+warning: unused import: `servo_base::generic_channel::GenericCallback`
+  --> components\script\dom\worklet\workletglobalscope.rs:22:5
+   |
+22 | use servo_base::generic_channel::GenericCallback;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `WorkerId`
+  --> components\script\event_loop\script_thread.rs:90:33
+   |
+90 |     ServiceWorkerId, WebViewId, WorkerId,
+   |                                 ^^^^^^^^
+
+warning: unused import: `crate::dom::bindings::codegen::Bindings::DocumentBinding::DocumentMethods`
+   --> components\script\event_loop\script_thread.rs:121:5
+    |
+121 | use crate::dom::bindings::codegen::Bindings::DocumentBinding::DocumentMethods;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Dom`
+   --> components\script\event_loop\script_thread.rs:129:34
+    |
+129 | use crate::dom::bindings::root::{Dom, DomRoot};
+    |                                  ^^^
+
+warning: unused import: `Node`
+   --> components\script\event_loop\script_thread.rs:142:24
+    |
+142 | use crate::dom::node::{Node, NodeTraits};
+    |                        ^^^^
+
+warning: unused import: `GenericCallback`
+  --> components\script\messaging.rs:21:35
+   |
+21 | use servo_base::generic_channel::{GenericCallback, GenericSender, RoutedReceiver};
+   |                                   ^^^^^^^^^^^^^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:452:22
+    |
+452 |                 f64::NAN,
+    |                      ^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:453:22
+    |
+453 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:454:22
+    |
+454 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:455:22
+    |
+455 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:456:22
+    |
+456 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:457:22
+    |
+457 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:458:22
+    |
+458 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:459:22
+    |
+459 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:460:22
+    |
+460 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:461:22
+    |
+461 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:462:22
+    |
+462 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:463:22
+    |
+463 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:464:22
+    |
+464 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:465:22
+    |
+465 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:466:22
+    |
+466 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:467:22
+    |
+467 |                 f64::NAN,
+    |                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:997:26
+    |
+997 |                     f64::NAN,
+    |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\geometry\dommatrixreadonly.rs:998:26
+    |
+998 |                     f64::NAN,
+    |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\geometry\dommatrixreadonly.rs:1001:26
+     |
+1001 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\geometry\dommatrixreadonly.rs:1002:26
+     |
+1002 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\geometry\dommatrixreadonly.rs:1003:26
+     |
+1003 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\geometry\dommatrixreadonly.rs:1004:26
+     |
+1004 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\geometry\dommatrixreadonly.rs:1005:26
+     |
+1005 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\geometry\dommatrixreadonly.rs:1006:26
+     |
+1006 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\geometry\dommatrixreadonly.rs:1009:26
+     |
+1009 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\geometry\dommatrixreadonly.rs:1010:26
+     |
+1010 |                     f64::NAN,
+     |                          ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\html\embedded_content\htmlmediaelement.rs:437:38
+    |
+437 |             duration: Cell::new(f64::NAN),
+    |                                      ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+   --> components\script\dom\html\embedded_content\htmlmediaelement.rs:443:51
+    |
+443 |             current_seek_position: Cell::new(f64::NAN),
+    |                                                   ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\html\embedded_content\htmlmediaelement.rs:1856:49
+     |
+1856 |             self.current_seek_position.set(f64::NAN);
+     |                                                 ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\html\embedded_content\htmlmediaelement.rs:1871:36
+     |
+1871 |             self.duration.set(f64::NAN);
+     |                                    ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\html\embedded_content\htmlmediaelement.rs:2068:45
+     |
+2068 |         self.current_seek_position.set(f64::NAN);
+     |                                             ^^^
+
+warning: use of deprecated constant `std::f64::MAX`: replaced by the `MAX` associated constant on `f64`
+    --> components\script\dom\html\embedded_content\htmlmediaelement.rs:2098:50
+     |
+2098 |         let mut nearest_seekable_distance = f64::MAX;
+     |                                                  ^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\html\embedded_content\htmlmediaelement.rs:2166:45
+     |
+2166 |         self.current_seek_position.set(f64::NAN);
+     |                                             ^^^
+
+warning: use of deprecated constant `std::f64::INFINITY`: replaced by the `INFINITY` associated constant on `f64`
+    --> components\script\dom\html\embedded_content\htmlmediaelement.rs:2664:30
+     |
+2664 |                 .map_or(f64::INFINITY, |duration| duration.as_secs_f64()),
+     |                              ^^^^^^^^
+
+warning: use of deprecated constant `std::f64::INFINITY`: replaced by the `INFINITY` associated constant on `f64`
+    --> components\script\dom\html\embedded_content\htmlmediaelement.rs:2736:45
+     |
+2736 |         let duration = duration.map_or(f64::INFINITY, |duration| duration.as_secs_f64());
+     |                                             ^^^^^^^^
+
+warning: use of deprecated constant `std::f64::NAN`: replaced by the `NAN` associated constant on `f64`
+    --> components\script\dom\html\form_controls\htmlinputelement.rs:1373:29
+     |
+1373 |             .unwrap_or(f64::NAN)
+     |                             ^^^
+
+error[E0277]: `RefCell<etalon_core_remote_types::identity::IdentityValues>` cannot be shared between threads safely
+   --> components\script\dom\workers\dedicatedworkerglobalscope.rs:459:20
+    |
+459 |               .spawn(move || {
+    |  ______________-----_^
+    | |              |
+    | |              required by a bound introduced by this call
+460 | |                 thread_state::initialize(ThreadState::SCRIPT | ThreadState::IN_WORKER);
+461 | |                 ScriptEventLoopId::install(event_loop_id);
+...   |
+644 | |                 scope.clear_js_runtime();
+645 | |             })
+    | |_____________^ `RefCell<etalon_core_remote_types::identity::IdentityValues>` cannot be shared between threads safely
+    |
+    = help: within `script_webgpu::identityhub::IdentityHub`, the trait `std::marker::Sync` is not implemented for `RefCell<etalon_core_remote_types::identity::IdentityValues>`
+    = note: if you want to do aliasing and mutation between multiple threads, use `std::sync::RwLock` instead
+note: required because it appears within the type `IdentityManager<webgpu_traits::markers::Adapter>`
+   --> C:\github\Aether\target\production-audit\cargo-home\git\checkouts\etalon-853ee32392c1daca\8e8ab6c\etalon-core-remote-types\src\identity.rs:66:12
+    |
+ 66 | pub struct IdentityManager<T: Marker> {
+    |            ^^^^^^^^^^^^^^^
+note: required because it appears within the type `script_webgpu::identityhub::IdentityHub`
+   --> components\script_webgpu\identityhub.rs:10:12
+    |
+ 10 | pub struct IdentityHub {
+    |            ^^^^^^^^^^^
+    = note: required for `std::sync::Arc<script_webgpu::identityhub::IdentityHub>` to implement `Send`
+note: required because it's used within this closure
+   --> components\script\dom\workers\dedicatedworkerglobalscope.rs:459:20
+    |
+459 |             .spawn(move || {
+    |                    ^^^^^^^
+note: required by a bound in `std::thread::Builder::spawn`
+   --> C:\Users\Hp\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\std\src\thread\builder.rs:188:12
+    |
+185 |     pub fn spawn<F, T>(self, f: F) -> io::Result<JoinHandle<T>>
+    |            ----- required by a bound in this associated function
+...
+188 |         F: Send + 'static,
+    |            ^^^^ required by this bound in `Builder::spawn`
+
+error[E0277]: `RefCell<etalon_core_remote_types::identity::IdentityValues>` cannot be shared between threads safely
+   --> components\script\dom\workers\sharedworkerglobalscope.rs:403:20
+    |
+403 |               .spawn(move || {
+    |  ______________-----_^
+    | |              |
+    | |              required by a bound introduced by this call
+...   |
+590 | |                     );
+591 | |             })
+    | |_____________^ `RefCell<etalon_core_remote_types::identity::IdentityValues>` cannot be shared between threads safely
+    |
+    = help: within `script_webgpu::identityhub::IdentityHub`, the trait `std::marker::Sync` is not implemented for `RefCell<etalon_core_remote_types::identity::IdentityValues>`
+    = note: if you want to do aliasing and mutation between multiple threads, use `std::sync::RwLock` instead
+note: required because it appears within the type `IdentityManager<webgpu_traits::markers::Adapter>`
+   --> C:\github\Aether\target\production-audit\cargo-home\git\checkouts\etalon-853ee32392c1daca\8e8ab6c\etalon-core-remote-types\src\identity.rs:66:12
+    |
+ 66 | pub struct IdentityManager<T: Marker> {
+    |            ^^^^^^^^^^^^^^^
+note: required because it appears within the type `script_webgpu::identityhub::IdentityHub`
+   --> components\script_webgpu\identityhub.rs:10:12
+    |
+ 10 | pub struct IdentityHub {
+    |            ^^^^^^^^^^^
+    = note: required for `std::sync::Arc<script_webgpu::identityhub::IdentityHub>` to implement `Send`
+note: required because it's used within this closure
+   --> components\script\dom\workers\sharedworkerglobalscope.rs:403:20
+    |
+403 |             .spawn(move || {
+    |                    ^^^^^^^
+note: required by a bound in `std::thread::Builder::spawn`
+   --> C:\Users\Hp\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\std\src\thread\builder.rs:188:12
+    |
+185 |     pub fn spawn<F, T>(self, f: F) -> io::Result<JoinHandle<T>>
+    |            ----- required by a bound in this associated function
+...
+188 |         F: Send + 'static,
+    |            ^^^^ required by this bound in `Builder::spawn`
+
+error[E0277]: `RefCell<etalon_core_remote_types::identity::IdentityValues>` cannot be shared between threads safely
+   --> components\script\dom\worklet\worklet.rs:574:20
+    |
+574 |               .spawn(move || {
+    |  ______________-----_^
+    | |              |
+    | |              required by a bound introduced by this call
+...   |
+597 | |                 thread.run(&mut cx);
+598 | |             })
+    | |_____________^ `RefCell<etalon_core_remote_types::identity::IdentityValues>` cannot be shared between threads safely
+    |
+    = help: within `script_webgpu::identityhub::IdentityHub`, the trait `std::marker::Sync` is not implemented for `RefCell<etalon_core_remote_types::identity::IdentityValues>`
+    = note: if you want to do aliasing and mutation between multiple threads, use `std::sync::RwLock` instead
+note: required because it appears within the type `IdentityManager<webgpu_traits::markers::Adapter>`
+   --> C:\github\Aether\target\production-audit\cargo-home\git\checkouts\etalon-853ee32392c1daca\8e8ab6c\etalon-core-remote-types\src\identity.rs:66:12
+    |
+ 66 | pub struct IdentityManager<T: Marker> {
+    |            ^^^^^^^^^^^^^^^
+note: required because it appears within the type `script_webgpu::identityhub::IdentityHub`
+   --> components\script_webgpu\identityhub.rs:10:12
+    |
+ 10 | pub struct IdentityHub {
+    |            ^^^^^^^^^^^
+    = note: required for `std::sync::Arc<script_webgpu::identityhub::IdentityHub>` to implement `Send`
+note: required because it appears within the type `WorkletGlobalScopeInit`
+   --> components\script\dom\worklet\workletglobalscope.rs:243:19
+    |
+243 | pub(crate) struct WorkletGlobalScopeInit {
+    |                   ^^^^^^^^^^^^^^^^^^^^^^
+note: required because it's used within this closure
+   --> components\script\dom\worklet\worklet.rs:574:20
+    |
+574 |             .spawn(move || {
+    |                    ^^^^^^^
+note: required by a bound in `std::thread::Builder::spawn`
+   --> C:\Users\Hp\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\std\src\thread\builder.rs:188:12
+    |
+185 |     pub fn spawn<F, T>(self, f: F) -> io::Result<JoinHandle<T>>
+    |            ----- required by a bound in this associated function
+...
+188 |         F: Send + 'static,
+    |            ^^^^ required by this bound in `Builder::spawn`
+
+warning: unused import: `js::conversions::ToJSValConvertible`
+  --> components\script\dom\workers\workerglobalscope.rs:24:5
+   |
+24 | use js::conversions::ToJSValConvertible;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `script_bindings::reflector::DomObject`
+  --> components\script\dom\workers\workerglobalscope.rs:40:5
+   |
+40 | use script_bindings::reflector::DomObject;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `crate::dom::bindings::codegen::Bindings::NodeListBinding::NodeListMethods`
+  --> components\script\dom\node\node.rs:64:5
+   |
+64 | use crate::dom::bindings::codegen::Bindings::NodeListBinding::NodeListMethods;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `servo_url::origin::DomainComparable`
+  --> components\script\dom\choramessaging.rs:16:5
+   |
+16 | use servo_url::origin::DomainComparable;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused variable: `include_stacktrace`
+  --> components\script\dom\console.rs:89:9
+   |
+89 |         include_stacktrace: IncludeStackTrace,
+   |         ^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_include_stacktrace`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `document`
+    --> components\script\dom\document\document.rs:7341:40
+     |
+7341 |     fn call(&self, cx: &mut JSContext, document: &Document, now: f64) {
+     |                                        ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_document`
+
+warning: variable does not need to be mutable
+   --> components\script\dom\serviceworker\serviceworker_manager.rs:779:5
+    |
+779 |     mut scope_things: ScopeThings,
+    |     ----^^^^^^^^^^^^
+    |     |
+    |     help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `debugger_global`
+   --> components\script\dom\serviceworker\serviceworkerglobalscope.rs:288:9
+    |
+288 |         debugger_global: Option<&WorkerDebuggerGlobalScope>,
+    |         ^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_debugger_global`
+
+warning: unused variable: `devtools_receiver`
+   --> components\script\dom\serviceworker\serviceworkerglobalscope.rs:327:9
+    |
+327 |         devtools_receiver: Option<GenericReceiver<WorkerDevtoolsControlMsg>>,
+    |         ^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_devtools_receiver`
+
+warning: unused variable: `debugger_global`
+   --> components\script\dom\workers\sharedworkerglobalscope.rs:252:9
+    |
+252 |         debugger_global: Option<&WorkerDebuggerGlobalScope>,
+    |         ^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_debugger_global`
+
+warning: unused variable: `devtools_receiver`
+   --> components\script\dom\workers\workerglobalscope.rs:417:9
+    |
+417 |         devtools_receiver: Option<RoutedReceiver<WorkerDevtoolsControlMsg>>,
+    |         ^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_devtools_receiver`
+
+warning: variable does not need to be mutable
+   --> components\script\event_loop\script_thread.rs:863:13
+    |
+863 |         let mut cx = unsafe { runtime.cx() };
+    |             ----^^
+    |             |
+    |             help: remove this `mut`
+
+warning: unused variable: `is_top_level_global`
+    --> components\script\event_loop\script_thread.rs:3846:13
+     |
+3846 |         let is_top_level_global = incomplete_browsing_context_id == incomplete.browsing_context_id;
+     |             ^^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_is_top_level_global`
+
+For more information about this error, try `rustc --explain E0277`.
+warning: `servo-script` (lib) generated 69 warnings
+error: could not compile `servo-script` (lib) due to 3 previous errors; 69 warnings emitted

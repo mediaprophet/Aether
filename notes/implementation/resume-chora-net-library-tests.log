@@ -1,0 +1,13 @@
+
+running 8 tests
+test local_directory_listing::tests::script_string_literal_keeps_debug_escaping ... ok
+test local_directory_listing::tests::script_string_literal_neutralises_script_close ... ok
+test tls_control::tests::second_profile_preparation_failure_changes_neither_profile ... ok
+test tls_control::tests::rejected_roots_and_immediate_revocation_are_atomic ... ok
+test tls_control::tests::host_controller_does_not_keep_stopped_network_profiles_alive ... ok
+test tls_control::tests::additive_and_replacement_updates_keep_acquired_snapshots_immutable ... ok
+test tls_control::tests::root_reload_preserves_and_isolates_profile_cookies_and_http_cache ... ok
+test tls_control::tests::removed_root_cannot_reuse_an_old_http_pool_after_cutover ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+

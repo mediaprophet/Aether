@@ -1,0 +1,37 @@
+{
+  "policy_version": 3,
+  "etalon_git_url": "https://github.com/mediaprophet/etalon.git",
+  "etalon_revision": "575bab54accf1aafb24f67e9ba810c0f3f745aea",
+  "etalon_version": "0.0.2",
+  "compatibility_shim": null,
+  "hypermedia": {
+    "git_url": "https://github.com/mediaprophet/hypermedia-production.git",
+    "revision": "a46b4e2ba5a9d57fc1a68e20ae87ce4bc2d076cf",
+    "packages": [
+      "gpu-command-profiler", "gpu-device-context", "pixel-buffer-output",
+      "pixel-window-render-adapter", "vector-compute-renderer", "vector-compute-shaders",
+      "vector-cpu-render-adapter", "vector-gpu-render-adapter", "vector-hybrid-render-adapter",
+      "vector-hybrid-renderer", "vector-hybrid-shaders", "vector-skia-render-adapter"
+    ],
+    "local_overrides": {
+      "vector-compute-shaders": {
+        "version": "0.11.0",
+        "manifest": "vendor/hypermedia/vector-compute-shaders/Cargo.toml"
+      },
+      "vector-compute-renderer": {
+        "version": "0.11.0",
+        "manifest": "vendor/hypermedia/vector-compute-renderer/Cargo.toml"
+      },
+      "gpu-command-profiler": {
+        "version": "0.28.0",
+        "manifest": "vendor/hypermedia/gpu-command-profiler/Cargo.toml"
+      }
+    }
+  },
+  "notes": [
+    "This pins Aether to its currently reviewed Etalon lock source. QualiaDB currently uses another revision; cross-repository alignment remains a separate release gate.",
+    "The check reads the full Cargo.lock and dependency declarations, including optional and target-specific dependencies. It does not compute Cargo's active feature/target graph.",
+    "No compatibility shim is approved at this pin. Enabling an exception requires inspecting its actual package version at the reviewed revision; the newer Etalon shim is version 30.0.0, not 0.0.2.",
+    "Hypermedia is pinned by actual locked commit, independent of the mutable branch name. Only the three attributed vendor manifests listed above are approved local overrides; canonical opt-in consumers have their own source verification."
+  ]
+}

@@ -1,0 +1,49 @@
+
+running 2 tests
+test malformed_asset_url_is_not_a_panic ... ok
+test trusted_application_sources_remain_explicit ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test asset_policy::tests::malformed_encoding_never_panics ... ok
+test asset_policy::tests::rejects_traversal_and_platform_path_escapes ... ok
+test asset_policy::tests::handle_check_rejects_a_file_outside_the_captured_root ... ok
+test asset_policy::tests::manganis_absolute_development_urls_require_trusted_access ... ok
+test asset_policy::tests::packaged_read_uses_the_resolved_file ... ok
+test asset_policy::tests::resolves_only_files_inside_the_bundle ... ok
+test asset_policy::tests::rejects_junction_replacement_between_resolution_and_open ... FAILED
+
+failures:
+
+---- asset_policy::tests::rejects_junction_replacement_between_resolution_and_open stdout ----
+
+thread 'asset_policy::tests::rejects_junction_replacement_between_resolution_and_open' (35936) panicked at C:\github\Aether\packages\asset-resolver\src\asset_policy.rs:298:9:
+junction creation failed: New-Item : Access is denied
+At line:1 char:32
++ ... nce='Stop'; New-Item -ItemType Junction -Path $env:AETHER_TEST_LINK - ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (C:\Users\Hp\App...-4\bundle\entry:String) [New-Item], Win32Exception
+    + FullyQualifiedErrorId : NewItemCreateIOError,Microsoft.PowerShell.Commands.NewItemCommand
+ 
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    asset_policy::tests::rejects_junction_replacement_between_resolution_and_open
+
+test result: FAILED. 6 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.71s
+
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\native-core-contracts\assets\target\debug\incremental\aether_asset_resolver-37dqgcxg4g8q8\s-ho2uq56tzq-0fiut36-working`
+
+warning: `aether-asset-resolver` (lib) generated 1 warning
+   Compiling aether-asset-api-verification v0.0.0 (C:\github\Aether\target\native-core-contracts\assets)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\native-core-contracts\assets\target\debug\incremental\native_assets-04oy0sqmbbckh\s-ho2uq6r34q-02rh745-working`
+
+warning: `aether-asset-api-verification` (test "native_assets") generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.83s
+     Running C:\github\Aether\packages\asset-resolver\tests\native_assets.rs (target\native-core-contracts\assets\target\debug\deps\native_assets-7e643d391f871005.exe)
+     Running asset_policy.rs (target\native-core-contracts\assets\target\debug\deps\opened_asset_policy-178b7c7afb0d7da7.exe)
+error: test failed, to rerun pass `--test opened_asset_policy`

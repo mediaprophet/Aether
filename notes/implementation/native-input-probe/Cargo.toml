@@ -1,0 +1,24 @@
+[package]
+name = "aether-native-input-final-verification"
+version = "0.0.0"
+edition = "2024"
+[workspace]
+[lib]
+path = "../../../packages/native-dom/src/lib.rs"
+[features]
+default = []
+accessibility = ["blitz-dom/accessibility"]
+svg = ["blitz-dom/svg"]
+tracing = ["dep:tracing", "blitz-dom/tracing"]
+[dependencies]
+blitz-dom = { version = "=0.3.0-beta.4", default-features = false, features = ["custom-widget"] }
+blitz-traits = "=0.3.0-beta.4"
+aether-core = { path = "../../../packages/core" }
+aether-html = { path = "../../../packages/html" }
+keyboard-types = "0.8"
+rustc-hash = "2.1"
+futures-util = "0.3"
+tracing = { version = "0.1", optional = true }
+[dev-dependencies]
+aether = { path = "../../../packages/aether", default-features = false, features = ["macro", "html", "hooks", "signals", "third-party-renderer"] }
+

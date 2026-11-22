@@ -1,0 +1,10 @@
+
+running 3 tests
+test tests::noop_eval_stays_unsupported_after_return_and_copy ... ok
+test a_real_evaluator_retains_finished_owner_semantics ... ok
+test document_context_alias_retrieves_the_provided_instance ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.28s
+     Running C:\github\Aether\packages\document\tests\native_lifecycle.rs (target\native-core-contracts\document\target\debug\deps\native_lifecycle-db3aaaf4afd141ac.exe)

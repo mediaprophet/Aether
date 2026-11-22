@@ -1,0 +1,37 @@
+info: syncing channel updates for stable-x86_64-pc-windows-msvc
+info: latest update on 2026-10-15 for version 1.99.1 (58cf8f9c3 2026-10-13)
+info: component clippy is up to date
+info: component rust-src is up to date
+info: component rustfmt is up to date
+info: downloading 2 components
+    Updating crates.io index
+    Updating git repository `https://github.com/servo/stylo`
+    Updating git repository `https://github.com/mediaprophet/etalon.git`
+    Updating git repository `https://github.com/mediaprophet/hypermedia-production.git`
+    Blocking waiting for file lock on package cache
+     Locking 24 packages to highest compatible versions
+    Updating bit-set v0.10.0 -> v0.11.1
+    Updating bit-vec v0.9.1 -> v0.10.2
+      Adding etalon v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-apple v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-emscripten v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-linux-android-bsd v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-deps-windows v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-remote v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-core-remote-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding glow v0.18.0
+    Updating libc v0.2.190 -> v0.2.191
+      Adding naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+      Adding pem v3.0.6
+      Adding rcgen v0.13.2 (available: v0.14.10)
+    Updating unicode-ident v1.0.26 -> v1.0.27
+      Adding vector-compute-renderer v0.11.0 (https://github.com/mediaprophet/hypermedia-production.git?rev=af57e82120b30b47fca238edb21a839d2cdb4278#af57e821)
+      Adding vector-compute-shaders v0.11.0 (https://github.com/mediaprophet/hypermedia-production.git?rev=af57e82120b30b47fca238edb21a839d2cdb4278#af57e821)
+      Adding yasna v0.5.2
+ Downloading crates ...

@@ -1,0 +1,19 @@
+error: failed to get `serde` as a dependency of package `aether v0.8.0-alpha.3 (C:\github\Aether\packages\aether)`
+
+Caused by:
+  failed to load source for dependency `serde`
+
+Caused by:
+  unable to update registry `crates-io`
+
+Caused by:
+  failed to query replaced source registry `crates-io`
+
+Caused by:
+  failed to load checksum `.cargo-checksum.json` of ab_glyph v0.2.32
+
+Caused by:
+  failed to read `C:\Users\Hp\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\ab_glyph-0.2.32\.cargo-checksum.json`
+
+Caused by:
+  The system cannot find the file specified. (os error 2)

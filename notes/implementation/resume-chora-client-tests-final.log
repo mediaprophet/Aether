@@ -1,0 +1,18 @@
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_bridge_protocol-17083qnm7lno0\s-ho4xzge452-1trbgz1-working`
+
+warning: `aether-chora-bridge-protocol` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_client-0dnirwfm2hhok\s-ho4ycitqzy-1eqpv4i-working`
+
+warning: `aether-chora-client` (lib) generated 1 warning
+   Compiling aether-chora-client v0.1.0 (C:\github\Aether\packages\chora-client)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\process-3opr4zjd9c59l\s-ho4ydviby2-0az6acz-working`
+
+error: linking with `link.exe` failed: exit code: 1104
+  |
+  = note: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe" "/NOLOGO" "C:/github/Aether/target/chora-client\\debug\\deps\\rustc7P4J0j\\symbols.o" "<25 object files omitted>" "<sysroot>\\lib\\rustlib\\x86_64-pc-windows-msvc\\lib/{libtest-*,libgetopts-*,librustc_std_workspace_std-*}.rlib" "C:\\github\\Aether\\target\\chora-client\\debug\\deps/{libaether_chora_client-863fb853606abc07,libgetrandom-e906227fd47312e4,libcfg_if-16ed30e64ce9445d,libaether_chora_bridge_protocol-97e1841b48375e98,libserde_json-63259c08b39a480a,libmemchr-643242b05dc7a774,libitoa-436a90c02accae2d,libzmij-c74556d1f6330f7d,libserde-51d391fe8961f07c,libserde_core-9a87ce9dbbac2f0f}.rlib" "<sysroot>\\lib\\rustlib\\x86_64-pc-windows-msvc\\lib/{libstd-*,libpanic_unwind-*,libcfg_if-*,libwindows_link-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libunwind-*,librustc_std_workspace_core-*,liballoc-*,libcore-*,libcompiler_builtins-*}.rlib" "kernel32.lib" "bcrypt.lib" "advapi32.lib" "kernel32.lib" "kernel32.lib" "kernel32.lib" "ntdll.lib" "userenv.lib" "ws2_32.lib" "dbghelp.lib" "/defaultlib:msvcrt" "/NXCOMPAT" "/OUT:C:/github/Aether/target/chora-client\\debug\\deps\\process-fd9c8baf52d82cd2.exe" "/OPT:REF,NOICF" "/DEBUG" "/PDBALTPATH:%_PDB%" "/NATVIS:<sysroot>\\lib\\rustlib\\etc\\intrinsic.natvis" "/NATVIS:<sysroot>\\lib\\rustlib\\etc\\liballoc.natvis" "/NATVIS:<sysroot>\\lib\\rustlib\\etc\\libcore.natvis" "/NATVIS:<sysroot>\\lib\\rustlib\\etc\\libstd.natvis"
+  = note: some arguments are omitted. use `--verbose` to show all linker arguments
+  = note: LINK : fatal error LNK1104: cannot open file 'C:\github\Aether\target\chora-client\debug\deps\process-fd9c8baf52d82cd2.exe'
+          
+
+warning: `aether-chora-client` (test "process") generated 1 warning
+error: could not compile `aether-chora-client` (test "process") due to 1 previous error; 1 warning emitted

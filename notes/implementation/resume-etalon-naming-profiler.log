@@ -1,0 +1,12 @@
+   Compiling vector-compute-shaders v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-shaders)
+    Checking gpu-command-profiler v0.28.0 (C:\github\Aether\vendor\hypermedia\gpu-command-profiler)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\build_script_build-29cndyndh5fx7\s-ho3c2imuow-099np3a-working`
+
+warning: `vector-compute-shaders` (build script) generated 1 warning
+error: failed to run custom build command for `vector-compute-shaders v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-shaders)`
+
+Caused by:
+  could not execute process `C:\github\Aether\target\debug\build\vector-compute-shaders-8cdf7eac893eb45f\build-script-build` (never executed)
+
+Caused by:
+  An Application Control policy has blocked this file. (os error 4551)

@@ -1,0 +1,337 @@
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+warning: patch `vector-compute-renderer v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-renderer)` was not used in the crate graph
+warning: patch `vector-compute-shaders v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-shaders)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: profile package spec `tikv-jemalloc-sys` in profile `dev` did not match any packages
+   Compiling unicode-ident v1.0.27
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling syn v2.0.119
+   Compiling syn v3.0.4
+   Compiling serde_derive v1.0.229
+   Compiling serde v1.0.229
+   Compiling smallvec v1.16.3
+   Compiling num-traits v0.2.19
+   Compiling synstructure v0.13.2
+   Compiling zeroize_derive v1.5.0
+   Compiling zeroize v1.9.1
+   Compiling zerofrom-derive v0.1.7
+   Compiling zerofrom v0.1.8
+   Compiling yoke-derive v0.8.2
+   Compiling allocator-api2 v0.2.21
+   Compiling yoke v0.8.3
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling zerovec v0.11.8
+   Compiling tinystr v0.8.4
+   Compiling icu_locale_core v2.3.0
+   Compiling potential_utf v0.1.6
+   Compiling hybrid-array v0.4.15
+   Compiling zerotrie v0.2.5
+   Compiling hashbrown v0.17.1
+   Compiling icu_provider v2.3.1
+   Compiling icu_collections v2.1.1
+   Compiling bytemuck_derive v1.12.1
+   Compiling bytemuck v1.25.2
+   Compiling phf_generator v0.14.0
+   Compiling unicode-bidi v0.3.18
+   Compiling bytes v1.12.1
+   Compiling indexmap v2.14.2
+   Compiling euclid v0.22.14
+   Compiling arrayvec v0.7.8
+   Compiling thiserror-impl v2.0.21
+   Compiling icu_properties v2.1.2
+   Compiling crypto-common v0.2.2
+   Compiling parking_lot_core v0.9.12
+   Compiling lock_api v0.4.14
+   Compiling parking_lot v0.12.5
+   Compiling thiserror v2.0.21
+   Compiling http v1.5.0
+   Compiling phf_macros v0.14.0
+   Compiling phf_codegen v0.14.0
+   Compiling tokio-macros v2.7.2
+   Compiling string_cache v0.11.0
+   Compiling encoding_rs v0.8.42
+   Compiling tokio v1.54.0
+   Compiling phf v0.14.0
+   Compiling icu_locale v2.1.1
+   Compiling darling_core v0.20.11
+   Compiling string_cache_codegen v0.11.2
+   Compiling block-buffer v0.12.1
+   Compiling windows-implement v0.60.2
+   Compiling zerocopy-derive v0.8.62
+   Compiling windows-interface v0.59.3
+   Compiling windows-core v0.62.2
+   Compiling zerocopy v0.8.62
+   Compiling darling_macro v0.20.11
+   Compiling darling v0.20.11
+   Compiling font-types v0.12.6
+   Compiling windows-future v0.3.2
+   Compiling icu_normalizer v2.1.1
+   Compiling windows-numerics v0.3.1
+   Compiling windows-collections v0.3.2
+   Compiling polycool v0.4.0
+   Compiling app_units v0.7.8
+   Compiling kurbo v0.13.1
+   Compiling windows v0.62.2
+   Compiling idna_adapter v1.2.1
+   Compiling winapi v0.3.9
+   Compiling web_atoms v0.3.0
+   Compiling tokio-util v0.7.20
+   Compiling http-body v1.1.0
+   Compiling cssparser-macros v0.7.1
+   Compiling derive_more-impl v2.1.1
+   Compiling derive_more v2.1.1
+   Compiling cssparser v0.38.0
+   Compiling h2 v0.4.20
+   Compiling idna v1.1.0
+   Compiling read-fonts v0.41.0
+   Compiling servo_arc v0.5.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling thin-vec v0.2.21
+   Compiling to_shmem v0.6.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling icu_segmenter v2.1.2
+   Compiling url v2.5.8
+   Compiling hyper v1.12.0
+   Compiling to_shmem_derive v0.2.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling malloc_size_of_derive v0.1.3
+   Compiling num-integer v0.1.47
+   Compiling selectors v0.41.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling skrifa v0.44.0
+   Compiling wio v0.2.2
+   Compiling stylo_atoms v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling tendril v0.5.1
+   Compiling headers-core v0.3.0
+   Compiling color v0.3.3
+   Compiling peek-poke-derive v0.3.0
+   Compiling peniko v0.6.1
+   Compiling tiny-skia-path v0.12.0
+   Compiling stylo_malloc_size_of v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling peek-poke v0.3.0
+   Compiling headers v0.4.2
+   Compiling markup5ever v0.40.0
+   Compiling zeitstempel v0.2.2
+   Compiling wr_malloc_size_of v0.2.2
+   Compiling ppv-lite86 v0.2.21
+   Compiling guillotiere v0.7.0
+   Compiling strum_macros v0.28.0
+   Compiling vello_common v0.2.0
+   Compiling strum v0.28.0
+   Compiling rand_chacha v0.3.1
+   Compiling webrender_api v0.70.0
+   Compiling stylo_static_prefs v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling dwrote v0.11.5
+   Compiling harfrust v0.12.0
+   Compiling svgtypes v0.16.1
+   Compiling cobs v0.3.0
+   Compiling usvg v0.48.1
+   Compiling etagere v0.2.15
+   Compiling wr_glyph_rasterizer v0.70.0
+   Compiling postcard v1.1.3
+   Compiling stylo_traits v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling rand v0.8.7
+   Compiling glifo v0.3.0
+   Compiling stylo_dom v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling tiny-skia v0.12.0
+   Compiling stylo_derive v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling uluru v3.1.0
+   Compiling plane-split v0.18.0
+   Compiling rgb v0.8.53
+   Compiling bincode v1.3.3
+   Compiling num-derive v0.4.2
+   Compiling keyboard-types v0.8.3
+   Compiling stylo v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling webrender v0.70.0
+   Compiling vello_cpu v0.2.0
+   Compiling resvg v0.48.1
+   Compiling content-security-policy v0.9.0
+   Compiling urlpattern v0.3.0
+   Compiling servo-hyper-serde v0.7.0 (C:\github\chora\components\hyper_serde)
+   Compiling ipc-channel v0.23.0
+   Compiling servo-allocator v0.7.0 (C:\github\chora\components\allocator)
+   Compiling taffy v0.15.0
+   Compiling servo-malloc-size-of v0.7.0 (C:\github\chora\components\malloc_size_of)
+   Compiling serde_json v1.0.154
+   Compiling toml_edit v0.25.15+spec-1.1.0
+   Compiling proc-macro-crate v3.5.0
+   Compiling num_enum_derive v0.7.6
+   Compiling num_enum v0.7.6
+   Compiling servo-config-macro v0.7.0 (C:\github\chora\components\config\macro)
+   Compiling enumn v0.1.14
+   Compiling accesskit v0.24.0
+   Compiling servo-config v0.7.0 (C:\github\chora\components\config)
+   Compiling servo-base v0.7.0 (C:\github\chora\components\shared\base)
+   Compiling digest v0.11.3
+   Compiling anstyle v1.0.14
+   Compiling once_cell_polyfill v1.70.2
+   Compiling utf8parse v0.2.2
+   Compiling moxcms v0.8.1
+   Compiling block-padding v0.4.2
+   Compiling hyper-util v0.1.21
+   Compiling inout v0.2.2
+   Compiling image v0.25.10
+   Compiling pin-project-internal v1.1.13
+   Compiling is_terminal_polyfill v1.70.2
+   Compiling colorchoice v1.0.5
+   Compiling serde_urlencoded v0.7.1
+   Compiling pin-project v1.1.13
+   Compiling servo-url v0.7.0 (C:\github\chora\components\url)
+   Compiling http-body-util v0.1.5
+   Compiling thiserror-impl v1.0.69
+   Compiling warp v0.4.3
+   Compiling thiserror v1.0.69
+   Compiling servo-pixels v0.7.0 (C:\github\chora\components\pixels)
+   Compiling cipher v0.5.2
+   Compiling anstyle-parse v1.0.0
+   Compiling anstyle-wincon v3.0.11
+   Compiling anstyle-query v1.1.5
+   Compiling servo-embedder-traits v0.7.0 (C:\github\chora\components\shared\embedder)
+   Compiling anstream v1.0.0
+   Compiling webdriver v0.54.0
+   Compiling servo-profile-traits v0.7.0 (C:\github\chora\components\shared\profile)
+   Compiling servo-geometry v0.7.0 (C:\github\chora\components\geometry)
+   Compiling clap_builder v4.6.7
+   Compiling tempfile v3.27.0
+   Compiling clap v4.6.7
+   Compiling pem-rfc7468 v1.0.0
+   Compiling rustls-pki-types v1.15.1
+   Compiling libloading v0.8.9
+   Compiling aws-lc-rs v1.18.2
+   Compiling der v0.8.2
+   Compiling cbindgen v0.29.4
+   Compiling surfman v0.14.0
+   Compiling cpubits v0.1.1
+   Compiling rustls-webpki v0.103.15
+   Compiling rustc-hash v1.1.0
+   Compiling naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling rustls v0.23.46
+   Compiling spki v0.8.1
+   Compiling macro_rules_attribute v0.2.2
+   Compiling chacha20 v0.10.2
+   Compiling darling_core v0.24.1
+   Compiling servo-tracing v0.7.0 (C:\github\chora\components\servo_tracing)
+   Compiling servo-paint-api v0.7.0 (C:\github\chora\components\shared\paint)
+   Compiling darling_macro v0.24.1
+   Compiling etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling pkcs8 v0.11.0
+   Compiling libz-sys v1.1.29
+   Compiling darling v0.24.1
+   Compiling rand v0.10.3
+   Compiling read-fonts v0.43.3
+   Compiling serde_with_macros v3.24.0
+   Compiling crypto-bigint v0.7.5
+   Compiling serde_with v3.24.0
+   Compiling icu_casemap_data v2.1.1
+   Compiling servo-fonts-traits v0.7.0 (C:\github\chora\components\shared\fonts)
+   Compiling servo-net-traits v0.7.0 (C:\github\chora\components\shared\net)
+   Compiling icu_casemap v2.1.1
+   Compiling servo-webxr-api v0.7.0 (C:\github\chora\components\shared\webxr)
+   Compiling hashbrown v0.16.1
+   Compiling ff v0.14.0
+   Compiling mozjs_icu_collections v153.3.0
+   Compiling etalon-core-remote-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling hmac v0.13.0
+   Compiling signature v3.0.0
+   Compiling strength_reduce v0.2.4
+   Compiling transpose v0.2.3
+   Compiling clang-sys v1.9.1
+   Compiling group v0.14.0
+   Compiling servo-canvas-traits v0.7.0 (C:\github\chora\components\shared\canvas)
+   Compiling servo-media-streams v0.7.0 (C:\github\chora\components\media\streams)
+   Compiling primal-check v0.3.4
+   Compiling num-complex v0.4.6
+   Compiling base16ct v1.0.0
+   Compiling foldhash v0.1.5
+   Compiling alloc-stdlib v0.2.4
+   Compiling hashbrown v0.15.5
+   Compiling sec1 v0.8.1
+   Compiling bindgen v0.72.1
+   Compiling rustfft v6.4.1
+   Compiling hkdf v0.13.0
+   Compiling servo-webgpu-traits v0.7.0 (C:\github\chora\components\shared\webgpu)
+   Compiling servo-storage-traits v0.7.0 (C:\github\chora\components\shared\storage)
+   Compiling servo-media-traits v0.7.0 (C:\github\chora\components\media\traits)
+   Compiling keccak v0.2.2
+   Compiling fixedbitset v0.5.7
+   Compiling sponge-cursor v0.1.0
+   Compiling petgraph v0.8.3
+   Compiling servo-media-player v0.7.0 (C:\github\chora\components\media\player)
+   Compiling elliptic-curve v0.14.1
+   Compiling realfft v3.5.0
+   Compiling mozjs_icu_normalizer_data v153.3.0
+   Compiling brotli-decompressor v5.0.3
+   Compiling mozjs_utf8_iter v153.3.0
+   Compiling mozjs_utf16_iter v153.3.0
+   Compiling write16 v1.0.0
+   Compiling servo-media-derive v0.7.0 (C:\github\chora\components\media\servo-media-derive)
+   Compiling byte-slice-cast v1.2.3
+   Compiling speexdsp-resampler v0.1.0
+   Compiling servo-media-audio v0.7.0 (C:\github\chora\components\media\audio)
+   Compiling miniz_oxide v0.8.9
+   Compiling mozjs_icu_normalizer v153.3.0
+   Compiling icu_calendar_data v2.1.1
+   Compiling servo-constellation-traits v0.7.0 (C:\github\chora\components\shared\constellation)
+   Compiling servo-media-webrtc v0.7.0 (C:\github\chora\components\media\webrtc)
+   Compiling mozjs_collator_glue v153.3.0
+   Compiling mozjs_unicode_bidi_ffi v153.3.0
+   Compiling mozjs_properties_glue v153.3.0
+   Compiling mozjs_locale_glue v153.3.0
+   Compiling mozjs_normalizer_glue v153.3.0
+   Compiling calendrical_calculations v0.2.4
+   Compiling half v2.7.1
+   Compiling filetime v0.2.29
+   Compiling strck v1.0.0
+   Compiling ixdtf v0.6.6
+   Compiling bit-vec v0.10.2
+   Compiling unicode-width v0.2.2
+   Compiling codespan-reporting v0.13.1
+   Compiling bit-set v0.11.1
+   Compiling icu_calendar v2.1.1
+   Compiling diplomat_core v0.14.0
+   Compiling tar v0.4.46
+   Compiling servo-media v0.7.0 (C:\github\chora\components\media\servo-media)
+   Compiling mozjs_icu_collator_data v153.3.0
+   Compiling flate2 v1.1.9
+   Compiling icu_time_data v2.1.1
+   Compiling wuff v0.2.9
+   Compiling servo-script-bindings v0.7.0 (C:\github\chora\components\script_bindings)
+   Compiling glutin_wgl_sys v0.6.1
+   Compiling spirv v0.4.0+sdk-1.4.341.0
+   Compiling naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+warning: servo-script-bindings@0.7.0: `uv ["run", "--frozen", "python"]` failed with WARN Retrying to persist temporary file to `C:\Users\Hp\AppData\Local\Packages\sandbox.{959bd2ae-3c40-4628-80bc-61f1f5880bf4}\AC\uv\cache\interpreter-v4\681671c6460fa7c0\296f2f82bf422644.msgpack`: failed to persist temporary file: Access is denied. (os error 5)
+warning: servo-script-bindings@0.7.0: `uv` not found - Falling back to the default python! If the build fails, please install uv and make sure it is in your PATH or make sure to provision a python environment >= python 3.11.
+   Compiling fontsan v0.7.0
+   Compiling wuff-capi v0.2.0
+   Compiling icu_time v2.1.1
+   Compiling mozjs_sys v153.3.0-3
+   Compiling mozjs_icu_collator v153.3.0
+   Compiling diplomat v0.14.0
+   Compiling ash v0.38.0+1.3.281
+   Compiling shake v0.1.0
+   Compiling primefield v0.14.0
+   Compiling html5ever v0.40.1
+   Compiling icu_provider_adapters v2.1.1
+   Compiling universal-hash v0.6.1
+   Compiling arraystring v0.3.0
+   Compiling presser v0.3.1
+   Compiling diplomat-runtime v0.14.0
+   Compiling icu_capi v2.1.2
+   Compiling gpu-allocator v0.28.0
+   Compiling wnaf v0.14.1
+warning: mozjs_sys@153.3.0-3: Failed to link pre-built archive by entity not found. Building from source instead.
+error: failed to run custom build command for `mozjs_sys v153.3.0-3`
+
+Caused by:
+  process didn't exit successfully: `C:/github/chora/target\debug\build\mozjs_sys-e76351d097ad4ece\build-script-build` (exit code: 101)
+  --- stdout
+  cargo:warning=Failed to link pre-built archive by entity not found. Building from source instead.
+
+  --- stderr
+  Trying to download prebuilt mozjs static library from Github Releases
+
+  thread 'main' (17852) panicked at C:\github\Aether\target\production-audit\cargo-home\registry\src\index.crates.io-1949cf8c6b5b557f\mozjs_sys-153.3.0-3\build.rs:754:5:
+  MozTools or MozillaBuild not found!
+   Follow instructions on: https://github.com/servo/mozjs?tab=readme-ov-file#windows
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

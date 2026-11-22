@@ -5,8 +5,8 @@ use web_time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use blitz_traits::{
     events::{
-        BlitzInputEvent, BlitzPointerEvent, BlitzPointerId, BlitzWheelDelta, BlitzWheelEvent,
-        DomEvent, DomEventData, MouseEventButton, MouseEventButtons,
+        BlitzFormActionEvent, BlitzInputEvent, BlitzPointerEvent, BlitzPointerId, BlitzWheelDelta,
+        BlitzWheelEvent, DomEvent, DomEventData, MouseEventButton, MouseEventButtons,
     },
     navigation::NavigationOptions,
 };
@@ -363,10 +363,18 @@ pub(crate) fn handle_pointermove<F: FnMut(DomEvent)>(
         let x = (hit.x - content_box_offset.x) as f64 * doc.viewport.scale_f64() + scroll_x;
         let y = (hit.y - content_box_offset.y) as f64 * doc.viewport.scale_f64() + scroll_y;
 
+        let previous = text_input_data.editor.raw_selection().text_range();
         text_input_data
             .editor
             .driver(&mut doc.font_ctx.lock().unwrap(), &mut doc.layout_ctx)
             .extend_selection_to_point(x as f32, y as f32);
+        if text_input_data.editor.raw_selection().text_range() != previous {
+            doc.apply_generated_text_input_event(
+                target,
+                crate::node::GeneratedTextInputEvent::Select,
+                dispatch_event,
+            );
+        }
 
         changed = true;
     } else if event.is_mouse()
@@ -653,7 +661,13 @@ pub(crate) fn handle_click(
                     let value = is_checked.to_string();
                     dispatch_event(DomEvent::new(
                         node_id,
-                        DomEventData::Input(BlitzInputEvent { value }),
+                        DomEventData::Input(BlitzInputEvent {
+                            value: value.clone(),
+                        }),
+                    ));
+                    dispatch_event(DomEvent::new(
+                        node_id,
+                        DomEventData::Change(BlitzFormActionEvent { value }),
                     ));
                     generate_focus_events(
                         doc,
@@ -665,6 +679,7 @@ pub(crate) fn handle_click(
                     break 'matched true;
                 }
                 local_name!("input") if el.attr(local_name!("type")) == Some("radio") => {
+                    let was_checked = el.checkbox_input_checked() == Some(true);
                     if let Some(radio_set) = el.attr(local_name!("name")).map(str::to_string) {
                         BaseDocument::toggle_radio(doc, radio_set, node_id);
                     } else if el.checkbox_input_checked().is_some() {
@@ -680,9 +695,17 @@ pub(crate) fn handle_click(
                     let value = String::from("true");
                     dispatch_event(DomEvent::new(
                         node_id,
-                        DomEventData::Input(BlitzInputEvent { value }),
+                        DomEventData::Input(BlitzInputEvent {
+                            value: value.clone(),
+                        }),
                     ));
 
+                    if !was_checked {
+                        dispatch_event(DomEvent::new(
+                            node_id,
+                            DomEventData::Change(BlitzFormActionEvent { value }),
+                        ));
+                    }
                     generate_focus_events(
                         doc,
                         &mut |doc| {
@@ -708,7 +731,9 @@ pub(crate) fn handle_click(
                             }) == Some(node_id);
 
                         if is_first_summary {
-                            doc.toggle_details_open(parent_id);
+                            if let Some(event) = doc.details_toggle_event(parent_id) {
+                                dispatch_event(event);
+                            }
                             generate_focus_events(
                                 doc,
                                 &mut |doc| {
@@ -762,7 +787,22 @@ pub(crate) fn handle_click(
                     if el.is_submit_button() || el.attr(local_name!("type")) == Some("submit") =>
                 {
                     if let Some(form_owner) = doc.controls_to_form.get(&node_id) {
-                        doc.submit_form(*form_owner, node_id);
+                        let mut event = DomEvent::new(
+                            *form_owner,
+                            DomEventData::Submit(BlitzFormActionEvent::default()),
+                        );
+                        event.related_target = Some(node_id);
+                        dispatch_event(event);
+                    }
+                }
+                local_name!("input") | local_name!("button")
+                    if el.attr(local_name!("type")) == Some("reset") =>
+                {
+                    if let Some(form_owner) = doc.controls_to_form.get(&node_id) {
+                        dispatch_event(DomEvent::new(
+                            *form_owner,
+                            DomEventData::Reset(BlitzFormActionEvent::default()),
+                        ));
                     }
                 }
                 #[cfg(feature = "file-input")]

@@ -1,0 +1,113 @@
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_config-1avr9640x6w1u\s-ho3bfh5f5x-1deg7j9-working`
+warning: `servo-config` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_base-3cxdfkg2d4850\s-ho3bfm1c2n-1dquvg6-working`
+warning: `servo-base` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\pixels-0o585eqec661w\s-ho3bfqkjg5-10xadk9-working`
+warning: `servo-pixels` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\profile_traits-2vsei6747qfzl\s-ho3bfqnhuk-07au3d5-working`
+warning: `servo-profile-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\embedder_traits-00810chtkfqj6\s-ho3bfu3nxl-1j9to2p-working`
+warning: `servo-embedder-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\paint_api-358kdkvkjsevu\s-ho3bg13ymq-0vpru2l-working`
+warning: `servo-paint-api` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\fonts_traits-0pg1lk3jrixai\s-ho3bftzafs-03plv49-working`
+warning: `servo-fonts-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\net_traits-2qli75qkl74pf\s-ho3bg51r54-07sfkk9-working`
+warning: `servo-net-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_webxr_api-08c3o4a8a0nck\s-ho3bg2y0c2-0edjld9-working`
+warning: `servo-webxr-api` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_canvas_traits-1sossuv6k8b3s\s-ho3bg7p99l-1wqbsrn-working`
+warning: `servo-canvas-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\webgpu_traits-1hvdhj2azeybw\s-ho3bfxaakh-0kfxm8v-working`
+warning: `servo-webgpu-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\storage_traits-15t30n4fas1v8\s-ho3bgbxiyk-0ahalby-working`
+warning: `servo-storage-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_media_player-3r0jkmsu4zw3t\s-ho3bgdocxp-1c5higq-working`
+warning: `servo-media-player` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_media_audio-34ylphxihumde\s-ho3bgg6tww-1vc9hvf-working`
+warning: `servo-media-audio` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_constellation_traits-22zcivs17dbx2\s-ho3bgg1ibt-0uygtl9-working`
+warning: `servo-constellation-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_media-0u4457ei2gfvp\s-ho3bgk26bz-106rq1c-working`
+warning: `servo-media` (lib) generated 1 warning
+warning: servo-script-bindings@0.7.0: `uv ["run", "--frozen", "python"]` failed with Downloading cpython-3.11.18-windows-x86_64-none (download) (24.0MiB)
+warning: servo-script-bindings@0.7.0: `uv` not found - Falling back to the default python! If the build fails, please install uv and make sure it is in your PATH or make sure to provision a python environment >= python 3.11.
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\media-0hlx8apkladq4\s-ho3bgm9bv2-1js931x-working`
+warning: `servo-media-thread` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\fonts-1iwqundhoc9rk\s-ho3bgml1n6-0z3sunr-working`
+warning: `servo-fonts` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_traits-0wdthfw3j8r0x\s-ho3bgphaqi-04oof3v-working`
+warning: `servo-script-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\background_hang_monitor_api-0gxlwmdc9rho5\s-ho3bgrnqb6-1168uki-working`
+warning: `servo-background-hang-monitor-api` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_bindings-2rwno5xuzxn2s\s-ho3bgtoues-1gibf9g-working`
+warning: `servo-script-bindings` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\layout_api-0tnp51k0sl8nu\s-ho3bguaaru-066ycuf-working`
+warning: `servo-layout-api` (lib) generated 1 warning
+    Checking servo-script-webcrypto v0.7.0 (C:\github\chora\components\script_webcrypto)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_webcrypto-17d7wuydtwr1t\s-ho3co0hcty-0wgqf8m-working`
+
+warning: variant `HostKeystore` is never constructed
+  --> components\script_webcrypto\cryptokey.rs:86:5
+   |
+46 | pub(crate) enum Handle {
+   |                 ------ variant in this enum
+...
+86 |     HostKeystore { key_id: String, algorithm: String },
+   |     ^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `servo-script-webcrypto` (lib) generated 2 warnings
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\webgpu-0d5eml9ea0p1g\s-ho3bh4s6p7-0wwp7h4-working`
+warning: `servo-webgpu` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_webxr-2zos9xa1q3c7j\s-ho3bh1tizx-0ipms0s-working`
+warning: `servo-webxr` (lib) generated 1 warning
+    Checking servo-script-webgpu v0.7.0 (C:\github\chora\components\script_webgpu)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\script_webgpu-3tp6mgq7zi6d0\s-ho3co5lndx-0gcns95-working`
+
+error[E0405]: cannot find trait `Marker` in this scope
+  --> components\script_webgpu\identityhub.rs:17:33
+   |
+17 | struct SharedIdentityManager<T: Marker>(Mutex<EtalonIdentityManager<T>>);
+   |                                 ^^^^^^ not found in this scope
+
+error[E0405]: cannot find trait `Marker` in this scope
+  --> components\script_webgpu\identityhub.rs:19:9
+   |
+19 | impl<T: Marker> SharedIdentityManager<T> {
+   |         ^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `Id` in this scope
+  --> components\script_webgpu\identityhub.rs:24:26
+   |
+24 |     fn process(&self) -> Id<T> {
+   |                          ^^ not found in this scope
+   |
+help: there is an enum variant `js::jsapi::RootKind::Id`; try using the variant's enum
+   |
+24 -     fn process(&self) -> Id<T> {
+24 +     fn process(&self) -> js::jsapi::RootKind {
+   |
+
+error[E0425]: cannot find type `Id` in this scope
+  --> components\script_webgpu\identityhub.rs:28:24
+   |
+28 |     fn free(&self, id: Id<T>) {
+   |                        ^^ not found in this scope
+   |
+help: there is an enum variant `js::jsapi::RootKind::Id`; try using the variant's enum
+   |
+28 -     fn free(&self, id: Id<T>) {
+28 +     fn free(&self, id: js::jsapi::RootKind) {
+   |
+
+Some errors have detailed explanations: E0405, E0425.
+For more information about an error, try `rustc --explain E0405`.
+warning: `servo-script-webgpu` (lib) generated 1 warning
+error: could not compile `servo-script-webgpu` (lib) due to 4 previous errors; 1 warning emitted

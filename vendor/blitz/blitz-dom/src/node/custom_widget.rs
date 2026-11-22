@@ -19,14 +19,16 @@ impl BaseDocument {
                 .element_data_mut()
                 .and_then(|el| el.custom_widget_data_mut())
             {
+                if widget_data.status != CustomWidgetStatus::Suspended {
+                    continue;
+                }
                 let mut render_context = ProxyRenderContext {
                     resource_ids: &mut widget_data.active_resource_ids,
                     inner: render_context,
                 };
 
-                widget_data
-                    .widget
-                    .can_create_surfaces(&mut render_context as _);
+                widget_data.widget.can_create_surfaces(&mut render_context);
+                widget_data.status = CustomWidgetStatus::Active;
             }
         }
     }
@@ -38,7 +40,12 @@ impl BaseDocument {
                 .element_data_mut()
                 .and_then(|el| el.custom_widget_data_mut())
             {
-                widget_data.widget.destroy_surfaces();
+                if widget_data.status == CustomWidgetStatus::Active {
+                    widget_data.widget.destroy_surfaces();
+                    widget_data.status = CustomWidgetStatus::Suspended;
+                }
+                self.pending_resource_deallocations
+                    .extend(widget_data.take_resource_ids());
             }
         }
     }
@@ -83,6 +90,9 @@ pub trait Widget {
     fn attribute_changed(&mut self, name: &str, old_value: Option<&str>, new_value: Option<&str>) {
         let _ = (name, old_value, new_value);
     }
+
+    /// The widget gained or lost keyboard focus.
+    fn focus_changed(&mut self, _focused: bool) {}
 
     // Renderer lifecycle
 
@@ -172,7 +182,20 @@ impl CustomWidgetData {
         }
     }
 
+    pub(crate) fn disconnect(&mut self) {
+        if self.status != CustomWidgetStatus::PendingRemoval {
+            self.status = CustomWidgetStatus::PendingRemoval;
+            self.widget.disconnected();
+        }
+    }
+
     pub(crate) fn take_resource_ids(&mut self) -> Vec<ResourceId> {
         core::mem::take(&mut self.active_resource_ids)
+    }
+}
+
+impl Drop for CustomWidgetData {
+    fn drop(&mut self) {
+        self.disconnect();
     }
 }

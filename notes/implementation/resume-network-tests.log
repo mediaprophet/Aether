@@ -1,0 +1,90 @@
+    Updating crates.io index
+     Locking 14 packages to highest compatible versions
+      Adding cacache v13.1.0
+      Adding directories v6.0.0
+      Adding http-cache v1.0.0-alpha.6 (available: v1.0.0-alpha.10)
+      Adding http-cache-reqwest v1.0.0-alpha.6 (available: v1.0.0-alpha.11)
+      Adding http-cache-semantics v3.0.0
+      Adding http-serde v2.1.1
+      Adding memmap2 v0.5.10
+      Adding miette v5.10.0
+      Adding miette-derive v5.10.0
+      Adding reflink-copy v0.1.32
+      Adding reqwest-middleware v0.5.2
+      Adding sha-1 v0.10.1
+      Adding ssri v9.2.0
+      Adding unicode-width v0.1.14
+   Compiling proc-macro2 v1.0.106
+   Compiling stable_deref_trait v1.2.1
+   Compiling windows-sys v0.61.2
+   Compiling quote v1.0.45
+   Compiling syn v2.0.117
+   Compiling synstructure v0.13.2
+   Compiling zerofrom-derive v0.1.7
+   Compiling yoke-derive v0.8.2
+   Compiling zerofrom v0.1.8
+   Compiling syn v3.0.8
+   Compiling yoke v0.8.3
+   Compiling displaydoc v0.2.5
+   Compiling litemap v0.8.2
+   Compiling smallvec v1.16.3
+   Compiling writeable v0.6.4
+   Compiling zerotrie v0.2.5
+   Compiling mio v1.2.0
+   Compiling zerovec-derive v0.11.6
+   Compiling socket2 v0.6.3
+   Compiling zerovec v0.11.8
+   Compiling tokio v1.52.3
+   Compiling tinystr v0.8.4
+   Compiling icu_locale_core v2.3.0
+   Compiling potential_utf v0.1.5
+   Compiling icu_collections v2.3.0
+   Compiling icu_provider v2.3.1
+   Compiling icu_normalizer v2.3.0
+   Compiling icu_properties v2.3.0
+   Compiling serde_core v1.0.228
+   Compiling http-body v1.1.0
+   Compiling serde v1.0.228
+   Compiling slab v0.4.12
+   Compiling idna_adapter v1.2.2
+   Compiling futures-task v0.3.34
+   Compiling idna v1.1.0
+   Compiling futures-util v0.3.34
+   Compiling url v2.5.8
+   Compiling schannel v0.1.29
+   Compiling hyper v1.12.0
+   Compiling native-tls v0.2.18
+   Compiling tracing v0.1.44
+   Compiling futures-channel v0.3.34
+   Compiling ipnet v2.12.0
+   Compiling tower v0.5.3
+   Compiling hyper-util v0.1.20
+   Compiling tokio-native-tls v0.3.1
+   Compiling keyboard-types v0.8.3
+   Compiling http-body-util v0.1.5
+   Compiling serde_urlencoded v0.7.1
+   Compiling hyper-tls v0.6.0
+   Compiling tower-http v0.6.11
+   Compiling blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits)
+   Compiling reqwest v0.13.5
+   Compiling blitz-net v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-net)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3m 51s
+     Running unittests src\lib.rs (target\debug\deps\blitz_net-c7425f37213fde9d.exe)
+
+running 2 tests
+test completion_tests::abort_wakes_a_transport_that_never_completes ... ok
+test completion_tests::public_async_and_callback_requests_honor_preexisting_cancellation ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src\lib.rs (target\debug\deps\blitz_traits-390999c11ac71e61.exe)
+
+running 5 tests
+test net::tests::abort_wakes_every_waiter_and_releases_registration ... ok
+test net::tests::completed_waiter_unregisters_and_slot_reuse_does_not_cancel_another ... ok
+test net::tests::late_transport_success_does_not_publish_cancelled_bytes ... ok
+test net::tests::replacing_and_removing_wakers_drops_outside_the_lock ... ok
+test net::tests::terminal_completion_is_exactly_once_on_success_error_or_drop ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

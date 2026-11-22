@@ -1,7 +1,7 @@
 use std::{cell::RefCell, rc::Rc, sync::atomic::AtomicUsize};
 
-use blitz_dom::{Document, Widget};
 use aether_core::{AttributeValue, IntoAttributeValue};
+use blitz_dom::{Document, Widget};
 
 #[derive(Clone, PartialEq)]
 pub struct SubDocumentAttr(WriteOnceAttr<Box<dyn Document>>);
@@ -28,8 +28,13 @@ pub struct CustomWidgetAttr(WriteOnceAttr<Box<dyn Widget>>);
 impl CustomWidgetAttr {
     pub fn new<T: Widget + 'static>(widget: T) -> Self {
         let id = ID_COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-        let boxed = Box::new(widget) as Box<dyn Widget>;
-        Self(WriteOnceAttr::new(id, boxed))
+        Self(WriteOnceAttr::generated(id, Box::new(widget)))
+    }
+
+    /// Keep the mounted widget across RSX renders by supplying the same identity.
+    /// Change the ID when the underlying widget should be replaced.
+    pub fn with_stable_id<T: Widget + 'static>(id: usize, value: T) -> Self {
+        Self(WriteOnceAttr::new(id, Box::new(value)))
     }
 }
 
@@ -39,13 +44,25 @@ impl IntoAttributeValue for CustomWidgetAttr {
     }
 }
 
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum WriteOnceId {
+    Stable(usize),
+    Generated(usize),
+}
+
 pub(crate) struct WriteOnceAttr<T> {
-    id: usize,
+    id: WriteOnceId,
     value: Rc<RefCell<Option<T>>>,
 }
 
 impl<T> WriteOnceAttr<T> {
     pub(crate) fn new(id: usize, value: T) -> Self {
+        Self::with_id(WriteOnceId::Stable(id), value)
+    }
+    fn generated(id: usize, value: T) -> Self {
+        Self::with_id(WriteOnceId::Generated(id), value)
+    }
+    fn with_id(id: WriteOnceId, value: T) -> Self {
         let value = Rc::new(RefCell::new(Some(value)));
         Self { id, value }
     }

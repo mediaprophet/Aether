@@ -1,0 +1,21 @@
+GPU dependency inventory FAILED:
+- unreviewed Etalon/shader source naga: registry+https://github.com/rust-lang/crates.io-index
+- unreviewed Etalon/shader source naga-types: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU renderer vello: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU renderer vello_shaders: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU package wgpu 30.0.1: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU package wgpu-core 30.0.1: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU package wgpu-core-deps-apple 30.0.1: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU package wgpu-core-deps-emscripten 30.0.1: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU package wgpu-core-deps-windows-linux-android 30.0.1: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU package wgpu-hal 30.0.1: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU package wgpu-naga-bridge 30.0.1: registry+https://github.com/rust-lang/crates.io-index
+- legacy GPU package wgpu-types 30.0.1: registry+https://github.com/rust-lang/crates.io-index
+- missing mandatory package etalon
+- missing mandatory package etalon-core
+- missing mandatory package etalon-core-remote
+- missing mandatory package etalon-core-remote-types
+- missing mandatory package etalon-hal
+- missing mandatory package etalon-types
+- missing mandatory package vector-compute-renderer
+- missing mandatory package vector-compute-shaders

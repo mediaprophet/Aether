@@ -1,0 +1,45 @@
+    Blocking waiting for file lock on build directory
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_config-1avr9640x6w1u\s-ho3a22tm18-1gymnst-working`
+warning: `servo-config` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_base-3cxdfkg2d4850\s-ho3a267x2u-1h8d4o7-working`
+warning: `servo-base` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\pixels-0o585eqec661w\s-ho3a29e745-0jrffig-working`
+warning: `servo-pixels` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\profile_traits-2vsei6747qfzl\s-ho3a29aahi-0xvlj57-working`
+warning: `servo-profile-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\embedder_traits-00810chtkfqj6\s-ho3a2bby0b-10ondyi-working`
+warning: `servo-embedder-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\paint_api-358kdkvkjsevu\s-ho3a2kt8qw-03om7jd-working`
+warning: `servo-paint-api` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\fonts_traits-0pg1lk3jrixai\s-ho3a2b4aca-0fmjef5-working`
+warning: `servo-fonts-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\net_traits-2qli75qkl74pf\s-ho3a2pjrg6-0jd9tlh-working`
+warning: `servo-net-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_webxr_api-08c3o4a8a0nck\s-ho3a2q285v-023eb0f-working`
+warning: `servo-webxr-api` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_canvas_traits-1sossuv6k8b3s\s-ho3a2wfgo4-165cfnu-working`
+warning: `servo-canvas-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\webgpu_traits-1hvdhj2azeybw\s-ho3a2dessr-194skbo-working`
+warning: `servo-webgpu-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\storage_traits-15t30n4fas1v8\s-ho3a2khmc1-00or0yq-working`
+warning: `servo-storage-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_media_player-3r0jkmsu4zw3t\s-ho3a2yo4fm-199e2mz-working`
+warning: `servo-media-player` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_media_audio-34ylphxihumde\s-ho3a308z7l-1g5739b-working`
+warning: `servo-media-audio` (lib) generated 1 warning
+warning: servo-script-bindings@0.7.0: `uv ["run", "--frozen", "python"]` failed with Downloading cpython-3.11.18-windows-x86_64-none (download) (24.0MiB)
+warning: servo-script-bindings@0.7.0: `uv` not found - Falling back to the default python! If the build fails, please install uv and make sure it is in your PATH or make sure to provision a python environment >= python 3.11.
+    Checking servo-script-webcrypto v0.7.0 (C:\github\chora\components\script_webcrypto)
+    Checking servo-script-webgpu v0.7.0 (C:\github\chora\components\script_webgpu)
+components\script_webgpu\gpubuffer.rs:337:22: error[E0061]: this method takes 3 arguments but 2 arguments were supplied
+components\script_webgpu\gpubuffer.rs:361:18: error[E0061]: this method takes 3 arguments but 2 arguments were supplied
+components\script_webgpu\gpucommandencoder.rs:273:34: error[E0308]: mismatched types: expected `FfiOption<u32>`, found `Option<_>`
+error: could not compile `servo-script-webgpu` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+components\script_webcrypto\subtlecrypto.rs:6362:54: error[E0599]: no variant, associated function, or constant named `Decapsulate` found for enum `KeyUsage` in the current scope: variant, associated function, or constant not found in `KeyUsage`
+components\script_webcrypto\subtlecrypto.rs:6364:54: error[E0599]: no variant, associated function, or constant named `Encapsulate` found for enum `KeyUsage` in the current scope: variant, associated function, or constant not found in `KeyUsage`
+components\script_webcrypto\subtlecrypto.rs:410:13: error: cannot explicitly borrow within an implicitly-borrowing pattern: explicit `ref` binding modifier not allowed when implicitly borrowing, explicit `ref` binding modifier not allowed when implicitly borrowing
+components\script_webcrypto\subtlecrypto.rs:436:13: error: cannot explicitly borrow within an implicitly-borrowing pattern: explicit `ref` binding modifier not allowed when implicitly borrowing, explicit `ref` binding modifier not allowed when implicitly borrowing
+components\script_webcrypto\subtlecrypto.rs:460:13: error: cannot explicitly borrow within an implicitly-borrowing pattern: explicit `ref` binding modifier not allowed when implicitly borrowing, explicit `ref` binding modifier not allowed when implicitly borrowing
+components\script_webcrypto\subtlecrypto.rs:485:13: error: cannot explicitly borrow within an implicitly-borrowing pattern: explicit `ref` binding modifier not allowed when implicitly borrowing, explicit `ref` binding modifier not allowed when implicitly borrowing
+error: could not compile `servo-script-webcrypto` (lib) due to 6 previous errors

@@ -11,10 +11,8 @@ use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 
 use crate::dom::Dom;
-use crate::lens::Lens;
-pub use crate::ui_guards::{
-    Effect, Memo, ReadGuard, ResourceHandle, ResourceState, WriteGuard,
-};
+use crate::lens::{InlinePath, Lens};
+pub use crate::ui_guards::{Effect, Memo, ReadGuard, ResourceHandle, ResourceState, WriteGuard};
 use crate::ui_guards::{
     EffectSlot, Log, MemoSlot, NodeState, Observer, Owned, ResourceSlot, Source, WakeFlag,
 };
@@ -29,6 +27,7 @@ pub struct Ui<S: 'static> {
     dom: Dom<S>,
     /// Effects queued to rerun, by id.
     queue: Vec<usize>,
+    flushed_dirty_paths: Vec<InlinePath>,
 }
 
 impl<S: 'static> Ui<S> {
@@ -42,6 +41,7 @@ impl<S: 'static> Ui<S> {
             resources: Vec::new(),
             dom: Dom::default(),
             queue: Vec::new(),
+            flushed_dirty_paths: Vec::new(),
         }
     }
 
@@ -54,6 +54,7 @@ impl<S: 'static> Ui<S> {
             resources: &mut self.resources,
             dom: &mut self.dom,
             queue: &mut self.queue,
+            flushed_dirty_paths: &mut self.flushed_dirty_paths,
         }
     }
 
@@ -62,6 +63,21 @@ impl<S: 'static> Ui<S> {
         let r = f(&mut self.ctx());
         self.flush();
         r
+    }
+
+    /// Drain distinct state projections applied by the scheduler since the last drain.
+    pub fn take_dirty_paths(&mut self) -> Vec<InlinePath> {
+        std::mem::take(&mut self.flushed_dirty_paths)
+    }
+
+    /// Visit a mounted tree in depth-first order, borrowing its current retained data.
+    pub fn visit_dom(
+        &mut self,
+        node: crate::dom::NodeId,
+        mut visit: impl FnMut(crate::dom::DomNodeRef<'_>),
+    ) {
+        self.flush();
+        self.dom.visit(node, &mut visit);
     }
 
     /// Read through a lens without tracking (there is no observer at the
@@ -175,6 +191,7 @@ pub struct Ctx<'a, S: 'static> {
     pub(crate) resources: &'a mut Vec<ResourceSlot<S>>,
     pub(crate) dom: &'a mut Dom<S>,
     pub(crate) queue: &'a mut Vec<usize>,
+    pub(crate) flushed_dirty_paths: &'a mut Vec<InlinePath>,
 }
 
 impl<S: 'static> Ctx<'_, S> {
@@ -187,6 +204,7 @@ impl<S: 'static> Ctx<'_, S> {
             resources: self.resources,
             dom: self.dom,
             queue: self.queue,
+            flushed_dirty_paths: self.flushed_dirty_paths,
         }
     }
 
@@ -345,5 +363,36 @@ impl<S: 'static> Ctx<'_, S> {
             .value
             .downcast_ref::<ResourceState<T>>()
             .expect("resource type mismatch")
+    }
+}
+
+#[cfg(test)]
+mod dirty_path_tests {
+    use super::*;
+
+    #[test]
+    fn a_drain_includes_indirect_writes_and_deduplicates_paths() {
+        struct State {
+            input: u32,
+            output: u32,
+        }
+        let input = crate::lens!(State => 0: input);
+        let output = crate::lens!(State => 1: output);
+        let mut ui = Ui::new(State {
+            input: 0,
+            output: 0,
+        });
+        ui.effect(move |ctx| {
+            let value = *ctx.get(input);
+            *ctx.write(output) = value * 2;
+        });
+        ui.take_dirty_paths();
+        ui.with(|ctx| {
+            *ctx.write(input) = 1;
+            *ctx.write(input) = 2;
+        });
+        assert_eq!(ui.take_dirty_paths(), [input.path(), output.path()]);
+        assert_eq!(*ui.get(output), 4);
+        assert!(ui.take_dirty_paths().is_empty());
     }
 }

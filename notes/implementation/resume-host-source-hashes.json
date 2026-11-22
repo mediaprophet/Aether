@@ -1,0 +1,307 @@
+{
+  "recorded_utc": "2026-11-12T12:05:12.328757+00:00",
+  "scope": "Current owned-source hashes compared with the point-in-time qualification capture; this is not a live-tree test receipt.",
+  "qualification_receipt": {
+    "path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\source-receipt.json",
+    "sha256": "3bcee7dc35c4882ac02053f7efdf5f45de8024d5aea08a3d4cbf581d175c66b7"
+  },
+  "files": [
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\AUTHORING.md",
+      "current_sha256": "c1922aaf1bd48735c63aa639e825ee8f0651315d2f5ef36d2eb439c35ebf57db",
+      "captured_source_sha256": "c1922aaf1bd48735c63aa639e825ee8f0651315d2f5ef36d2eb439c35ebf57db",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\AUTHORING.md",
+      "captured_sha256": "c1922aaf1bd48735c63aa639e825ee8f0651315d2f5ef36d2eb439c35ebf57db",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\Cargo.lock",
+      "current_sha256": "4dee165aa2c6fd07b82e2ca799f7aec11645f3cbbffbc6a8f6eb834b18495ada",
+      "captured_source_sha256": "4dee165aa2c6fd07b82e2ca799f7aec11645f3cbbffbc6a8f6eb834b18495ada",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\Cargo.lock",
+      "captured_sha256": "d15a5231d0b58f86a71b55580adb0a9533a87fdf8a7b10a003ca5e155d22e26e",
+      "transform": "Cargo resolved this actual captured test workspace lock using the reviewed consumer source patch table and no-default-features; original captured lock retained as Cargo.lock.source.v3."
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\Cargo.toml",
+      "current_sha256": "41d2897e6bac044ddc89147bfcd6a70043a86bc926e1d41b90f60ff751615458",
+      "captured_source_sha256": "41d2897e6bac044ddc89147bfcd6a70043a86bc926e1d41b90f60ff751615458",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\Cargo.toml",
+      "captured_sha256": "d37fe3984f4e7c7d0f832ea0bc355906e1dc2097bf3c86008aa908753ec038bb",
+      "transform": "Only aether-core path rewritten to its actual Aether source; canonical sibling SDK paths preserved."
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\GRAPH-CONTRACT-GAPS.md",
+      "current_sha256": "5b6ab01fcec433cfb6c65fda0b6837aa8a33063b7a3f47de0cd60766d03a0c88",
+      "captured_source_sha256": "5b6ab01fcec433cfb6c65fda0b6837aa8a33063b7a3f47de0cd60766d03a0c88",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\GRAPH-CONTRACT-GAPS.md",
+      "captured_sha256": "5b6ab01fcec433cfb6c65fda0b6837aa8a33063b7a3f47de0cd60766d03a0c88",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\README.md",
+      "current_sha256": "29b224b030e235738f349c6d1df693fd01b951deaf8a4949e41f9a0f510f647d",
+      "captured_source_sha256": "29b224b030e235738f349c6d1df693fd01b951deaf8a4949e41f9a0f510f647d",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\README.md",
+      "captured_sha256": "29b224b030e235738f349c6d1df693fd01b951deaf8a4949e41f9a0f510f647d",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\VERIFICATION.md",
+      "current_sha256": "468d59e09a36a89b03611c7ffdf96e8f7192b42ca96db2a12d6989022fc4ce4d",
+      "captured_source_sha256": "468d59e09a36a89b03611c7ffdf96e8f7192b42ca96db2a12d6989022fc4ce4d",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\VERIFICATION.md",
+      "captured_sha256": "468d59e09a36a89b03611c7ffdf96e8f7192b42ca96db2a12d6989022fc4ce4d",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\examples\\native_graph.rs",
+      "current_sha256": "5b5f3ffef6f5221a37b359476239bfc31f5bbeb506023779b1ef0443dc2861d7",
+      "captured_source_sha256": "5b5f3ffef6f5221a37b359476239bfc31f5bbeb506023779b1ef0443dc2861d7",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\examples\\native_graph.rs",
+      "captured_sha256": "5b5f3ffef6f5221a37b359476239bfc31f5bbeb506023779b1ef0443dc2861d7",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\integration\\fixture_support.rs",
+      "current_sha256": "87e50c10da4ffbb91ef20c8dca97620e3a336c06162f446a94c78ebd43c9b8d8",
+      "captured_source_sha256": "87e50c10da4ffbb91ef20c8dca97620e3a336c06162f446a94c78ebd43c9b8d8",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\integration\\fixture_support.rs",
+      "captured_sha256": "87e50c10da4ffbb91ef20c8dca97620e3a336c06162f446a94c78ebd43c9b8d8",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\integration\\native_graph_fixture.rs",
+      "current_sha256": "fed30317e257168b40e47685bf962ca966a48f0766e6de8c9e818bf4c335936d",
+      "captured_source_sha256": "fed30317e257168b40e47685bf962ca966a48f0766e6de8c9e818bf4c335936d",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\integration\\native_graph_fixture.rs",
+      "captured_sha256": "fed30317e257168b40e47685bf962ca966a48f0766e6de8c9e818bf4c335936d",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\integration\\native_graph_window.rs",
+      "current_sha256": "080d06d1054dfbb213228cfb50185da82ea1ea03e0fbce3d4e35bc4581396b2b",
+      "captured_source_sha256": "080d06d1054dfbb213228cfb50185da82ea1ea03e0fbce3d4e35bc4581396b2b",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\integration\\native_graph_window.rs",
+      "captured_sha256": "080d06d1054dfbb213228cfb50185da82ea1ea03e0fbce3d4e35bc4581396b2b",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\authoring.rs",
+      "current_sha256": "9d8ca5796ca812f6433d0b35ea2f492f0184773bbfa7bef5421a2b7bd061f390",
+      "captured_source_sha256": "9d8ca5796ca812f6433d0b35ea2f492f0184773bbfa7bef5421a2b7bd061f390",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\authoring.rs",
+      "captured_sha256": "9d8ca5796ca812f6433d0b35ea2f492f0184773bbfa7bef5421a2b7bd061f390",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\authoring_tests.rs",
+      "current_sha256": "da032c20bc5a32e105a5d8dc7e03f8173d4aafe3cd5f9a17b917efde6234b950",
+      "captured_source_sha256": "da032c20bc5a32e105a5d8dc7e03f8173d4aafe3cd5f9a17b917efde6234b950",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\authoring_tests.rs",
+      "captured_sha256": "da032c20bc5a32e105a5d8dc7e03f8173d4aafe3cd5f9a17b917efde6234b950",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\foundation.rs",
+      "current_sha256": "1c64e89f2f685f6d682240b236a567ee9d131dea53f0165f6e16a249aa8e1ed4",
+      "captured_source_sha256": "1c64e89f2f685f6d682240b236a567ee9d131dea53f0165f6e16a249aa8e1ed4",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\foundation.rs",
+      "captured_sha256": "1c64e89f2f685f6d682240b236a567ee9d131dea53f0165f6e16a249aa8e1ed4",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\governance.rs",
+      "current_sha256": "8ed73ca1f8ae7c0e47a650d1f983424d499ef03503ad960e1b3c2753cb79d8f1",
+      "captured_source_sha256": "8ed73ca1f8ae7c0e47a650d1f983424d499ef03503ad960e1b3c2753cb79d8f1",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\governance.rs",
+      "captured_sha256": "8ed73ca1f8ae7c0e47a650d1f983424d499ef03503ad960e1b3c2753cb79d8f1",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\graph.rs",
+      "current_sha256": "d3bd414ecf58f80199f1a58b576102f9fb0f04fa1541ea2bf06a43993451aaa7",
+      "captured_source_sha256": "d3bd414ecf58f80199f1a58b576102f9fb0f04fa1541ea2bf06a43993451aaa7",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\graph.rs",
+      "captured_sha256": "d3bd414ecf58f80199f1a58b576102f9fb0f04fa1541ea2bf06a43993451aaa7",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\lib.rs",
+      "current_sha256": "041ed400ef7ebdfbafb5b65f025e8cca1a2ccc1000dd5e537e76942f4b7aa97d",
+      "captured_source_sha256": "041ed400ef7ebdfbafb5b65f025e8cca1a2ccc1000dd5e537e76942f4b7aa97d",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\lib.rs",
+      "captured_sha256": "041ed400ef7ebdfbafb5b65f025e8cca1a2ccc1000dd5e537e76942f4b7aa97d",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\mailbox.rs",
+      "current_sha256": "a27d87bf69ed56102ffb41a59003020d6e84813be07df2b04ddb1cb8a55e0878",
+      "captured_source_sha256": "a27d87bf69ed56102ffb41a59003020d6e84813be07df2b04ddb1cb8a55e0878",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\mailbox.rs",
+      "captured_sha256": "a27d87bf69ed56102ffb41a59003020d6e84813be07df2b04ddb1cb8a55e0878",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\mailbox_tests.rs",
+      "current_sha256": "f1eb2ae85de73107f27f4a6796a532a6f02417dc843a564b2d84b96ed32b8871",
+      "captured_source_sha256": "f1eb2ae85de73107f27f4a6796a532a6f02417dc843a564b2d84b96ed32b8871",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\mailbox_tests.rs",
+      "captured_sha256": "f1eb2ae85de73107f27f4a6796a532a6f02417dc843a564b2d84b96ed32b8871",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\native_graph_ui.rs",
+      "current_sha256": "eae34a9d3d7cd525b2b11a180f8872535ee336abbb2c5155fc2c08269e4e6c15",
+      "captured_source_sha256": "eae34a9d3d7cd525b2b11a180f8872535ee336abbb2c5155fc2c08269e4e6c15",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\native_graph_ui.rs",
+      "captured_sha256": "eae34a9d3d7cd525b2b11a180f8872535ee336abbb2c5155fc2c08269e4e6c15",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\native_ui.rs",
+      "current_sha256": "304405de5d5c39081fd7da8d363354d2c8f5ef1bac5c0074e657d13b089bc808",
+      "captured_source_sha256": "304405de5d5c39081fd7da8d363354d2c8f5ef1bac5c0074e657d13b089bc808",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\native_ui.rs",
+      "captured_sha256": "304405de5d5c39081fd7da8d363354d2c8f5ef1bac5c0074e657d13b089bc808",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\runtime.rs",
+      "current_sha256": "caf929e37b6ea028c4e0995f9ed05df224491e1eb4976286c9647b71d86fb2b3",
+      "captured_source_sha256": "caf929e37b6ea028c4e0995f9ed05df224491e1eb4976286c9647b71d86fb2b3",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\runtime.rs",
+      "captured_sha256": "caf929e37b6ea028c4e0995f9ed05df224491e1eb4976286c9647b71d86fb2b3",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\Aether\\packages\\qualia-host\\src\\tests.rs",
+      "current_sha256": "2bb2928361b46021e67be9d9305b444f3499a6129ab243d9d98eb829efb2a7bf",
+      "captured_source_sha256": "2bb2928361b46021e67be9d9305b444f3499a6129ab243d9d98eb829efb2a7bf",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\Aether\\packages\\qualia-host\\src\\tests.rs",
+      "captured_sha256": "2bb2928361b46021e67be9d9305b444f3499a6129ab243d9d98eb829efb2a7bf",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph\\grant.rs",
+      "current_sha256": "a0f376f0178d908dd761c83386f025f733a5d021fb02bc9c63412f04c6558d60",
+      "captured_source_sha256": "a0f376f0178d908dd761c83386f025f733a5d021fb02bc9c63412f04c6558d60",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph\\grant.rs",
+      "captured_sha256": "a0f376f0178d908dd761c83386f025f733a5d021fb02bc9c63412f04c6558d60",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph\\host.rs",
+      "current_sha256": "8967ecc9b59a504dc2f601b3f7d95d87d62a4ae8c01059d0512b68aabbea8404",
+      "captured_source_sha256": "8967ecc9b59a504dc2f601b3f7d95d87d62a4ae8c01059d0512b68aabbea8404",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph\\host.rs",
+      "captured_sha256": "8967ecc9b59a504dc2f601b3f7d95d87d62a4ae8c01059d0512b68aabbea8404",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph\\mod.rs",
+      "current_sha256": "714b477cfe2a6500eeba1af471cc2f1c1a61811b3720689dfd52b4bea7b4f7d6",
+      "captured_source_sha256": "714b477cfe2a6500eeba1af471cc2f1c1a61811b3720689dfd52b4bea7b4f7d6",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph\\mod.rs",
+      "captured_sha256": "714b477cfe2a6500eeba1af471cc2f1c1a61811b3720689dfd52b4bea7b4f7d6",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph\\store.rs",
+      "current_sha256": "6889f56bc7726d050d7dc6186552c2e5538753e9a3c2ea1c2bad230ab06348d7",
+      "captured_source_sha256": "6889f56bc7726d050d7dc6186552c2e5538753e9a3c2ea1c2bad230ab06348d7",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph\\store.rs",
+      "captured_sha256": "6889f56bc7726d050d7dc6186552c2e5538753e9a3c2ea1c2bad230ab06348d7",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph_tests.rs",
+      "current_sha256": "da0020d46fa58049d087e58afbb59cf2c92bafd80d803c6275a052fbc9b676e8",
+      "captured_source_sha256": "da0020d46fa58049d087e58afbb59cf2c92bafd80d803c6275a052fbc9b676e8",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\graph_tests.rs",
+      "captured_sha256": "da0020d46fa58049d087e58afbb59cf2c92bafd80d803c6275a052fbc9b676e8",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\journal.rs",
+      "current_sha256": "3033e2fad31813ed937bff835fb0b9f26cd136aef59ee41aa89d1d1300fbff01",
+      "captured_source_sha256": "3033e2fad31813ed937bff835fb0b9f26cd136aef59ee41aa89d1d1300fbff01",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\journal.rs",
+      "captured_sha256": "3033e2fad31813ed937bff835fb0b9f26cd136aef59ee41aa89d1d1300fbff01",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\mod.rs",
+      "current_sha256": "c922021387c87891763cbb4294d96961471b461d9931d1e8c18806235138301d",
+      "captured_source_sha256": "c922021387c87891763cbb4294d96961471b461d9931d1e8c18806235138301d",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\mod.rs",
+      "captured_sha256": "c922021387c87891763cbb4294d96961471b461d9931d1e8c18806235138301d",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\tests.rs",
+      "current_sha256": "6e902c21b1cce872f87f302ccd2c0524bae633f187774675fc942c27c4a45c50",
+      "captured_source_sha256": "6e902c21b1cce872f87f302ccd2c0524bae633f187774675fc942c27c4a45c50",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\native_authority\\tests.rs",
+      "captured_sha256": "6e902c21b1cce872f87f302ccd2c0524bae633f187774675fc942c27c4a45c50",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\scan.rs",
+      "current_sha256": "b68e92c449cc131df3899d486e2b2cbb31c63a27a4c6b1b5772684204d7c5203",
+      "captured_source_sha256": "b68e92c449cc131df3899d486e2b2cbb31c63a27a4c6b1b5772684204d7c5203",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\qualia-core-db\\src\\poet_host\\scan.rs",
+      "captured_sha256": "b68e92c449cc131df3899d486e2b2cbb31c63a27a4c6b1b5772684204d7c5203",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\vibe\\src\\extension_registry\\eval_router.rs",
+      "current_sha256": "2dcf85619a561cb98925603871818ad9740cb170938f584e3d5b4c2361ea29db",
+      "captured_source_sha256": "2dcf85619a561cb98925603871818ad9740cb170938f584e3d5b4c2361ea29db",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\vibe\\src\\extension_registry\\eval_router.rs",
+      "captured_sha256": "2dcf85619a561cb98925603871818ad9740cb170938f584e3d5b4c2361ea29db",
+      "transform": null
+    },
+    {
+      "source": "C:\\github\\qualiaDB\\crates\\vibe\\src\\extension_registry\\native_budget.rs",
+      "current_sha256": "f9bbf19808217277234efefffa3ae0349a703d66269aae597ce6c440cce2016c",
+      "captured_source_sha256": "f9bbf19808217277234efefffa3ae0349a703d66269aae597ce6c440cce2016c",
+      "matches_captured_source": true,
+      "captured_path": "C:\\github\\Aether\\target\\qualification-sources\\native-host-20261112-v4\\qualiaDB\\crates\\vibe\\src\\extension_registry\\native_budget.rs",
+      "captured_sha256": "f9bbf19808217277234efefffa3ae0349a703d66269aae597ce6c440cce2016c",
+      "transform": null
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+warning: patch `vector-compute-renderer v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-renderer)` was not used in the crate graph
+warning: patch `vector-compute-shaders v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-shaders)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+warning: profile package spec `tikv-jemalloc-sys` in profile `dev` did not match any packages
+warning: servo-script-bindings@0.7.0: `uv ["run", "--frozen", "python"]` failed with WARN Retrying to persist temporary file to `C:\Users\Hp\AppData\Local\Packages\sandbox.{959bd2ae-3c40-4628-80bc-61f1f5880bf4}\AC\uv\cache\interpreter-v4\681671c6460fa7c0\296f2f82bf422644.msgpack`: failed to persist temporary file: Access is denied. (os error 5)
+warning: servo-script-bindings@0.7.0: `uv` not found - Falling back to the default python! If the build fails, please install uv and make sure it is in your PATH or make sure to provision a python environment >= python 3.11.
+   Compiling mozjs_sys v153.3.0-3
+   Compiling fontsan v0.7.0
+   Compiling harfbuzz-sys v0.8.0
+   Compiling glutin_wgl_sys v0.6.1
+   Compiling etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling khronos-egl v6.0.0
+   Compiling servo-media-thread v0.7.0 (C:\github\chora\components\media\media-thread)
+   Compiling mozjs_unicode_bidi_ffi v153.3.0
+   Compiling mozjs_normalizer_glue v153.3.0
+   Compiling mozjs_properties_glue v153.3.0
+   Compiling mozjs_locale_glue v153.3.0
+   Compiling encoding_c_mem v0.2.6
+   Compiling encoding_c v0.9.8
+   Compiling rfc6979 v0.6.0
+   Compiling hashlink v0.11.1
+   Compiling skrifa v0.46.2
+   Compiling sha1 v0.11.0
+   Compiling sha2 v0.11.1
+   Compiling etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling ordered-float v5.5.0
+   Compiling curve25519-dalek-derive v0.1.1
+   Compiling range-alloc v0.1.5
+   Compiling profiling v1.0.18
+   Compiling glow v0.18.0
+   Compiling etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling servo-fonts v0.7.0 (C:\github\chora\components\fonts)
+   Compiling curve25519-dalek v5.0.0
+   Compiling ecdsa v0.17.0
+   Compiling primeorder v0.14.0
+   Compiling prettyplease v0.2.37
+   Compiling thiserror v2.0.21
+   Compiling aead v0.6.1
+   Compiling module-lattice v0.2.3
+   Compiling sea-query-derive v1.0.0
+   Compiling servo-dom-struct v0.7.0 (C:\github\chora\components\dom_struct)
+   Compiling mozjs v0.26.7
+   Compiling etalon-core-deps-windows v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling servo-script-traits v0.7.0 (C:\github\chora\components\shared\script)
+   Compiling polyval v0.7.3
+   Compiling hash2curve v0.14.0
+   Compiling sha3 v0.12.0
+   Compiling ed448 v0.5.0
+   Compiling aes v0.9.3
+   Compiling phc v0.6.1
+   Compiling servo-background-hang-monitor-api v0.7.0 (C:\github\chora\components\shared\background_hang_monitor)
+   Compiling xml5ever v0.40.0
+   Compiling kem v0.3.0
+   Compiling servo-deny-public-fields v0.7.0 (C:\github\chora\components\deny_public_fields)
+   Compiling servo-jstraceable-derive v0.7.0 (C:\github\chora\components\jstraceable_derive)
+   Compiling rustc-demangle v0.1.28
+   Compiling rusqlite v0.38.0
+   Compiling backtrace v0.3.76
+   Compiling servo-script-bindings v0.7.0 (C:\github\chora\components\script_bindings)
+   Compiling ml-kem v0.3.3
+   Compiling password-hash v0.6.1
+   Compiling ed448-goldilocks v0.14.0-pre.15
+   Compiling ghash v0.6.0
+   Compiling etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling sea-query v1.0.2
+   Compiling openxr-sys v0.13.1
+   Compiling x25519-dalek v3.0.0
+   Compiling poly1305 v0.9.1
+   Compiling mozangle v0.7.1
+   Compiling ed25519 v3.0.0
+   Compiling crypto-primes v0.7.2
+   Compiling pkcs1 v0.8.0-rc.5
+   Compiling tokio-rustls v0.26.6
+   Compiling webpki-roots v1.0.10
+   Compiling ctr v0.10.1
+   Compiling blake2 v0.11.0
+   Compiling dbl v0.5.0
+   Compiling chrono v0.4.45
+   Compiling libloading v0.9.0
+   Compiling trait-set v0.5.0
+   Compiling tungstenite v0.30.0
+   Compiling servo-script-webgpu v0.7.0 (C:\github\chora\components\script_webgpu)
+   Compiling servo-script-webcrypto v0.7.0 (C:\github\chora\components\script_webcrypto)
+   Compiling openxr v0.21.1
+   Compiling ocb3 v0.2.0
+   Compiling argon2 v0.6.0
+   Compiling aes-gcm v0.11.1
+   Compiling rsa v0.10.0-rc.19
+   Compiling ed25519-dalek v3.0.0
+   Compiling chacha20poly1305 v0.11.0
+   Compiling x-wing v0.1.1
+   Compiling sea-query-rusqlite v0.8.0
+   Compiling etalon-core-remote v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling x448 v0.14.0-pre.12
+   Compiling windows_x86_64_msvc v0.52.6
+   Compiling servo-layout-api v0.7.0 (C:\github\chora\components\shared\layout)
+   Compiling aes-kw v0.3.1
+   Compiling ml-dsa v0.1.1
+   Compiling nom-language v0.1.0
+   Compiling p521 v0.14.0
+   Compiling p256 v0.14.0
+   Compiling p384 v0.14.0
+   Compiling cshake v0.2.1
+   Compiling k12 v0.5.1
+   Compiling cbc v0.2.1
+   Compiling servo-timers v0.7.0 (C:\github\chora\components\timers)
+   Compiling servo-script v0.7.0 (C:\github\chora\components\script)
+   Compiling nom-rfc8288 v0.4.0
+   Compiling windows-targets v0.52.6
+   Compiling servo-webgpu v0.7.0 (C:\github\chora\components\webgpu)
+   Compiling servo-webxr v0.7.0 (C:\github\chora\components\webxr)
+   Compiling async-tungstenite v0.35.0
+   Compiling async-compression v0.4.51
+   Compiling hyper-rustls v0.27.10
+   Compiling servo-metrics v0.7.0 (C:\github\chora\components\metrics)
+   Compiling servo-webvtt v0.7.0 (C:\github\chora\components\webvtt)
+   Compiling brotli v8.0.4
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling anstyle-wincon v3.0.11
+   Compiling anstyle-parse v0.2.7
+   Compiling servo-xpath v0.7.0 (C:\github\chora\components\xpath)
+   Compiling tokio-stream v0.1.19
+   Compiling chardetng v1.0.0
+   Compiling anstyle-query v1.1.5
+   Compiling quick_cache v0.7.0
+   Compiling async-recursion v1.2.0
+   Compiling buf-read-ext v0.4.0
+   Compiling error-code v3.4.0
+   Compiling swapper v0.1.0
+   Compiling jiff-core v0.1.1
+   Compiling jiff v0.2.38
+   Compiling clipboard-win v5.4.1
+   Compiling servo-net v0.7.0 (C:\github\chora\components\net)
+   Compiling anstream v0.6.21
+   Compiling servo-webgl v0.7.0 (C:\github\chora\components\webgl)
+   Compiling windows-sys v0.52.0
+   Compiling servo-background-hang-monitor v0.7.0 (C:\github\chora\components\background_hang_monitor)
+   Compiling servo-canvas v0.7.0 (C:\github\chora\components\canvas)
+   Compiling env_filter v0.1.4
+   Compiling unicode_categories v0.1.1
+   Compiling servo-layout v0.7.0 (C:\github\chora\components\layout)
+   Compiling env_logger v0.11.8
+   Compiling servo-constellation v0.7.0 (C:\github\chora\components\constellation)
+   Compiling arboard v3.6.1
+   Compiling servo-paint v0.7.0 (C:\github\chora\components\paint)
+   Compiling servo-storage v0.7.0 (C:\github\chora\components\storage)
+   Compiling servo-media-dummy v0.7.0 (C:\github\chora\components\media\backends\dummy)
+   Compiling servo-wakelock v0.7.0 (C:\github\chora\components\wakelock)
+   Compiling servo-default-resources v0.7.0 (C:\github\chora\components\default-resources)
+   Compiling servo-profile v0.7.0 (C:\github\chora\components\profile)
+   Compiling servo v0.7.0 (C:\github\chora\components\servo)
+   Compiling aether-chora-bridge-protocol v0.1.0 (C:\github\Aether\packages\chora-bridge-protocol)
+   Compiling aether-chora-worker v0.1.0 (C:\github\Aether\packages\chora-worker)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 96m 42s

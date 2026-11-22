@@ -1,0 +1,11 @@
+    Checking stylo v0.22.0
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_asset_resolver-1x3x3rdwd8oiu\s-ho36fjk9gn-0dnjy0f-working`
+
+warning: `aether-asset-resolver` (lib) generated 1 warning
+    Checking stylo_taffy v0.3.0-beta.4
+    Checking blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+    Checking blitz-paint v0.3.0-beta.4
+    Checking aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+    Checking blitz-shell v0.3.0-beta.4
+    Checking aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 37s

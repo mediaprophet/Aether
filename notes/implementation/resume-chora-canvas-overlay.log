@@ -1,0 +1,73 @@
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+    Checking servo-config v0.7.0 (C:\github\chora\components\config)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_config-14ji2yn0faqyl\s-ho3ccq2i04-0sk6ghn-working`
+
+warning: `servo-config` (lib) generated 1 warning
+    Checking servo-base v0.7.0 (C:\github\chora\components\shared\base)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_base-0z2xji9gorj8r\s-ho3ccus96e-1xu2zfw-working`
+
+warning: `servo-base` (lib) generated 1 warning
+    Checking servo-pixels v0.7.0 (C:\github\chora\components\pixels)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\pixels-2d8cxxgo1xvle\s-ho3ccznrig-1mqrpg8-working`
+
+warning: `servo-pixels` (lib) generated 1 warning
+    Checking servo-profile-traits v0.7.0 (C:\github\chora\components\shared\profile)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\profile_traits-1lm9o9jxq1vlj\s-ho3cd282z7-1pa1a35-working`
+
+warning: `servo-profile-traits` (lib) generated 1 warning
+    Checking servo-embedder-traits v0.7.0 (C:\github\chora\components\shared\embedder)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\embedder_traits-22l1a0o6ounz2\s-ho3cd4z9c5-02ek57n-working`
+
+warning: `servo-embedder-traits` (lib) generated 1 warning
+   Compiling vector-compute-shaders v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-shaders)
+    Checking etalon-core-deps-windows v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling etalon v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking subtle v2.6.1
+    Checking servo-paint-api v0.7.0 (C:\github\chora\components\shared\paint)
+    Checking rustls v0.23.46
+    Checking wuff-capi v0.2.0
+    Checking etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking serde_with v3.24.0
+    Checking rand v0.10.3
+   Compiling fontsan v0.7.0
+    Checking servo-fonts-traits v0.7.0 (C:\github\chora\components\shared\fonts)
+    Checking libz-sys v1.1.29
+    Checking vello_encoding v0.11.0
+    Checking servo-net-traits v0.7.0 (C:\github\chora\components\shared\net)
+    Checking skrifa v0.46.2
+    Checking servo-webxr-api v0.7.0 (C:\github\chora\components\shared\webxr)
+    Checking futures-intrusive v0.5.0
+    Checking servo-fonts v0.7.0 (C:\github\chora\components\fonts)
+    Checking vector-compute-renderer v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-renderer)
+    Checking servo-canvas-traits v0.7.0 (C:\github\chora\components\shared\canvas)
+    Checking pollster v1.0.1
+    Checking servo-canvas v0.7.0 (C:\github\chora\components\canvas)
+error[E0308]: mismatched types
+   --> components\canvas\vello_backend.rs:756:20
+    |
+756 |             f(Some(&data))
+    |               ---- ^^^^^ expected `&[u8]`, found `&Result<BufferView, MapRangeError>`
+    |               |
+    |               arguments to this enum variant are incorrect
+    |
+    = note: expected reference `&[u8]`
+               found reference `&std::result::Result<BufferView, MapRangeError>`
+help: the type constructed contains `&std::result::Result<BufferView, MapRangeError>` due to the type of the argument passed
+   --> components\canvas\vello_backend.rs:756:15
+    |
+756 |             f(Some(&data))
+    |               ^^^^^-----^
+    |                    |
+    |                    this argument influences the type of `Some`
+note: tuple variant defined here
+   --> C:\Users\Hp\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\option.rs:606:5
+    |
+606 |     Some(#[stable(feature = "rust1", since = "1.0.0")] T),
+    |     ^^^^
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `servo-canvas` (lib) due to 1 previous error

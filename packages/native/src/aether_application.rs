@@ -1,8 +1,8 @@
 use aether_core::{ScopeId, provide_context};
 use aether_history::{History, MemoryHistory};
 use blitz_shell::{BlitzApplication, BlitzShellProxy, View};
-use std::rc::Rc;
 use std::sync::Arc;
+use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use winit::application::ApplicationHandler;
 use winit::event::{StartCause, WindowEvent};
 use winit::event_loop::ActiveEventLoop;
@@ -13,10 +13,23 @@ use winit::platform::macos::ApplicationHandlerExtMacOS;
 
 use crate::AetherNativeWindowRenderer;
 use crate::event_handlers::WindowEventHandlers;
-use crate::{AetherDocument, BlitzShellEvent, WindowConfig, contexts::AetherNativeDocument};
+use crate::{
+    AetherDocument, BlitzShellEvent, NativeAppHandle, WindowClosePolicy, WindowConfig,
+    contexts::{AetherNativeDocument, NativeWindowQueue},
+};
 
-/// Aether-native specific event type
+/// Events carried by the Blitz shell proxy.
 pub enum AetherNativeEvent {
+    /// Wake the UI thread for a configuration queued by the native app handle.
+    /// The configuration stays on the UI thread because it owns the VirtualDOM.
+    #[doc(hidden)]
+    OpenAuxiliaryWindow,
+    CloseWindow(WindowId),
+    SetWindowVisible {
+        window: WindowId,
+        visible: bool,
+    },
+
     /// A hotreload event, basically telling us to update our templates.
     #[cfg(all(feature = "hot-reload", debug_assertions))]
     DevserverEvent(aether_devtools::DevserverMsg),
@@ -36,6 +49,8 @@ pub struct AetherNativeApplication {
     surfaces_available: bool,
     inner: BlitzApplication<AetherNativeWindowRenderer>,
     event_handlers: Rc<WindowEventHandlers>,
+    auxiliary_windows: NativeWindowQueue,
+    close_policies: HashMap<WindowId, WindowClosePolicy>,
 }
 
 impl AetherNativeApplication {
@@ -50,6 +65,8 @@ impl AetherNativeApplication {
             surfaces_available: false,
             inner,
             event_handlers: Rc::new(WindowEventHandlers::default()),
+            auxiliary_windows: Rc::new(RefCell::new(Default::default())),
+            close_policies: HashMap::new(),
         }
     }
 
@@ -72,7 +89,16 @@ impl AetherNativeApplication {
             let window_id = window.window_id();
             let doc = window.downcast_doc_mut::<AetherDocument>();
 
+            let policy = doc.vdom.in_scope(ScopeId::ROOT, || {
+                aether_core::try_consume_context::<WindowClosePolicy>().unwrap_or_default()
+            });
+            self.close_policies.insert(window_id, policy);
+            let handle = NativeAppHandle {
+                proxy: self.inner.proxy.clone(),
+                queue: Rc::downgrade(&self.auxiliary_windows),
+            };
             doc.vdom.in_scope(ScopeId::ROOT, || {
+                provide_context(handle);
                 let shared: Rc<dyn aether_document::Document> = Rc::new(AetherNativeDocument::new(
                     self.inner.proxy.clone(),
                     window_id,
@@ -110,11 +136,47 @@ impl AetherNativeApplication {
         }
     }
 
-    fn handle_aether_native_event(
-        &mut self,
-        event_loop: &dyn ActiveEventLoop,
-        event: &AetherNativeEvent,
-    ) {
+    fn set_visible(&mut self, id: WindowId, visible: bool) {
+        if let Some(window) = self.inner.windows.get_mut(&id) {
+            if !visible {
+                window
+                    .downcast_doc_mut::<AetherDocument>()
+                    .inner
+                    .borrow_mut()
+                    .set_window_focused(false);
+            }
+            window.is_visible = visible;
+            window.window.set_visible(visible);
+            if visible {
+                window.request_redraw();
+            }
+        }
+    }
+
+    fn close_window(&mut self, id: WindowId) -> bool {
+        if self.close_policies.get(&id) == Some(&WindowClosePolicy::HideOnClose) {
+            self.set_visible(id, false);
+            return false;
+        }
+        self.close_policies.remove(&id);
+        if let Some(mut window) = self.inner.windows.remove(&id) {
+            window.suspend();
+            return true;
+        }
+        false
+    }
+
+    fn exit_if_last_window_closed(&self, event_loop: &dyn ActiveEventLoop, closed: bool) {
+        if closed
+            && self.inner.windows.is_empty()
+            && self.inner.pending_windows.is_empty()
+            && self.auxiliary_windows.borrow().is_empty()
+        {
+            event_loop.exit();
+        }
+    }
+
+    fn handle_proxy_event(&mut self, event_loop: &dyn ActiveEventLoop, event: &AetherNativeEvent) {
         match event {
             #[cfg(all(feature = "hot-reload", debug_assertions))]
             AetherNativeEvent::DevserverEvent(event) => match event {
@@ -155,12 +217,19 @@ impl AetherNativeApplication {
                 }
             }
 
-            // Suppress unused variable warning
-            #[cfg(not(all(feature = "hot-reload", debug_assertions)))]
-            #[allow(unreachable_patterns)]
-            _ => {
-                let _ = event_loop;
-                let _ = event;
+            AetherNativeEvent::OpenAuxiliaryWindow => {
+                let config = self.auxiliary_windows.borrow_mut().pop_front();
+                if let Some(config) = config {
+                    self.inner.add_window(config);
+                    self.prepare_pending_windows(event_loop);
+                }
+            }
+            AetherNativeEvent::CloseWindow(id) => {
+                let closed = self.close_window(*id);
+                self.exit_if_last_window_closed(event_loop, closed);
+            }
+            AetherNativeEvent::SetWindowVisible { window, visible } => {
+                self.set_visible(*window, *visible);
             }
         }
     }
@@ -213,12 +282,26 @@ impl ApplicationHandler for AetherNativeApplication {
         self.event_handlers
             .apply_event(window_id, &event, event_loop);
         self.prepare_pending_windows(event_loop);
-        if matches!(event, WindowEvent::CloseRequested) && !self.inner.pending_windows.is_empty() {
-            // Surfaces are currently unavailable: retain the queued replacement
-            // instead of allowing the generic shell to exit after the last close.
-            drop(self.inner.windows.remove(&window_id));
+        if matches!(event, WindowEvent::CloseRequested) {
+            let closed = self.close_window(window_id);
+            self.exit_if_last_window_closed(event_loop, closed);
         } else {
+            if let WindowEvent::Focused(focused) = &event {
+                if let Some(window) = self.inner.windows.get_mut(&window_id) {
+                    window
+                        .downcast_doc_mut::<AetherDocument>()
+                        .inner
+                        .borrow_mut()
+                        .set_window_focused(*focused);
+                }
+            }
+            let poll_after_redraw = matches!(event, WindowEvent::RedrawRequested);
             self.inner.window_event(event_loop, window_id, event);
+            if poll_after_redraw {
+                if let Some(window) = self.inner.windows.get_mut(&window_id) {
+                    window.poll();
+                }
+            }
         }
     }
 
@@ -228,13 +311,12 @@ impl ApplicationHandler for AetherNativeApplication {
             match event {
                 BlitzShellEvent::Embedder(event) => {
                     if let Some(event) = event.downcast_ref::<AetherNativeEvent>() {
-                        self.handle_aether_native_event(event_loop, event);
+                        self.handle_proxy_event(event_loop, event);
                     }
                 }
-                BlitzShellEvent::CloseWindow { window_id }
-                    if !self.inner.pending_windows.is_empty() =>
-                {
-                    drop(self.inner.windows.remove(&window_id));
+                BlitzShellEvent::CloseWindow { window_id } => {
+                    let closed = self.close_window(window_id);
+                    self.exit_if_last_window_closed(event_loop, closed);
                 }
                 event => self.inner.handle_blitz_shell_event(event_loop, event),
             }

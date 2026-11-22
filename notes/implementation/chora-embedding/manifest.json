@@ -1,0 +1,132 @@
+{
+  "baseline_repository": "C:\\github\\chora",
+  "baseline_git_head": "f42e01c686ba24aa6f25d24ad308a6c004077220",
+  "source_snapshot": "C:\\Users\\Hp\\AppData\\Local\\Temp\\chora-etalon-overhaul",
+  "patch": "chora-c2-embedding.patch",
+  "patch_sha256": "680a0bd965a01e027147f5b1aad05113a5871226740aa63da838578f0401e924",
+  "apply_order": "C1 Etalon, C2 embedding, C3 TLS, CAPI ownership; C1/C3 shared hunks excluded",
+  "original_baseline_unchanged": true,
+  "files": [
+    {
+      "path": "components/constellation/constellation.rs",
+      "baseline_sha256": "2ad0bd0ae3d533e23337c7f2f30bde4177c68fdcedfe4fa3746c25b11a19aedb",
+      "baseline_lf_sha256": "2ad0bd0ae3d533e23337c7f2f30bde4177c68fdcedfe4fa3746c25b11a19aedb",
+      "c2_candidate_lf_sha256": "9e6d655b4bb83c074acf0c6007d3a172a28cda839013a52a561d6c4d9e49e29a",
+      "combined_snapshot_sha256": "9e6d655b4bb83c074acf0c6007d3a172a28cda839013a52a561d6c4d9e49e29a",
+      "combined_snapshot_lf_sha256": "9e6d655b4bb83c074acf0c6007d3a172a28cda839013a52a561d6c4d9e49e29a"
+    },
+    {
+      "path": "components/script/dom/choramessaging.rs",
+      "baseline_sha256": null,
+      "baseline_lf_sha256": null,
+      "c2_candidate_lf_sha256": "47858d4bec5983c8ecf281b87deddc2f0bfd092aadd4761ed9e06372cfe8d55a",
+      "combined_snapshot_sha256": "47858d4bec5983c8ecf281b87deddc2f0bfd092aadd4761ed9e06372cfe8d55a",
+      "combined_snapshot_lf_sha256": "47858d4bec5983c8ecf281b87deddc2f0bfd092aadd4761ed9e06372cfe8d55a"
+    },
+    {
+      "path": "components/script/dom/mod.rs",
+      "baseline_sha256": "2c41a71c7aa10d23004ce783d433b5a3f28920f7764176bc241740034a788c4e",
+      "baseline_lf_sha256": "2c41a71c7aa10d23004ce783d433b5a3f28920f7764176bc241740034a788c4e",
+      "c2_candidate_lf_sha256": "d8e34a5432f9e9abff1606653e3390313791c3dae9be8483853dfb981251c916",
+      "combined_snapshot_sha256": "80de4249415685299a4f50ff987ecf6e1a847a50e49931a13dda511b6e8a18c7",
+      "combined_snapshot_lf_sha256": "d8e34a5432f9e9abff1606653e3390313791c3dae9be8483853dfb981251c916"
+    },
+    {
+      "path": "components/script/dom/navigator/navigator.rs",
+      "baseline_sha256": "3006f7de6dc22212b79cc76672efaccb5e63169fba7b7b792dd8de4240bd69d4",
+      "baseline_lf_sha256": "3006f7de6dc22212b79cc76672efaccb5e63169fba7b7b792dd8de4240bd69d4",
+      "c2_candidate_lf_sha256": "a5ae55c851618ca1f505b5a90d8e3e6b3a8f7d5b102431750f089611fc3832a1",
+      "combined_snapshot_sha256": "a5ae55c851618ca1f505b5a90d8e3e6b3a8f7d5b102431750f089611fc3832a1",
+      "combined_snapshot_lf_sha256": "a5ae55c851618ca1f505b5a90d8e3e6b3a8f7d5b102431750f089611fc3832a1"
+    },
+    {
+      "path": "components/script_bindings/codegen/Bindings.conf",
+      "baseline_sha256": "c711bbecd2ce51c52e69ff03c9b2ea652db1ccb184b849b7b3a424dfa9495e12",
+      "baseline_lf_sha256": "c711bbecd2ce51c52e69ff03c9b2ea652db1ccb184b849b7b3a424dfa9495e12",
+      "c2_candidate_lf_sha256": "c098fc2fda84aa2780d9804238e2de1f8b551c23b59f0dbbd7ededc518ed3a22",
+      "combined_snapshot_sha256": "23592987b392cc9cff9eee9b516af2194e0d4e4bb9682c257a7829bb6798462a",
+      "combined_snapshot_lf_sha256": "c098fc2fda84aa2780d9804238e2de1f8b551c23b59f0dbbd7ededc518ed3a22"
+    },
+    {
+      "path": "components/script_bindings/webidls/ChoraMessaging.webidl",
+      "baseline_sha256": null,
+      "baseline_lf_sha256": null,
+      "c2_candidate_lf_sha256": "5e99ae377360b920acacb685bb91d48601b6d8b4ea62c384ed44df942c74075e",
+      "combined_snapshot_sha256": "327b792960a297e7122a2d7828adc36d166606973bb1a3f8ae5358e75568a8e6",
+      "combined_snapshot_lf_sha256": "5e99ae377360b920acacb685bb91d48601b6d8b4ea62c384ed44df942c74075e"
+    },
+    {
+      "path": "components/servo/lib.rs",
+      "baseline_sha256": "90628c787f2b0c739bfbeef13b355098dde33b98cdb5f2f5f794d0506843e7f4",
+      "baseline_lf_sha256": "90628c787f2b0c739bfbeef13b355098dde33b98cdb5f2f5f794d0506843e7f4",
+      "c2_candidate_lf_sha256": "0d1ad3b0c8700b8a2b7067101c39cab7be8344604f2562344bf0edb515c8bbbb",
+      "combined_snapshot_sha256": "18dc6578f85c68b2e469d83714881b84f438717c15cebb6ea614b391e2f17d45",
+      "combined_snapshot_lf_sha256": "18dc6578f85c68b2e469d83714881b84f438717c15cebb6ea614b391e2f17d45"
+    },
+    {
+      "path": "components/servo/servo.rs",
+      "baseline_sha256": "5c93ca578293a5084ac4670a85d0aa4930be14a15a80652f1884cbf5c68d82f8",
+      "baseline_lf_sha256": "5c93ca578293a5084ac4670a85d0aa4930be14a15a80652f1884cbf5c68d82f8",
+      "c2_candidate_lf_sha256": "3609b7d4e7114081a204987274f9ddf92f6345639600f4d062db097cfc00f613",
+      "combined_snapshot_sha256": "6b59510bbf31c600c9f3711a95c056a4e5e0fde77c48c040d6eb78d5ec65cec8",
+      "combined_snapshot_lf_sha256": "6b59510bbf31c600c9f3711a95c056a4e5e0fde77c48c040d6eb78d5ec65cec8"
+    },
+    {
+      "path": "components/servo/webview_delegate.rs",
+      "baseline_sha256": "60a3354b0e703af8a6892b8b16195be323a76c61dc55ceea66560081065b2308",
+      "baseline_lf_sha256": "60a3354b0e703af8a6892b8b16195be323a76c61dc55ceea66560081065b2308",
+      "c2_candidate_lf_sha256": "c37b4266de657ef7e4daf2e2a6d1e3f8012afb5804a65f1ff44510d9e6e31b82",
+      "combined_snapshot_sha256": "890290e083eecb2f0559bba804a4068ae4b50dcfed381147b6ac7b097c3b042d",
+      "combined_snapshot_lf_sha256": "c37b4266de657ef7e4daf2e2a6d1e3f8012afb5804a65f1ff44510d9e6e31b82"
+    },
+    {
+      "path": "components/shared/constellation/from_script_message.rs",
+      "baseline_sha256": "6c63a58339502dd4eaecb287c5a5d836f3e0c45866a7093a9c0df48bfef1a638",
+      "baseline_lf_sha256": "6c63a58339502dd4eaecb287c5a5d836f3e0c45866a7093a9c0df48bfef1a638",
+      "c2_candidate_lf_sha256": "ab4b94e9e827930eade55de6ab6decde34f89e6ac61e1305b16c0575d5fdc595",
+      "combined_snapshot_sha256": "0aa58aa783fb33b18fb5d640e40670df1e323b20b6733c59c470b06edcb7aa23",
+      "combined_snapshot_lf_sha256": "6070cc11dc51accd8292b1a5f76a451c97eff9b8ecb360df1ca93ed8dc3c9ab8"
+    },
+    {
+      "path": "components/shared/constellation/lib.rs",
+      "baseline_sha256": "ecd1f42e19605111a3d968f96ba77d8b53385bfe49b691b26803c8b655bf8300",
+      "baseline_lf_sha256": "ecd1f42e19605111a3d968f96ba77d8b53385bfe49b691b26803c8b655bf8300",
+      "c2_candidate_lf_sha256": "682a43567ad9a7d913689ebc669314e20b7f114f86718330b1e2036e5278eb08",
+      "combined_snapshot_sha256": "682a43567ad9a7d913689ebc669314e20b7f114f86718330b1e2036e5278eb08",
+      "combined_snapshot_lf_sha256": "682a43567ad9a7d913689ebc669314e20b7f114f86718330b1e2036e5278eb08"
+    },
+    {
+      "path": "components/shared/embedder/chora_messaging.rs",
+      "baseline_sha256": null,
+      "baseline_lf_sha256": null,
+      "c2_candidate_lf_sha256": "e29d642f454d9310885ce072439bfedb350eaecd79e17abd26df8b55bf61be77",
+      "combined_snapshot_sha256": "e29d642f454d9310885ce072439bfedb350eaecd79e17abd26df8b55bf61be77",
+      "combined_snapshot_lf_sha256": "e29d642f454d9310885ce072439bfedb350eaecd79e17abd26df8b55bf61be77"
+    },
+    {
+      "path": "components/shared/embedder/lib.rs",
+      "baseline_sha256": "3e3b78a6ae7c9fb2ec8b47f82153c9f924cb5840099a4f23fa9a0d9f54749d7d",
+      "baseline_lf_sha256": "3e3b78a6ae7c9fb2ec8b47f82153c9f924cb5840099a4f23fa9a0d9f54749d7d",
+      "c2_candidate_lf_sha256": "46355a6c0505b904a1e91a883db603642c6bccc810a490ecce2866eda5dab71c",
+      "combined_snapshot_sha256": "46355a6c0505b904a1e91a883db603642c6bccc810a490ecce2866eda5dab71c",
+      "combined_snapshot_lf_sha256": "46355a6c0505b904a1e91a883db603642c6bccc810a490ecce2866eda5dab71c"
+    },
+    {
+      "path": "components/shared/embedder/message_lifecycle.rs",
+      "baseline_sha256": null,
+      "baseline_lf_sha256": null,
+      "c2_candidate_lf_sha256": "de64b4c7f545bee95d31d820e3e461fcaf05b2bfa24a8e1a3b78b58620aa2eb0",
+      "combined_snapshot_sha256": "de64b4c7f545bee95d31d820e3e461fcaf05b2bfa24a8e1a3b78b58620aa2eb0",
+      "combined_snapshot_lf_sha256": "de64b4c7f545bee95d31d820e3e461fcaf05b2bfa24a8e1a3b78b58620aa2eb0"
+    },
+    {
+      "path": "tests/wpt/mozilla/tests/chora-messaging/default-deny.https.html",
+      "baseline_sha256": null,
+      "baseline_lf_sha256": null,
+      "c2_candidate_lf_sha256": "1d98e5d2cd0f24495f937bbe2e80dbfc73542c8d16fa126afef2fde055a6d803",
+      "combined_snapshot_sha256": "fa33f8139fa71e2602aa175afe3733f1d1212359a30afd1e0ee077cb73a41191",
+      "combined_snapshot_lf_sha256": "1d98e5d2cd0f24495f937bbe2e80dbfc73542c8d16fa126afef2fde055a6d803"
+    }
+  ],
+  "baseline_git_head_method": "Read HEAD/ref files directly; git -C access was denied by the sandbox"
+}

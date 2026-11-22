@@ -1,0 +1,29 @@
+   Compiling chora-tls-configuration-verification v0.0.0 (C:\github\Aether\target\production-audit\chora-tls-tests)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\production-audit\chora-tls-tests\target\debug\incremental\net-277r4rbscyfgh\s-ho2umh2dfh-0pqq6nb-working`
+
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\production-audit\chora-tls-tests\target\debug\incremental\net-0jko0hhisr1yu\s-ho2umh1wbm-0d6du4b-working`
+
+warning: `chora-tls-configuration-verification` (lib) generated 1 warning
+warning: `chora-tls-configuration-verification` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.95s
+     Running unittests lib.rs (C:\github\Aether\target\production-audit\chora-tls-tests\target\debug\deps\net-996f0766c851ab75.exe)
+
+running 9 tests
+test tls_configuration::preserves_explicit_trust_modes ... ok
+test tls_configuration::rejects_invalid_roots_instead_of_silently_discarding_them ... ok
+test tls_configuration::custom_ca_still_enforces_hostname_validity_and_chain ... ok
+test tls_configuration::prepared_tls_configs_keep_profile_certificate_overrides_separate ... ok
+test tls_configuration::configured_host_verifier_is_called_and_denial_fails_handshake ... ok
+test tls_configuration::completes_tls_handshake_with_custom_ca_and_rejects_untrusted_chain ... ok
+test tls_configuration::client_resolver_reaches_mtls_handshake_and_absent_identity_is_denied ... ok
+test tls_configuration::prepared_profiles_have_independent_tls_resumption_stores ... ok
+test tls_configuration::explicit_root_modes_accept_configured_ca_without_using_default_preference ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+   Doc-tests net
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

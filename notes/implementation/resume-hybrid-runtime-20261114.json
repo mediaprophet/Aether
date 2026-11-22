@@ -1,0 +1,16 @@
+{
+  "executable": "C:\\github\\Aether\\target\\debug\\examples\\native_lifecycle_smoke.exe",
+  "executable_sha256": "53c6715a9d8836a199ab7b5de746a7088fdae0d27f6640ce71ca6e15c189179e",
+  "profile": "native-default-hybrid-prelude-post-etalon-naming-post-ime",
+  "argument_count": 0,
+  "working_directory": "C:\\github\\Aether",
+  "started_utc": "2026-11-13T23:44:32.3452223+00:00",
+  "elapsed_seconds": 17.646,
+  "timeout_seconds": 30,
+  "timed_out": false,
+  "capture_complete": true,
+  "process_id": 1072,
+  "process_exited": true,
+  "program_exit_code": 0,
+  "runner_exit_code": 0
+}

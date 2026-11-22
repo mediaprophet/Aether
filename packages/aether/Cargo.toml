@@ -111,7 +111,8 @@ ssr = ["dep:aether-ssr", "aether-config-macro/ssr"]
 liveview = ["dep:aether-liveview", "aether-config-macro/liveview"]
 # Native Blitz/Etalon window backend. Opt in from host apps (webizen-os-shell).
 # WebView (`desktop`) stays a separate compatibility path.
-native = ["dep:aether-native", "aether-config-macro/native"]
+native = ["dep:aether-native", "aether-native/vello-hybrid", "aether-config-macro/native"]
+mobile-native = ["native", "aether-config-macro/mobile"]
 server = [
   "dep:aether-server",
   "aether-fullstack?/server",

@@ -1,0 +1,1126 @@
+{
+  "aether": {
+    "root": "C:\\github\\Aether",
+    "scope": "source manifests and full lockfile, not active features",
+    "manifest_count": 122,
+    "manifests": [
+      "Cargo.toml",
+      "examples/01-app-demos/bluetooth-scanner/Cargo.toml",
+      "examples/01-app-demos/ecommerce-site/Cargo.toml",
+      "examples/01-app-demos/file-explorer/Cargo.toml",
+      "examples/01-app-demos/geolocation-native-plugin/Cargo.toml",
+      "examples/01-app-demos/hackernews/Cargo.toml",
+      "examples/01-app-demos/hotdog/Cargo.toml",
+      "examples/07-fullstack/auth/Cargo.toml",
+      "examples/07-fullstack/desktop/Cargo.toml",
+      "examples/07-fullstack/hello-world/Cargo.toml",
+      "examples/07-fullstack/router/Cargo.toml",
+      "examples/07-fullstack/ssr-only/Cargo.toml",
+      "examples/10-integrations/native-headless/Cargo.toml",
+      "examples/10-integrations/pwa/Cargo.toml",
+      "examples/10-integrations/tailwind/Cargo.toml",
+      "examples/10-integrations/wgpu-texture/Cargo.toml",
+      "packages/aether/Cargo.toml",
+      "packages/aether-const-vec/Cargo.toml",
+      "packages/asset-resolver/Cargo.toml",
+      "packages/autofmt/Cargo.toml",
+      "packages/cli/Cargo.toml",
+      "packages/cli-config/Cargo.toml",
+      "packages/cli-harnesses/harness-default-to-non-default/Cargo.toml",
+      "packages/cli-harnesses/harness-fullstack-desktop/Cargo.toml",
+      "packages/cli-harnesses/harness-fullstack-desktop-with-default/Cargo.toml",
+      "packages/cli-harnesses/harness-fullstack-desktop-with-features/Cargo.toml",
+      "packages/cli-harnesses/harness-fullstack-multi-target/Cargo.toml",
+      "packages/cli-harnesses/harness-fullstack-multi-target-no-default/Cargo.toml",
+      "packages/cli-harnesses/harness-fullstack-with-optional-tokio/Cargo.toml",
+      "packages/cli-harnesses/harness-no-aether/Cargo.toml",
+      "packages/cli-harnesses/harness-renderer-swap/Cargo.toml",
+      "packages/cli-harnesses/harness-simple-dedicated-client/Cargo.toml",
+      "packages/cli-harnesses/harness-simple-dedicated-server/Cargo.toml",
+      "packages/cli-harnesses/harness-simple-desktop/Cargo.toml",
+      "packages/cli-harnesses/harness-simple-fullstack/Cargo.toml",
+      "packages/cli-harnesses/harness-simple-fullstack-native-with-default/Cargo.toml",
+      "packages/cli-harnesses/harness-simple-fullstack-with-default/Cargo.toml",
+      "packages/cli-harnesses/harness-simple-mobile/Cargo.toml",
+      "packages/cli-harnesses/harness-simple-web/Cargo.toml",
+      "packages/cli-harnesses/harness-web-with-default-features/Cargo.toml",
+      "packages/cli-harnesses/harness-web-with-no-default-features/Cargo.toml",
+      "packages/cli-telemetry/Cargo.toml",
+      "packages/component-manifest/Cargo.toml",
+      "packages/config-macro/Cargo.toml",
+      "packages/config-macros/Cargo.toml",
+      "packages/const-serialize/Cargo.toml",
+      "packages/const-serialize-macro/Cargo.toml",
+      "packages/core/Cargo.toml",
+      "packages/core-macro/Cargo.toml",
+      "packages/core-template/Cargo.toml",
+      "packages/core-types/Cargo.toml",
+      "packages/depinfo/Cargo.toml",
+      "packages/desktop/Cargo.toml",
+      "packages/devtools/Cargo.toml",
+      "packages/devtools-types/Cargo.toml",
+      "packages/document/Cargo.toml",
+      "packages/dx-wire-format/Cargo.toml",
+      "packages/extension/Cargo.toml",
+      "packages/fullstack/Cargo.toml",
+      "packages/fullstack-core/Cargo.toml",
+      "packages/fullstack-macro/Cargo.toml",
+      "packages/fullstack-server/Cargo.toml",
+      "packages/fuzz/Cargo.toml",
+      "packages/fuzz/fuzz/Cargo.toml",
+      "packages/generational-box/Cargo.toml",
+      "packages/history/Cargo.toml",
+      "packages/hooks/Cargo.toml",
+      "packages/html/Cargo.toml",
+      "packages/html-internal-macro/Cargo.toml",
+      "packages/interpreter/Cargo.toml",
+      "packages/lazy-js-bundle/Cargo.toml",
+      "packages/liveview/Cargo.toml",
+      "packages/logger/Cargo.toml",
+      "packages/manganis/manganis/Cargo.toml",
+      "packages/manganis/manganis-core/Cargo.toml",
+      "packages/manganis/manganis-macro/Cargo.toml",
+      "packages/native/Cargo.toml",
+      "packages/native-dom/Cargo.toml",
+      "packages/oracle/Cargo.toml",
+      "packages/playwright-tests/barebones-template/Cargo.toml",
+      "packages/playwright-tests/cli-optimization/Cargo.toml",
+      "packages/playwright-tests/default-features-disabled/Cargo.toml",
+      "packages/playwright-tests/fullstack/Cargo.toml",
+      "packages/playwright-tests/fullstack-error-codes/Cargo.toml",
+      "packages/playwright-tests/fullstack-errors/Cargo.toml",
+      "packages/playwright-tests/fullstack-hydration-order/Cargo.toml",
+      "packages/playwright-tests/fullstack-mounted/Cargo.toml",
+      "packages/playwright-tests/fullstack-routing/Cargo.toml",
+      "packages/playwright-tests/fullstack-spread/Cargo.toml",
+      "packages/playwright-tests/liveview/Cargo.toml",
+      "packages/playwright-tests/markerless-hydration-edges/Cargo.toml",
+      "packages/playwright-tests/nested-suspense/Cargo.toml",
+      "packages/playwright-tests/suspense-carousel/Cargo.toml",
+      "packages/playwright-tests/wasm-split-harness/Cargo.toml",
+      "packages/playwright-tests/web/Cargo.toml",
+      "packages/playwright-tests/web-hash-routing/Cargo.toml",
+      "packages/playwright-tests/web-hot-patch/Cargo.toml",
+      "packages/playwright-tests/web-hot-patch-fullstack/Cargo.toml",
+      "packages/playwright-tests/web-routing/Cargo.toml",
+      "packages/playwright-tests/windows-headless/Cargo.toml",
+      "packages/playwright-tests/windows-hotpatch-fullstack/Cargo.toml",
+      "packages/router/Cargo.toml",
+      "packages/router-macro/Cargo.toml",
+      "packages/rsx/Cargo.toml",
+      "packages/rsx-hotreload/Cargo.toml",
+      "packages/rsx-rosetta/Cargo.toml",
+      "packages/signals/Cargo.toml",
+      "packages/ssr/Cargo.toml",
+      "packages/stores/Cargo.toml",
+      "packages/stores/tests/visibility-helper/Cargo.toml",
+      "packages/stores-macro/Cargo.toml",
+      "packages/subsecond/subsecond/Cargo.toml",
+      "packages/subsecond/subsecond-tests/cross-tls-crate/Cargo.toml",
+      "packages/subsecond/subsecond-tests/cross-tls-crate-dylib/Cargo.toml",
+      "packages/subsecond/subsecond-tests/cross-tls-test/Cargo.toml",
+      "packages/subsecond/subsecond-types/Cargo.toml",
+      "packages/wasm-split/wasm-split/Cargo.toml",
+      "packages/wasm-split/wasm-split-cli/Cargo.toml",
+      "packages/wasm-split/wasm-split-macro/Cargo.toml",
+      "packages/wasm-split/wasm-used/Cargo.toml",
+      "packages/web/Cargo.toml",
+      "refract/Cargo.toml"
+    ],
+    "lock_sha256": "e6c282fb38d1c74d00470c57ba58be87c4bd0e6349939f3eb5bd676f428dfd5f",
+    "root_manifest_sha256": "413562750e75e7956299632d6e18f2f81c6e14a2e5733441c6f9038ddb4e07a4",
+    "gpu_declarations": [
+      {
+        "manifest": "Cargo.toml",
+        "table": "dependencies",
+        "alias": "wgpu",
+        "package": "etalon",
+        "spec": {
+          "package": "etalon",
+          "version": "=0.0.2",
+          "git": "https://github.com/mediaprophet/etalon.git",
+          "rev": "575bab54accf1aafb24f67e9ba810c0f3f745aea",
+          "workspace": true,
+          "optional": true
+        }
+      },
+      {
+        "manifest": "Cargo.toml",
+        "table": "workspace.dependencies",
+        "alias": "wgpu",
+        "package": "etalon",
+        "spec": {
+          "package": "etalon",
+          "version": "=0.0.2",
+          "git": "https://github.com/mediaprophet/etalon.git",
+          "rev": "575bab54accf1aafb24f67e9ba810c0f3f745aea"
+        }
+      },
+      {
+        "manifest": "examples/10-integrations/native-headless/Cargo.toml",
+        "table": "dependencies",
+        "alias": "wgpu",
+        "package": "etalon",
+        "spec": {
+          "package": "etalon",
+          "version": "=0.0.2",
+          "git": "https://github.com/mediaprophet/etalon.git",
+          "rev": "575bab54accf1aafb24f67e9ba810c0f3f745aea",
+          "workspace": true
+        }
+      },
+      {
+        "manifest": "examples/10-integrations/wgpu-texture/Cargo.toml",
+        "table": "dependencies",
+        "alias": "wgpu",
+        "package": "etalon",
+        "spec": {
+          "package": "etalon",
+          "version": "=0.0.2",
+          "git": "https://github.com/mediaprophet/etalon.git",
+          "rev": "575bab54accf1aafb24f67e9ba810c0f3f745aea",
+          "workspace": true
+        }
+      }
+    ],
+    "gpu_lock_packages": [
+      {
+        "name": "etalon",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "arrayvec",
+          "bitflags 2.13.2",
+          "bytemuck",
+          "cfg-if",
+          "cfg_aliases",
+          "document-features",
+          "etalon-core",
+          "etalon-hal",
+          "etalon-sync",
+          "etalon-types",
+          "hashbrown 0.17.1",
+          "js-sys",
+          "log",
+          "naga",
+          "profiling",
+          "raw-window-handle 0.6.2",
+          "smallvec",
+          "static_assertions",
+          "wasm-bindgen",
+          "wasm-bindgen-futures",
+          "web-sys"
+        ]
+      },
+      {
+        "name": "etalon-core",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "arrayvec",
+          "bit-set 0.11.1",
+          "bit-vec 0.10.1",
+          "bitflags 2.13.2",
+          "bytemuck",
+          "cfg_aliases",
+          "document-features",
+          "etalon-core-deps-apple",
+          "etalon-core-deps-emscripten",
+          "etalon-core-deps-linux-android-bsd",
+          "etalon-core-deps-wasm",
+          "etalon-core-deps-windows",
+          "etalon-hal",
+          "etalon-naga-bridge",
+          "etalon-sync",
+          "etalon-types",
+          "hashbrown 0.17.1",
+          "indexmap",
+          "log",
+          "naga",
+          "naga-types",
+          "num-traits",
+          "profiling",
+          "raw-window-handle 0.6.2",
+          "rustc-hash 1.1.0",
+          "scopeguard",
+          "smallvec",
+          "thiserror 2.0.21"
+        ]
+      },
+      {
+        "name": "etalon-core-deps-apple",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "etalon-hal"
+        ]
+      },
+      {
+        "name": "etalon-core-deps-emscripten",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "etalon-hal"
+        ]
+      },
+      {
+        "name": "etalon-core-deps-linux-android-bsd",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "etalon-hal"
+        ]
+      },
+      {
+        "name": "etalon-core-deps-wasm",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "etalon-hal"
+        ]
+      },
+      {
+        "name": "etalon-core-deps-windows",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "etalon-hal"
+        ]
+      },
+      {
+        "name": "etalon-hal",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "android_system_properties",
+          "arrayvec",
+          "ash",
+          "bit-set 0.11.1",
+          "bitflags 2.13.2",
+          "block2 0.6.2",
+          "bytemuck",
+          "cfg-if",
+          "cfg_aliases",
+          "etalon-naga-bridge",
+          "etalon-sync",
+          "etalon-types",
+          "glow",
+          "glutin_wgl_sys",
+          "gpu-allocator",
+          "hashbrown 0.17.1",
+          "js-sys",
+          "khronos-egl",
+          "libc",
+          "libloading 0.8.9",
+          "log",
+          "naga",
+          "naga-types",
+          "ndk-sys",
+          "objc2 0.6.5",
+          "objc2-core-foundation",
+          "objc2-core-graphics",
+          "objc2-foundation 0.3.2",
+          "objc2-metal 0.3.2",
+          "objc2-quartz-core 0.3.2",
+          "ordered-float 4.6.0",
+          "profiling",
+          "range-alloc",
+          "raw-window-handle 0.6.2",
+          "raw-window-metal 1.1.0",
+          "renderdoc-sys",
+          "smallvec",
+          "static_assertions",
+          "thiserror 2.0.21",
+          "wasm-bindgen",
+          "wayland-sys",
+          "web-sys",
+          "windows 0.62.2",
+          "windows-core 0.62.2",
+          "windows-result 0.4.1"
+        ]
+      },
+      {
+        "name": "etalon-naga-bridge",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "etalon-types",
+          "naga"
+        ]
+      },
+      {
+        "name": "etalon-sync",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "cfg-if",
+          "lock_api",
+          "once_cell",
+          "parking_lot",
+          "portable-atomic",
+          "portable-atomic-util"
+        ]
+      },
+      {
+        "name": "etalon-types",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "bitflags 2.13.2",
+          "bytemuck",
+          "js-sys",
+          "log",
+          "macro_rules_attribute",
+          "naga-types",
+          "raw-window-handle 0.6.2",
+          "static_assertions",
+          "web-sys"
+        ]
+      },
+      {
+        "name": "naga",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "arrayvec",
+          "bit-set 0.11.1",
+          "bitflags 2.13.2",
+          "cfg-if",
+          "cfg_aliases",
+          "codespan-reporting",
+          "half",
+          "hashbrown 0.17.1",
+          "indexmap",
+          "libm",
+          "log",
+          "naga-types",
+          "num-traits",
+          "once_cell",
+          "rustc-hash 1.1.0",
+          "spirv",
+          "thiserror 2.0.21",
+          "unicode-ident"
+        ]
+      },
+      {
+        "name": "naga-types",
+        "version": "0.0.2",
+        "source": "git+https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54accf1aafb24f67e9ba810c0f3f745aea",
+        "dependencies": [
+          "bytemuck",
+          "hashbrown 0.17.1",
+          "indexmap",
+          "rustc-hash 1.1.0"
+        ]
+      },
+      {
+        "name": "wgpu-texture",
+        "version": "0.0.0",
+        "dependencies": [
+          "aether",
+          "aether-native",
+          "anyrender",
+          "blitz-dom",
+          "blitz-traits",
+          "bytemuck",
+          "color",
+          "etalon",
+          "peniko",
+          "tracing-subscriber",
+          "winit"
+        ]
+      }
+    ],
+    "upstream_wgpu_lock_packages": [],
+    "reverse_lock_edges": {
+      "etalon@0.0.2": [
+        "aether-examples@0.8.0-alpha.3",
+        "gpu-device-context@0.10.0",
+        "native-headless@0.0.0",
+        "pixel-buffer-output@0.17.2",
+        "vector-compute-renderer@0.11.0",
+        "vector-gpu-render-adapter@0.15.0",
+        "vector-hybrid-render-adapter@0.11.0",
+        "vector-hybrid-renderer@0.3.0",
+        "wgpu-texture@0.0.0"
+      ],
+      "etalon-core@0.0.2": [
+        "etalon@0.0.2"
+      ],
+      "etalon-core-deps-apple@0.0.2": [
+        "etalon-core@0.0.2"
+      ],
+      "etalon-core-deps-emscripten@0.0.2": [
+        "etalon-core@0.0.2"
+      ],
+      "etalon-core-deps-linux-android-bsd@0.0.2": [
+        "etalon-core@0.0.2"
+      ],
+      "etalon-core-deps-wasm@0.0.2": [
+        "etalon-core@0.0.2"
+      ],
+      "etalon-core-deps-windows@0.0.2": [
+        "etalon-core@0.0.2"
+      ],
+      "etalon-hal@0.0.2": [
+        "etalon-core-deps-apple@0.0.2",
+        "etalon-core-deps-emscripten@0.0.2",
+        "etalon-core-deps-linux-android-bsd@0.0.2",
+        "etalon-core-deps-wasm@0.0.2",
+        "etalon-core-deps-windows@0.0.2",
+        "etalon-core@0.0.2",
+        "etalon@0.0.2"
+      ],
+      "etalon-naga-bridge@0.0.2": [
+        "etalon-core@0.0.2",
+        "etalon-hal@0.0.2"
+      ],
+      "etalon-sync@0.0.2": [
+        "etalon-core@0.0.2",
+        "etalon-hal@0.0.2",
+        "etalon@0.0.2"
+      ],
+      "etalon-types@0.0.2": [
+        "etalon-core@0.0.2",
+        "etalon-hal@0.0.2",
+        "etalon-naga-bridge@0.0.2",
+        "etalon@0.0.2"
+      ],
+      "naga@0.0.2": [
+        "etalon-core@0.0.2",
+        "etalon-hal@0.0.2",
+        "etalon-naga-bridge@0.0.2",
+        "etalon@0.0.2",
+        "vector-compute-shaders@0.11.0",
+        "vector-hybrid-shaders@0.3.0"
+      ],
+      "naga-types@0.0.2": [
+        "etalon-core@0.0.2",
+        "etalon-hal@0.0.2",
+        "etalon-types@0.0.2",
+        "naga@0.0.2"
+      ],
+      "wgpu-texture@0.0.0": []
+    },
+    "parse_errors": []
+  },
+  "chora": {
+    "root": "C:\\github\\chora",
+    "scope": "source manifests and full lockfile, not active features",
+    "manifest_count": 79,
+    "manifests": [
+      "Cargo.toml",
+      "components/allocator/Cargo.toml",
+      "components/background_hang_monitor/Cargo.toml",
+      "components/bluetooth/Cargo.toml",
+      "components/canvas/Cargo.toml",
+      "components/config/Cargo.toml",
+      "components/config/macro/Cargo.toml",
+      "components/constellation/Cargo.toml",
+      "components/default-resources/Cargo.toml",
+      "components/deny_public_fields/Cargo.toml",
+      "components/devtools/Cargo.toml",
+      "components/dom_struct/Cargo.toml",
+      "components/fonts/Cargo.toml",
+      "components/geometry/Cargo.toml",
+      "components/hyper_serde/Cargo.toml",
+      "components/jstraceable_derive/Cargo.toml",
+      "components/layout/Cargo.toml",
+      "components/malloc_size_of/Cargo.toml",
+      "components/media/audio/Cargo.toml",
+      "components/media/backends/auto/Cargo.toml",
+      "components/media/backends/dummy/Cargo.toml",
+      "components/media/backends/gstreamer/Cargo.toml",
+      "components/media/backends/gstreamer/render/Cargo.toml",
+      "components/media/backends/gstreamer/render-android/Cargo.toml",
+      "components/media/backends/gstreamer/render-unix/Cargo.toml",
+      "components/media/backends/ohos/Cargo.toml",
+      "components/media/examples/Cargo.toml",
+      "components/media/media-thread/Cargo.toml",
+      "components/media/player/Cargo.toml",
+      "components/media/servo-media/Cargo.toml",
+      "components/media/servo-media-derive/Cargo.toml",
+      "components/media/streams/Cargo.toml",
+      "components/media/traits/Cargo.toml",
+      "components/media/webrtc/Cargo.toml",
+      "components/metrics/Cargo.toml",
+      "components/net/Cargo.toml",
+      "components/paint/Cargo.toml",
+      "components/pixels/Cargo.toml",
+      "components/profile/Cargo.toml",
+      "components/script/Cargo.toml",
+      "components/script_bindings/Cargo.toml",
+      "components/script_webcrypto/Cargo.toml",
+      "components/script_webgpu/Cargo.toml",
+      "components/servo/Cargo.toml",
+      "components/servo_tracing/Cargo.toml",
+      "components/shared/background_hang_monitor/Cargo.toml",
+      "components/shared/base/Cargo.toml",
+      "components/shared/bluetooth/Cargo.toml",
+      "components/shared/canvas/Cargo.toml",
+      "components/shared/constellation/Cargo.toml",
+      "components/shared/devtools/Cargo.toml",
+      "components/shared/embedder/Cargo.toml",
+      "components/shared/fonts/Cargo.toml",
+      "components/shared/layout/Cargo.toml",
+      "components/shared/net/Cargo.toml",
+      "components/shared/paint/Cargo.toml",
+      "components/shared/profile/Cargo.toml",
+      "components/shared/script/Cargo.toml",
+      "components/shared/storage/Cargo.toml",
+      "components/shared/webgpu/Cargo.toml",
+      "components/shared/webxr/Cargo.toml",
+      "components/storage/Cargo.toml",
+      "components/svg/Cargo.toml",
+      "components/timers/Cargo.toml",
+      "components/url/Cargo.toml",
+      "components/wakelock/Cargo.toml",
+      "components/webdriver_server/Cargo.toml",
+      "components/webgl/Cargo.toml",
+      "components/webgpu/Cargo.toml",
+      "components/webvtt/Cargo.toml",
+      "components/webxr/Cargo.toml",
+      "components/xpath/Cargo.toml",
+      "ffi/capi/Cargo.toml",
+      "ports/servoshell/Cargo.toml",
+      "tests/capi/Cargo.toml",
+      "tests/unit/malloc_size_of/Cargo.toml",
+      "tests/unit/profile/Cargo.toml",
+      "tests/unit/script/Cargo.toml",
+      "tests/unit/style/Cargo.toml"
+    ],
+    "lock_sha256": "6c74c2ca02ae35c76c543564d782d969a843b3578dc5677b520ce1188a7d25f3",
+    "root_manifest_sha256": "4101bf5657f611e3f5f9e782b833cf803b3bb782daaaf33afbb3ffbdf19b1d47",
+    "gpu_declarations": [
+      {
+        "manifest": "Cargo.toml",
+        "table": "workspace.dependencies",
+        "alias": "wgpu-core",
+        "package": "wgpu-core",
+        "spec": {
+          "version": "30"
+        }
+      },
+      {
+        "manifest": "Cargo.toml",
+        "table": "workspace.dependencies",
+        "alias": "wgpu-types",
+        "package": "wgpu-types",
+        "spec": {
+          "version": "30"
+        }
+      },
+      {
+        "manifest": "components/shared/constellation/Cargo.toml",
+        "table": "dependencies",
+        "alias": "wgpu-core",
+        "package": "wgpu-core",
+        "spec": {
+          "version": "30",
+          "workspace": true,
+          "optional": true
+        }
+      },
+      {
+        "manifest": "components/shared/webgpu/Cargo.toml",
+        "table": "dependencies",
+        "alias": "wgpu-core",
+        "package": "wgpu-core",
+        "spec": {
+          "version": "30",
+          "workspace": true,
+          "features": [
+            "serde",
+            "wgsl"
+          ]
+        }
+      },
+      {
+        "manifest": "components/shared/webgpu/Cargo.toml",
+        "table": "dependencies",
+        "alias": "wgpu-types",
+        "package": "wgpu-types",
+        "spec": {
+          "version": "30",
+          "workspace": true
+        }
+      },
+      {
+        "manifest": "components/webgpu/Cargo.toml",
+        "table": "dependencies",
+        "alias": "wgpu-core",
+        "package": "wgpu-core",
+        "spec": {
+          "version": "30",
+          "workspace": true,
+          "features": [
+            "serde",
+            "wgsl"
+          ]
+        }
+      },
+      {
+        "manifest": "components/webgpu/Cargo.toml",
+        "table": "dependencies",
+        "alias": "wgpu-types",
+        "package": "wgpu-types",
+        "spec": {
+          "version": "30",
+          "workspace": true
+        }
+      },
+      {
+        "manifest": "components/webgpu/Cargo.toml",
+        "table": "target.cfg(any(target_os = \"ios\", target_os = \"macos\")).dependencies",
+        "alias": "wgpu-core",
+        "package": "wgpu-core",
+        "spec": {
+          "version": "30",
+          "workspace": true,
+          "features": [
+            "metal"
+          ]
+        }
+      },
+      {
+        "manifest": "components/webgpu/Cargo.toml",
+        "table": "target.cfg(any(windows, all(unix, not(any(target_os = \"macos\", target_os = \"ios\"))))).dependencies",
+        "alias": "wgpu-core",
+        "package": "wgpu-core",
+        "spec": {
+          "version": "30",
+          "workspace": true,
+          "features": [
+            "gles",
+            "vulkan"
+          ]
+        }
+      },
+      {
+        "manifest": "components/webgpu/Cargo.toml",
+        "table": "target.cfg(windows).dependencies",
+        "alias": "wgpu-core",
+        "package": "wgpu-core",
+        "spec": {
+          "version": "30",
+          "workspace": true,
+          "features": [
+            "dx12",
+            "vulkan"
+          ]
+        }
+      }
+    ],
+    "gpu_lock_packages": [
+      {
+        "name": "naga",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "a616d2fb8c89516ac2723a581f69d6c18576046bed761bd6b305e5618e6ae130",
+        "dependencies": [
+          "arrayvec",
+          "bit-set",
+          "bitflags 2.13.2",
+          "cfg-if",
+          "cfg_aliases",
+          "codespan-reporting",
+          "half",
+          "hashbrown 0.17.1",
+          "indexmap 2.14.2",
+          "libm",
+          "log",
+          "naga-types",
+          "num-traits",
+          "once_cell",
+          "rustc-hash 1.1.0",
+          "spirv",
+          "thiserror 2.0.21",
+          "unicode-ident"
+        ]
+      },
+      {
+        "name": "naga-types",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "590afbf58a6f4f62873cd5cff4468061844bafa1cdf399cc954537c22d768d49",
+        "dependencies": [
+          "hashbrown 0.17.1",
+          "indexmap 2.14.2",
+          "rustc-hash 1.1.0",
+          "serde",
+          "thiserror 2.0.21"
+        ]
+      },
+      {
+        "name": "wgpu",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "527ccdf43dd5b2e8676eed9984ce00e2bbb0a1b85b70c1969dcb6cd2eb55ab9e",
+        "dependencies": [
+          "arrayvec",
+          "bitflags 2.13.2",
+          "bytemuck",
+          "cfg-if",
+          "cfg_aliases",
+          "document-features",
+          "hashbrown 0.17.1",
+          "js-sys",
+          "log",
+          "naga",
+          "parking_lot",
+          "portable-atomic",
+          "profiling",
+          "raw-window-handle",
+          "smallvec",
+          "static_assertions",
+          "wasm-bindgen",
+          "wasm-bindgen-futures",
+          "web-sys",
+          "wgpu-core",
+          "wgpu-hal",
+          "wgpu-types"
+        ]
+      },
+      {
+        "name": "wgpu-core",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "14c018fce9b6270aa203c2fdd56f3cce996713534bd757e4ea58c8560b121f14",
+        "dependencies": [
+          "arrayvec",
+          "bit-set",
+          "bit-vec",
+          "bitflags 2.13.2",
+          "bytemuck",
+          "cfg_aliases",
+          "document-features",
+          "hashbrown 0.17.1",
+          "indexmap 2.14.2",
+          "log",
+          "macro_rules_attribute",
+          "naga",
+          "naga-types",
+          "once_cell",
+          "parking_lot",
+          "portable-atomic",
+          "profiling",
+          "raw-window-handle",
+          "rustc-hash 1.1.0",
+          "serde",
+          "smallvec",
+          "thiserror 2.0.21",
+          "wgpu-core-deps-apple",
+          "wgpu-core-deps-emscripten",
+          "wgpu-core-deps-windows-linux-android",
+          "wgpu-hal",
+          "wgpu-naga-bridge",
+          "wgpu-types"
+        ]
+      },
+      {
+        "name": "wgpu-core-deps-apple",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "061f3d319a40d39d00b1ecc2c33b89fe21d4e6fe01859df3500a3a8ecccd6b68",
+        "dependencies": [
+          "wgpu-hal"
+        ]
+      },
+      {
+        "name": "wgpu-core-deps-emscripten",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "d98b86cf4abf524a902dd35f18ca6a3f08fc2ae9847c8f10b48e30491b1f0b86",
+        "dependencies": [
+          "wgpu-hal"
+        ]
+      },
+      {
+        "name": "wgpu-core-deps-windows-linux-android",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "7586165fd5f6d881cb9ce4bb71f40d6caab2c0f1837e3fc1d9788a197fb6004f",
+        "dependencies": [
+          "wgpu-hal"
+        ]
+      },
+      {
+        "name": "wgpu-hal",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "b6b7fb58561a792bc237628ba0792e332de418fefe145f13b5ed8201e6d52f58",
+        "dependencies": [
+          "android_system_properties",
+          "arrayvec",
+          "ash",
+          "bit-set",
+          "bitflags 2.13.2",
+          "block2 0.6.2",
+          "bytemuck",
+          "cfg-if",
+          "cfg_aliases",
+          "glow",
+          "glutin_wgl_sys",
+          "gpu-allocator",
+          "hashbrown 0.17.1",
+          "js-sys",
+          "khronos-egl",
+          "libc",
+          "libloading 0.8.9",
+          "log",
+          "naga",
+          "naga-types",
+          "ndk-sys",
+          "objc2 0.6.5",
+          "objc2-core-foundation",
+          "objc2-core-graphics",
+          "objc2-foundation 0.3.2",
+          "objc2-metal 0.3.2",
+          "objc2-quartz-core 0.3.2",
+          "once_cell",
+          "ordered-float",
+          "parking_lot",
+          "portable-atomic",
+          "portable-atomic-util",
+          "profiling",
+          "range-alloc",
+          "raw-window-handle",
+          "raw-window-metal",
+          "renderdoc-sys",
+          "smallvec",
+          "static_assertions",
+          "thiserror 2.0.21",
+          "wasm-bindgen",
+          "wayland-sys",
+          "web-sys",
+          "wgpu-naga-bridge",
+          "wgpu-types",
+          "windows",
+          "windows-core",
+          "windows-result"
+        ]
+      },
+      {
+        "name": "wgpu-naga-bridge",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "d2f62e73117bb7a62bfd9c5a5841438a823f6566c6442a808ee269d2d055c081",
+        "dependencies": [
+          "naga",
+          "wgpu-types"
+        ]
+      },
+      {
+        "name": "wgpu-types",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "99dad6f1fbdbbdb4c278a6508b059d44688f5cebddf78d005a46a31340269286",
+        "dependencies": [
+          "bitflags 2.13.2",
+          "bytemuck",
+          "js-sys",
+          "log",
+          "naga-types",
+          "raw-window-handle",
+          "serde",
+          "static_assertions",
+          "web-sys"
+        ]
+      }
+    ],
+    "upstream_wgpu_lock_packages": [
+      {
+        "name": "wgpu",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "527ccdf43dd5b2e8676eed9984ce00e2bbb0a1b85b70c1969dcb6cd2eb55ab9e",
+        "dependencies": [
+          "arrayvec",
+          "bitflags 2.13.2",
+          "bytemuck",
+          "cfg-if",
+          "cfg_aliases",
+          "document-features",
+          "hashbrown 0.17.1",
+          "js-sys",
+          "log",
+          "naga",
+          "parking_lot",
+          "portable-atomic",
+          "profiling",
+          "raw-window-handle",
+          "smallvec",
+          "static_assertions",
+          "wasm-bindgen",
+          "wasm-bindgen-futures",
+          "web-sys",
+          "wgpu-core",
+          "wgpu-hal",
+          "wgpu-types"
+        ]
+      },
+      {
+        "name": "wgpu-core",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "14c018fce9b6270aa203c2fdd56f3cce996713534bd757e4ea58c8560b121f14",
+        "dependencies": [
+          "arrayvec",
+          "bit-set",
+          "bit-vec",
+          "bitflags 2.13.2",
+          "bytemuck",
+          "cfg_aliases",
+          "document-features",
+          "hashbrown 0.17.1",
+          "indexmap 2.14.2",
+          "log",
+          "macro_rules_attribute",
+          "naga",
+          "naga-types",
+          "once_cell",
+          "parking_lot",
+          "portable-atomic",
+          "profiling",
+          "raw-window-handle",
+          "rustc-hash 1.1.0",
+          "serde",
+          "smallvec",
+          "thiserror 2.0.21",
+          "wgpu-core-deps-apple",
+          "wgpu-core-deps-emscripten",
+          "wgpu-core-deps-windows-linux-android",
+          "wgpu-hal",
+          "wgpu-naga-bridge",
+          "wgpu-types"
+        ]
+      },
+      {
+        "name": "wgpu-hal",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "b6b7fb58561a792bc237628ba0792e332de418fefe145f13b5ed8201e6d52f58",
+        "dependencies": [
+          "android_system_properties",
+          "arrayvec",
+          "ash",
+          "bit-set",
+          "bitflags 2.13.2",
+          "block2 0.6.2",
+          "bytemuck",
+          "cfg-if",
+          "cfg_aliases",
+          "glow",
+          "glutin_wgl_sys",
+          "gpu-allocator",
+          "hashbrown 0.17.1",
+          "js-sys",
+          "khronos-egl",
+          "libc",
+          "libloading 0.8.9",
+          "log",
+          "naga",
+          "naga-types",
+          "ndk-sys",
+          "objc2 0.6.5",
+          "objc2-core-foundation",
+          "objc2-core-graphics",
+          "objc2-foundation 0.3.2",
+          "objc2-metal 0.3.2",
+          "objc2-quartz-core 0.3.2",
+          "once_cell",
+          "ordered-float",
+          "parking_lot",
+          "portable-atomic",
+          "portable-atomic-util",
+          "profiling",
+          "range-alloc",
+          "raw-window-handle",
+          "raw-window-metal",
+          "renderdoc-sys",
+          "smallvec",
+          "static_assertions",
+          "thiserror 2.0.21",
+          "wasm-bindgen",
+          "wayland-sys",
+          "web-sys",
+          "wgpu-naga-bridge",
+          "wgpu-types",
+          "windows",
+          "windows-core",
+          "windows-result"
+        ]
+      },
+      {
+        "name": "wgpu-types",
+        "version": "30.0.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "99dad6f1fbdbbdb4c278a6508b059d44688f5cebddf78d005a46a31340269286",
+        "dependencies": [
+          "bitflags 2.13.2",
+          "bytemuck",
+          "js-sys",
+          "log",
+          "naga-types",
+          "raw-window-handle",
+          "serde",
+          "static_assertions",
+          "web-sys"
+        ]
+      }
+    ],
+    "reverse_lock_edges": {
+      "naga@30.0.1": [
+        "vello_shaders@0.11.0",
+        "wgpu-core@30.0.1",
+        "wgpu-hal@30.0.1",
+        "wgpu-naga-bridge@30.0.1",
+        "wgpu@30.0.1"
+      ],
+      "naga-types@30.0.1": [
+        "naga@30.0.1",
+        "wgpu-core@30.0.1",
+        "wgpu-hal@30.0.1",
+        "wgpu-types@30.0.1"
+      ],
+      "wgpu@30.0.1": [
+        "vello@0.11.0"
+      ],
+      "wgpu-core@30.0.1": [
+        "servo-constellation-traits@0.7.0",
+        "servo-webgpu-traits@0.7.0",
+        "servo-webgpu@0.7.0",
+        "wgpu@30.0.1"
+      ],
+      "wgpu-core-deps-apple@30.0.1": [
+        "wgpu-core@30.0.1"
+      ],
+      "wgpu-core-deps-emscripten@30.0.1": [
+        "wgpu-core@30.0.1"
+      ],
+      "wgpu-core-deps-windows-linux-android@30.0.1": [
+        "wgpu-core@30.0.1"
+      ],
+      "wgpu-hal@30.0.1": [
+        "wgpu-core-deps-apple@30.0.1",
+        "wgpu-core-deps-emscripten@30.0.1",
+        "wgpu-core-deps-windows-linux-android@30.0.1",
+        "wgpu-core@30.0.1",
+        "wgpu@30.0.1"
+      ],
+      "wgpu-naga-bridge@30.0.1": [
+        "wgpu-core@30.0.1",
+        "wgpu-hal@30.0.1"
+      ],
+      "wgpu-types@30.0.1": [
+        "servo-webgpu-traits@0.7.0",
+        "servo-webgpu@0.7.0",
+        "wgpu-core@30.0.1",
+        "wgpu-hal@30.0.1",
+        "wgpu-naga-bridge@30.0.1",
+        "wgpu@30.0.1"
+      ]
+    },
+    "parse_errors": []
+  }
+}

@@ -1,0 +1,39 @@
+    Blocking waiting for file lock on build directory
+   Compiling aether-asset-resolver v0.8.0-alpha.3 (C:\github\Aether\packages\asset-resolver)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_asset_resolver-0fg0cf6drs7ol\s-ho36eniqqr-0l0phq8-working`
+
+   Compiling aether v0.8.0-alpha.3 (C:\github\Aether\packages\aether)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether-0zsqeqdh3viaz\s-ho36epf7gx-1jyazfo-working`
+
+warning: `aether-asset-resolver` (lib) generated 1 warning
+warning: `aether` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\native_assets-2i0pynauz29nh\s-ho36ere1oe-1ew10qx-working`
+
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_asset_resolver-1hlu6t3d2q1rf\s-ho36erk16t-0asto1j-working`
+
+warning: `aether-asset-resolver` (test "native_assets") generated 1 warning
+warning: `aether-asset-resolver` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 44.15s
+     Running unittests src\lib.rs (target\debug\deps\aether_asset_resolver-8f4ba2fe1a35dc22.exe)
+
+running 9 tests
+test native::asset_policy::tests::rejects_junction_replacement_between_resolution_and_open ... ignored, requires directory-junction permission; run explicitly in native qualification
+test native::asset_policy::tests::malformed_encoding_never_panics ... ok
+test native::asset_policy::tests::rejects_traversal_and_platform_path_escapes ... ok
+test native::asset_policy::tests::manganis_absolute_development_urls_require_trusted_access ... ok
+test native::asset_policy::tests::handle_check_rejects_a_file_outside_the_captured_root ... ok
+test native::asset_policy::tests::packaged_read_uses_the_resolved_file ... ok
+test native::root_tests::linux_bundle_discovery_never_selects_an_unrelated_application ... ok
+test native::asset_policy::tests::resolves_only_files_inside_the_bundle ... ok
+test native::asset_policy::tests::per_request_limit_rejects_large_assets_and_accepts_exact_boundary ... ok
+
+test result: ok. 8 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests\native_assets.rs (target\debug\deps\native_assets-b9917426684139e2.exe)
+
+running 2 tests
+test malformed_asset_url_is_not_a_panic ... ok
+test trusted_application_sources_remain_explicit ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

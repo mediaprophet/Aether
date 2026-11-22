@@ -1,0 +1,1278 @@
+diff --git a/components/net/connector.rs b/components/net/connector.rs
+--- a/components/net/connector.rs
++++ b/components/net/connector.rs
+@@ -25,10 +25,12 @@
+ use hyper_util::rt::{TokioIo, TokioTimer};
+ use log::{error, warn};
+ use parking_lot::Mutex;
++pub use rustls::client::ResolvesClientCert;
+ use rustls::client::danger::ServerCertVerifier;
+ use rustls::client::{ClientConnection, EchStatus};
+ use rustls::crypto::{CryptoProvider, aws_lc_rs};
+ use rustls::{CipherSuite, ClientConfig, NamedGroup, ProtocolVersion};
++use rustls_pki_types::pem::PemObject;
+ use rustls_pki_types::{CertificateDer, ServerName, UnixTime};
+ use servo_config::pref;
+ use tokio::net::TcpStream;
+@@ -386,7 +388,9 @@
+ 
+ #[derive(Clone, Debug, PartialEq, Eq)]
+ pub enum EmbedderCertDecision {
+-    /// Explicitly allow the certificate chain (e.g. verified against embedder AU/community root or SPKI pin, or post-quantum ML-DSA cert).
++    /// Override standard chain validation. The host verifier must enforce its
++    /// intended hostname, validity, chain and revocation policy before allowing.
++    /// TLS handshake signatures still use the configured crypto provider.
+     Allow,
+     /// Explicitly deny the certificate with a reason string.
+     Deny(String),
+@@ -416,6 +420,10 @@
+     /// Adds the embedder's custom root certificates (such as Australian Root CAs and community roots)
+     /// to the platform/WebPKI verifier.
+     CombineWithDefault(Vec<CertificateDer<'de>>),
++    /// Explicit Mozilla roots, independent of the default-root preference.
++    CombineWithWebPki(Vec<CertificateDer<'de>>),
++    /// Explicit OS roots; unsupported on Android without its platform verifier setup.
++    CombineWithPlatform(Vec<CertificateDer<'de>>),
+ }
+ 
+ impl<'de> CACertificates<'de> {
+@@ -423,9 +431,8 @@
+     pub fn from_policy(policy: RootTrustPolicy, roots: Vec<CertificateDer<'de>>) -> Self {
+         match policy {
+             RootTrustPolicy::EmbedderRootsOnly => CACertificates::EmbedderRootsOnly(roots),
+-            RootTrustPolicy::EmbedderAndWebPki | RootTrustPolicy::EmbedderAndPlatform => {
+-                CACertificates::CombineWithDefault(roots)
+-            },
++            RootTrustPolicy::EmbedderAndWebPki => CACertificates::CombineWithWebPki(roots),
++            RootTrustPolicy::EmbedderAndPlatform => CACertificates::CombineWithPlatform(roots),
+             RootTrustPolicy::Default => {
+                 if roots.is_empty() {
+                     CACertificates::Default
+@@ -434,6 +441,125 @@
+                 }
+             },
+         }
++    }
++}
++
++/// Invalid or unsupported TLS configuration, reported before network startup.
++#[derive(Debug)]
++pub struct TlsConfigurationError(pub String);
++
++impl std::fmt::Display for TlsConfigurationError {
++    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++        f.write_str(&self.0)
++    }
++}
++impl std::error::Error for TlsConfigurationError {}
++impl From<std::io::Error> for TlsConfigurationError {
++    fn from(error: std::io::Error) -> Self {
++        Self(error.to_string())
++    }
++}
++
++/// Parse all certificates, rejecting empty or malformed bundles instead of dropping roots.
++pub fn parse_root_certificates(
++    bytes: &[u8],
++) -> Result<Vec<CertificateDer<'static>>, TlsConfigurationError> {
++    let certificates = if bytes.windows(11).any(|part| part == b"-----BEGIN ") {
++        CertificateDer::pem_slice_iter(bytes)
++            .map(|cert| cert.map_err(|error| TlsConfigurationError(error.to_string())))
++            .collect::<Result<Vec<_>, _>>()?
++    } else {
++        vec![CertificateDer::from(bytes.to_vec())]
++    };
++    if certificates.is_empty() {
++        return Err(TlsConfigurationError(
++            "Root certificate bundle is empty".into(),
++        ));
++    }
++    let mut roots = rustls::RootCertStore::empty();
++    for certificate in &certificates {
++        roots
++            .add(certificate.clone())
++            .map_err(|error| TlsConfigurationError(format!("Invalid root certificate: {error}")))?;
++    }
++    Ok(certificates
++        .into_iter()
++        .map(CertificateDer::into_owned)
++        .collect())
++}
++
++/// Host-selected TLS settings used by both HTTP profiles and WebSocket connections.
++/// These callbacks grant no page authority; the host owns their trust decisions.
++#[derive(Clone, Debug, Default)]
++pub struct TlsConfiguration {
++    pub ca_certificates: CACertificates<'static>,
++    pub ignore_certificate_errors: bool,
++    pub client_cert_resolver: Option<Arc<dyn ResolvesClientCert>>,
++    pub embedder_verifier: Option<Arc<dyn EmbedderCertVerifier>>,
++}
++
++/// TLS provider/verifier state prepared before creating active resource threads.
++/// Client configs reuse this state; creating a connection does not reread root files
++/// or reconstruct a fallible platform verifier.
++#[derive(Clone, Debug)]
++pub struct PreparedTlsConfiguration {
++    template: TlsConfig,
++    main_verifier: Arc<dyn ServerCertVerifier>,
++    pub(crate) ca_certificates: CACertificates<'static>,
++    pub(crate) ignore_certificate_errors: bool,
++    embedder_verifier: Option<Arc<dyn EmbedderCertVerifier>>,
++}
++
++impl TlsConfiguration {
++    pub fn prepare(&self) -> Result<PreparedTlsConfiguration, TlsConfigurationError> {
++        let verifier = CertificateVerificationOverrideVerifier::try_new(
++            self.ca_certificates.clone(),
++            self.ignore_certificate_errors,
++            CertificateErrorOverrideManager::new(),
++        )?
++        .with_embedder_verifier(self.embedder_verifier.clone());
++        let main_verifier = verifier.main_verifier.clone();
++        let builder = rustls::ClientConfig::builder_with_provider(CRYPTO_PROVIDER_CACHE.clone())
++            .with_safe_default_protocol_versions()
++            .map_err(|error| TlsConfigurationError(error.to_string()))?
++            .dangerous()
++            .with_custom_certificate_verifier(Arc::new(verifier));
++        let template = match self.client_cert_resolver.clone() {
++            Some(resolver) => builder.with_client_cert_resolver(resolver),
++            None => builder.with_no_client_auth(),
++        };
++        Ok(PreparedTlsConfiguration {
++            template,
++            main_verifier,
++            ca_certificates: self.ca_certificates.clone(),
++            ignore_certificate_errors: self.ignore_certificate_errors,
++            embedder_verifier: self.embedder_verifier.clone(),
++        })
++    }
++
++    pub fn create_config(
++        &self,
++        manager: CertificateErrorOverrideManager,
++    ) -> Result<TlsConfig, TlsConfigurationError> {
++        Ok(self.prepare()?.create_config(manager))
++    }
++}
++
++impl PreparedTlsConfiguration {
++    pub fn create_config(&self, manager: CertificateErrorOverrideManager) -> TlsConfig {
++        let mut config = self.template.clone();
++        // ClientConfig cloning shares Arc-backed session state. Each caller/profile
++        // gets its own cache so private browsing cannot consume public TLS tickets.
++        config.resumption = rustls::client::Resumption::default();
++        config.dangerous().set_certificate_verifier(Arc::new(
++            CertificateVerificationOverrideVerifier {
++                main_verifier: self.main_verifier.clone(),
++                ignore_certificate_errors: self.ignore_certificate_errors,
++                override_manager: manager,
++                embedder_verifier: self.embedder_verifier.clone(),
++            },
++        ));
++        config
+     }
+ }
+ 
+@@ -447,22 +573,14 @@
+     client_cert_resolver: Option<Arc<dyn rustls::client::ResolvesClientCert>>,
+     embedder_verifier: Option<Arc<dyn EmbedderCertVerifier>>,
+ ) -> TlsConfig {
+-    let verifier = CertificateVerificationOverrideVerifier::new(
++    TlsConfiguration {
+         ca_certificates,
+         ignore_certificate_errors,
+-        override_manager,
+-    )
+-    .with_embedder_verifier(embedder_verifier);
+-
+-    let builder = rustls::ClientConfig::builder()
+-        .dangerous()
+-        .with_custom_certificate_verifier(Arc::new(verifier));
+-
+-    if let Some(resolver) = client_cert_resolver {
+-        builder.with_client_cert_resolver(resolver)
+-    } else {
+-        builder.with_no_client_auth()
+-    }
++        client_cert_resolver,
++        embedder_verifier,
++    }
++    .create_config(override_manager)
++    .expect("Invalid Chora TLS configuration")
+ }
+ 
+ /// Create a [TlsConfig] to use for managing a HTTP connection. This currently creates
+@@ -513,18 +631,6 @@
+         })
+ });
+ 
+-/// A cache for the default rustls platform verifier.
+-///
+-/// Instantiating a new verifier can be expensive, since it can read through all certificates:
+-/// <https://github.com/rustls/rustls-platform-verifier/blob/996b1c903491641b17b3c9afb65d1352f6fc6b76/rustls-platform-verifier/src/verification/others.rs#L92>
+-static RUSTLS_PLATFORM_VERIFIER_CACHE: LazyLock<Arc<rustls_platform_verifier::Verifier>> =
+-    LazyLock::new(|| {
+-        Arc::new(
+-            rustls_platform_verifier::Verifier::new(CRYPTO_PROVIDER_CACHE.clone())
+-                .expect("Could not initialize platform certificate verifier"),
+-        )
+-    });
+-
+ /// Prewarm the TLS stack to speed up the first connection
+ ///
+ /// Currently, this force-seeds the crypto provider (from aws_lc_rs),
+@@ -538,8 +644,6 @@
+         let mut sink = [0u8; 32];
+         // The first access can be slow, if the provider needs to gather entropy.
+         let _ = CRYPTO_PROVIDER_CACHE.secure_random.fill(&mut sink);
+-        // Note: We don't need to explicitly force initialize RUSTLS_PLATFORM_VERIFIER_CACHE,
+-        // since the resource manager thread will do that during startup.
+     }
+ 
+     if let Err(error) = std::thread::Builder::new()
+@@ -564,83 +668,67 @@
+         ignore_certificate_errors: bool,
+         override_manager: CertificateErrorOverrideManager,
+     ) -> Self {
+-        let main_verifier = match ca_certficates {
+-            CACertificates::EmbedderRootsOnly(certificates) => {
+-                let mut root_store = rustls::RootCertStore::empty();
+-                for certificate in certificates {
+-                    if let Err(e) = root_store.add(certificate) {
+-                        log::error!("Could not add embedder root certificate: {e:?}");
+-                    }
+-                }
+-                rustls::client::WebPkiServerVerifier::builder(root_store.into())
+-                    .build()
+-                    .expect("Could not initialize verifier with embedder roots only.")
+-                    as Arc<dyn ServerCertVerifier>
+-            },
+-            ca_certs => {
+-                // From <https://github.com/rustls/rustls-platform-verifier/blob/main/README.md>:
+-                // > Some manual setup is required, outside of cargo, to use this crate on
+-                // > Android. In order to use Android's certificate verifier, the crate needs to
+-                // > call into the JVM. A small Kotlin component must be included in your app's
+-                // > build to support rustls-platform-verifier.
+-                //
+-                // Since we cannot count on embedders to do this setup, just stick with webpki roots
+-                // on Android.
+-                let use_webpki_roots =
+-                    cfg!(target_os = "android") || pref!(network_use_webpki_roots);
+-                if !use_webpki_roots {
+-                    let verifier = match ca_certs {
+-                        CACertificates::Default => RUSTLS_PLATFORM_VERIFIER_CACHE.clone(),
+-                        // Android doesn't support `Verifier::new_with_extra_roots`, but currently Android
+-                        // never uses the platform verifier at all.
+-                        CACertificates::Override(certificates)
+-                        | CACertificates::CombineWithDefault(certificates) => {
+-                            #[cfg(target_os = "android")]
+-                            unreachable!("Android should always use the WebPKI verifier.");
+-                            #[cfg(not(target_os = "android"))]
+-                            {
+-                                let verifier =
+-                                    rustls_platform_verifier::Verifier::new_with_extra_roots(
+-                                        certificates,
+-                                        CRYPTO_PROVIDER_CACHE.clone(),
+-                                    )
+-                                    .expect("Could not initialize platform certificate verifier");
+-                                Arc::new(verifier)
+-                            }
+-                        },
+-                        CACertificates::EmbedderRootsOnly(_) => unreachable!(),
+-                    };
+-                    verifier as Arc<dyn ServerCertVerifier>
+-                } else {
+-                    let mut root_store = rustls::RootCertStore::from_iter(
+-                        webpki_roots::TLS_SERVER_ROOTS.iter().cloned(),
+-                    );
+-                    match ca_certs {
+-                        CACertificates::Default => {},
+-                        CACertificates::Override(certificates)
+-                        | CACertificates::CombineWithDefault(certificates) => {
+-                            for certificate in certificates {
+-                                if root_store.add(certificate).is_err() {
+-                                    log::error!("Could not add an override certificate.");
+-                                }
+-                            }
+-                        },
+-                        CACertificates::EmbedderRootsOnly(_) => unreachable!(),
+-                    }
+-                    rustls::client::WebPkiServerVerifier::builder(root_store.into())
+-                        .build()
+-                        .expect("Could not initialize platform certificate verifier.")
+-                        as Arc<dyn ServerCertVerifier>
+-                }
++        Self::try_new(ca_certficates, ignore_certificate_errors, override_manager)
++            .expect("Invalid Chora TLS verifier configuration")
++    }
++
++    pub fn try_new(
++        ca_certificates: CACertificates<'static>,
++        ignore_certificate_errors: bool,
++        override_manager: CertificateErrorOverrideManager,
++    ) -> Result<Self, TlsConfigurationError> {
++        // Explicit policies never depend on the default-root preference.
++        let default_webpki = cfg!(target_os = "android") || pref!(network_use_webpki_roots);
++        let (certificates, use_webpki, include_default) = match ca_certificates {
++            CACertificates::EmbedderRootsOnly(certificates) => (certificates, true, false),
++            CACertificates::CombineWithWebPki(certificates) => (certificates, true, true),
++            CACertificates::CombineWithPlatform(certificates) => (certificates, false, true),
++            CACertificates::Default => (Vec::new(), default_webpki, true),
++            CACertificates::Override(certificates)
++            | CACertificates::CombineWithDefault(certificates) => {
++                (certificates, default_webpki, true)
+             },
+         };
+-
+-        Self {
++        // Validate every supplied anchor even when the platform verifier is used.
++        let mut custom_roots = rustls::RootCertStore::empty();
++        for certificate in &certificates {
++            custom_roots.add(certificate.clone()).map_err(|error| {
++                TlsConfigurationError(format!("Invalid root certificate: {error}"))
++            })?;
++        }
++        let main_verifier: Arc<dyn ServerCertVerifier> = if use_webpki {
++            if include_default {
++                custom_roots.extend(webpki_roots::TLS_SERVER_ROOTS.iter().cloned());
++            }
++            rustls::client::WebPkiServerVerifier::builder_with_provider(
++                Arc::new(custom_roots),
++                CRYPTO_PROVIDER_CACHE.clone(),
++            )
++            .build()
++            .map_err(|error| TlsConfigurationError(error.to_string()))?
++        } else {
++            #[cfg(target_os = "android")]
++            return Err(TlsConfigurationError(
++                "Explicit platform root policy is unsupported on Android in this embedding profile"
++                    .into(),
++            ));
++            #[cfg(not(target_os = "android"))]
++            {
++                Arc::new(
++                    rustls_platform_verifier::Verifier::new_with_extra_roots(
++                        certificates,
++                        CRYPTO_PROVIDER_CACHE.clone(),
++                    )
++                    .map_err(|error| TlsConfigurationError(error.to_string()))?,
++                )
++            }
++        };
++        Ok(Self {
+             main_verifier,
+             ignore_certificate_errors,
+             override_manager,
+             embedder_verifier: None,
+-        }
++        })
+     }
+ 
+     pub fn with_embedder_verifier(
+diff --git a/components/net/resource_thread.rs b/components/net/resource_thread.rs
+--- a/components/net/resource_thread.rs
++++ b/components/net/resource_thread.rs
+@@ -6,8 +6,7 @@
+ 
+ use std::borrow::ToOwned;
+ use std::collections::HashMap;
+-use std::fs::File;
+-use std::io::{self, BufReader};
++use std::io;
+ use std::path::{Path, PathBuf};
+ use std::sync::{Arc, Weak};
+ use std::thread;
+@@ -38,7 +37,6 @@
+ use profile_traits::time::ProfilerChan;
+ use rustc_hash::FxHashMap;
+ use rustls_pki_types::CertificateDer;
+-use rustls_pki_types::pem::PemObject;
+ use serde::{Deserialize, Serialize};
+ use servo_base::generic_channel::{
+     self, CallbackSetter, GenericCallback, GenericReceiver, GenericReceiverSet,
+@@ -50,7 +48,8 @@
+ 
+ use crate::async_runtime::{init_async_runtime, spawn_task};
+ use crate::connector::{
+-    CACertificates, CertificateErrorOverrideManager, create_http_client, create_tls_config,
++    CACertificates, CertificateErrorOverrideManager, PreparedTlsConfiguration, create_http_client,
++    create_tls_config,
+ };
+ use crate::cookie::ServoCookie;
+ use crate::cookie_storage::CookieStorage;
+@@ -72,15 +71,9 @@
+ 
+ /// Load a file with CA certificate and produce a RootCertStore with the results.
+ fn load_root_cert_store_from_file(file_path: String) -> io::Result<Vec<CertificateDer<'static>>> {
+-    let mut pem = BufReader::new(File::open(file_path)?);
+-
+-    let certs = CertificateDer::pem_reader_iter(&mut pem)
+-        .filter_map(|cert| {
+-            cert.inspect_err(|e| log::error!("Could not load certificate ({e}). Ignoring it."))
+-                .ok()
+-        })
+-        .collect();
+-    Ok(certs)
++    let bytes = std::fs::read(file_path)?;
++    crate::connector::parse_root_certificates(&bytes)
++        .map_err(|error| io::Error::new(io::ErrorKind::InvalidData, error))
+ }
+ 
+ /// Returns a tuple of (public, private) senders to the new threads.
+@@ -99,10 +92,11 @@
+     let async_runtime = init_async_runtime();
+ 
+     let ca_certificates = certificate_path
+-        .and_then(|path| {
+-            Some(CACertificates::Override(
+-                load_root_cert_store_from_file(path).ok()?,
+-            ))
++        .map(|path| {
++            CACertificates::Override(
++                load_root_cert_store_from_file(path)
++                    .expect("Invalid Chora TLS root certificate file"),
++            )
+         })
+         .unwrap_or_default();
+ 
+@@ -155,6 +149,36 @@
+     )
+ }
+ 
++/// Start resource threads with an already validated host TLS configuration.
++#[expect(clippy::too_many_arguments)]
++pub fn new_resource_threads_with_tls_configuration(
++    devtools_sender: Option<crossbeam_channel::Sender<DevtoolsMessage>>,
++    time_profiler_chan: ProfilerChan,
++    mem_profiler_chan: MemProfilerChan,
++    embedder_proxy: GenericEmbedderProxy<NetToEmbedderMsg>,
++    config_dir: Option<PathBuf>,
++    configuration: PreparedTlsConfiguration,
++    protocols: Arc<ProtocolRegistry>,
++) -> (ResourceThreads, ResourceThreads, Box<dyn AsyncRuntime>) {
++    let async_runtime = init_async_runtime();
++    let (public, private) = new_core_resource_thread_with_tls_configuration(
++        devtools_sender,
++        time_profiler_chan,
++        mem_profiler_chan,
++        embedder_proxy,
++        config_dir,
++        configuration.ca_certificates.clone(),
++        configuration.ignore_certificate_errors,
++        protocols,
++        Some(configuration),
++    );
++    (
++        ResourceThreads::new(public),
++        ResourceThreads::new(private),
++        async_runtime,
++    )
++}
++
+ /// Create a CoreResourceThread
+ #[expect(clippy::too_many_arguments)]
+ pub fn new_core_resource_thread(
+@@ -166,6 +190,31 @@
+     ca_certificates: CACertificates<'static>,
+     ignore_certificate_errors: bool,
+     protocols: Arc<ProtocolRegistry>,
++) -> (CoreResourceThread, CoreResourceThread) {
++    new_core_resource_thread_with_tls_configuration(
++        devtools_sender,
++        time_profiler_chan,
++        mem_profiler_chan,
++        embedder_proxy,
++        config_dir,
++        ca_certificates,
++        ignore_certificate_errors,
++        protocols,
++        None,
++    )
++}
++
++#[expect(clippy::too_many_arguments)]
++fn new_core_resource_thread_with_tls_configuration(
++    devtools_sender: Option<crossbeam_channel::Sender<DevtoolsMessage>>,
++    time_profiler_chan: ProfilerChan,
++    mem_profiler_chan: MemProfilerChan,
++    embedder_proxy: GenericEmbedderProxy<NetToEmbedderMsg>,
++    config_dir: Option<PathBuf>,
++    ca_certificates: CACertificates<'static>,
++    ignore_certificate_errors: bool,
++    protocols: Arc<ProtocolRegistry>,
++    tls_configuration: Option<PreparedTlsConfiguration>,
+ ) -> (CoreResourceThread, CoreResourceThread) {
+     let (public_setup_chan, public_setup_port) = generic_channel::channel().unwrap();
+     let (private_setup_chan, private_setup_port) = generic_channel::channel().unwrap();
+@@ -190,6 +239,7 @@
+             );
+ 
+             let mut channel_manager = ResourceChannelManager {
++                tls_configuration,
+                 resource_manager,
+                 config_dir,
+                 ca_certificates,
+@@ -220,6 +270,7 @@
+ }
+ 
+ struct ResourceChannelManager {
++    tls_configuration: Option<PreparedTlsConfiguration>,
+     resource_manager: CoreResourceManager,
+     config_dir: Option<PathBuf>,
+     ca_certificates: CACertificates<'static>,
+@@ -234,6 +285,7 @@
+     ca_certificates: CACertificates<'static>,
+     ignore_certificate_errors: bool,
+     embedder_proxy: GenericEmbedderProxy<NetToEmbedderMsg>,
++    tls_configuration: Option<PreparedTlsConfiguration>,
+ ) -> (Arc<HttpState>, Arc<HttpState>) {
+     let mut hsts_list = HstsList::default();
+     let mut auth_cache = AuthCache::default();
+@@ -246,32 +298,40 @@
+ 
+     let override_manager = CertificateErrorOverrideManager::new();
+     let http_state = HttpState {
++        tls_configuration: tls_configuration.clone(),
+         hsts_list: RwLock::new(hsts_list),
+         cookie_jar: RwLock::new(cookie_jar),
+         auth_cache: RwLock::new(auth_cache),
+         history_states: RwLock::new(FxHashMap::default()),
+         http_cache: HttpCache::new(HttpCacheAssignment::Public),
+-        client: create_http_client(create_tls_config(
+-            ca_certificates.clone(),
+-            ignore_certificate_errors,
+-            override_manager.clone(),
+-        )),
++        client: create_http_client(match &tls_configuration {
++            Some(configuration) => configuration.create_config(override_manager.clone()),
++            None => create_tls_config(
++                ca_certificates.clone(),
++                ignore_certificate_errors,
++                override_manager.clone(),
++            ),
++        }),
+         override_manager,
+         embedder_proxy: embedder_proxy.clone(),
+     };
+ 
+     let override_manager = CertificateErrorOverrideManager::new();
+     let private_http_state = HttpState {
++        tls_configuration: tls_configuration.clone(),
+         hsts_list: RwLock::new(HstsList::default()),
+         cookie_jar: RwLock::new(CookieStorage::new(150)),
+         auth_cache: RwLock::new(AuthCache::default()),
+         history_states: RwLock::new(FxHashMap::default()),
+         http_cache: HttpCache::new(HttpCacheAssignment::Private),
+-        client: create_http_client(create_tls_config(
+-            ca_certificates,
+-            ignore_certificate_errors,
+-            override_manager.clone(),
+-        )),
++        client: create_http_client(match &tls_configuration {
++            Some(configuration) => configuration.create_config(override_manager.clone()),
++            None => create_tls_config(
++                ca_certificates,
++                ignore_certificate_errors,
++                override_manager.clone(),
++            ),
++        }),
+         override_manager,
+         embedder_proxy,
+     };
+@@ -296,6 +356,7 @@
+             self.ca_certificates.clone(),
+             self.ignore_certificate_errors,
+             embedder_proxy,
++            self.tls_configuration.clone(),
+         );
+ 
+         let mut rx_set = GenericReceiverSet::new();
+@@ -707,9 +768,9 @@
+                 return false;
+             },
+             // Ignore these messages as they are only sent on very specific channels.
+-            CoreResourceMsg::CollectMemoryReport(_) |
+-            CoreResourceMsg::RevokeTokenForFile(..) |
+-            CoreResourceMsg::RefreshTokenForFile(..) => {},
++            CoreResourceMsg::CollectMemoryReport(_)
++            | CoreResourceMsg::RevokeTokenForFile(..)
++            | CoreResourceMsg::RefreshTokenForFile(..) => {},
+         }
+         true
+     }
+diff --git a/components/net/http_loader.rs b/components/net/http_loader.rs
+--- a/components/net/http_loader.rs
++++ b/components/net/http_loader.rs
+@@ -77,7 +77,8 @@
+ 
+ use crate::async_runtime::spawn_task;
+ use crate::connector::{
+-    CertificateErrorOverrideManager, ServoClient, TlsHandshakeInfo, create_tls_config,
++    CertificateErrorOverrideManager, PreparedTlsConfiguration, ServoClient, TlsHandshakeInfo,
++    create_tls_config,
+ };
+ use crate::cookie::ServoCookie;
+ use crate::cookie_storage::CookieStorage;
+@@ -117,6 +118,7 @@
+ }
+ 
+ pub struct HttpState {
++    pub tls_configuration: Option<PreparedTlsConfiguration>,
+     pub hsts_list: RwLock<HstsList>,
+     pub cookie_jar: RwLock<CookieStorage>,
+     pub http_cache: HttpCache,
+@@ -2229,11 +2231,16 @@
+                 )
+             };
+ 
+-            let mut tls_config = create_tls_config(
+-                context.ca_certificates.clone(),
+-                context.ignore_certificate_errors,
+-                context.state.override_manager.clone(),
+-            );
++            let mut tls_config = match &context.state.tls_configuration {
++                Some(configuration) => {
++                    configuration.create_config(context.state.override_manager.clone())
++                },
++                None => create_tls_config(
++                    context.ca_certificates.clone(),
++                    context.ignore_certificate_errors,
++                    context.state.override_manager.clone(),
++                ),
++            };
+             tls_config.alpn_protocols = vec!["http/1.1".into()];
+ 
+             let response = match start_websocket(
+diff --git a/components/net/tests/main.rs b/components/net/tests/main.rs
+--- a/components/net/tests/main.rs
++++ b/components/net/tests/main.rs
+@@ -10,6 +10,7 @@
+ mod data_loader;
+ mod decoder;
+ mod fetch;
++mod tls_configuration;
+ 
+ fn fetch(request: Request, dc: Option<Sender<DevtoolsControlMsg>>) -> Response {
+     fetch_with_context(request, &mut new_fetch_context(dc, None))
+@@ -111,6 +112,7 @@
+ 
+     let override_manager = net::connector::CertificateErrorOverrideManager::new();
+     HttpState {
++        tls_configuration: None,
+         hsts_list: RwLock::new(net::hsts::HstsList::default()),
+         cookie_jar: RwLock::new(net::cookie_storage::CookieStorage::new(150)),
+         auth_cache: RwLock::new(net::resource_thread::AuthCache::default()),
+diff --git a/components/servo/servo.rs b/components/servo/servo.rs
+--- a/components/servo/servo.rs
++++ b/components/servo/servo.rs
+@@ -33,11 +33,15 @@
+ use layout_api::ScriptThreadFactory;
+ use log::{Log, Metadata, Record, debug, warn};
+ use media::{GlApi, NativeDisplay, WindowGLContext};
++use net::connector::{
++    CACertificates, EmbedderCertVerifier, ResolvesClientCert, RootTrustPolicy, TlsConfiguration,
++    TlsConfigurationError, parse_root_certificates,
++};
+ use net::embedder::NetToEmbedderMsg;
+ #[cfg(feature = "multiprocess")]
+ use net::image_cache::ImageCacheFactoryImpl;
+ use net::protocols::ProtocolRegistry;
+-use net::resource_thread::new_resource_threads;
++use net::resource_thread::new_resource_threads_with_tls_configuration;
+ #[cfg(feature = "multiprocess")]
+ use net_traits::FetchThread;
+ use net_traits::ResourceThreads;
+@@ -921,7 +925,7 @@
+ 
+ impl Servo {
+     #[servo_tracing::instrument(name = "Servo::new", skip(builder))]
+-    fn new(builder: ServoBuilder) -> Self {
++    fn new(builder: ServoBuilder) -> Result<Self, TlsConfigurationError> {
+         // Global configuration options, parsed from the command line.
+         let opts = builder.opts.map(|opts| *opts).unwrap_or_default();
+         opts::initialize_options(opts);
+@@ -931,6 +935,34 @@
+         // TODO: It would be better to make these private to a particular Servo instance.
+         let preferences = builder.preferences.map(|opts| *opts);
+         servo_config::prefs::set(preferences.unwrap_or_default());
++
++        // Parse and validate every root before creating any resource threads.
++        // Configuration errors cannot silently fall back to the default trust store.
++        let mut custom_root_pems = builder.custom_root_pems;
++        for path in builder.custom_root_pem_paths {
++            custom_root_pems.push(std::fs::read(&path).map_err(|error| {
++                TlsConfigurationError(format!(
++                    "Could not read TLS root bundle {}: {error}",
++                    path.display()
++                ))
++            })?);
++        }
++        if let Some(path) = &opts.certificate_path {
++            custom_root_pems.push(std::fs::read(path).map_err(|error| {
++                TlsConfigurationError(format!("Could not read TLS root bundle {path}: {error}"))
++            })?);
++        }
++        let mut roots = Vec::new();
++        for bundle in &custom_root_pems {
++            roots.extend(parse_root_certificates(bundle)?);
++        }
++        let tls_configuration = TlsConfiguration {
++            ca_certificates: CACertificates::from_policy(builder.root_trust_policy, roots),
++            ignore_certificate_errors: opts.ignore_certificate_errors,
++            client_cert_resolver: builder.client_cert_resolver,
++            embedder_verifier: builder.embedder_cert_verifier,
++        }
++        .prepare()?;
+ 
+         use std::sync::atomic::Ordering;
+ 
+@@ -1006,14 +1038,13 @@
+ 
+         let protocols = Arc::new(protocols);
+         let (public_resource_threads, private_resource_threads, async_runtime) =
+-            new_resource_threads(
++            new_resource_threads_with_tls_configuration(
+                 devtools_sender.clone(),
+                 time_profiler_chan.clone(),
+                 mem_profiler_chan.clone(),
+                 net_embedder_proxy,
+                 opts.config_dir.clone(),
+-                opts.certificate_path.clone(),
+-                opts.ignore_certificate_errors,
++                tls_configuration,
+                 protocols.clone(),
+             );
+ 
+@@ -1053,16 +1084,9 @@
+             private_resource_threads.clone(),
+             constellation_proxy.clone(),
+         );
+-        for pem in builder.custom_root_pems {
+-            network_manager.add_custom_root_pem(pem);
+-        }
+-        for path in builder.custom_root_pem_paths {
+-            if let Ok(bytes) = std::fs::read(&path) {
+-                network_manager.add_custom_root_pem(bytes);
+-            }
+-        }
+-
+-        Servo(Rc::new(ServoInner {
++        network_manager.set_initial_custom_roots(custom_root_pems);
++
++        Ok(Servo(Rc::new(ServoInner {
+             delegate: RefCell::new(Rc::new(DefaultServoDelegate)),
+             paint,
+             network_manager: Rc::new(RefCell::new(network_manager)),
+@@ -1086,7 +1110,7 @@
+             pending_handled_input_events: Default::default(),
+             event_loop_waker,
+             keystore_provider: builder.keystore_provider,
+-        }))
++        })))
+     }
+ 
+     pub fn delegate(&self) -> Rc<dyn ServoDelegate> {
+@@ -1498,6 +1522,9 @@
+     protocol_registry: ProtocolRegistry,
+     custom_root_pems: Vec<Vec<u8>>,
+     custom_root_pem_paths: Vec<PathBuf>,
++    root_trust_policy: RootTrustPolicy,
++    client_cert_resolver: Option<Arc<dyn ResolvesClientCert>>,
++    embedder_cert_verifier: Option<Arc<dyn EmbedderCertVerifier>>,
+     keystore_provider: Option<Arc<dyn std::any::Any + Send + Sync>>,
+ }
+ 
+@@ -1510,14 +1537,39 @@
+             protocol_registry: Default::default(),
+             custom_root_pems: Vec::new(),
+             custom_root_pem_paths: Vec::new(),
++            root_trust_policy: RootTrustPolicy::Default,
++            client_cert_resolver: None,
++            embedder_cert_verifier: None,
+             keystore_provider: None,
+         }
+     }
+ }
+ 
+ impl ServoBuilder {
++    /// Build the engine, panicking if TLS settings are invalid. Prefer `try_build`.
+     pub fn build(self) -> Servo {
++        self.try_build().expect("Invalid Chora TLS configuration")
++    }
++
++    /// Reject invalid or unsupported TLS configuration before network startup.
++    /// Other engine initialization failures are not yet covered by this result.
++    pub fn try_build(self) -> Result<Servo, TlsConfigurationError> {
+         Servo::new(self)
++    }
++
++    pub fn root_trust_policy(mut self, policy: RootTrustPolicy) -> Self {
++        self.root_trust_policy = policy;
++        self
++    }
++
++    pub fn client_cert_resolver(mut self, resolver: Arc<dyn ResolvesClientCert>) -> Self {
++        self.client_cert_resolver = Some(resolver);
++        self
++    }
++
++    pub fn embedder_cert_verifier(mut self, verifier: Arc<dyn EmbedderCertVerifier>) -> Self {
++        self.embedder_cert_verifier = Some(verifier);
++        self
+     }
+ 
+     pub fn opts(mut self, opts: Opts) -> Self {
+diff --git a/components/servo/network_manager.rs b/components/servo/network_manager.rs
+--- a/components/servo/network_manager.rs
++++ b/components/servo/network_manager.rs
+@@ -50,9 +50,17 @@
+         }
+     }
+ 
+-    /// Add an embedder-supplied custom root PEM or DER certificate bundle for PKI trust verification.
+-    pub fn add_custom_root_pem(&mut self, pem_or_der: Vec<u8>) {
+-        self.extra_ca_pem_bundle.push(pem_or_der);
++    pub(crate) fn set_initial_custom_roots(&mut self, bundles: Vec<Vec<u8>>) {
++        self.extra_ca_pem_bundle = bundles;
++    }
++
++    /// Live root reload is unsupported: active clients and pooled connections are unchanged.
++    /// Configure initial roots through the builder before starting the engine.
++    pub fn add_custom_root_pem(&mut self, _pem_or_der: Vec<u8>) -> std::io::Result<()> {
++        Err(std::io::Error::new(
++            std::io::ErrorKind::Unsupported,
++            "Live TLS root reload is not implemented; configure roots before engine startup",
++        ))
+     }
+ 
+     /// Returns the embedder-supplied custom root PEM/DER certificate bundles.
+diff --git a/components/net/Cargo.toml b/components/net/Cargo.toml
+--- a/components/net/Cargo.toml
++++ b/components/net/Cargo.toml
+@@ -96,6 +96,7 @@
+ webrender_api = { workspace = true }
+ 
+ [dev-dependencies]
++rcgen = "0.13.2"
+ flate2 = { workspace = true }
+ fst = { workspace = true }
+ hyper = { workspace = true, features = ["full"] }
+diff --git a/components/net/tests/tls_configuration.rs b/components/net/tests/tls_configuration.rs
+new file mode 100644
+--- /dev/null
++++ b/components/net/tests/tls_configuration.rs
+@@ -0,0 +1,399 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
++
++use net::connector::{
++    CACertificates, CertificateErrorOverrideManager, CertificateVerificationOverrideVerifier,
++    EmbedderCertDecision, EmbedderCertVerifier, RootTrustPolicy, TlsConfiguration,
++    parse_root_certificates,
++};
++use rcgen::{
++    BasicConstraints, Certificate, CertificateParams, ExtendedKeyUsagePurpose, IsCa, KeyPair,
++};
++use rustls::client::danger::ServerCertVerifier;
++use rustls::pki_types::{CertificateDer, PrivatePkcs8KeyDer, ServerName, UnixTime};
++use std::io::Cursor;
++use std::sync::{
++    Arc,
++    atomic::{AtomicUsize, Ordering},
++};
++
++fn credentials(expired: bool) -> (Certificate, Certificate, KeyPair) {
++    let mut params = CertificateParams::new(Vec::<String>::new()).unwrap();
++    params.is_ca = IsCa::Ca(BasicConstraints::Unconstrained);
++    params
++        .distinguished_name
++        .push(rcgen::DnType::CommonName, "Chora TLS test root");
++    let ca_key = KeyPair::generate().unwrap();
++    let ca = params.self_signed(&ca_key).unwrap();
++    let mut params = CertificateParams::new(vec!["localhost".into()]).unwrap();
++    params
++        .distinguished_name
++        .push(rcgen::DnType::CommonName, "localhost");
++    params.extended_key_usages = vec![
++        ExtendedKeyUsagePurpose::ServerAuth,
++        ExtendedKeyUsagePurpose::ClientAuth,
++    ];
++    if expired {
++        params.not_before = rcgen::date_time_ymd(2000, 1, 1);
++        params.not_after = rcgen::date_time_ymd(2001, 1, 1);
++    }
++    let key = KeyPair::generate().unwrap();
++    let leaf = params.signed_by(&key, &ca, &ca_key).unwrap();
++    (ca, leaf, key)
++}
++
++fn configuration(ca: &Certificate) -> TlsConfiguration {
++    TlsConfiguration {
++        ca_certificates: CACertificates::EmbedderRootsOnly(vec![ca.der().clone()]),
++        ..Default::default()
++    }
++}
++
++fn verifier(ca: &Certificate) -> CertificateVerificationOverrideVerifier {
++    CertificateVerificationOverrideVerifier::try_new(
++        CACertificates::EmbedderRootsOnly(vec![ca.der().clone()]),
++        false,
++        CertificateErrorOverrideManager::new(),
++    )
++    .unwrap()
++}
++
++#[test]
++fn preserves_explicit_trust_modes() {
++    assert!(matches!(
++        CACertificates::from_policy(RootTrustPolicy::EmbedderAndWebPki, vec![]),
++        CACertificates::CombineWithWebPki(_)
++    ));
++    assert!(matches!(
++        CACertificates::from_policy(RootTrustPolicy::EmbedderAndPlatform, vec![]),
++        CACertificates::CombineWithPlatform(_)
++    ));
++    assert!(matches!(
++        CACertificates::from_policy(RootTrustPolicy::EmbedderRootsOnly, vec![]),
++        CACertificates::EmbedderRootsOnly(_)
++    ));
++}
++
++#[test]
++fn rejects_invalid_roots_instead_of_silently_discarding_them() {
++    for bytes in [
++        b"".as_slice(),
++        b"not a certificate",
++        b"-----BEGIN CERTIFICATE-----\nnot-base64\n-----END CERTIFICATE-----",
++    ] {
++        assert!(parse_root_certificates(bytes).is_err());
++    }
++    let (ca, _, _) = credentials(false);
++    assert_eq!(
++        parse_root_certificates(ca.pem().as_bytes()).unwrap(),
++        vec![ca.der().clone()]
++    );
++    assert_eq!(
++        parse_root_certificates(ca.der().as_ref()).unwrap(),
++        vec![ca.der().clone()]
++    );
++    let mut broken = ca.pem().into_bytes();
++    broken.extend_from_slice(b"\n-----BEGIN CERTIFICATE-----\n@@@\n-----END CERTIFICATE-----\n");
++    assert!(parse_root_certificates(&broken).is_err());
++    let invalid = TlsConfiguration {
++        ca_certificates: CACertificates::EmbedderRootsOnly(vec![CertificateDer::from(vec![
++            0, 1, 2,
++        ])]),
++        ..Default::default()
++    };
++    assert!(
++        invalid
++            .create_config(CertificateErrorOverrideManager::new())
++            .is_err()
++    );
++    let empty = TlsConfiguration {
++        ca_certificates: CACertificates::EmbedderRootsOnly(vec![]),
++        ..Default::default()
++    };
++    assert!(
++        empty
++            .create_config(CertificateErrorOverrideManager::new())
++            .is_err()
++    );
++}
++
++#[test]
++fn custom_ca_still_enforces_hostname_validity_and_chain() {
++    let (ca, leaf, _) = credentials(false);
++    let verifier = verifier(&ca);
++    let now = UnixTime::since_unix_epoch(std::time::Duration::from_secs(1_790_000_000));
++    assert!(
++        verifier
++            .verify_server_cert(
++                leaf.der(),
++                &[],
++                &ServerName::try_from("localhost").unwrap(),
++                &[],
++                now
++            )
++            .is_ok()
++    );
++    assert!(
++        verifier
++            .verify_server_cert(
++                leaf.der(),
++                &[],
++                &ServerName::try_from("wrong.example").unwrap(),
++                &[],
++                now
++            )
++            .is_err()
++    );
++    let (_, unrelated, _) = credentials(false);
++    assert!(
++        verifier
++            .verify_server_cert(
++                unrelated.der(),
++                &[],
++                &ServerName::try_from("localhost").unwrap(),
++                &[],
++                now
++            )
++            .is_err()
++    );
++    let (expired_ca, expired, _) = credentials(true);
++    assert!(
++        self::verifier(&expired_ca)
++            .verify_server_cert(
++                expired.der(),
++                &[],
++                &ServerName::try_from("localhost").unwrap(),
++                &[],
++                now
++            )
++            .is_err()
++    );
++}
++
++#[derive(Debug)]
++struct ClientCertificate(Arc<rustls::sign::CertifiedKey>);
++impl rustls::client::ResolvesClientCert for ClientCertificate {
++    fn resolve(
++        &self,
++        _hints: &[&[u8]],
++        _schemes: &[rustls::SignatureScheme],
++    ) -> Option<Arc<rustls::sign::CertifiedKey>> {
++        Some(self.0.clone())
++    }
++    fn has_certs(&self) -> bool {
++        true
++    }
++}
++
++fn server(
++    ca: &Certificate,
++    leaf: &Certificate,
++    key: &KeyPair,
++    mutual: bool,
++) -> rustls::ServerConfig {
++    let builder =
++        rustls::ServerConfig::builder_with_provider(net::connector::CRYPTO_PROVIDER_CACHE.clone())
++            .with_safe_default_protocol_versions()
++            .unwrap();
++    let builder = if mutual {
++        let mut roots = rustls::RootCertStore::empty();
++        roots.add(ca.der().clone()).unwrap();
++        builder.with_client_cert_verifier(
++            rustls::server::WebPkiClientVerifier::builder_with_provider(
++                roots.into(),
++                net::connector::CRYPTO_PROVIDER_CACHE.clone(),
++            )
++            .build()
++            .unwrap(),
++        )
++    } else {
++        builder.with_no_client_auth()
++    };
++    builder
++        .with_single_cert(
++            vec![leaf.der().clone()],
++            PrivatePkcs8KeyDer::from(key.serialize_der()).into(),
++        )
++        .unwrap()
++}
++
++fn handshake_kind(
++    client: rustls::ClientConfig,
++    server: rustls::ServerConfig,
++) -> Result<rustls::HandshakeKind, rustls::Error> {
++    let mut client =
++        rustls::ClientConnection::new(Arc::new(client), ServerName::try_from("localhost").unwrap())
++            .unwrap();
++    let mut server = rustls::ServerConnection::new(Arc::new(server)).unwrap();
++    for _ in 0..32 {
++        let mut bytes = Vec::new();
++        client.write_tls(&mut bytes).unwrap();
++        if !bytes.is_empty() {
++            server.read_tls(&mut Cursor::new(bytes)).unwrap();
++            server.process_new_packets()?;
++        }
++        let mut bytes = Vec::new();
++        server.write_tls(&mut bytes).unwrap();
++        if !bytes.is_empty() {
++            client.read_tls(&mut Cursor::new(bytes)).unwrap();
++            client.process_new_packets()?;
++        }
++        if !client.is_handshaking() && !server.is_handshaking() {
++            return client
++                .handshake_kind()
++                .ok_or_else(|| rustls::Error::General("Missing handshake kind".into()));
++        }
++    }
++    Err(rustls::Error::General("Handshake did not finish".into()))
++}
++
++fn handshake(
++    client: rustls::ClientConfig,
++    server: rustls::ServerConfig,
++) -> Result<(), rustls::Error> {
++    handshake_kind(client, server).map(|_| ())
++}
++
++#[test]
++fn completes_tls_handshake_with_custom_ca_and_rejects_untrusted_chain() {
++    let (ca, leaf, key) = credentials(false);
++    let config = configuration(&ca)
++        .create_config(CertificateErrorOverrideManager::new())
++        .unwrap();
++    assert!(handshake(config, server(&ca, &leaf, &key, false)).is_ok());
++    let (unrelated_ca, _, _) = credentials(false);
++    let config = configuration(&unrelated_ca)
++        .create_config(CertificateErrorOverrideManager::new())
++        .unwrap();
++    assert!(handshake(config, server(&ca, &leaf, &key, false)).is_err());
++}
++
++#[test]
++fn explicit_root_modes_accept_configured_ca_without_using_default_preference() {
++    let (ca, leaf, key) = credentials(false);
++    let policies = [
++        RootTrustPolicy::EmbedderRootsOnly,
++        RootTrustPolicy::EmbedderAndWebPki,
++        RootTrustPolicy::EmbedderAndPlatform,
++    ];
++    for policy in policies {
++        let configuration = TlsConfiguration {
++            ca_certificates: CACertificates::from_policy(policy.clone(), vec![ca.der().clone()]),
++            ..Default::default()
++        };
++        let result = configuration.create_config(CertificateErrorOverrideManager::new());
++        if cfg!(target_os = "android") && policy == RootTrustPolicy::EmbedderAndPlatform {
++            assert!(result.is_err());
++        } else {
++            let handshake_result = handshake(result.unwrap(), server(&ca, &leaf, &key, false));
++            assert!(handshake_result.is_ok(), "{policy:?}: {handshake_result:?}");
++        }
++    }
++}
++
++#[test]
++fn client_resolver_reaches_mtls_handshake_and_absent_identity_is_denied() {
++    let (ca, leaf, key) = credentials(false);
++    let mut configuration = configuration(&ca);
++    let signing_key = rustls::sign::CertifiedKey::from_der(
++        vec![leaf.der().clone()],
++        PrivatePkcs8KeyDer::from(key.serialize_der()).into(),
++        &net::connector::CRYPTO_PROVIDER_CACHE,
++    )
++    .unwrap();
++    let resolver: Arc<dyn rustls::client::ResolvesClientCert> =
++        Arc::new(ClientCertificate(Arc::new(signing_key)));
++    configuration.client_cert_resolver = Some(resolver.clone());
++    let config = configuration
++        .create_config(CertificateErrorOverrideManager::new())
++        .unwrap();
++    assert!(Arc::ptr_eq(&config.client_auth_cert_resolver, &resolver));
++    assert!(handshake(config, server(&ca, &leaf, &key, true)).is_ok());
++    configuration.client_cert_resolver = None;
++    let config = configuration
++        .create_config(CertificateErrorOverrideManager::new())
++        .unwrap();
++    assert!(handshake(config, server(&ca, &leaf, &key, true)).is_err());
++}
++
++#[derive(Debug)]
++struct HostVerifier {
++    calls: Arc<AtomicUsize>,
++    deny: bool,
++}
++impl EmbedderCertVerifier for HostVerifier {
++    fn verify_server_cert(
++        &self,
++        _leaf: &[u8],
++        _intermediates: &[&[u8]],
++        name: &str,
++        _ocsp: &[u8],
++        standard: Result<(), String>,
++    ) -> EmbedderCertDecision {
++        assert_eq!(name, "localhost");
++        assert!(standard.is_ok());
++        self.calls.fetch_add(1, Ordering::SeqCst);
++        if self.deny {
++            EmbedderCertDecision::Deny("test host denial".into())
++        } else {
++            EmbedderCertDecision::DeferToStandard
++        }
++    }
++}
++
++#[test]
++fn configured_host_verifier_is_called_and_denial_fails_handshake() {
++    let (ca, leaf, key) = credentials(false);
++    let calls = Arc::new(AtomicUsize::new(0));
++    for deny in [false, true] {
++        let mut configuration = configuration(&ca);
++        configuration.embedder_verifier = Some(Arc::new(HostVerifier {
++            calls: calls.clone(),
++            deny,
++        }));
++        let config = configuration
++            .create_config(CertificateErrorOverrideManager::new())
++            .unwrap();
++        assert_eq!(
++            handshake(config, server(&ca, &leaf, &key, false)).is_err(),
++            deny
++        );
++    }
++    assert_eq!(calls.load(Ordering::SeqCst), 2);
++}
++
++#[test]
++fn prepared_tls_configs_keep_profile_certificate_overrides_separate() {
++    let (ca, _, _) = credentials(false);
++    let prepared = configuration(&ca).prepare().unwrap();
++    let (untrusted_ca, untrusted_leaf, key) = credentials(false);
++    let public_overrides = CertificateErrorOverrideManager::new();
++    public_overrides.add_override(untrusted_leaf.der());
++    let public = prepared.create_config(public_overrides);
++    let private = prepared.create_config(CertificateErrorOverrideManager::new());
++    assert!(handshake(public, server(&untrusted_ca, &untrusted_leaf, &key, false)).is_ok());
++    assert!(handshake(private, server(&untrusted_ca, &untrusted_leaf, &key, false)).is_err());
++}
++
++#[test]
++fn prepared_profiles_have_independent_tls_resumption_stores() {
++    let (ca, leaf, key) = credentials(false);
++    let prepared = configuration(&ca).prepare().unwrap();
++    let public = prepared.create_config(CertificateErrorOverrideManager::new());
++    let private = prepared.create_config(CertificateErrorOverrideManager::new());
++    let server = server(&ca, &leaf, &key, false);
++    assert_ne!(
++        handshake_kind(public.clone(), server.clone()).unwrap(),
++        rustls::HandshakeKind::Resumed
++    );
++    // A private handshake must not consume or replace the public profile's tickets.
++    assert_ne!(
++        handshake_kind(private, server.clone()).unwrap(),
++        rustls::HandshakeKind::Resumed
++    );
++    assert_eq!(
++        handshake_kind(public, server).unwrap(),
++        rustls::HandshakeKind::Resumed
++    );
++}
+diff --git a/components/servo/lib.rs b/components/servo/lib.rs
+--- a/components/servo/lib.rs
++++ b/components/servo/lib.rs
+@@ -72,6 +72,10 @@
+ };
+ pub use media::{
+     GlApi as MediaGlApi, GlContext as MediaGlContext, NativeDisplay as MediaNativeDisplay,
++};
++pub use net::connector::{
++    EmbedderCertDecision, EmbedderCertVerifier, PreparedTlsConfiguration, ResolvesClientCert,
++    RootTrustPolicy, TlsConfiguration, TlsConfigurationError,
+ };
+ pub use net::image_cache::should_panic_hook_suppress_termination;
+ pub use net_traits::CookieSource;

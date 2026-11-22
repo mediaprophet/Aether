@@ -1,0 +1,48 @@
+    Checking icu_normalizer v2.3.0
+    Checking hashbrown v0.17.1
+    Checking idna_adapter v1.2.2
+    Checking idna v1.1.0
+    Checking peniko v0.6.1
+    Checking url v2.5.8
+    Checking futures-util v0.3.34
+    Checking icu_segmenter v2.3.0
+    Checking anyrender v0.14.0
+    Checking indexmap v2.14.2
+    Checking aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core)
+    Checking stylo_traits v0.22.0
+    Checking fontique v0.12.0
+    Checking windows-sys v0.61.2
+    Checking parley_engine v0.12.0
+    Checking stylo v0.22.0
+    Checking usvg v0.48.1
+    Checking image v0.25.6
+    Checking winit-core v0.31.0-beta.3
+    Checking aether-signals v0.8.0-alpha.3 (C:\github\Aether\packages\signals)
+    Checking parley v0.12.0
+    Checking blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits)
+    Checking guillotiere v0.7.0
+    Checking vello_common v0.3.0
+    Checking aether-hooks v0.8.0-alpha.3 (C:\github\Aether\packages\hooks)
+    Checking winit-common v0.31.0-beta.3
+    Checking winit-win32 v0.31.0-beta.3
+    Checking aether-html v0.8.0-alpha.3 (C:\github\Aether\packages\html)
+    Checking glifo v0.4.0
+    Checking anyrender_svg v0.15.0
+    Checking softbuffer v0.4.8
+    Checking softbuffer_window_renderer v0.9.0
+    Checking winit v0.31.0-beta.3
+    Checking vello_cpu v0.3.0
+    Checking serde_json v1.0.149
+    Checking tokio v1.52.3
+    Checking aether-asset-resolver v0.8.0-alpha.3 (C:\github\Aether\packages\asset-resolver)
+    Checking aether-document v0.8.0-alpha.3 (C:\github\Aether\packages\document)
+    Checking vector-cpu-render-adapter v0.18.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+    Checking aether-history v0.8.0-alpha.3 (C:\github\Aether\packages\history)
+    Checking webbrowser v1.2.4
+    Checking stylo_taffy v0.3.0-beta.4
+    Checking blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+    Checking blitz-paint v0.3.0-beta.4
+    Checking aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+    Checking blitz-shell v0.3.0-beta.4
+    Checking aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4m 36s

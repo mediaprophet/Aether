@@ -1,0 +1,24 @@
+   Compiling vector-compute-shaders v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-shaders)
+    Checking blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\blitz_dom-2nh7rch4pwhew\s-ho3c1z5fre-106s9lr-working`
+
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\build_script_build-0uqwuldk3rw30\s-ho3c1z2voj-0bqusz4-working`
+
+warning: `blitz-dom` (lib) generated 1 warning
+    Checking blitz-paint v0.3.0-beta.4
+warning: `vector-compute-shaders` (build script) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_asset_resolver-1x3x3rdwd8oiu\s-ho36fjk9gn-0dnjy0f-working`
+
+warning: `aether-asset-resolver` (lib) generated 1 warning
+    Checking blitz-shell v0.3.0-beta.4
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\vello_shaders-0k5wztji3733f\s-ho3c296n9s-11c3rqd-working`
+
+    Checking aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\aether_native_dom-2lua28tzqhpci\s-ho3c29i6rv-10stz6m-working`
+
+warning: `vector-compute-shaders` (lib) generated 1 warning
+    Checking vector-compute-renderer v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-renderer)
+warning: `aether-native-dom` (lib) generated 1 warning
+    Checking vector-gpu-render-adapter v0.15.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+    Checking aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 36.37s

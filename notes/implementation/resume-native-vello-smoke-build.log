@@ -1,0 +1,63 @@
+   Compiling hashbrown v0.17.1
+   Compiling windows v0.62.2
+   Compiling indexmap v2.14.2
+   Compiling url v2.5.8
+   Compiling derive_more-impl v2.1.1
+   Compiling peniko v0.6.1
+   Compiling derive_more v2.1.1
+   Compiling naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+   Compiling futures-util v0.3.34
+   Compiling selectors v0.41.0
+   Compiling aether-rsx v0.8.0-alpha.3 (C:\github\Aether\packages\rsx)
+   Compiling hashbrown v0.16.1
+   Compiling stylo_malloc_size_of v0.22.0
+   Compiling naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+   Compiling aether-core-macro v0.8.0-alpha.3 (C:\github\Aether\packages\core-macro)
+   Compiling etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+   Compiling gpu-allocator v0.28.0
+   Compiling etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+   Compiling aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core)
+   Compiling stylo v0.22.0
+   Compiling num-traits v0.2.19
+   Compiling etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+   Compiling stylo_traits v0.22.0
+   Compiling fontique v0.12.0
+   Compiling half v2.7.1
+   Compiling thiserror v2.0.21
+   Compiling stylo_dom v0.22.0
+   Compiling anyrender v0.14.0
+   Compiling usvg v0.48.1
+   Compiling parley_engine v0.12.0
+   Compiling etalon-core-deps-windows v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+   Compiling aether-signals v0.8.0-alpha.3 (C:\github\Aether\packages\signals)
+   Compiling svg_fmt v0.4.5
+   Compiling winit-core v0.31.0-beta.3
+   Compiling guillotiere v0.7.0
+   Compiling etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+   Compiling parley v0.12.0
+   Compiling vector-compute-shaders v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-shaders)
+   Compiling blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits)
+   Compiling etalon v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+   Compiling vello_encoding v0.11.0
+   Compiling winit-common v0.31.0-beta.3
+   Compiling aether-hooks v0.8.0-alpha.3 (C:\github\Aether\packages\hooks)
+   Compiling futures-intrusive v0.5.0
+   Compiling aether-html v0.8.0-alpha.3 (C:\github\Aether\packages\html)
+   Compiling stylo_taffy v0.3.0-beta.4
+   Compiling blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+   Compiling winit-win32 v0.31.0-beta.3
+   Compiling anyrender_svg v0.15.0
+   Compiling vector-compute-renderer v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-renderer)
+   Compiling blitz-paint v0.3.0-beta.4
+   Compiling winit v0.31.0-beta.3
+   Compiling gpu-device-context v0.10.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+   Compiling vector-gpu-render-adapter v0.15.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+   Compiling aether-asset-resolver v0.8.0-alpha.3 (C:\github\Aether\packages\asset-resolver)
+   Compiling aether-stores v0.8.0-alpha.3 (C:\github\Aether\packages\stores)
+   Compiling aether-document v0.8.0-alpha.3 (C:\github\Aether\packages\document)
+   Compiling blitz-shell v0.3.0-beta.4
+   Compiling aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+   Compiling aether-history v0.8.0-alpha.3 (C:\github\Aether\packages\history)
+   Compiling webbrowser v1.2.4
+   Compiling aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7m 28s

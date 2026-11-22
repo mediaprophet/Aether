@@ -1,0 +1,199 @@
+Cargo.toml:289:wgpu-core = { package = "etalon-core", version = "=0.0.2", git = "https://github.com/mediaprophet/etalon.git", rev = "8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952" }
+Cargo.toml:292:wgpu-types = { package = "etalon-types", version = "=0.0.2", git = "https://github.com/mediaprophet/etalon.git", rev = "8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952" }
+support/etalon\check_gpu_sources.py:41:        if name.startswith("wgpu"):
+support/etalon\check_gpu_sources.py:43:                name == "wgpu"
+support/etalon\test_gpu_sources.py:36:        shim = {"name": "wgpu", "version": "0.0.2", "source": source()}
+support/etalon\api-probe\src\lib.rs:51:extern crate etalon_types as wgpu_types;
+support/etalon\api-probe\src\lib.rs:91:        backend_options: wgpu_types::BackendOptions {
+support/etalon\api-probe\src\lib.rs:92:            gl: wgpu_types::GlBackendOptions {
+support/etalon\api-probe\src\lib.rs:93:                gles_minor_version: wgpu_types::Gles3MinorVersion::Automatic,
+support/etalon\api-probe\src\lib.rs:94:                fence_behavior: wgpu_types::GlFenceBehavior::Normal,
+support/etalon\api-probe\src\lib.rs:95:                debug_fns: wgpu_types::GlDebugFns::Auto,
+support/etalon\api-probe\src\lib.rs:97:            dx12: wgpu_types::Dx12BackendOptions {
+support/etalon\api-probe\src\lib.rs:100:            noop: wgpu_types::NoopBackendOptions::default(),
+support/etalon\api-probe\src\lib.rs:103:        flags: wgpu_types::InstanceFlags::from_build_config()
+support/etalon\api-probe\src\lib.rs:104:            | wgpu_types::InstanceFlags::AUTOMATIC_TIMESTAMP_NORMALIZATION
+support/etalon\api-probe\src\lib.rs:105:            | wgpu_types::InstanceFlags::STRICT_WEBGPU_COMPLIANCE,
+support/etalon\api-probe\src\lib.rs:108:        memory_budget_thresholds: wgpu_types::MemoryBudgetThresholds {
+support/etalon\api-probe\src\lib.rs:119:    use vello::wgpu::{Instance, InstanceDescriptor};
+support/etalon\api-probe\src\lib.rs:139:extern crate etalon_core as wgpu_core;
+components\constellation\constellation.rs:246:    wgpu_image_map: WebGpuExternalImageMap,
+components\constellation\constellation.rs:605:    pub wgpu_image_map: WebGpuExternalImageMap,
+components\constellation\constellation.rs:698:                    wgpu_image_map: state.wgpu_image_map,
+components\constellation\constellation.rs:2325:                self.webrender_wgpu.wgpu_image_map.clone(),
+components\config\prefs.rs:120:    /// List of comma-separated backends to be used by wgpu.
+components\canvas\vello_backend.rs:30:use vello::wgpu::{
+components\canvas\vello_backend.rs:108:                aspect: vello::wgpu::TextureAspect::All,
+components\canvas\vello_backend.rs:237:            log::error!("VELLO WGPU ERROR: {error}");
+components\canvas\vello_backend.rs:752:                log::warn!("VELLO WGPU MAP ASYNC ERROR {error}");
+components\servo\servo.rs:1432:        wgpu_image_map: paint.webgpu_image_map(),
+components\webgpu\wgpu_thread.rs:30:use wgpu_core::resource::{BufferAccessError, BufferAccessResult, BufferMapOperation};
+components\webgpu\wgpu_thread.rs:31:use wgpu_types::error::WebGpuError;
+components\webgpu\wgpu_thread.rs:32:use wgpu_types::{ExternalTextureFormat, ExternalTextureTransferFunction, InstanceDescriptor};
+components\webgpu\wgpu_thread.rs:63:pub(crate) struct WGPU {
+components\webgpu\wgpu_thread.rs:72:    pub(crate) wgpu_image_map: WebGpuExternalImageMap,
+components\webgpu\wgpu_thread.rs:78:impl WGPU {
+components\webgpu\wgpu_thread.rs:85:        wgpu_image_map: WebGpuExternalImageMap,
+components\webgpu\wgpu_thread.rs:89:            wgpu_types::Backends::PRIMARY
+components\webgpu\wgpu_thread.rs:92:                "Selecting backends based on dom.webgpu.wgpu_backend pref: {:?}",
+components\webgpu\wgpu_thread.rs:95:            wgpu_types::Backends::from_comma_list(&backend_pref)
+components\webgpu\wgpu_thread.rs:101:                backend_options: wgpu_types::BackendOptions {
+components\webgpu\wgpu_thread.rs:102:                    gl: wgpu_types::GlBackendOptions {
+components\webgpu\wgpu_thread.rs:103:                        gles_minor_version: wgpu_types::Gles3MinorVersion::Automatic,
+components\webgpu\wgpu_thread.rs:104:                        fence_behavior: wgpu_types::GlFenceBehavior::Normal,
+components\webgpu\wgpu_thread.rs:105:                        debug_fns: wgpu_types::GlDebugFns::Auto,
+components\webgpu\wgpu_thread.rs:107:                    dx12: wgpu_types::Dx12BackendOptions {
+components\webgpu\wgpu_thread.rs:110:                    noop: wgpu_types::NoopBackendOptions::default(),
+components\webgpu\wgpu_thread.rs:113:                flags: wgpu_types::InstanceFlags::from_build_config()
+components\webgpu\wgpu_thread.rs:114:                    | wgpu_types::InstanceFlags::AUTOMATIC_TIMESTAMP_NORMALIZATION
+components\webgpu\wgpu_thread.rs:115:                    | wgpu_types::InstanceFlags::STRICT_WEBGPU_COMPLIANCE,
+components\webgpu\wgpu_thread.rs:118:                memory_budget_thresholds: wgpu_types::MemoryBudgetThresholds {
+components\webgpu\wgpu_thread.rs:126:        WGPU {
+components\webgpu\wgpu_thread.rs:137:            wgpu_image_map,
+components\webgpu\wgpu_thread.rs:601:                                wgpu_types::Backends::all(),
+components\webgpu\wgpu_thread.rs:639:                        let mut additional_features = wgpu_types::Features::empty();
+components\webgpu\wgpu_thread.rs:642:                            .contains(wgpu_types::Features::EXTERNAL_TEXTURE)
+components\webgpu\wgpu_thread.rs:644:                            additional_features |= wgpu_types::Features::EXTERNAL_TEXTURE;
+components\webgpu\wgpu_thread.rs:665:                                    wgpu_types::Trace::Off,
+components\webgpu\wgpu_thread.rs:679:                                        Arc::new(move |error: wgpu_types::error::Error| {
+components\webgpu\wgpu_thread.rs:697:                                                wgpu_types::DeviceLostReason::Unknown => {
+components\webgpu\wgpu_thread.rs:700:                                                wgpu_types::DeviceLostReason::Destroyed => {
+components\webgpu\wgpu_thread.rs:726:                                        & wgpu_types::Features::all_webgpu_mask();
+components\webgpu\wgpu_thread.rs:1100:                                wgpu_types::error::ErrorFilter::Validation
+components\webgpu\wgpu_thread.rs:1103:                                wgpu_types::error::ErrorFilter::OutOfMemory
+components\webgpu\wgpu_thread.rs:1106:                                wgpu_types::error::ErrorFilter::Internal
+components\webgpu\resource_errors.rs:21:    global.device_push_error_scope(device, wgpu_types::error::ErrorFilter::Validation);
+components\webgpu\resource_errors.rs:25:            range: wgpu_types::ImageSubresourceRange {
+components\webgpu\poll_thread.rs:16:use wgpu_core::resource::BufferAccessResult;
+components\webgpu\poll_thread.rs:58:            Err(wgpu_core::resource::BufferAccessError::MapAborted)
+components\webgpu\map_delivery.rs:9:use wgpu_core::resource::{Buffer, BufferAccessError};
+components\webgpu\map_delivery.rs:74:        wgpu_types::WriteOnly::new(std::ptr::NonNull::slice_from_raw_parts(
+components\webgpu\lib.rs:10:use wgpu_thread::WGPU;
+components\webgpu\lib.rs:20:mod wgpu_thread;
+components\webgpu\lib.rs:30:    wgpu_image_map: WebGpuExternalImageMap,
+components\webgpu\lib.rs:38:            warn!("Failed to create sender and receiver for WGPU thread",);
+components\webgpu\lib.rs:47:            warn!("Failed to create receiver and sender for WGPU thread",);
+components\webgpu\lib.rs:53:        .name("WGPU".to_owned())
+components\webgpu\lib.rs:55:            WGPU::new(
+components\webgpu\lib.rs:61:                wgpu_image_map,
+components\webgpu\lib.rs:66:        warn!("Failed to spawn WGPU thread ({})", e);
+components\webgpu\closed_device.rs:15:use wgpu_core::instance::{Adapter, Instance};
+components\webgpu\closed_device.rs:26:            wgpu_types::InstanceDescriptor {
+components\webgpu\closed_device.rs:27:                backends: wgpu_types::Backends::NOOP,
+components\webgpu\closed_device.rs:28:                backend_options: wgpu_types::BackendOptions {
+components\webgpu\closed_device.rs:29:                    noop: wgpu_types::NoopBackendOptions {
+components\webgpu\closed_device.rs:31:                        features: Some(wgpu_types::Features::empty()),
+components\webgpu\closed_device.rs:32:                        limits: Some(wgpu_types::Limits::downlevel_defaults()),
+components\webgpu\closed_device.rs:37:                flags: wgpu_types::InstanceFlags::empty(),
+components\webgpu\closed_device.rs:45:                &wgpu_types::RequestAdapterOptions::default(),
+components\webgpu\closed_device.rs:46:                wgpu_types::Backends::NOOP,
+components\webgpu\closed_device.rs:62:            .request_device(&wgpu_types::DeviceDescriptor {
+components\webgpu\closed_device.rs:64:                required_limits: wgpu_types::Limits::downlevel_defaults(),
+components\webgpu\closed_device.rs:78:    pub(crate) fn poll(&self) -> Result<bool, wgpu_core::device::WaitIdleError> {
+components\webgpu\closed_device.rs:95:            wgpu_types::InstanceDescriptor {
+components\webgpu\closed_device.rs:96:                backends: wgpu_types::Backends::empty(),
+components\webgpu\closed_device.rs:97:                flags: wgpu_types::InstanceFlags::empty(),
+components\webgpu\closed_device.rs:120:                        power_preference: wgpu_types::PowerPreference::None,
+components\webgpu\closed_device.rs:124:                    wgpu_types::Backends::all(),
+components\webgpu\closed_device.rs:130:        global.device_push_error_scope(device, wgpu_types::error::ErrorFilter::Validation);
+components\webgpu\closed_device.rs:137:                usage: wgpu_types::BufferUsagesWebGPU::MAP_READ
+components\webgpu\closed_device.rs:138:                    | wgpu_types::BufferUsagesWebGPU::COPY_DST,
+components\webgpu\closed_device.rs:148:            wgpu_core::resource::BufferMapOperation {
+components\webgpu\closed_device.rs:149:                mode: wgpu_types::MapMode::Read,
+components\webgpu\closed_device.rs:208:                usage: wgpu_types::BufferUsagesWebGPU::UNIFORM,
+components\webgpu\closed_device.rs:215:            .request_device(&wgpu_types::DeviceDescriptor {
+components\webgpu\closed_device.rs:217:                required_limits: wgpu_types::Limits::downlevel_defaults(),
+components\webgpu\closed_device.rs:225:        global.device_push_error_scope(live, wgpu_types::error::ErrorFilter::Validation);
+components\webgpu\closed_device.rs:233:                    visibility: wgpu_types::ShaderStagesWebGPU::COMPUTE,
+components\webgpu\closed_device.rs:235:                        ty: wgpu_types::BufferBindingType::Uniform,
+components\webgpu\closed_device.rs:267:        assert!(matches!(error, wgpu_types::error::Error::Validation { .. }));
+components\webgpu\closed_device.rs:274:                size: wgpu_types::Extent3d {
+components\webgpu\closed_device.rs:281:                dimension: wgpu_types::TextureDimension::D2,
+components\webgpu\closed_device.rs:282:                format: wgpu_types::TextureFormat::Rgba8Unorm,
+components\webgpu\closed_device.rs:283:                usage: wgpu_types::TextureUsages::TEXTURE_BINDING,
+components\webgpu\closed_device.rs:289:        global.device_push_error_scope(live, wgpu_types::error::ErrorFilter::Validation);
+components\webgpu\closed_device.rs:302:                    visibility: wgpu_types::ShaderStagesWebGPU::COMPUTE,
+components\webgpu\closed_device.rs:306:                        sample_type: wgpu_types::TextureSampleType::Float { filterable: true },
+components\webgpu\closed_device.rs:307:                        view_dimension: wgpu_types::TextureViewDimension::D2,
+components\webgpu\closed_device.rs:316:        global.device_push_error_scope(live, wgpu_types::error::ErrorFilter::Validation);
+components\webgpu\closed_device.rs:332:                Some(wgpu_types::error::Error::Validation { .. })
+components\webgpu\closed_device.rs:376:            .request_device(&wgpu_types::DeviceDescriptor {
+components\webgpu\closed_device.rs:378:                required_limits: wgpu_types::Limits::downlevel_defaults(),
+components\webgpu\closed_device.rs:392:                    usage: wgpu_types::BufferUsagesWebGPU::MAP_WRITE,
+components\webgpu\closed_device.rs:433:                usage: wgpu_types::BufferUsagesWebGPU::MAP_READ,
+components\webgpu\closed_device.rs:439:            crate::owner_queue::OwnerQueue::<Global, wgpu_core::resource::BufferAccessResult>::new(
+components\webgpu\closed_device.rs:454:            wgpu_core::resource::BufferMapOperation {
+components\webgpu\closed_device.rs:455:                mode: wgpu_types::MapMode::Read,
+components\webgpu\Cargo.toml:27:wgpu-core = { workspace = true, features = ["serde", "wgsl", "noop"] }
+components\webgpu\Cargo.toml:28:wgpu-types = { workspace = true }
+components\webgpu\Cargo.toml:32:# We want the wgpu-core Metal backend on macOS and iOS.
+components\webgpu\Cargo.toml:34:wgpu-core = { workspace = true, features = ["metal"] }
+components\webgpu\Cargo.toml:37:wgpu-core = { workspace = true, features = ["gles", "vulkan"] }
+components\webgpu\Cargo.toml:40:wgpu-core = { workspace = true, features = ["dx12", "vulkan"] }
+components\webgpu\canvas_context.rs:35:use wgpu_core::resource::{BufferMapOperation, CreateBufferError};
+components\webgpu\canvas_context.rs:36:use wgpu_types::COPY_BYTES_PER_ROW_ALIGNMENT;
+components\webgpu\canvas_context.rs:90:    /// The buffer is allocated in the WGPU Device and is ready to be used.
+components\webgpu\canvas_context.rs:495:impl crate::WGPU {
+components\webgpu\canvas_context.rs:504:            self.wgpu_image_map
+components\webgpu\canvas_context.rs:514:        let mut webgpu_contexts = self.wgpu_image_map.lock().unwrap();
+components\webgpu\canvas_context.rs:541:        let mut webgpu_contexts = self.wgpu_image_map.lock().unwrap();
+components\webgpu\canvas_context.rs:561:            let wgpu_image_map = self.wgpu_image_map.clone();
+components\webgpu\canvas_context.rs:571:                    let mut webgpu_contexts = wgpu_image_map.lock().unwrap();
+components\webgpu\canvas_context.rs:621:        let mut webgpu_contexts = self.wgpu_image_map.lock().unwrap();
+components\webgpu\canvas_context.rs:664:        let wgpu_image_map = self.wgpu_image_map.clone();
+components\webgpu\canvas_context.rs:674:                let mut webgpu_contexts = wgpu_image_map.lock().unwrap();
+components\webgpu\canvas_context.rs:774:        self.wgpu_image_map
+components\script_webgpu\gputexture.rs:146:    pub fn wgpu_texture_descriptor(&self) -> TextureDescriptor<'static> {
+components\script_webgpu\gpusupportedlimits.rs:26:    #[ignore_malloc_size_of = "defined in wgpu-types"]
+components\script_webgpu\gpusupportedlimits.rs:127:        // Not in wgpu yet (https://github.com/gfx-rs/wgpu/issues/8748), report per stage limit instead
+components\script_webgpu\gpusupportedlimits.rs:133:        // Not in wgpu yet (https://github.com/gfx-rs/wgpu/issues/8748), report per stage limit instead
+components\script_webgpu\gpusupportedlimits.rs:144:        // Not in wgpu yet (https://github.com/gfx-rs/wgpu/issues/8748), report per stage limit instead
+components\script_webgpu\gpusupportedlimits.rs:150:        // Not in wgpu yet (https://github.com/gfx-rs/wgpu/issues/8748), report per stage limit instead
+components\script_webgpu\gpusupportedlimits.rs:310:            // not in wgpu (https://github.com/gfx-rs/wgpu/issues/8748)
+components\script_webgpu\gpusupportedlimits.rs:317:            // not in wgpu (https://github.com/gfx-rs/wgpu/issues/8748)
+components\script_webgpu\gpusupportedlimits.rs:327:            // not in wgpu (https://github.com/gfx-rs/wgpu/issues/8748)
+components\script_webgpu\gpusupportedlimits.rs:334:            // not in wgpu (https://github.com/gfx-rs/wgpu/issues/8748)
+components\script_webgpu\gpusupportedfeatures.rs:35:    #[ignore_malloc_size_of = "defined in wgpu-types"]
+components\script_webgpu\gpusupportedfeatures.rs:50:        // everything that wgpu currently does is considered as part of "core"
+components\script_webgpu\gpusupportedfeatures.rs:61:        // TODO: texture-compression-bc-sliced-3d when wgpu supports it
+components\script_webgpu\gpusupportedfeatures.rs:74:        // While this feature exists in wgpu, it's not supported by naga yet
+components\script_webgpu\gpusupportedfeatures.rs:75:        // https://github.com/gfx-rs/wgpu/issues/4384
+components\script_webgpu\gpusupportedfeatures.rs:90:        // TODO: clip-distances when wgpu supports it
+components\script_webgpu\gpusupportedfeatures.rs:94:        // While this feature exists in wgpu, it's not supported by naga yet
+components\script_webgpu\gpusupportedfeatures.rs:95:        // https://github.com/gfx-rs/wgpu/issues/5555
+components\script_webgpu\gpusupportedfeatures.rs:128:    pub(crate) fn wgpu_features(&self) -> &Features {
+components\script_webgpu\gpusupportedfeatures.rs:141:        // everything that wgpu currently does is considered as part of "core"
+components\script_webgpu\gpusupportedfeatures.rs:150:        // While this feature exists in wgpu, it's not supported by naga yet
+components\script_webgpu\gpusupportedfeatures.rs:151:        // https://github.com/gfx-rs/wgpu/issues/4384
+components\script_webgpu\gpusupportedfeatures.rs:159:        // While this feature exists in wgpu, it's not supported by naga yet
+components\script_webgpu\gpusupportedfeatures.rs:160:        // https://github.com/gfx-rs/wgpu/issues/5555
+components\shared\webgpu\types.rs:35:pub use wgpu_types::MapMode as HostMap;
+components\shared\webgpu\types.rs:55:pub use wgpu_types::{
+components\script_webgpu\gpuqueue.rs:360:        let texture_descriptor = destination.parent.texture.wgpu_texture_descriptor();
+components\script_webgpu\gpuqueryset.rs:110:                .wgpu_features()
+components\shared\webgpu\lib.rs:20:use wgpu_types::COPY_BYTES_PER_ROW_ALIGNMENT;
+components\shared\webgpu\lib.rs:108:        message: &wgpu_types::CompilationMessage,
+components\script_webgpu\gpuexternaltexture.rs:246:            .wgpu_features()
+components\script_webgpu\gpuexternaltexture.rs:252:            // spec assumes that this is always supported, but that is not the case in wgpu
+components\shared\webgpu\error.rs:10:use wgpu_types::error::{ErrorType, WebGpuError};
+components\shared\webgpu\error.rs:73:    /// Converts a wgpu's errors into a (GPU)Error if possible.
+components\shared\webgpu\Cargo.toml:24:wgpu-types = { workspace = true }
+components\script_webgpu\gpudevice.rs:273:    /// and if so returns an ok containing wgpu's `TextureFormat`
+components\script_webgpu\gpudevice.rs:281:            .wgpu_features()
+components\script_webgpu\gpuadapter.rs:144:        // https://github.com/gfx-rs/wgpu/issues/2170
+components\script_webgpu\gpu.rs:98:                // and wgpu does not support "compatibility" yet so we return core for now
+components\script_webgpu\gpucompilationinfo.rs:25:    // currently we only get one message from wgpu
+components\script\dom\worklet\workletglobalscope.rs:236:            gpu_id_hub: global_scope.wgpu_id_hub(),
+components\script\dom\workers\worker.rs:289:            global.wgpu_id_hub(),
+components\script\dom\workers\sharedworker.rs:646:            global.wgpu_id_hub(),
+components\script\dom\webgpu\mod.rs:208:        self.wgpu_id_hub()
+components\script\dom\webgpu\gpucanvascontext.rs:136:            buffer_ids.push(global.wgpu_id_hub().create_buffer_id());
+components\script\dom\webgpu\gpucanvascontext.rs:297:            encoder_id: self.global().wgpu_id_hub().create_command_encoder_id(),
+components\script\dom\webgpu\gpucanvascontext.rs:298:            command_buffer_id: self.global().wgpu_id_hub().create_command_buffer_id(),
+components\script\dom\webgpu\gpucanvascontext.rs:379:        let (mut wgpu_descriptor, _) =
+components\script\dom\webgpu\gpucanvascontext.rs:381:        wgpu_descriptor.label = Some(Cow::Borrowed(
+components\script\dom\webgpu\gpucanvascontext.rs:411:        let texture_id = self.global().wgpu_id_hub().create_texture_id();
+components\script\dom\webgpu\gpucanvascontext.rs:418:                descriptor: wgpu_descriptor,
+components\script\dom\window\dissimilaroriginwindow.rs:83:                global_to_clone_from.wgpu_id_hub(),
+components\script\dom\globalscope\globalscope.rs:286:    #[ignore_malloc_size_of = "defined in wgpu"]
+components\script\dom\globalscope\globalscope.rs:2929:    pub(crate) fn wgpu_id_hub(&self) -> Arc<IdentityHub> {

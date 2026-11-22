@@ -33,7 +33,10 @@ impl InstrumentReadiness {
     /// Return `true` if the instrument package has been collected locally.
     #[inline]
     pub const fn is_collected(&self) -> bool {
-        matches!(self, Self::CollectedInactive | Self::ActiveReady | Self::Suspended | Self::Held { .. })
+        matches!(
+            self,
+            Self::CollectedInactive | Self::ActiveReady | Self::Suspended | Self::Held { .. }
+        )
     }
 
     /// Return `true` only when the instrument is actively enabled (`collect != activate`).
@@ -68,14 +71,17 @@ impl InstrumentReadiness {
             if !out.is_empty() {
                 out.push(' ');
             }
-            let cleaned = word.trim_matches(|c: char| !c.is_alphanumeric());
-            if cleaned.eq_ignore_ascii_case("broken") {
+            if word.to_ascii_lowercase().contains("broken") {
                 out.push_str("held-pending-prerequisite");
             } else {
                 out.push_str(word);
             }
         }
-        if out.is_empty() { "awaiting prerequisite input".to_string() } else { out }
+        if out.is_empty() {
+            "awaiting prerequisite input".to_string()
+        } else {
+            out
+        }
     }
 
     /// Human-facing readiness label that never renders "broken".
@@ -86,7 +92,9 @@ impl InstrumentReadiness {
             Self::ActiveReady => "Active & Ready".to_string(),
             Self::Suspended => "Suspended".to_string(),
             Self::Revoked => "Revoked".to_string(),
-            Self::Held { why } => format!("Held (not yet ready): {}", Self::sanitize_hold_reason(why)),
+            Self::Held { why } => {
+                format!("Held (not yet ready): {}", Self::sanitize_hold_reason(why))
+            }
         }
     }
 }
@@ -101,11 +109,25 @@ where
         .attr("class", "si-readiness-card")
         .attr("data-instrument-id", instrument_id)
         .attr("data-inspect-before-fetch", "true")
-        .dyn_attr("data-state", move |ctx| ctx.get(readiness_lens).status_code().to_string())
-        .dyn_attr("data-collected", move |ctx| ctx.get(readiness_lens).is_collected().to_string())
-        .dyn_attr("data-active", move |ctx| ctx.get(readiness_lens).is_active().to_string())
-        .child(el("header").attr("class", "si-instrument-id").child(text(instrument_id)))
-        .child(el("span").attr("class", "si-readiness-label").child(dyn_text(move |ctx| ctx.get(readiness_lens).human_label())))
+        .dyn_attr("data-state", move |ctx| {
+            ctx.get(readiness_lens).status_code().to_string()
+        })
+        .dyn_attr("data-collected", move |ctx| {
+            ctx.get(readiness_lens).is_collected().to_string()
+        })
+        .dyn_attr("data-active", move |ctx| {
+            ctx.get(readiness_lens).is_active().to_string()
+        })
+        .child(
+            el("header")
+                .attr("class", "si-instrument-id")
+                .child(text(instrument_id)),
+        )
+        .child(
+            el("span")
+                .attr("class", "si-readiness-label")
+                .child(dyn_text(move |ctx| ctx.get(readiness_lens).human_label())),
+        )
 }
 
 /// The 6 canonical dimensions of the WellFair Fairness & Rights Review.
@@ -214,7 +236,10 @@ impl FairnessReviewView {
     /// Create a 6-dimension review view with empty remedy notes.
     #[inline]
     pub const fn new(outcomes: [DimensionOutcome; 6]) -> Self {
-        Self { outcomes, remedy_notes: [""; 6] }
+        Self {
+            outcomes,
+            remedy_notes: [""; 6],
+        }
     }
 
     /// Attach a required remedy note to a specific [`WellFairDimension`].
@@ -241,7 +266,10 @@ impl FairnessReviewView {
     pub const fn all_satisfied_or_na(&self) -> bool {
         let mut i = 0;
         while i < 6 {
-            if !matches!(self.outcomes[i], DimensionOutcome::Satisfied | DimensionOutcome::NotApplicable) {
+            if !matches!(
+                self.outcomes[i],
+                DimensionOutcome::Satisfied | DimensionOutcome::NotApplicable
+            ) {
                 return false;
             }
             i += 1;
@@ -259,16 +287,36 @@ where
     let mut container = el("section")
         .attr("class", "wellfair-review-panel")
         .attr("data-collapsed-score", "forbidden")
-        .dyn_attr("data-all-satisfied", move |ctx| ctx.get(review_lens).all_satisfied_or_na().to_string());
+        .dyn_attr("data-all-satisfied", move |ctx| {
+            ctx.get(review_lens).all_satisfied_or_na().to_string()
+        });
 
     for dim in WellFairDimension::ALL {
         let row = el("div")
             .attr("class", "wellfair-dimension-row")
             .attr("data-dimension", dim.code())
-            .dyn_attr("data-outcome", move |ctx| ctx.get(review_lens).outcome(dim).code().to_string())
-            .child(el("span").attr("class", "wellfair-dimension-title").child(text(dim.title())))
-            .child(el("span").attr("class", "wellfair-dimension-badge").child(dyn_text(move |ctx| ctx.get(review_lens).outcome(dim).label().to_string())))
-            .child(el("span").attr("class", "wellfair-dimension-remedy").child(dyn_text(move |ctx| ctx.get(review_lens).remedy(dim).to_string())));
+            .dyn_attr("data-outcome", move |ctx| {
+                ctx.get(review_lens).outcome(dim).code().to_string()
+            })
+            .child(
+                el("span")
+                    .attr("class", "wellfair-dimension-title")
+                    .child(text(dim.title())),
+            )
+            .child(
+                el("span")
+                    .attr("class", "wellfair-dimension-badge")
+                    .child(dyn_text(move |ctx| {
+                        ctx.get(review_lens).outcome(dim).label().to_string()
+                    })),
+            )
+            .child(
+                el("span")
+                    .attr("class", "wellfair-dimension-remedy")
+                    .child(dyn_text(move |ctx| {
+                        ctx.get(review_lens).remedy(dim).to_string()
+                    })),
+            );
         container = container.child(row);
     }
     container
@@ -311,6 +359,45 @@ impl AssertionKind {
             Self::Allegation => "Allegation (Unverified / Restricted Claim)",
             Self::Attestation => "Attestation (Signed Witness Statement)",
             Self::AdjudicatedFinding => "Adjudicated Finding (Due-Process Determination)",
+        }
+    }
+}
+
+/// The stated evidential basis of an assertion, independent of its statement kind.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AssertionEvidenceLevel {
+    /// Accompanied by supporting evidence.
+    Supported,
+    /// Accompanied by an attestation.
+    Attested,
+    /// Qualified by its context of use.
+    Contextual,
+    /// Based on a heuristic.
+    Heuristic,
+    /// Produced by a simulation.
+    Simulated,
+}
+
+impl AssertionEvidenceLevel {
+    /// Machine-readable evidential basis.
+    pub const fn code(self) -> &'static str {
+        match self {
+            Self::Supported => "supported",
+            Self::Attested => "attested",
+            Self::Contextual => "contextual",
+            Self::Heuristic => "heuristic",
+            Self::Simulated => "simulated",
+        }
+    }
+
+    /// Human-readable evidential basis.
+    pub const fn label(self) -> &'static str {
+        match self {
+            Self::Supported => "Supported",
+            Self::Attested => "Attested",
+            Self::Contextual => "Contextual",
+            Self::Heuristic => "Heuristic",
+            Self::Simulated => "Simulated",
         }
     }
 }
@@ -373,12 +460,36 @@ where
 {
     el("article")
         .attr("class", "contextual-assertion-badge")
-        .dyn_attr("data-assertion-kind", move |ctx| ctx.get(assertion_lens).kind.code().to_string())
-        .dyn_attr("data-challenge-state", move |ctx| ctx.get(assertion_lens).challenge.code().to_string())
-        .dyn_attr("data-independent-sources", move |ctx| ctx.get(assertion_lens).independent_source_count.to_string())
-        .child(el("span").attr("class", "assertion-kind-pill").child(dyn_text(move |ctx| ctx.get(assertion_lens).kind.badge_label().to_string())))
-        .child(el("span").attr("class", "assertion-challenge-notice").child(dyn_text(move |ctx| ctx.get(assertion_lens).challenge.notice().to_string())))
-        .child(el("p").attr("class", "assertion-summary").child(dyn_text(move |ctx| ctx.get(assertion_lens).summary.to_string())))
+        .dyn_attr("data-assertion-kind", move |ctx| {
+            ctx.get(assertion_lens).kind.code().to_string()
+        })
+        .dyn_attr("data-challenge-state", move |ctx| {
+            ctx.get(assertion_lens).challenge.code().to_string()
+        })
+        .dyn_attr("data-independent-sources", move |ctx| {
+            ctx.get(assertion_lens).independent_source_count.to_string()
+        })
+        .child(
+            el("span")
+                .attr("class", "assertion-kind-pill")
+                .child(dyn_text(move |ctx| {
+                    ctx.get(assertion_lens).kind.badge_label().to_string()
+                })),
+        )
+        .child(
+            el("span")
+                .attr("class", "assertion-challenge-notice")
+                .child(dyn_text(move |ctx| {
+                    ctx.get(assertion_lens).challenge.notice().to_string()
+                })),
+        )
+        .child(
+            el("p")
+                .attr("class", "assertion-summary")
+                .child(dyn_text(move |ctx| {
+                    ctx.get(assertion_lens).summary.to_string()
+                })),
+        )
 }
 
 /// The 9 canonical stages of the Cooperative Contribution Lifecycle (`CONTRIBUTION-LIFECYCLE.md`).
@@ -452,14 +563,22 @@ impl ContributionStageView {
     /// Return `true` only when actual contributor settlements + waivers cover the obligation.
     #[inline]
     pub const fn is_contributor_fully_settled(&self) -> bool {
-        self.contributor_settled_cents + self.waived_obligation_cents >= self.target_threshold_cents
+        self.contributor_settled_cents
+            .saturating_add(self.waived_obligation_cents)
+            >= self.target_threshold_cents
     }
 
     /// Remaining unpaid gap between target obligations and settled+waived contributor receipts.
     #[inline]
     pub const fn unpaid_settled_gap_cents(&self) -> i64 {
-        let covered = self.contributor_settled_cents + self.waived_obligation_cents;
-        if self.target_threshold_cents > covered { self.target_threshold_cents - covered } else { 0 }
+        let covered = self
+            .contributor_settled_cents
+            .saturating_add(self.waived_obligation_cents);
+        if self.target_threshold_cents > covered {
+            self.target_threshold_cents.saturating_sub(covered)
+        } else {
+            0
+        }
     }
 
     /// Return `true` only if `licence-transition-readiness` preconditions hold (`Pool Funded != Contributor Paid`).
@@ -468,7 +587,10 @@ impl ContributionStageView {
         self.is_contributor_fully_settled()
             && self.unresolved_challenges == 0
             && self.human_transition_approved
-            && matches!(self.current_stage, ContributionStage::SettlementAllocation | ContributionStage::TransitionDecision)
+            && matches!(
+                self.current_stage,
+                ContributionStage::SettlementAllocation | ContributionStage::TransitionDecision
+            )
     }
 }
 
@@ -481,14 +603,36 @@ where
     el("section")
         .attr("class", "contribution-lifecycle-bar")
         .attr("data-pool-equals-paid", "false")
-        .dyn_attr("data-stage", move |ctx| ctx.get(view_lens).current_stage.code().to_string())
-        .dyn_attr("data-transition-ready", move |ctx| ctx.get(view_lens).can_transition_to_commons().to_string())
-        .child(el("div").attr("class", "pool-funded-indicator").attr("data-role", "pool-funded").child(dyn_text(move |ctx| {
-            let v = *ctx.get(view_lens);
-            format!("Pool Funded: {} / {} cents", v.pool_funded_cents, v.target_threshold_cents)
-        })))
-        .child(el("div").attr("class", "contributor-settled-indicator").attr("data-role", "contributor-settled").child(dyn_text(move |ctx| {
-            let v = *ctx.get(view_lens);
-            format!("Contributor Settled: {} / {} cents (Unpaid Gap: {} cents)", v.contributor_settled_cents, v.target_threshold_cents, v.unpaid_settled_gap_cents())
-        })))
+        .dyn_attr("data-stage", move |ctx| {
+            ctx.get(view_lens).current_stage.code().to_string()
+        })
+        .dyn_attr("data-transition-ready", move |ctx| {
+            ctx.get(view_lens).can_transition_to_commons().to_string()
+        })
+        .child(
+            el("div")
+                .attr("class", "pool-funded-indicator")
+                .attr("data-role", "pool-funded")
+                .child(dyn_text(move |ctx| {
+                    let v = *ctx.get(view_lens);
+                    format!(
+                        "Pool Funded: {} / {} cents",
+                        v.pool_funded_cents, v.target_threshold_cents
+                    )
+                })),
+        )
+        .child(
+            el("div")
+                .attr("class", "contributor-settled-indicator")
+                .attr("data-role", "contributor-settled")
+                .child(dyn_text(move |ctx| {
+                    let v = *ctx.get(view_lens);
+                    format!(
+                        "Contributor Settled: {} / {} cents (Unpaid Gap: {} cents)",
+                        v.contributor_settled_cents,
+                        v.target_threshold_cents,
+                        v.unpaid_settled_gap_cents()
+                    )
+                })),
+        )
 }

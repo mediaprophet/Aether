@@ -231,6 +231,14 @@ impl Document for AetherDocument {
         // Poll any sub-documents, which may have pending async operations of
         // their own (e.g. JavaScript timers)
         let subdoc_changes = self.inner.borrow_mut().poll_subdocuments(Some(&waker));
+        let event_changes = {
+            let handler = AetherEventHandler {
+                vdom: &mut self.vdom,
+                vdom_state: &mut self.vdom_state,
+                composition: &mut self.composition,
+            };
+            EventDriver::new(&mut self.inner, handler).flush_pending_events()
+        };
 
         {
             let fut = self.vdom.wait_for_work();
@@ -239,7 +247,7 @@ impl Document for AetherDocument {
             let mut cx = TaskContext::from_waker(&waker);
             match pinned_fut.as_mut().poll(&mut cx) {
                 std::task::Poll::Ready(_) => {}
-                std::task::Poll::Pending => return subdoc_changes,
+                std::task::Poll::Pending => return subdoc_changes || event_changes,
             }
         }
 
@@ -334,6 +342,32 @@ impl EventHandler for AetherEventHandler<'_> {
             return;
         }
 
+        // Blitz's root is the synthetic HTML element. Deliver viewport resize
+        // to the application's RSX roots under the synthetic mount point.
+        if matches!(&event.data, DomEventData::Resize(_)) {
+            let targets: Vec<_> = {
+                let inner = doc.inner();
+                self.vdom_state
+                    .try_element_to_node_id(ElementId::from_raw(0))
+                    .and_then(|mount| inner.get_node(mount))
+                    .into_iter()
+                    .flat_map(|mount| mount.children.iter())
+                    .filter_map(|&id| inner.get_node(id).and_then(get_aether_id))
+                    .collect()
+            };
+            if let Ok(payload) = NativeConverter::convert_dom_event(&event.data) {
+                let payload: Rc<dyn Any> = Rc::new(payload);
+                for target in targets {
+                    self.vdom.runtime().handle_event(
+                        "resize",
+                        Event::new(Rc::clone(&payload), false),
+                        target,
+                    );
+                }
+            }
+            return;
+        }
+
         // Get aether vdom id for the original event's target.
         let aether_id = chain
             .iter()
@@ -354,7 +388,7 @@ impl EventHandler for AetherEventHandler<'_> {
             .handle_event(event.name(), dx_event.clone(), id);
 
         // Update event state
-        if !dx_event.default_action_enabled() {
+        if event.cancelable && !dx_event.default_action_enabled() {
             event_state.prevent_default();
         }
         if !dx_event.propagates() {
@@ -449,6 +483,63 @@ mod tests {
         }
         assert_eq!(*state.inputs.borrow(), ["日本", "日"]);
         assert_eq!(state.phases.borrow().len(), 4);
+    }
+
+    #[test]
+    fn beforeinput_can_cancel_an_ime_edit_and_resize_reaches_the_rsx_root() {
+        use blitz_traits::{events::BlitzImeEvent, shell::Viewport};
+
+        #[derive(Default)]
+        struct State {
+            allow_edit: Cell<bool>,
+            input_count: Cell<usize>,
+            resize: Cell<Option<(f64, f64)>>,
+        }
+
+        fn app(state: Rc<State>) -> Element {
+            let before = state.clone();
+            let input = state.clone();
+            rsx! {
+                input {
+                    onbeforeinput: move |event| {
+                        assert_eq!(event.data().data().as_deref(), Some("x"));
+                        if !before.allow_edit.get() {
+                            event.prevent_default();
+                        }
+                    },
+                    oninput: move |_| input.input_count.set(input.input_count.get() + 1),
+                    onresize: move |event| {
+                        let size = event.data().get_content_box_size().unwrap();
+                        state.resize.set(Some((size.width, size.height)));
+                    },
+                }
+            }
+        }
+
+        let state = Rc::new(State::default());
+        let mut doc = AetherDocument::new(
+            VirtualDom::new_with_props(app, state.clone()),
+            DocumentConfig::default(),
+        );
+        doc.initial_build();
+        {
+            let mut inner = doc.inner.borrow_mut();
+            inner.set_viewport(Viewport {
+                window_size: (640, 360),
+                hidpi_scale: 2.0,
+                ..Viewport::default()
+            });
+            inner.resolve(0.0);
+            let input = inner.get_node(doc.main_element_id).unwrap().children[0];
+            inner.set_focus_to(input);
+        }
+        doc.poll(None);
+        assert_eq!(state.resize.get(), Some((320.0, 180.0)));
+        doc.handle_ui_event(UiEvent::Ime(BlitzImeEvent::Commit("x".into())));
+        assert_eq!(state.input_count.get(), 0);
+        state.allow_edit.set(true);
+        doc.handle_ui_event(UiEvent::Ime(BlitzImeEvent::Commit("x".into())));
+        assert_eq!(state.input_count.get(), 1);
     }
 
     #[test]

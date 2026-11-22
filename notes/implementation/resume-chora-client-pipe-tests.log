@@ -1,0 +1,45 @@
+     Locking 2 packages to highest Rust 1.99.1 compatible versions
+      Adding windows-link v0.2.1
+      Adding windows-sys v0.61.2
+   Compiling libc v0.2.191
+   Compiling windows-link v0.2.1
+   Compiling windows-sys v0.61.2
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_bridge_protocol-17083qnm7lno0\s-ho4xzge452-1trbgz1-working`
+
+warning: `aether-chora-bridge-protocol` (lib) generated 1 warning
+   Compiling aether-chora-client v0.1.0 (C:\github\Aether\packages\chora-client)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 13s
+     Running unittests src\lib.rs (target/chora-client\debug\deps\aether_chora_client-8f60dfc9d80fb6ac.exe)
+
+running 6 tests
+test tests::correct_stamp_does_not_admit_wrong_dimensions_or_capture ... ok
+test tests::navigation_never_delivers_old_pixels ... ok
+test tests::actual_document_change_cancels_old_capture_and_requests ... ok
+test tests::retained_events_are_bounded ... ok
+test tests::resize_ack_does_not_cancel_subsequent_capture ... ok
+test tests::unsupported_profile_rejected_before_spawn ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src\bin\transport_fixture.rs (target/chora-client\debug\deps\transport_fixture-e4111a48343db1a2.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\process.rs (target/chora-client\debug\deps\process-a6aaf2a566552f42.exe)
+
+running 2 tests
+transport fixture diagnostic: stdout is not the protocol pipe
+transport fixture diagnostic: stdout is not the protocol pipe
+test wrong_session_on_private_pipe_closes_and_reaps_worker ... ok
+test real_private_pipes_deliver_frames_and_reap_uncooperative_child ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.32s
+
+   Doc-tests aether_chora_client
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

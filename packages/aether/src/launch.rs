@@ -89,6 +89,7 @@ impl LaunchBuilder {
             docsrs,
             feature = "third-party-renderer",
             feature = "liveview",
+            feature = "native",
             feature = "desktop",
             feature = "mobile",
             feature = "web",
@@ -157,9 +158,9 @@ impl LaunchBuilder {
         }
     }
 
-    /// Launch your fullstack application.
-    #[cfg(feature = "mobile")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "mobile")))]
+    /// Launch your mobile application.
+    #[cfg(any(feature = "mobile", feature = "mobile-native"))]
+    #[cfg_attr(docsrs, doc(cfg(any(feature = "mobile", feature = "mobile-native"))))]
     pub fn mobile() -> LaunchBuilder {
         LaunchBuilder {
             platform: KnownPlatform::Mobile,

@@ -1,0 +1,155 @@
+    Blocking waiting for file lock on build directory
+   Compiling serde v1.0.228
+   Compiling zerovec v0.11.8
+   Compiling bytemuck v1.25.2
+   Compiling tracing v0.1.44
+   Compiling tinystr v0.8.4
+   Compiling potential_utf v0.1.5
+   Compiling icu_locale_core v2.3.0
+   Compiling icu_collections v2.3.0
+   Compiling euclid v0.22.14
+   Compiling icu_provider v2.3.1
+   Compiling thiserror v2.0.21
+   Compiling phf_macros v0.14.0
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling idna_adapter v1.2.2
+   Compiling font-types v0.12.4
+   Compiling unicode-segmentation v1.13.2
+   Compiling string_cache v0.11.0
+   Compiling read-fonts v0.41.0
+   Compiling idna v1.1.0
+   Compiling phf v0.14.0
+   Compiling slotmap v1.1.1
+   Compiling darling_core v0.20.11
+   Compiling string_cache_codegen v0.11.2
+   Compiling hashbrown v0.17.1
+   Compiling darling_macro v0.20.11
+   Compiling url v2.5.8
+   Compiling flate2 v1.1.9
+   Compiling raw-window-handle v0.6.2
+   Compiling darling v0.20.11
+   Compiling fdeflate v0.3.7
+   Compiling color v0.3.3
+   Compiling cssparser v0.38.0
+   Compiling peniko v0.6.1
+   Compiling windows-core v0.62.2
+   Compiling skrifa v0.44.0
+   Compiling convert_case v0.8.0
+   Compiling servo_arc v0.5.0
+   Compiling to_shmem v0.6.0
+   Compiling aether-core-template v0.8.0-alpha.3 (C:\github\Aether\packages\core-template)
+   Compiling derive_more v2.1.1
+   Compiling to_shmem_derive v0.2.0
+   Compiling serde_spanned v1.1.1
+   Compiling toml_datetime v1.1.2+spec-1.1.0
+   Compiling futures-util v0.3.34
+   Compiling toml v1.1.2+spec-1.1.0
+   Compiling web_atoms v0.3.0
+   Compiling selectors v0.41.0
+   Compiling aether-rsx v0.8.0-alpha.3 (C:\github\Aether\packages\rsx)
+   Compiling icu_locale_fallback v2.3.0
+   Compiling stylo_atoms v0.22.0
+   Compiling app_units v0.7.8
+   Compiling subsecond-types v0.8.0-alpha.3 (C:\github\Aether\packages\subsecond\subsecond-types)
+   Compiling stylo_malloc_size_of v0.22.0
+   Compiling subsecond v0.8.0-alpha.3 (C:\github\Aether\packages\subsecond\subsecond)
+   Compiling windows-future v0.3.2
+   Compiling aether-core-macro v0.8.0-alpha.3 (C:\github\Aether\packages\core-macro)
+   Compiling icu_segmenter v2.3.0
+   Compiling stylo_static_prefs v0.22.0
+   Compiling windows-numerics v0.3.1
+   Compiling windows-collections v0.3.2
+   Compiling harfrust v0.12.0
+   Compiling generational-box v0.8.0-alpha.3 (C:\github\Aether\packages\generational-box)
+   Compiling aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core)
+   Compiling pin-project v1.1.13
+   Compiling windows v0.62.2
+   Compiling anyrender v0.14.0
+   Compiling darling_core v0.21.3
+   Compiling parlance v0.1.1
+   Compiling quick-error v2.0.1
+   Compiling zune-core v0.4.12
+   Compiling bitflags v1.3.2
+   Compiling color_quant v1.1.0
+   Compiling weezl v0.1.12
+   Compiling gif v0.13.3
+   Compiling png v0.17.16
+   Compiling image-webp v0.2.4
+   Compiling zune-jpeg v0.4.21
+   Compiling tiny-skia-path v0.12.0
+   Compiling indexmap v2.14.2
+   Compiling warnings v0.2.1
+   Compiling stylo_traits v0.22.0
+   Compiling fontique v0.12.0
+   Compiling darling_macro v0.21.3
+   Compiling fontdb v0.24.0
+   Compiling stylo_dom v0.22.0
+   Compiling stylo_derive v0.22.0
+   Compiling parley_data v0.12.0
+   Compiling windows-sys v0.61.2
+   Compiling const-serialize-macro v0.8.0-alpha.3 (C:\github\Aether\packages\const-serialize-macro)
+   Compiling usvg v0.48.1
+   Compiling stylo v0.22.0
+   Compiling parley_engine v0.12.0
+   Compiling darling v0.21.3
+   Compiling aether-signals v0.8.0-alpha.3 (C:\github\Aether\packages\signals)
+   Compiling image v0.25.6
+   Compiling dpi v0.1.2
+   Compiling winit-core v0.31.0-beta.3
+   Compiling icu_casemap v2.3.0
+   Compiling enumset_derive v0.15.0
+   Compiling parley v0.12.0
+   Compiling markup5ever v0.40.0
+   Compiling blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits)
+   Compiling accesskit v0.25.1
+   Compiling png v0.18.1
+   Compiling guillotiere v0.7.0
+   Compiling fearless_simd v0.7.0
+   Compiling vello_common v0.3.0
+   Compiling const-serialize v0.8.0-alpha.3 (C:\github\Aether\packages\const-serialize)
+   Compiling enumset v1.1.13
+   Compiling winit-common v0.31.0-beta.3
+   Compiling aether-hooks v0.8.0-alpha.3 (C:\github\Aether\packages\hooks)
+   Compiling aether-html-internal-macro v0.8.0-alpha.3 (C:\github\Aether\packages\html-internal-macro)
+   Compiling aether-html v0.8.0-alpha.3 (C:\github\Aether\packages\html)
+   Compiling stylo_taffy v0.3.0-beta.4
+   Compiling blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+   Compiling winit-win32 v0.31.0-beta.3
+   Compiling manganis-core v0.8.0-alpha.3 (C:\github\Aether\packages\manganis\manganis-core)
+   Compiling glifo v0.4.0
+   Compiling anyrender_svg v0.15.0
+   Compiling softbuffer v0.4.8
+   Compiling macro-string v0.1.4
+   Compiling manganis-macro v0.8.0-alpha.3 (C:\github\Aether\packages\manganis\manganis-macro)
+   Compiling softbuffer_window_renderer v0.9.0
+   Compiling blitz-paint v0.3.0-beta.4
+   Compiling vello_cpu v0.3.0
+   Compiling winit v0.31.0-beta.3
+   Compiling aether-stores-macro v0.8.0-alpha.3 (C:\github\Aether\packages\stores-macro)
+   Compiling aether-asset-resolver v0.8.0-alpha.3 (C:\github\Aether\packages\asset-resolver)
+   Compiling aether-stores v0.8.0-alpha.3 (C:\github\Aether\packages\stores)
+   Compiling vector-cpu-render-adapter v0.18.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+   Compiling aether-document v0.8.0-alpha.3 (C:\github\Aether\packages\document)
+   Compiling blitz-shell v0.3.0-beta.4
+   Compiling manganis v0.8.0-alpha.3 (C:\github\Aether\packages\manganis\manganis)
+   Compiling aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+   Compiling aether-history v0.8.0-alpha.3 (C:\github\Aether\packages\history)
+   Compiling webbrowser v1.2.4
+   Compiling aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 25m 48s
+     Running unittests src\lib.rs (target\debug\deps\aether_native-e8bfad98d337af5f.exe)
+
+running 9 tests
+test assets::asset_access::tests::explicit_trusted_profile_preserves_custom_host_transports ... ok
+test assets::asset_access::tests::packaged_authority_does_not_delegate_files_or_custom_services ... ok
+test assets::tests::denied_unavailable_and_cancelled_requests_complete_once ... ok
+test event_handlers::tests::nested_dispatch_skips_active_handler_and_preserves_order ... ok
+test event_handlers::tests::stale_ids_cannot_remove_reused_slots ... ok
+test event_handlers::tests::removal_and_registration_during_dispatch_take_effect_at_defined_times ... ok
+test assets::tests::legacy_transport_drop_finishes_the_pending_request ... ok
+test assets::tests::failed_assets_complete_with_status_instead_of_bytes ... ok
+test assets::tests::explicit_host_byte_limit_is_applied_to_trusted_asset_requests ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+

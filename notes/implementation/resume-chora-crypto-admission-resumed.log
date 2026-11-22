@@ -1,0 +1,34 @@
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+    Blocking waiting for file lock on build directory
+   Compiling zeroize v1.9.1
+   Compiling subtle v2.6.1
+   Compiling cmov v0.5.4
+   Compiling ctutils v0.4.3
+   Compiling hybrid-array v0.4.15
+   Compiling crypto-common v0.2.2
+   Compiling icu_collections v2.1.1
+   Compiling block-buffer v0.12.1
+   Compiling phf_generator v0.14.0
+   Compiling unicode-bidi v0.3.18
+   Compiling const-oid v0.10.2
+   Compiling icu_properties v2.1.2
+   Compiling digest v0.11.3
+   Compiling icu_locale v2.1.1
+   Compiling phf_macros v0.14.0
+   Compiling phf v0.14.0
+   Compiling string_cache_codegen v0.11.2
+   Compiling phf_codegen v0.14.0
+   Compiling base64ct v1.8.3
+   Compiling anstyle-wincon v3.0.11
+   Compiling icu_normalizer v2.1.1
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.154
+   Compiling anstyle-query v1.1.5
+   Compiling anstream v1.0.0
+   Compiling kurbo v0.13.1
+   Compiling idna_adapter v1.2.1
+   Compiling clap_builder v4.6.7

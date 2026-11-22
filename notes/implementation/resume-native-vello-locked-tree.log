@@ -1,0 +1,1029 @@
+aether-native v0.8.0-alpha.3 (C:\github\Aether\packages\native)
+aether-asset-resolver v0.8.0-alpha.3 (C:\github\Aether\packages\asset-resolver)
+aether-cli-config v0.8.0-alpha.3 (C:\github\Aether\packages\cli-config)
+http v1.4.0
+bytes v1.11.1
+itoa v1.0.18
+infer v0.19.0
+cfb v0.7.3
+byteorder v1.5.0
+fnv v1.0.7
+uuid v1.23.1
+percent-encoding v2.3.2
+thiserror v2.0.21
+thiserror-impl v2.0.21 (proc-macro)
+proc-macro2 v1.0.106
+unicode-ident v1.0.27
+quote v1.0.45
+proc-macro2 v1.0.106 (*)
+syn v3.0.8
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+unicode-ident v1.0.27
+tokio v1.52.3
+pin-project-lite v0.2.17
+aether-cli-config v0.8.0-alpha.3 (C:\github\Aether\packages\cli-config)
+aether-config-macros v0.8.0-alpha.3 (C:\github\Aether\packages\config-macros)
+aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core)
+aether-const-vec v0.8.0-alpha.3 (C:\github\Aether\packages\aether-const-vec)
+aether-core-macro v0.8.0-alpha.3 (proc-macro) (C:\github\Aether\packages\core-macro)
+aether-rsx v0.8.0-alpha.3 (C:\github\Aether\packages\rsx)
+aether-core-template v0.8.0-alpha.3 (C:\github\Aether\packages\core-template)
+aether-const-vec v0.8.0-alpha.3 (C:\github\Aether\packages\aether-const-vec)
+xxhash-rust v0.8.15
+proc-macro2 v1.0.106 (*)
+proc-macro2-diagnostics v0.10.1
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+unicode-ident v1.0.27
+version_check v0.9.5
+quote v1.0.45 (*)
+rustversion v1.0.22 (proc-macro)
+syn v2.0.117 (*)
+convert_case v0.8.0
+unicode-segmentation v1.13.2
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+aether-core-template v0.8.0-alpha.3 (C:\github\Aether\packages\core-template) (*)
+aether-core-types v0.8.0-alpha.3 (C:\github\Aether\packages\core-types)
+anyhow v1.0.102
+const_format v0.2.36
+const_format_proc_macros v0.2.34 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+unicode-xid v0.2.6
+konst v0.2.20
+konst_macro_rules v0.2.19
+futures-channel v0.3.34
+futures-core v0.3.34
+futures-util v0.3.34
+futures-core v0.3.34
+futures-macro v0.3.34 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v3.0.8 (*)
+futures-task v0.3.34
+pin-project-lite v0.2.17
+slab v0.4.12
+generational-box v0.8.0-alpha.3 (C:\github\Aether\packages\generational-box)
+parking_lot v0.12.5
+lock_api v0.4.14
+scopeguard v1.2.0
+parking_lot_core v0.9.12
+cfg-if v1.0.5
+smallvec v1.16.3
+windows-link v0.2.1
+tracing v0.1.44
+pin-project-lite v0.2.17
+tracing-attributes v0.1.31 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+tracing-core v0.1.36
+once_cell v1.21.4
+longest-increasing-subsequence v0.1.0
+rustc-hash v2.1.2
+rustversion v1.0.22 (proc-macro)
+slab v0.4.12
+slotmap v1.1.1
+serde v1.0.228
+serde_core v1.0.228
+serde_derive v1.0.228 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+version_check v0.9.5
+subsecond v0.8.0-alpha.3 (C:\github\Aether\packages\subsecond\subsecond)
+libc v0.2.191
+libloading v0.8.9
+windows-link v0.2.1
+memmap2 v0.9.11
+serde v1.0.228 (*)
+subsecond-types v0.8.0-alpha.3 (C:\github\Aether\packages\subsecond\subsecond-types)
+serde v1.0.228 (*)
+thiserror v2.0.21 (*)
+tracing v0.1.44 (*)
+xxhash-rust v0.8.15
+aether-core-macro v0.8.0-alpha.3 (proc-macro) (C:\github\Aether\packages\core-macro) (*)
+aether-document v0.8.0-alpha.3 (C:\github\Aether\packages\document)
+aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core) (*)
+aether-core-macro v0.8.0-alpha.3 (proc-macro) (C:\github\Aether\packages\core-macro) (*)
+aether-core-types v0.8.0-alpha.3 (C:\github\Aether\packages\core-types)
+aether-html v0.8.0-alpha.3 (C:\github\Aether\packages\html)
+aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core) (*)
+aether-core-macro v0.8.0-alpha.3 (proc-macro) (C:\github\Aether\packages\core-macro) (*)
+aether-core-types v0.8.0-alpha.3 (C:\github\Aether\packages\core-types)
+aether-hooks v0.8.0-alpha.3 (C:\github\Aether\packages\hooks)
+aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core) (*)
+aether-signals v0.8.0-alpha.3 (C:\github\Aether\packages\signals)
+aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core) (*)
+futures-channel v0.3.34 (*)
+futures-util v0.3.34 (*)
+generational-box v0.8.0-alpha.3 (C:\github\Aether\packages\generational-box) (*)
+parking_lot v0.12.5 (*)
+rustc-hash v2.1.2
+tracing v0.1.44 (*)
+warnings v0.2.1
+pin-project v1.1.13
+pin-project-internal v1.1.13 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+tracing v0.1.44 (*)
+warnings-macro v0.2.0 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+futures-channel v0.3.34 (*)
+futures-util v0.3.34 (*)
+generational-box v0.8.0-alpha.3 (C:\github\Aether\packages\generational-box) (*)
+rustversion v1.0.22 (proc-macro)
+slab v0.4.12
+tracing v0.1.44 (*)
+aether-html-internal-macro v0.8.0-alpha.3 (proc-macro) (C:\github\Aether\packages\html-internal-macro)
+convert_case v0.8.0 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+async-trait v0.1.89 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+bytes v1.11.1
+enumset v1.1.13
+enumset_derive v0.15.0 (proc-macro)
+darling v0.21.3
+darling_core v0.21.3
+fnv v1.0.7
+ident_case v1.0.1
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+darling_macro v0.21.3 (proc-macro)
+darling_core v0.21.3 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+euclid v0.22.14
+num-traits v0.2.19
+libm v0.2.16
+autocfg v1.5.0
+serde v1.0.228 (*)
+futures-channel v0.3.34 (*)
+futures-util v0.3.34 (*)
+generational-box v0.8.0-alpha.3 (C:\github\Aether\packages\generational-box) (*)
+keyboard-types v0.8.3
+bitflags v2.13.2
+rustversion v1.0.22 (proc-macro)
+tracing v0.1.44 (*)
+lazy-js-bundle v0.8.0-alpha.3 (C:\github\Aether\packages\lazy-js-bundle)
+futures-channel v0.3.34 (*)
+futures-util v0.3.34 (*)
+generational-box v0.8.0-alpha.3 (C:\github\Aether\packages\generational-box) (*)
+serde v1.0.228 (*)
+serde_json v1.0.149
+itoa v1.0.18
+memchr v2.8.0
+serde_core v1.0.228
+zmij v1.0.21
+tracing v0.1.44 (*)
+lazy-js-bundle v0.8.0-alpha.3 (C:\github\Aether\packages\lazy-js-bundle)
+aether-history v0.8.0-alpha.3 (C:\github\Aether\packages\history)
+aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core) (*)
+tracing v0.1.44 (*)
+aether-hooks v0.8.0-alpha.3 (C:\github\Aether\packages\hooks) (*)
+aether-html v0.8.0-alpha.3 (C:\github\Aether\packages\html) (*)
+aether-native-dom v0.8.0-alpha.3 (C:\github\Aether\packages\native-dom)
+aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core) (*)
+aether-html v0.8.0-alpha.3 (C:\github\Aether\packages\html) (*)
+blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+accesskit v0.25.1
+uuid v1.23.1
+anyrender v0.14.0
+kurbo v0.13.1
+arrayvec v0.7.8
+polycool v0.4.0
+arrayvec v0.7.8
+smallvec v1.16.3
+peniko v0.6.1
+color v0.3.3
+kurbo v0.13.1 (*)
+linebender_resource_handle v0.1.1
+smallvec v1.16.3
+raw-window-handle v0.6.2
+smallvec v1.16.3
+app_units v0.7.8
+num-traits v0.2.19 (*)
+serde v1.0.228 (*)
+atomic_refcell v0.1.14
+bitflags v2.13.2
+blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits)
+atomic_refcell v0.1.14
+bitflags v2.13.2
+bytes v1.11.1
+cursor-icon v1.2.0
+http v1.4.0 (*)
+keyboard-types v0.8.3 (*)
+serde v1.0.228 (*)
+smol_str v0.3.6
+url v2.5.8
+form_urlencoded v1.2.2
+percent-encoding v2.3.2
+idna v1.1.0
+idna_adapter v1.2.2
+icu_normalizer v2.3.0
+icu_collections v2.3.0
+displaydoc v0.2.5 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+potential_utf v0.1.5
+writeable v0.6.4
+zerovec v0.11.8
+yoke v0.8.3
+stable_deref_trait v1.2.1
+yoke-derive v0.8.2 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+synstructure v0.13.2
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+zerofrom v0.1.8
+zerofrom-derive v0.1.7 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+synstructure v0.13.2 (*)
+zerofrom v0.1.8 (*)
+zerovec-derive v0.11.6 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v3.0.8 (*)
+utf8_iter v1.0.4
+yoke v0.8.3 (*)
+zerofrom v0.1.8 (*)
+zerovec v0.11.8 (*)
+icu_normalizer_data v2.3.0
+icu_provider v2.3.1
+displaydoc v0.2.5 (proc-macro) (*)
+icu_locale_core v2.3.0
+displaydoc v0.2.5 (proc-macro) (*)
+litemap v0.8.2
+tinystr v0.8.4
+displaydoc v0.2.5 (proc-macro) (*)
+zerovec v0.11.8 (*)
+writeable v0.6.4
+zerovec v0.11.8 (*)
+stable_deref_trait v1.2.1
+writeable v0.6.4
+yoke v0.8.3 (*)
+zerofrom v0.1.8 (*)
+zerotrie v0.2.5
+displaydoc v0.2.5 (proc-macro) (*)
+yoke v0.8.3 (*)
+zerofrom v0.1.8 (*)
+zerovec v0.11.8 (*)
+smallvec v1.16.3
+zerovec v0.11.8 (*)
+icu_properties v2.3.0
+displaydoc v0.2.5 (proc-macro) (*)
+icu_collections v2.3.0 (*)
+icu_locale_core v2.3.0 (*)
+icu_properties_data v2.3.0
+icu_provider v2.3.1 (*)
+zerotrie v0.2.5 (*)
+zerovec v0.11.8 (*)
+smallvec v1.16.3
+utf8_iter v1.0.4
+percent-encoding v2.3.2
+serde v1.0.228 (*)
+serde_derive v1.0.228 (proc-macro) (*)
+color v0.3.3
+cssparser v0.38.0
+cssparser-macros v0.7.0 (proc-macro)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+dtoa-short v0.3.5
+dtoa v1.0.11
+itoa v1.0.18
+phf v0.14.0
+phf_macros v0.14.0 (proc-macro)
+phf_generator v0.14.0
+fastrand v2.4.1
+phf_shared v0.14.0
+siphasher v1.0.3
+phf_shared v0.14.0 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+phf_shared v0.14.0 (*)
+serde v1.0.228 (*)
+smallvec v1.16.3
+cursor-icon v1.2.0
+debug_timer v0.1.3
+euclid v0.22.14 (*)
+html-escape v0.2.13
+utf8-width v0.1.8
+icu_casemap v2.3.0
+icu_casemap_data v2.3.0
+icu_collections v2.3.0 (*)
+icu_locale_core v2.3.0 (*)
+icu_properties v2.3.0 (*)
+icu_provider v2.3.1 (*)
+potential_utf v0.1.5 (*)
+writeable v0.6.4
+zerovec v0.11.8 (*)
+icu_locale_core v2.3.0 (*)
+icu_properties v2.3.0 (*)
+icu_segmenter v2.3.0
+core_maths v0.1.1
+libm v0.2.16
+icu_collections v2.3.0 (*)
+icu_locale_fallback v2.3.0
+icu_locale_core v2.3.0 (*)
+icu_locale_fallback_data v2.3.0
+icu_provider v2.3.1 (*)
+potential_utf v0.1.5 (*)
+tinystr v0.8.4 (*)
+zerovec v0.11.8 (*)
+icu_provider v2.3.1 (*)
+icu_segmenter_data v2.3.0
+potential_utf v0.1.5 (*)
+smallvec v1.16.3
+utf8_iter v1.0.4
+zerovec v0.11.8 (*)
+image v0.25.6
+bytemuck v1.25.2
+bytemuck_derive v1.10.2 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+byteorder-lite v0.1.0
+color_quant v1.1.0
+gif v0.13.3
+color_quant v1.1.0
+weezl v0.1.12
+image-webp v0.2.4
+byteorder-lite v0.1.0
+quick-error v2.0.1
+num-traits v0.2.19 (*)
+png v0.17.16
+bitflags v1.3.2
+crc32fast v1.5.0
+cfg-if v1.0.5
+fdeflate v0.3.7
+simd-adler32 v0.3.9
+flate2 v1.1.9
+crc32fast v1.5.0 (*)
+miniz_oxide v0.8.9
+adler2 v2.0.1
+simd-adler32 v0.3.9
+miniz_oxide v0.8.9 (*)
+zune-core v0.4.12
+zune-jpeg v0.4.21
+zune-core v0.4.12
+keyboard-types v0.8.3 (*)
+kurbo v0.13.1 (*)
+linebender_resource_handle v0.1.1
+markup5ever v0.40.0
+log v0.4.34
+tendril v0.5.0
+new_debug_unreachable v1.0.6
+utf-8 v0.7.6
+web_atoms v0.3.0
+phf v0.14.0 (*)
+string_cache v0.11.0
+new_debug_unreachable v1.0.6
+parking_lot v0.12.5 (*)
+phf_shared v0.14.0 (*)
+precomputed-hash v0.1.1
+serde v1.0.228 (*)
+phf_codegen v0.14.0
+phf_generator v0.14.0 (*)
+phf_shared v0.14.0 (*)
+string_cache_codegen v0.11.2
+phf_generator v0.14.0 (*)
+phf_shared v0.14.0 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+parley v0.12.0
+fontique v0.12.0
+hashbrown v0.17.1
+foldhash v0.2.0
+linebender_resource_handle v0.1.1
+memmap2 v0.9.11
+parlance v0.1.1
+bytemuck v1.25.2 (*)
+read-fonts v0.41.0
+bytemuck v1.25.2 (*)
+font-types v0.12.4
+bytemuck v1.25.2 (*)
+once_cell v1.21.4
+smallvec v1.16.3
+windows v0.62.2
+windows-collections v0.3.2
+windows-core v0.62.2
+windows-implement v0.60.2 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+windows-interface v0.59.3 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+windows-link v0.2.1
+windows-result v0.4.1
+windows-link v0.2.1
+windows-strings v0.5.1
+windows-link v0.2.1
+windows-core v0.62.2 (*)
+windows-future v0.3.2
+windows-core v0.62.2 (*)
+windows-link v0.2.1
+windows-threading v0.2.1
+windows-link v0.2.1
+windows-numerics v0.3.1
+windows-core v0.62.2 (*)
+windows-link v0.2.1
+windows-core v0.62.2 (*)
+hashbrown v0.17.1 (*)
+linebender_resource_handle v0.1.1
+parlance v0.1.1 (*)
+parley_engine v0.12.0
+fontique v0.12.0 (*)
+harfrust v0.12.0
+bitflags v2.13.2
+bytemuck v1.25.2 (*)
+read-fonts v0.41.0 (*)
+smallvec v1.16.3
+hashbrown v0.17.1 (*)
+icu_locale_core v2.3.0 (*)
+icu_normalizer v2.3.0 (*)
+icu_properties v2.3.0 (*)
+icu_segmenter v2.3.0 (*)
+linebender_resource_handle v0.1.1
+parlance v0.1.1 (*)
+parley_data v0.12.0
+icu_collections v2.3.0 (*)
+icu_properties v2.3.0 (*)
+parley_emoji v0.12.0
+skrifa v0.44.0
+bytemuck v1.25.2 (*)
+read-fonts v0.41.0 (*)
+smallvec v1.16.3
+percent-encoding v2.3.2
+rayon v1.12.0
+either v1.16.0
+rayon-core v1.13.0
+crossbeam-deque v0.8.6
+crossbeam-epoch v0.9.21
+crossbeam-utils v0.8.21
+crossbeam-utils v0.8.21
+crossbeam-utils v0.8.21
+selectors v0.41.0
+bitflags v2.13.2
+cssparser v0.38.0 (*)
+derive_more v2.1.1
+derive_more-impl v2.1.1 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+rustc_version v0.4.1
+semver v1.0.28
+log v0.4.34
+new_debug_unreachable v1.0.6
+precomputed-hash v0.1.1
+rustc-hash v2.1.2
+servo_arc v0.5.0
+serde v1.0.228 (*)
+stable_deref_trait v1.2.1
+smallvec v1.16.3
+to_shmem v0.6.0
+cssparser v0.38.0 (*)
+servo_arc v0.5.0 (*)
+smallbitvec v2.6.1
+smallvec v1.16.3
+string_cache v0.11.0 (*)
+thin-vec v0.2.18
+to_shmem_derive v0.2.0 (proc-macro)
+darling v0.20.11
+darling_core v0.20.11
+fnv v1.0.7
+ident_case v1.0.1
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+darling_macro v0.20.11 (proc-macro)
+darling_core v0.20.11 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+synstructure v0.13.2 (*)
+skrifa v0.44.0 (*)
+slotmap v1.1.1 (*)
+smallvec v1.16.3
+stylo v0.22.0
+app_units v0.7.8 (*)
+arrayvec v0.7.8
+atomic_refcell v0.1.14
+bitflags v2.13.2
+byteorder v1.5.0
+cssparser v0.38.0 (*)
+derive_more v2.1.1 (*)
+encoding_rs v0.8.35
+cfg-if v1.0.5
+euclid v0.22.14 (*)
+icu_segmenter v2.3.0 (*)
+indexmap v2.14.2
+equivalent v1.0.2
+hashbrown v0.17.1 (*)
+itertools v0.14.0
+either v1.16.0
+itoa v1.0.18
+log v0.4.34
+malloc_size_of_derive v0.1.3 (proc-macro)
+proc-macro2 v1.0.106 (*)
+syn v2.0.117 (*)
+synstructure v0.13.2 (*)
+mime v0.3.17
+new_debug_unreachable v1.0.6
+num-derive v0.4.2 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+num-integer v0.1.46
+num-traits v0.2.19 (*)
+num-traits v0.2.19 (*)
+num_cpus v1.17.0
+parking_lot v0.12.5 (*)
+precomputed-hash v0.1.1
+rayon v1.12.0 (*)
+rayon-core v1.13.0 (*)
+rustc-hash v2.1.2
+selectors v0.41.0 (*)
+serde v1.0.228 (*)
+servo_arc v0.5.0 (*)
+smallbitvec v2.6.1
+smallvec v1.16.3
+static_assertions v1.1.0
+string_cache v0.11.0 (*)
+strum v0.28.0
+strum_macros v0.28.0 (proc-macro)
+heck v0.5.0
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+stylo_atoms v0.22.0
+string_cache v0.11.0 (*)
+string_cache_codegen v0.11.2 (*)
+stylo_derive v0.22.0 (proc-macro)
+darling v0.20.11 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+synstructure v0.13.2 (*)
+stylo_dom v0.22.0
+bitflags v2.13.2
+stylo_malloc_size_of v0.22.0
+app_units v0.7.8 (*)
+cssparser v0.38.0 (*)
+euclid v0.22.14 (*)
+parking_lot v0.12.5 (*)
+selectors v0.41.0 (*)
+servo_arc v0.5.0 (*)
+smallbitvec v2.6.1
+smallvec v1.16.3
+string_cache v0.11.0 (*)
+thin-vec v0.2.18
+void v1.0.2
+stylo_malloc_size_of v0.22.0 (*)
+stylo_static_prefs v0.22.0
+toml v1.1.2+spec-1.1.0
+serde_core v1.0.228
+serde_spanned v1.1.1
+serde_core v1.0.228
+toml_datetime v1.1.2+spec-1.1.0
+serde_core v1.0.228
+toml_parser v1.1.5+spec-1.1.0
+winnow v1.0.3
+toml_writer v1.1.3+spec-1.1.0
+winnow v1.0.3
+stylo_traits v0.22.0
+app_units v0.7.8 (*)
+bitflags v2.13.2
+cssparser v0.38.0 (*)
+euclid v0.22.14 (*)
+malloc_size_of_derive v0.1.3 (proc-macro) (*)
+selectors v0.41.0 (*)
+serde v1.0.228 (*)
+servo_arc v0.5.0 (*)
+stylo_atoms v0.22.0 (*)
+stylo_malloc_size_of v0.22.0 (*)
+thin-vec v0.2.18
+to_shmem v0.6.0 (*)
+to_shmem_derive v0.2.0 (proc-macro) (*)
+url v2.5.8 (*)
+thin-vec v0.2.18
+to_shmem v0.6.0 (*)
+to_shmem_derive v0.2.0 (proc-macro) (*)
+uluru v3.1.0
+arrayvec v0.7.8
+url v2.5.8 (*)
+void v1.0.2
+web_atoms v0.3.0 (*)
+log v0.4.34
+walkdir v2.5.0
+same-file v1.0.6
+winapi-util v0.1.11
+windows-sys v0.52.0
+windows-targets v0.52.6
+windows_x86_64_msvc v0.52.6
+winapi-util v0.1.11 (*)
+stylo_dom v0.22.0 (*)
+stylo_static_prefs v0.22.0 (*)
+stylo_taffy v0.3.0-beta.4
+bitflags v2.13.2
+stylo v0.22.0 (*)
+stylo_atoms v0.22.0 (*)
+taffy v0.15.0
+smallvec v1.16.3
+stylo_traits v0.22.0 (*)
+svgtypes v0.16.1
+kurbo v0.13.1 (*)
+siphasher v1.0.3
+taffy v0.15.0 (*)
+thin-vec v0.2.18
+thread_local v1.1.9
+cfg-if v1.0.5
+url v2.5.8 (*)
+usvg v0.48.1
+base64 v0.23.1
+data-url v0.3.2
+flate2 v1.1.9 (*)
+fontdb v0.24.0
+log v0.4.34
+memmap2 v0.9.11
+slotmap v1.1.1 (*)
+tinyvec v1.11.0
+tinyvec_macros v0.1.1
+harfrust v0.12.0 (*)
+imagesize v0.15.0
+kurbo v0.13.1 (*)
+log v0.4.34
+pico-args v0.5.0
+roxmltree v0.21.1
+memchr v2.8.0
+simplecss v0.2.2
+log v0.4.34
+siphasher v1.0.3
+skrifa v0.44.0 (*)
+strict-num v0.1.1
+float-cmp v0.9.0
+svgtypes v0.16.1 (*)
+tiny-skia-path v0.12.0
+arrayref v0.3.9
+bytemuck v1.25.2 (*)
+strict-num v0.1.1 (*)
+unicode-bidi v0.3.18
+unicode-script v0.5.8
+unicode-vo v0.1.0
+xmlwriter v0.1.0
+web-time v1.1.0
+writeable v0.6.4
+blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits) (*)
+futures-util v0.3.34 (*)
+keyboard-types v0.8.3 (*)
+rustc-hash v2.1.2
+aether-signals v0.8.0-alpha.3 (C:\github\Aether\packages\signals) (*)
+aether-stores v0.8.0-alpha.3 (C:\github\Aether\packages\stores)
+aether-core v0.8.0-alpha.3 (C:\github\Aether\packages\core) (*)
+aether-signals v0.8.0-alpha.3 (C:\github\Aether\packages\signals) (*)
+aether-stores-macro v0.8.0-alpha.3 (proc-macro) (C:\github\Aether\packages\stores-macro)
+convert_case v0.8.0 (*)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+generational-box v0.8.0-alpha.3 (C:\github\Aether\packages\generational-box) (*)
+anyrender v0.14.0 (*)
+blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom) (*)
+blitz-paint v0.3.0-beta.4
+anyrender v0.14.0 (*)
+anyrender_svg v0.15.0
+anyrender v0.14.0 (*)
+image v0.25.6 (*)
+kurbo v0.13.1 (*)
+peniko v0.6.1 (*)
+usvg v0.48.1 (*)
+blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom) (*)
+blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits) (*)
+bytemuck v1.25.2 (*)
+color v0.3.3
+euclid v0.22.14 (*)
+kurbo v0.13.1 (*)
+parley v0.12.0 (*)
+peniko v0.6.1 (*)
+skrifa v0.44.0 (*)
+smallvec v1.16.3
+stylo v0.22.0 (*)
+taffy v0.15.0 (*)
+usvg v0.48.1 (*)
+blitz-shell v0.3.0-beta.4
+anyrender v0.14.0 (*)
+atomic_refcell v0.1.14
+blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom) (*)
+blitz-paint v0.3.0-beta.4 (*)
+blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits) (*)
+futures-util v0.3.34 (*)
+keyboard-types v0.8.3 (*)
+web-time v1.1.0
+winit v0.31.0-beta.3
+bitflags v2.13.2
+cursor-icon v1.2.0
+dpi v0.1.2
+raw-window-handle v0.6.2
+smol_str v0.3.6
+tracing v0.1.44 (*)
+winit-core v0.31.0-beta.3
+bitflags v2.13.2
+cursor-icon v1.2.0
+dpi v0.1.2
+keyboard-types v0.8.3 (*)
+raw-window-handle v0.6.2
+smol_str v0.3.6
+url v2.5.8 (*)
+winit-win32 v0.31.0-beta.3
+bitflags v2.13.2
+cursor-icon v1.2.0
+dpi v0.1.2
+raw-window-handle v0.6.2
+smol_str v0.3.6
+tracing v0.1.44 (*)
+unicode-segmentation v1.13.2
+url v2.5.8 (*)
+windows-sys v0.61.2
+windows-link v0.2.1
+winit-common v0.31.0-beta.3
+dpi v0.1.2
+tracing v0.1.44 (*)
+winit-core v0.31.0-beta.3 (*)
+winit-core v0.31.0-beta.3 (*)
+cfg_aliases v0.2.2
+blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits) (*)
+cfg-if v1.0.5
+futures-util v0.3.34 (*)
+gpu-device-context v0.10.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+etalon v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+arrayvec v0.7.8
+bitflags v2.13.2
+bytemuck v1.25.2 (*)
+cfg-if v1.0.5
+document-features v0.2.12 (proc-macro)
+litrs v1.0.0
+etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+arrayvec v0.7.8
+bit-set v0.11.1
+bit-vec v0.10.1
+bit-vec v0.10.1
+bitflags v2.13.2
+bytemuck v1.25.2 (*)
+document-features v0.2.12 (proc-macro) (*)
+etalon-core-deps-windows v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+arrayvec v0.7.8
+ash v0.38.0+1.3.281
+libloading v0.8.9 (*)
+bit-set v0.11.1 (*)
+bitflags v2.13.2
+bytemuck v1.25.2 (*)
+cfg-if v1.0.5
+etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+bitflags v2.13.2
+bytemuck v1.25.2 (*)
+log v0.4.34
+macro_rules_attribute v0.2.3
+macro_rules_attribute-proc_macro v0.2.3 (proc-macro)
+pastey v0.2.3 (proc-macro)
+naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+bytemuck v1.25.2 (*)
+hashbrown v0.17.1 (*)
+indexmap v2.14.2 (*)
+rustc-hash v1.1.0
+raw-window-handle v0.6.2
+static_assertions v1.1.0
+naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+arrayvec v0.7.8
+bit-set v0.11.1 (*)
+bitflags v2.13.2
+cfg-if v1.0.5
+codespan-reporting v0.13.1
+unicode-width v0.2.0
+half v2.7.1
+cfg-if v1.0.5
+num-traits v0.2.19 (*)
+zerocopy v0.8.48
+zerocopy-derive v0.8.48 (proc-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+hashbrown v0.17.1 (*)
+indexmap v2.14.2 (*)
+libm v0.2.16
+log v0.4.34
+naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+num-traits v0.2.19 (*)
+once_cell v1.21.4
+rustc-hash v1.1.0
+spirv v0.4.0+sdk-1.4.341.0
+bitflags v2.13.2
+thiserror v2.0.21 (*)
+unicode-ident v1.0.27
+cfg_aliases v0.2.2
+etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+cfg-if v1.0.5
+lock_api v0.4.14 (*)
+once_cell v1.21.4
+parking_lot v0.12.5 (*)
+etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+glow v0.18.0
+glutin_wgl_sys v0.6.1
+gl_generator v0.14.0
+khronos_api v3.1.0
+log v0.4.34
+xml-rs v0.8.28
+gpu-allocator v0.28.0
+ash v0.38.0+1.3.281 (*)
+hashbrown v0.16.1
+allocator-api2 v0.2.21
+equivalent v1.0.2
+foldhash v0.2.0
+log v0.4.34
+presser v0.3.1
+thiserror v2.0.21 (*)
+windows v0.62.2 (*)
+hashbrown v0.17.1 (*)
+khronos-egl v6.0.0
+libc v0.2.191
+libloading v0.8.9 (*)
+libloading v0.8.9 (*)
+log v0.4.34
+naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+ordered-float v4.6.0
+num-traits v0.2.19 (*)
+profiling v1.0.18
+range-alloc v0.1.5
+raw-window-handle v0.6.2
+renderdoc-sys v1.1.0
+smallvec v1.16.3
+static_assertions v1.1.0
+thiserror v2.0.21 (*)
+windows v0.62.2 (*)
+windows-core v0.62.2 (*)
+windows-result v0.4.1 (*)
+cfg_aliases v0.2.2
+etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+hashbrown v0.17.1 (*)
+indexmap v2.14.2 (*)
+log v0.4.34
+naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+num-traits v0.2.19 (*)
+profiling v1.0.18
+raw-window-handle v0.6.2
+rustc-hash v1.1.0
+scopeguard v1.2.0
+smallvec v1.16.3
+thiserror v2.0.21 (*)
+cfg_aliases v0.2.2
+etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+hashbrown v0.17.1 (*)
+log v0.4.34
+profiling v1.0.18
+raw-window-handle v0.6.2
+smallvec v1.16.3
+static_assertions v1.1.0
+cfg_aliases v0.2.2
+futures-intrusive v0.5.0
+futures-core v0.3.34
+lock_api v0.4.14 (*)
+parking_lot v0.12.5 (*)
+keyboard-types v0.8.3 (*)
+manganis v0.8.0-alpha.3 (C:\github\Aether\packages\manganis\manganis)
+const-serialize v0.8.0-alpha.3 (C:\github\Aether\packages\const-serialize)
+aether-const-vec v0.8.0-alpha.3 (C:\github\Aether\packages\aether-const-vec)
+const-serialize-macro v0.8.0-alpha.3 (proc-macro) (C:\github\Aether\packages\const-serialize-macro)
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+serde v1.0.228 (*)
+manganis-core v0.8.0-alpha.3 (C:\github\Aether\packages\manganis\manganis-core)
+aether-cli-config v0.8.0-alpha.3 (C:\github\Aether\packages\cli-config)
+aether-core-types v0.8.0-alpha.3 (C:\github\Aether\packages\core-types)
+const-serialize v0.8.0-alpha.3 (C:\github\Aether\packages\const-serialize) (*)
+serde v1.0.228 (*)
+winnow v0.7.15
+manganis-macro v0.8.0-alpha.3 (proc-macro) (C:\github\Aether\packages\manganis\manganis-macro)
+dunce v1.0.5
+macro-string v0.1.4
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+manganis-core v0.8.0-alpha.3 (C:\github\Aether\packages\manganis\manganis-core)
+const-serialize v0.8.0-alpha.3 (C:\github\Aether\packages\const-serialize) (*)
+serde v1.0.228
+serde_core v1.0.228
+serde_derive v1.0.228 (proc-macro) (*)
+winnow v0.7.15
+proc-macro2 v1.0.106 (*)
+quote v1.0.45 (*)
+syn v2.0.117 (*)
+thiserror v2.0.21 (*)
+peniko v0.6.1 (*)
+rustc-hash v2.1.2
+slotmap v1.1.1 (*)
+vector-gpu-render-adapter v0.15.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b)
+anyrender v0.14.0 (*)
+debug_timer v0.1.3
+etalon v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+futures-channel v0.3.34 (*)
+gpu-device-context v0.10.0 (https://github.com/mediaprophet/hypermedia-production.git?branch=0.0.40.8.1#a46b4e2b) (*)
+kurbo v0.13.1 (*)
+peniko v0.6.1 (*)
+pollster v0.4.0
+rustc-hash v2.1.2
+vector-compute-renderer v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-renderer)
+bytemuck v1.25.2 (*)
+etalon v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54) (*)
+futures-intrusive v0.5.0 (*)
+log v0.4.34
+peniko v0.6.1 (*)
+png v0.18.1
+bitflags v2.13.2
+crc32fast v1.5.0 (*)
+fdeflate v0.3.7 (*)
+flate2 v1.1.9 (*)
+miniz_oxide v0.8.9 (*)
+skrifa v0.44.0 (*)
+static_assertions v1.1.0
+thiserror v2.0.21 (*)
+vector-compute-shaders v0.11.0 (C:\github\Aether\vendor\hypermedia\vector-compute-shaders)
+bytemuck v1.25.2 (*)
+vello_encoding v0.11.0
+bytemuck v1.25.2 (*)
+guillotiere v0.7.0
+euclid v0.22.14 (*)
+svg_fmt v0.4.5
+peniko v0.6.1 (*)
+skrifa v0.44.0 (*)
+smallvec v1.16.3
+log v0.4.34
+naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+arrayvec v0.7.8
+bit-set v0.11.1 (*)
+bitflags v2.13.2
+cfg-if v1.0.5
+codespan-reporting v0.13.1 (*)
+half v2.7.1 (*)
+hashbrown v0.17.1
+foldhash v0.2.0
+indexmap v2.14.2
+equivalent v1.0.2
+hashbrown v0.17.1 (*)
+libm v0.2.16
+log v0.4.34
+naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=575bab54accf1aafb24f67e9ba810c0f3f745aea#575bab54)
+bytemuck v1.25.2 (*)
+hashbrown v0.17.1 (*)
+indexmap v2.14.2 (*)
+rustc-hash v1.1.0
+num-traits v0.2.19
+libm v0.2.16
+autocfg v1.5.0
+once_cell v1.21.4
+rustc-hash v1.1.0
+thiserror v2.0.21
+thiserror-impl v2.0.21 (proc-macro) (*)
+unicode-ident v1.0.27
+cfg_aliases v0.2.2
+thiserror v2.0.21 (*)
+vello_encoding v0.11.0 (*)
+webbrowser v1.2.4
+log v0.4.34
+url v2.5.8 (*)
+winit v0.31.0-beta.3 (*)

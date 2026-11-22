@@ -1,0 +1,288 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling windows-sys v0.61.2
+    Checking windows-future v0.3.2
+    Checking tokio v1.54.0
+    Checking kurbo v0.13.1
+    Checking digest v0.10.7
+   Compiling darling v0.20.11
+    Checking crossbeam-deque v0.8.8
+    Checking idna_adapter v1.2.1
+    Checking winapi v0.3.9
+    Checking windows-collections v0.3.2
+    Checking windows-numerics v0.3.1
+    Checking fdeflate v0.3.7
+    Checking font-types v0.12.6
+    Checking tracing-core v0.1.36
+   Compiling derive_more-impl v2.1.1
+   Compiling cssparser-macros v0.7.1
+   Compiling httparse v1.10.1
+   Compiling shlex v2.0.1
+    Checking cpufeatures v0.2.17
+   Compiling getrandom v0.4.1
+    Checking fnv v1.0.7
+   Compiling find-msvc-tools v0.1.14
+    Checking either v1.19.0
+   Compiling cfg_aliases v0.2.2
+    Checking rustc-hash v2.1.3
+   Compiling cc v1.7.0
+    Checking derive_more v2.1.1
+    Checking cssparser v0.38.0
+    Checking tracing v0.1.44
+    Checking read-fonts v0.41.0
+    Checking png v0.18.1
+    Checking windows v0.62.2
+    Checking tokio-util v0.7.20
+    Checking idna v1.1.0
+    Checking rayon-core v1.13.0
+   Compiling winapi-util v0.1.11
+    Checking http-body v1.1.0
+   Compiling serde_spanned v1.1.2
+    Checking crossbeam-channel v0.5.17
+    Checking servo_arc v0.5.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking thin-vec v0.2.21
+   Compiling time-core v0.1.9
+   Compiling icu_locale_data v2.1.2
+   Compiling num-conv v0.2.2
+    Checking slab v0.4.12
+    Checking smallbitvec v2.6.1
+   Compiling toml_writer v1.1.2+spec-1.1.0
+    Checking mime v0.3.17
+    Checking httpdate v1.0.3
+    Checking atomic-waker v1.1.2
+   Compiling cfg-if v1.0.5
+    Checking h2 v0.4.20
+   Compiling toml v1.1.6+spec-1.1.0
+    Checking to_shmem v0.6.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling time-macros v0.2.32
+   Compiling same-file v1.0.6
+    Checking rayon v1.12.0
+    Checking url v2.5.8
+   Compiling glslopt v0.1.14
+   Compiling to_shmem_derive v0.2.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling encoding_rs v0.8.42
+    Checking futures-channel v0.3.34
+   Compiling phf_codegen v0.14.0
+   Compiling slotmap v1.1.1
+   Compiling malloc_size_of_derive v0.1.3
+    Checking deranged v0.5.8
+    Checking float-cmp v0.9.0
+    Checking base64 v0.22.1
+   Compiling icu_segmenter_data v2.1.1
+    Checking powerfmt v0.2.1
+    Checking time v0.3.55
+    Checking strict-num v0.1.1
+   Compiling web_atoms v0.3.0
+    Checking hyper v1.12.0
+    Checking selectors v0.41.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling walkdir v2.5.0
+   Compiling stylo_static_prefs v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+   Compiling jobserver v0.1.35
+    Checking skrifa v0.44.0
+    Checking sha1 v0.10.6
+    Checking wio v0.2.2
+   Compiling stylo_atoms v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking headers-core v0.3.0
+    Checking aho-corasick v1.1.5
+   Compiling crossbeam-utils v0.8.23
+    Checking color v0.3.3
+   Compiling peek-poke-derive v0.3.0
+    Checking getrandom v0.2.17
+    Checking serde_bytes v0.11.19
+   Compiling lazy_static v1.5.1
+    Checking core_detect v1.0.0
+    Checking byteorder v1.5.0
+   Compiling num_cpus v1.17.0
+    Checking linebender_resource_handle v0.1.1
+   Compiling multiversion_no_op v1.0.0
+    Checking regex-syntax v0.8.11
+    Checking void v1.0.2
+   Compiling heck v0.5.0
+   Compiling bitflags v2.13.2
+    Checking arrayref v0.3.9
+    Checking simdutf8 v0.1.5
+    Checking tiny-skia-path v0.12.0
+   Compiling webrender_build v0.70.0
+   Compiling strum_macros v0.28.0
+    Checking stylo_malloc_size_of v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking regex-automata v0.4.18
+    Checking peniko v0.6.1
+   Compiling build-parallel v0.1.2
+    Checking rand_core v0.6.4
+    Checking peek-poke v0.3.0
+    Checking headers v0.4.2
+    Checking icu_locale v2.1.1
+   Compiling stylo v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking zeitstempel v0.2.2
+    Checking wr_malloc_size_of v0.2.2
+    Checking ppv-lite86 v0.2.21
+   Compiling gleam v0.15.1
+    Checking guillotiere v0.7.0
+   Compiling cookie v0.18.2
+    Checking core_maths v0.1.1
+    Checking sha1_smol v1.0.1
+    Checking byteorder-lite v0.1.0
+    Checking quick-error v2.0.1
+    Checking unic-char-range v0.9.0
+    Checking memmap2 v0.9.11
+    Checking zune-core v0.5.3
+   Compiling hashbrown v0.17.1
+   Compiling equivalent v1.0.2
+    Checking color_quant v1.1.0
+    Checking fearless_simd v0.4.1
+    Checking unic-common v0.9.0
+    Checking weezl v0.1.12
+   Compiling zmij v1.0.23
+    Checking tinyvec v1.13.3
+    Checking fontdb v0.24.0
+    Checking gif v0.14.2
+    Checking unic-ucd-version v0.9.0
+    Checking vello_common v0.2.0
+   Compiling indexmap v2.14.2
+    Checking zune-jpeg v0.5.15
+    Checking unic-char-property v0.9.0
+    Checking image-webp v0.2.4
+    Checking uuid v1.28.0
+    Checking icu_segmenter v2.1.2
+    Checking rand_chacha v0.3.1
+    Checking webrender_api v0.70.0
+    Checking regex v1.13.1
+    Checking strum v0.28.0
+    Checking dwrote v0.11.5
+    Checking harfrust v0.12.0
+    Checking svgtypes v0.16.1
+    Checking roxmltree v0.21.1
+    Checking cobs v0.3.0
+    Checking simplecss v0.2.2
+   Compiling paste v1.0.15
+    Checking base64 v0.23.1
+    Checking xmlwriter v0.1.0
+    Checking unicode-bidi v0.3.18
+   Compiling serde_json v1.0.154
+    Checking unicode-vo v0.1.0
+    Checking data-url v0.3.2
+    Checking unicode-script v0.5.8
+    Checking tracy-rs v0.1.2
+    Checking pico-args v0.5.0
+    Checking imagesize v0.15.0
+    Checking svg_fmt v0.4.5
+    Checking etagere v0.2.15
+    Checking usvg v0.48.1
+    Checking wr_glyph_rasterizer v0.70.0
+    Checking postcard v1.1.3
+    Checking stylo_traits v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking rand v0.8.7
+    Checking unic-ucd-ident v0.9.0
+   Compiling toml_edit v0.25.15+spec-1.1.0
+    Checking glifo v0.3.0
+    Checking stylo_dom v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking tiny-skia v0.12.0
+    Checking tendril v0.5.1
+    Checking ordered-channel v1.2.0
+    Checking itertools v0.14.0
+    Checking sha2 v0.10.9
+   Compiling stylo_derive v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking plane-split v0.18.0
+    Checking uluru v3.1.0
+    Checking rgb v0.8.53
+    Checking num-integer v0.1.47
+    Checking bincode v1.3.3
+    Checking thread_local v1.1.10
+   Compiling num-derive v0.4.2
+    Checking rustc-hash v1.1.0
+    Checking unicode-segmentation v1.13.3
+    Checking topological-sort v0.1.0
+    Checking raw-window-handle v0.6.2
+    Checking atomic_refcell v0.1.14
+   Compiling webrender v0.70.0
+    Checking keyboard-types v0.8.3
+    Checking naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking vello_cpu v0.2.0
+    Checking resvg v0.48.1
+    Checking content-security-policy v0.9.0
+    Checking markup5ever v0.40.0
+   Compiling proc-macro-crate v3.5.0
+    Checking urlpattern v0.3.0
+    Checking servo-hyper-serde v0.7.0 (C:\github\chora\components\hyper_serde)
+    Checking ipc-channel v0.23.0
+    Checking servo-allocator v0.7.0 (C:\github\chora\components\allocator)
+    Checking taffy v0.15.0
+   Compiling macro_rules_attribute-proc_macro v0.2.2
+    Checking macro_rules_attribute v0.2.2
+   Compiling num_enum_derive v0.7.6
+    Checking num_enum v0.7.6
+    Checking etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling servo-config-macro v0.7.0 (C:\github\chora\components\config\macro)
+    Checking libloading v0.8.9
+   Compiling enumn v0.1.14
+    Checking unicode-width v0.2.2
+    Checking bit-vec v0.10.2
+   Compiling ash v0.38.0+1.3.281
+   Compiling unicase v2.10.0
+   Compiling mime_guess v2.0.5
+    Checking bit-set v0.11.1
+    Checking codespan-reporting v0.13.1
+    Checking accesskit v0.24.0
+    Checking servo-config v0.7.0 (C:\github\chora\components\config)
+    Checking half v2.7.1
+   Compiling glutin_wgl_sys v0.6.1
+    Checking spirv v0.4.0+sdk-1.4.341.0
+    Checking pxfm v0.1.30
+   Compiling khronos-egl v6.0.0
+    Checking unicode-ident v1.0.27
+    Checking moxcms v0.8.1
+   Compiling etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling cookie v0.16.2
+    Checking hashbrown v0.16.1
+   Compiling pin-project-internal v1.1.13
+    Checking futures-task v0.3.34
+   Compiling thiserror v1.0.69
+    Checking tower-service v0.3.3
+    Checking presser v0.3.1
+    Checking ryu v1.0.23
+    Checking serde_urlencoded v0.7.1
+    Checking hyper-util v0.1.21
+    Checking futures-util v0.3.34
+    Checking pin-project v1.1.13
+    Checking gpu-allocator v0.28.0
+    Checking etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking image v0.25.10
+    Checking http-body-util v0.1.5
+    Checking etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking ordered-float v5.5.0
+   Compiling thiserror-impl v1.0.69
+    Checking glow v0.18.0
+    Checking range-alloc v0.1.5
+    Checking profiling v1.0.18
+    Checking scoped-tls v1.0.1
+    Checking warp v0.4.3
+   Compiling surfman v0.14.0
+   Compiling etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling servo-embedder-traits v0.7.0 (C:\github\chora\components\shared\embedder)
+   Compiling litrs v1.0.0
+   Compiling document-features v0.2.12
+    Checking etalon-core-deps-windows v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking webdriver v0.54.0
+    Checking etalon-core-remote-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking glow v0.17.0
+    Checking inventory v0.3.25
+   Compiling servo-tracing v0.7.0 (C:\github\chora\components\servo_tracing)
+    Checking dpi v0.1.2
+    Checking etalon-core-remote v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking servo-malloc-size-of v0.7.0 (C:\github\chora\components\malloc_size_of)
+    Checking servo-base v0.7.0 (C:\github\chora\components\shared\base)
+    Checking servo-url v0.7.0 (C:\github\chora\components\url)
+    Checking servo-geometry v0.7.0 (C:\github\chora\components\geometry)
+    Checking servo-pixels v0.7.0 (C:\github\chora\components\pixels)
+    Checking servo-profile-traits v0.7.0 (C:\github\chora\components\shared\profile)
+    Checking servo-webgpu-traits v0.7.0 (C:\github\chora\components\shared\webgpu)
+    Checking servo-paint-api v0.7.0 (C:\github\chora\components\shared\paint)
+    Checking servo-webgpu v0.7.0 (C:\github\chora\components\webgpu)
+components\webgpu\lib.rs:22:5: warning: unused import: `std::borrow::Cow`
+components\webgpu\canvas_context.rs:35:27: warning: unused import: `BufferAccessError`
+components\webgpu\wgpu_thread.rs:155:70: error[E0277]: `TryReceiveError` doesn't implement `std::fmt::Debug`: `TryReceiveError` cannot be formatted using `{:?}` because it doesn't implement `std::fmt::Debug`
+warning: `servo-webgpu` (lib) generated 2 warnings
+error: could not compile `servo-webgpu` (lib) due to 1 previous error; 2 warnings emitted

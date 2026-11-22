@@ -1,0 +1,13 @@
+Command: python C:\github\Aether\notes\implementation\chora-embedding\check_consumer.py --checkout C:/Users/Hp/AppData/Local/Temp/chora-etalon-overhaul --cargo-home C:/github/Aether/target/production-audit/cargo-home
+Exit: 101
+error: failed to get `stylo` as a dependency of package `servo v0.7.0 (C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\components\servo)`
+    ... which satisfies path dependency `chora` of package `chora-embedding-consumer v0.0.0 (C:\Users\Hp\AppData\Local\Packages\sandbox.{201ca579-4d7b-417f-a47e-4ce40b9767a9}\AC\Temp\chora-c2-consumer-o71saba3)`
+
+Caused by:
+  failed to load source for dependency `stylo`
+
+Caused by:
+  unable to update https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af
+
+Caused by:
+  can't checkout from 'https://github.com/servo/stylo': you are in the offline mode (--offline)

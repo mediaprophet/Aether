@@ -20,7 +20,9 @@ use crate::{
     TextNodeData,
 };
 use blitz_traits::devtools::DevtoolSettings;
-use blitz_traits::events::{DomEvent, HitResult, UiEvent};
+use blitz_traits::events::{
+    BlitzImageEvent, BlitzResizeEvent, BlitzToggleEvent, DomEvent, DomEventData, HitResult, UiEvent,
+};
 use blitz_traits::navigation::{DummyNavigationProvider, NavigationProvider};
 use blitz_traits::net::{AbortSignal, DummyNetProvider, NetProvider, Request};
 use blitz_traits::node_id::NodeId;
@@ -298,6 +300,9 @@ pub struct BaseDocument {
     pub(crate) last_client_pointer_position: Option<taffy::Point<f32>>,
     /// The node which is currently focussed (if any)
     pub(crate) focus_node_id: Option<NodeId>,
+    #[cfg(feature = "custom-widget")]
+    window_focused: bool,
+    focus_initial_value: Option<String>,
     /// The node which is currently active (if any)
     pub(crate) active_node_id: Option<NodeId>,
     /// The node which recieved a mousedown event (if any)
@@ -361,6 +366,9 @@ pub struct BaseDocument {
     /// Cache of loaded images, keyed by URL. Allows reusing images across multiple
     /// elements without re-fetching from the network.
     pub(crate) image_cache: HashMap<String, ImageData>,
+
+    // DOM observations generated outside an input dispatch.
+    pending_dom_events: Vec<DomEvent>,
 
     /// Tracks in-flight image requests. When an image is being fetched, additional
     /// requests for the same URL are queued here instead of starting new fetches.
@@ -499,6 +507,9 @@ impl BaseDocument {
             hover_node_is_text: false,
             last_client_pointer_position: None,
             focus_node_id: None,
+            #[cfg(feature = "custom-widget")]
+            window_focused: true,
+            focus_initial_value: None,
             active_node_id: None,
             mousedown_node_id: None,
             has_active_animations: false,
@@ -515,6 +526,7 @@ impl BaseDocument {
             changed_nodes: HashSet::new(),
             deferred_construction_nodes: Vec::new(),
             image_cache: HashMap::new(),
+            pending_dom_events: Vec::new(),
             pending_images: HashMap::new(),
             pending_style_image_nodes: Vec::new(),
             pending_critical_resources: HashSet::new(),
@@ -728,20 +740,46 @@ impl BaseDocument {
     /// Toggle the `open` attribute of a `<details>` element, expanding or
     /// collapsing it. This is the default action triggered when the element's
     /// first `<summary>` child is activated.
+    /// Queue a cancelable native toggle for the next event dispatch.
     pub fn toggle_details_open(&mut self, details_id: NodeId) {
+        if let Some(event) = self.details_toggle_event(details_id) {
+            self.queue_dom_event(event);
+        }
+    }
+
+    pub(crate) fn details_toggle_event(&self, details_id: NodeId) -> Option<DomEvent> {
+        let node = self.get_node(details_id)?;
+        if !node.data.is_element_with_tag_name(&local_name!("details")) {
+            return None;
+        }
+        let old_state = node.data.has_attr(local_name!("open"));
+        Some(DomEvent::new(
+            details_id,
+            DomEventData::BeforeToggle(BlitzToggleEvent {
+                old_state,
+                new_state: !old_state,
+            }),
+        ))
+    }
+
+    pub(crate) fn apply_details_toggle(
+        &mut self,
+        details_id: NodeId,
+        toggle: &BlitzToggleEvent,
+    ) -> Option<DomEvent> {
         use crate::qual_name;
 
-        let node = &self.nodes[details_id];
-        if !node.data.is_element_with_tag_name(&local_name!("details")) {
-            return;
+        let node = self.get_node(details_id)?;
+        if !node.data.is_element_with_tag_name(&local_name!("details"))
+            || node.data.has_attr(local_name!("open")) != toggle.old_state
+        {
+            return None;
         }
-        let is_open = node.data.has_attr(local_name!("open"));
-
         // Note: HTML attributes are in the empty (null) namespace, so the
         // QualName must not use the html namespace here, else it won't match
         // an `open` attribute created by the HTML parser.
         let mut mutator = self.mutate();
-        if is_open {
+        if !toggle.new_state {
             mutator.clear_attribute(details_id, qual_name!("open"));
         } else {
             mutator.set_attribute(details_id, qual_name!("open"), "");
@@ -749,6 +787,10 @@ impl BaseDocument {
         drop(mutator);
 
         self.shell_provider.request_redraw();
+        Some(DomEvent::new(
+            details_id,
+            DomEventData::Toggle(toggle.clone()),
+        ))
     }
 
     pub fn set_style_property(&mut self, node_id: NodeId, name: &str, value: &str) {
@@ -832,22 +874,44 @@ impl BaseDocument {
 
     #[cfg(feature = "custom-widget")]
     pub fn set_custom_widget(&mut self, node_id: NodeId, widget: Box<dyn crate::Widget>) {
-        self.nodes[node_id]
-            .element_data_mut()
-            .unwrap()
-            .set_custom_widget(widget);
-        self.custom_widget_nodes.insert(node_id);
+        if !self.get_node(node_id).is_some_and(|node| node.is_element()) {
+            return;
+        }
+        self.remove_custom_widget(node_id);
+        if let Some(element) = self.nodes[node_id].element_data_mut() {
+            self.pending_resource_deallocations
+                .extend(element.set_custom_widget(widget));
+            self.custom_widget_nodes.insert(node_id);
+        }
+        if self.focus_node_id == Some(node_id) {
+            self.notify_widget_focus(node_id, true);
+        }
     }
 
     #[cfg(feature = "custom-widget")]
     pub fn remove_custom_widget(&mut self, node_id: NodeId) {
-        let resources_to_deallocate = self.nodes[node_id]
-            .element_data_mut()
-            .unwrap()
-            .remove_custom_widget();
-        self.pending_resource_deallocations
-            .extend_from_slice(&resources_to_deallocate);
-        self.custom_widget_nodes.remove(&node_id);
+        if !self.custom_widget_nodes.remove(&node_id) {
+            return;
+        }
+        if self.focus_node_id == Some(node_id) {
+            self.notify_widget_focus(node_id, false);
+        }
+        if let Some(element) = self
+            .get_node_mut(node_id)
+            .and_then(|node| node.element_data_mut())
+        {
+            let resources = element.remove_custom_widget();
+            self.pending_resource_deallocations.extend(resources);
+        }
+    }
+
+    pub(crate) fn queue_dom_event(&mut self, event: DomEvent) {
+        self.pending_dom_events.push(event);
+        self.shell_provider.request_redraw();
+    }
+
+    pub(crate) fn take_pending_dom_events(&mut self) -> Vec<DomEvent> {
+        std::mem::take(&mut self.pending_dom_events)
     }
 
     pub fn root_node(&self) -> &Node {
@@ -888,6 +952,20 @@ impl BaseDocument {
     /// it so that stale NodeIds are never dereferenced after the slot is freed.
     pub(crate) fn remove_node_from_tree(&mut self, node_id: NodeId) -> Option<Node> {
         self.clear_interaction_state_for_removed_node(node_id);
+        #[cfg(feature = "custom-widget")]
+        self.remove_custom_widget(node_id);
+        self.pending_dom_events
+            .retain(|event| event.target != node_id);
+        // Remove pending element-image entries before this slab ID can be reused.
+        if let Some(src) = self
+            .get_node(node_id)
+            .and_then(|node| node.attr(local_name!("src")))
+        {
+            let url = self.resolve_url(src);
+            if let Some(waiting) = self.pending_images.get_mut(url.as_str()) {
+                waiting.retain(|(id, _)| *id != node_id);
+            }
+        }
         self.nodes.remove(node_id)
     }
 
@@ -946,6 +1024,9 @@ impl BaseDocument {
             let shell_provider = self.shell_provider.clone();
             self.nodes[node_id].blur(shell_provider);
             self.focus_node_id = None;
+            self.focus_initial_value = None;
+            #[cfg(feature = "custom-widget")]
+            self.notify_widget_focus(node_id, false);
         }
         if self.mousedown_node_id == Some(node_id) {
             self.mousedown_node_id = None;
@@ -1297,7 +1378,12 @@ impl BaseDocument {
                         "Resource load failed"
                     );
                     #[cfg(not(feature = "tracing"))]
-                    let _ = (waiting_nodes, err);
+                    let _ = err;
+                    for (id, kind) in waiting_nodes {
+                        if matches!(kind, ImageType::Image) && self.image_source_matches(id, url) {
+                            self.queue_image_event(id, true);
+                        }
+                    }
                 } else {
                     #[cfg(feature = "tracing")]
                     tracing::warn!(error = err.as_str(), "Resource load failed (no url)");
@@ -1405,6 +1491,23 @@ impl BaseDocument {
         }
     }
 
+    pub(crate) fn queue_image_event(&mut self, node_id: NodeId, load_error: bool) {
+        let data = BlitzImageEvent { load_error };
+        let data = if load_error {
+            DomEventData::Error(data)
+        } else {
+            DomEventData::Load(data)
+        };
+        self.queue_dom_event(DomEvent::new(node_id, data));
+    }
+
+    fn image_source_matches(&self, node_id: NodeId, url: &str) -> bool {
+        self.get_node(node_id)
+            .filter(|node| node.flags.is_in_document())
+            .and_then(|node| node.attr(local_name!("src")))
+            .is_some_and(|src| self.resolve_url(src).as_str() == url)
+    }
+
     /// Cache a loaded image and apply it to all nodes waiting on it
     /// (`<img>` elements, `background-image` layers and `mask-image` layers).
     fn apply_loaded_image(&mut self, url: &str, image: ImageData) {
@@ -1422,6 +1525,9 @@ impl BaseDocument {
 
         // Apply to all waiting nodes
         for (node_id, image_type) in waiting_nodes {
+            if matches!(image_type, ImageType::Image) && !self.image_source_matches(node_id, url) {
+                continue;
+            }
             let Some(node) = self.get_node_mut(node_id) else {
                 continue;
             };
@@ -1438,6 +1544,7 @@ impl BaseDocument {
                     // Clear layout cache
                     node.clear_layout_cache();
                     node.insert_damage(ALL_DAMAGE);
+                    self.queue_image_event(node_id, false);
                 }
                 ImageType::Background(idx) | ImageType::Mask(idx) => {
                     let layer_image = node.element_data_mut().and_then(|el| {
@@ -1696,13 +1803,117 @@ impl BaseDocument {
     }
 
     /// Clear the focussed node
+    fn focused_text_value(&self, id: NodeId) -> Option<String> {
+        let input = self.get_node(id)?.element_data()?.text_input_data()?;
+        Some(input.editor.raw_text().to_string())
+    }
+
+    fn queue_text_change(&mut self, id: NodeId) {
+        if let Some(initial) = self.focus_initial_value.take() {
+            if let Some(value) = self
+                .focused_text_value(id)
+                .filter(|value| *value != initial)
+            {
+                self.queue_dom_event(DomEvent::new(
+                    id,
+                    DomEventData::Change(blitz_traits::events::BlitzFormActionEvent { value }),
+                ));
+            }
+        }
+    }
+
+    pub(crate) fn reset_native_form(&mut self, form_id: NodeId) {
+        let controls: Vec<_> = self
+            .controls_to_form
+            .iter()
+            .filter_map(|(&control, &form)| (form == form_id).then_some(control))
+            .collect();
+        for id in controls {
+            let Some(element) = self.get_node(id).and_then(|node| node.element_data()) else {
+                continue;
+            };
+            if element.checkbox_input_checked().is_some() {
+                let checked = element
+                    .attr(local_name!("checked"))
+                    .is_some_and(|value| value != "false");
+                self.snapshot_node_and(id, ElementState::CHECKED, |node| {
+                    if let Some(element) = node.element_data_mut() {
+                        element.set_checkbox_input_checked(checked);
+                    }
+                    node.mark_ancestors_dirty();
+                });
+            } else if element.text_input_data().is_some() {
+                let value = element
+                    .attr(local_name!("value"))
+                    .map(str::to_owned)
+                    .unwrap_or_else(|| {
+                        if element.name.local == local_name!("textarea") {
+                            self.nodes[id]
+                                .children
+                                .iter()
+                                .filter_map(|id| match &self.nodes[*id].data {
+                                    NodeData::Text(text) => Some(text.content.as_str()),
+                                    _ => None,
+                                })
+                                .collect()
+                        } else {
+                            String::new()
+                        }
+                    });
+                let node = &mut self.nodes[id];
+                if let Some(input) = node
+                    .element_data_mut()
+                    .and_then(|el| el.text_input_data_mut())
+                {
+                    input.set_text(
+                        &mut self.font_ctx.lock().unwrap(),
+                        &mut self.layout_ctx,
+                        &value,
+                    );
+                }
+                node.clear_layout_cache();
+                node.insert_damage(ALL_DAMAGE);
+                if self.focus_node_id == Some(id) {
+                    self.focus_initial_value = Some(value);
+                }
+            }
+        }
+        self.shell_provider.request_redraw();
+    }
+
+    /// Update the system focus of the owning window without changing DOM focus.
+    #[cfg(feature = "custom-widget")]
+    pub fn set_window_focused(&mut self, focused: bool) {
+        if self.window_focused != focused {
+            self.window_focused = focused;
+            if let Some(id) = self.focus_node_id {
+                self.notify_widget_focus(id, focused);
+            }
+        }
+    }
+
+    #[cfg(feature = "custom-widget")]
+    fn notify_widget_focus(&mut self, node_id: NodeId, focused: bool) {
+        let focused = focused && self.window_focused;
+        if let Some(widget) = self
+            .get_node_mut(node_id)
+            .and_then(|node| node.element_data_mut())
+            .and_then(|element| element.custom_widget_data_mut())
+        {
+            widget.widget.focus_changed(focused);
+        }
+    }
+
     pub fn clear_focus(&mut self) {
         if let Some(id) = self.focus_node_id {
+            self.queue_text_change(id);
             let shell_provider = self.shell_provider.clone();
             self.snapshot_node_and(id, ElementState::FOCUS | ElementState::FOCUSRING, |node| {
                 node.blur(shell_provider)
             });
             self.focus_node_id = None;
+            #[cfg(feature = "custom-widget")]
+            self.notify_widget_focus(id, false);
         }
     }
 
@@ -1724,9 +1935,12 @@ impl BaseDocument {
 
         // Remove focus from the old node
         if let Some(id) = self.focus_node_id {
+            self.queue_text_change(id);
             self.snapshot_node_and(id, ElementState::FOCUS | ElementState::FOCUSRING, |node| {
                 node.blur(shell_provider.clone())
             });
+            #[cfg(feature = "custom-widget")]
+            self.notify_widget_focus(id, false);
         }
 
         // Focus the new node
@@ -1737,6 +1951,9 @@ impl BaseDocument {
         );
 
         self.focus_node_id = Some(focus_node_id);
+        self.focus_initial_value = self.focused_text_value(focus_node_id);
+        #[cfg(feature = "custom-widget")]
+        self.notify_widget_focus(focus_node_id, true);
 
         true
     }
@@ -1995,8 +2212,27 @@ impl BaseDocument {
 
     pub fn set_viewport(&mut self, viewport: Viewport) {
         let changes = DeviceChanges::from_viewports(&self.viewport, &viewport);
+        let old_size = self.viewport.logical_size();
         self.viewport = viewport;
         self.queue_device_changes(changes);
+        self.queue_viewport_resize(old_size);
+    }
+
+    pub(crate) fn queue_viewport_resize(&mut self, old_size: (f32, f32)) {
+        let (width, height) = self.viewport.logical_size();
+        if old_size != (width, height) && width.is_finite() && height.is_finite() {
+            if let Some(root) = self.try_root_element() {
+                self.queue_dom_event(DomEvent::new(
+                    root.id,
+                    DomEventData::Resize(BlitzResizeEvent {
+                        border_box_width: f64::from(width),
+                        border_box_height: f64::from(height),
+                        content_box_width: f64::from(width),
+                        content_box_height: f64::from(height),
+                    }),
+                ));
+            }
+        }
     }
 
     /// Returns the current CSS media type used to evaluate `@media` rules.

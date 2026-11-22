@@ -1,0 +1,87 @@
+    Blocking waiting for file lock on build directory
+    Checking hashbrown v0.17.1
+    Checking arrayvec v0.7.8
+    Checking indexmap v2.14.2
+    Checking polycool v0.4.0
+    Checking kurbo v0.13.1
+   Compiling foldhash v0.2.0
+    Checking icu_properties v2.1.2
+    Checking idna_adapter v1.2.1
+    Checking peniko v0.6.1
+    Checking idna v1.1.0
+    Checking guillotiere v0.7.0
+    Checking h2 v0.4.20
+    Checking to_shmem v0.6.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking url v2.5.8
+    Checking hyper v1.12.0
+    Checking selectors v0.41.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking stylo_malloc_size_of v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking vello_common v0.2.0
+    Checking svgtypes v0.16.1
+    Checking usvg v0.48.1
+    Checking stylo_traits v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking glifo v0.3.0
+    Checking stylo_dom v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking tiny-skia v0.12.0
+   Compiling toml_edit v0.25.15+spec-1.1.0
+    Checking uluru v3.1.0
+    Checking stylo v0.22.0 (https://github.com/servo/stylo?rev=a05fadffd43bc173b2d6e1e2caf44a36b45354af#a05fadff)
+    Checking webrender v0.70.0
+    Checking vello_cpu v0.2.0
+    Checking resvg v0.48.1
+   Compiling proc-macro-crate v3.5.0
+    Checking content-security-policy v0.9.0
+    Checking urlpattern v0.3.0
+    Checking servo-hyper-serde v0.7.0 (C:\github\chora\components\hyper_serde)
+    Checking ipc-channel v0.23.0
+    Checking servo-malloc-size-of v0.7.0 (C:\github\chora\components\malloc_size_of)
+   Compiling num_enum_derive v0.7.6
+    Checking num_enum v0.7.6
+    Checking accesskit v0.24.0
+    Checking servo-config v0.7.0 (C:\github\chora\components\config)
+    Checking servo-base v0.7.0 (C:\github\chora\components\shared\base)
+    Checking hyper-util v0.1.21
+    Checking naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling num-traits v0.2.19
+    Checking warp v0.4.3
+    Checking servo-url v0.7.0 (C:\github\chora\components\url)
+   Compiling libm v0.2.16
+   Compiling darling_core v0.24.1
+    Checking naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking servo-pixels v0.7.0 (C:\github\chora\components\pixels)
+    Checking webdriver v0.54.0
+    Checking etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+    Checking servo-profile-traits v0.7.0 (C:\github\chora\components\shared\profile)
+    Checking servo-geometry v0.7.0 (C:\github\chora\components\geometry)
+   Compiling etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling zerocopy v0.8.62
+   Compiling bytemuck v1.25.2
+   Compiling rustc-hash v1.1.0
+   Compiling unicode-width v0.2.2
+   Compiling bit-vec v0.10.2
+    Checking servo-embedder-traits v0.7.0 (C:\github\chora\components\shared\embedder)
+    Checking gpu-allocator v0.28.0
+   Compiling bit-set v0.11.1
+   Compiling libz-sys v1.1.29
+   Compiling codespan-reporting v0.13.1
+   Compiling half v2.7.1
+    Checking etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling thiserror v2.0.21
+   Compiling darling_macro v0.24.1
+    Checking etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling once_cell v1.21.4
+    Checking renderdoc-sys v1.1.0
+    Checking zeroize v1.9.1
+    Checking rustls-pki-types v1.15.1
+    Checking brotli-decompressor v5.0.3
+   Compiling darling v0.24.1
+    Checking read-fonts v0.43.3
+   Compiling etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling rustls v0.23.46
+    Checking rustls-webpki v0.103.15
+    Checking chacha20 v0.10.2
+   Compiling serde_with_macros v3.24.0
+    Checking wuff v0.2.9
+   Compiling vector-compute-shaders v0.11.0 (https://github.com/mediaprophet/hypermedia-production.git?rev=af57e82120b30b47fca238edb21a839d2cdb4278#af57e821)
+C:\github\Aether\target\production-audit\cargo-home\git\checkouts\hypermedia-production-644a36e9db8698f0\af57e82\crates\vector-compute-shaders\src\compile\mod.rs:96:56: error[E0277]: the trait bound `InnerError: From<Box<WithSpan<naga::valid::ValidationError>>>` is not satisfied: unsatisfied trait bound
+error: could not compile `vector-compute-shaders` (build script) due to 1 previous error

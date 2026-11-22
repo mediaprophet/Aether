@@ -1,0 +1,28 @@
+    Blocking waiting for file lock on build directory
+   Compiling darling_core v0.21.3
+   Compiling aether-asset-resolver v0.8.0-alpha.3 (C:\github\Aether\packages\asset-resolver)
+   Compiling darling_macro v0.21.3
+   Compiling darling v0.21.3
+   Compiling enumset_derive v0.15.0
+   Compiling enumset v1.1.13
+   Compiling aether-html v0.8.0-alpha.3 (C:\github\Aether\packages\html)
+   Compiling aether-document v0.8.0-alpha.3 (C:\github\Aether\packages\document)
+   Compiling aether v0.8.0-alpha.3 (C:\github\Aether\packages\aether)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2m 55s
+     Running unittests src\lib.rs (target\debug\deps\aether_document-b01301cf8094f18c.exe)
+
+running 2 tests
+test elements::tests::extracts_formatted_text ... ok
+test elements::tests::extracts_static_text ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\native_lifecycle.rs (target\debug\deps\native_lifecycle-ce2767fc545180b9.exe)
+
+running 3 tests
+test tests::noop_eval_stays_unsupported_after_return_and_copy ... ok
+test a_real_evaluator_retains_finished_owner_semantics ... ok
+test document_context_alias_retrieves_the_provided_instance ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

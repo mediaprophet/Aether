@@ -1,0 +1,9 @@
+Window 0: component initialized with native contexts
+Window 0: redraw 1
+Window 1: component initialized with native contexts
+Window 1: redraw 1
+Window 0: component owner dropped
+Window 1: redraw 2
+Window 1: redraw 3
+Window 1: component owner dropped
+Both native windows initialized; the late window remained live after the first closed; both owners were dropped.

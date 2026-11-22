@@ -1,0 +1,42 @@
+{
+  "source_checkout": "C:/github/chora",
+  "editable_snapshot": "C:\\Users\\Hp\\AppData\\Local\\Temp\\chora-etalon-overhaul",
+  "files": {
+    "components/net/connector.rs": {
+      "baseline_sha256": "ac41e969201165f866baa9b9badcac09a0658cead8acefbef51e60c0b322f785",
+      "patched_sha256": "09391fa0503590889e9d8b1be17018a2e7bc0049dc28b54cb3d830ffae99a9e0"
+    },
+    "components/net/resource_thread.rs": {
+      "baseline_sha256": "3e5a2f3914368072c7aaab6dcce2818bb66ca142166239ced7f17aec0a045e04",
+      "patched_sha256": "2639441865b5769d999b7ca7d4c704705131c319118e3e3a9b880112c94bfdd9"
+    },
+    "components/net/http_loader.rs": {
+      "baseline_sha256": "05c11c77520b3b5aed9fc78cdc686eb561d9d27dc1befecba92f42d3594914c8",
+      "patched_sha256": "95d039ef42c080c722092504426e9744b33c6d0078873d531482afec347faf79"
+    },
+    "components/net/tests/main.rs": {
+      "baseline_sha256": "6d3d523899a5774b61b6373ff77d920ea41e6be5bc5d6ad358cdd0be203fa6d2",
+      "patched_sha256": "448a80e710558b02331fc4090d9ac55ddd42a15aeb2a22b626677d6a82ce2f26"
+    },
+    "components/servo/servo.rs": {
+      "baseline_sha256": "5c93ca578293a5084ac4670a85d0aa4930be14a15a80652f1884cbf5c68d82f8",
+      "patched_sha256": "aec00bf587153364148eaf6e18cc4c720979685311e9b77320b1670e3f4a48fc"
+    },
+    "components/servo/network_manager.rs": {
+      "baseline_sha256": "54b01c7542947a333d338432bb15bf95765e68e406ae6c3588125668158b51b8",
+      "patched_sha256": "cd594293ae4ee924cf8cf7b31fccd307e36d3153a45b55ebc4a9b8a0e5de7a49"
+    },
+    "components/net/Cargo.toml": {
+      "baseline_sha256": "c7f1ae0d1ebc799461fc8b99de76c20fdaab12ddbb4a862dd812f3490e5ae8bb",
+      "patched_sha256": "92f29d0eab3f8aa4dbd840760742e5c4c3f3aad80b4949e44c70b9d269662802"
+    },
+    "components/net/tests/tls_configuration.rs": {
+      "baseline_sha256": null,
+      "patched_sha256": "4652a4e9cd4b480269007a054343016f3f7fd89f9d9f5109968a4611375eb17e"
+    },
+    "components/servo/lib.rs": {
+      "baseline_sha256": "90628c787f2b0c739bfbeef13b355098dde33b98cdb5f2f5f794d0506843e7f4",
+      "patched_sha256": "92330ed6c04fb461965a041ea8d6ceeaa77d46b22f85c1178ca24ee19ddd46fb"
+    }
+  }
+}

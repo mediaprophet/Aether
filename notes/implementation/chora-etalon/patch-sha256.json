@@ -1,0 +1,4 @@
+{
+  "C1-etalon-source-migration.patch": "859f549a6bdb7f2c75e59c587a54a535242ff6211a3e9e444dff5d766fe5ad22",
+  "C10-capi-startup-ownership.patch": "f5d163d647ed96d09547487d38b805b5c35b2e6fc73bc9d7576a15de693018e5"
+}

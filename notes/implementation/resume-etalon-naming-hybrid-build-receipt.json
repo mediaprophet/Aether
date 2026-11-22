@@ -1,0 +1,16 @@
+{
+  "binary": "C:\\github\\Aether\\target\\debug\\examples\\native_lifecycle_smoke.exe",
+  "sha256": "53c6715a9d8836a199ab7b5de746a7088fdae0d27f6640ce71ca6e15c189179e",
+  "bytes": 52608512,
+  "modified_utc": "2026-11-12T12:55:24.114465+00:00",
+  "profile": "native-default-hybrid-prelude-post-etalon-naming-post-ime",
+  "command": "cargo build --locked --offline -p aether-native --example native_lifecycle_smoke --features prelude",
+  "build_result": "passed",
+  "build_elapsed": "9m01s",
+  "runtime_result": "not launched; user requested pause",
+  "etalon_revision": "575bab54accf1aafb24f67e9ba810c0f3f745aea",
+  "hypermedia_revision": "a46b4e2ba5a9d57fc1a68e20ae87ce4bc2d076cf",
+  "source_policy_sha256": "f010754e775c75c09da8b70018a94f44ecdb770747d3edd0ec549ca13eb59559",
+  "cargo_lock_sha256": "205346c05dc03a908c220003f286ff1e0e380bf2ee529bf1604c390d49d577d6",
+  "build_log": "notes/implementation/resume-etalon-naming-hybrid-smoke-build.log"
+}

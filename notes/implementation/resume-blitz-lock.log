@@ -1,0 +1,11 @@
+     Locking 6 packages to highest compatible versions
+      Adding blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+    Removing blitz-dom v0.3.0-beta.4
+      Adding blitz-net v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-net)
+    Removing blitz-net v0.3.0-beta.4
+      Adding blitz-traits v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-traits)
+    Removing blitz-traits v0.3.0-beta.4
+    Updating toml_datetime v1.1.2+spec-1.1.0 -> v1.1.3+spec-1.1.0
+    Updating toml_edit v0.25.17+spec-1.1.0 -> v0.25.19+spec-1.1.0
+    Updating toml_writer v1.1.3+spec-1.1.0 -> v1.2.0+spec-1.1.0
+note: pass `--verbose` to see 282 unchanged dependencies behind latest

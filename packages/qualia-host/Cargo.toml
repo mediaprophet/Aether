@@ -1,0 +1,34 @@
+[package]
+name = "aether-qualia-host"
+version = "0.1.0"
+edition = "2024"
+publish = false
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+license = "CC-BY-NC-ND-4.0"
+description = "Native host adapter for the canonical QualiaDB VibeScript engine and Sentinel contracts"
+
+[dependencies]
+aether-core = { path = "../core" }
+aether-signals = { path = "../signals", version = "=0.8.0-alpha.3" }
+aether-chora-bridge-protocol = { path = "../chora-bridge-protocol" }
+aether-chora-client = { path = "../chora-client", optional = true }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+vibe = { path = "../../../qualiaDB/crates/vibe" }
+vibescript-abi = { path = "../../../qualiaDB/crates/vibescript-abi" }
+qualia-core-db = { path = "../../../qualiaDB/crates/qualia-core-db", default-features = false }
+qualia-cooperative-core = { path = "../../../qualiaDB/crates/qualia-cooperative-core" }
+
+[dev-dependencies]
+tempfile = "3"
+
+[features]
+chora-client = ["dep:aether-chora-client"]
+
+# The host composes canonical services above the UI framework. Its dependency
+# graph is qualified separately until all native GPU source identities align.
+[workspace]
+
+# Etalon's bridge must use the exact ABI package used by the canonical engine.
+[patch."https://github.com/mediaprophet/vibe-script.git"]
+vibescript-abi = { path = "../../../qualiaDB/crates/vibescript-abi" }

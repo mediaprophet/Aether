@@ -1,0 +1,18 @@
+    Checking servo-webgpu v0.7.0 (C:\github\chora\components\webgpu)
+components\webgpu\wgpu_thread.rs:192:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:275:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:285:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:786:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:801:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:807:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:819:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:838:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:844:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:1130:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:1139:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:1192:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:1297:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:1320:25: warning: unused variable: `device_id`: help: try ignoring the field: `device_id: _`
+components\webgpu\wgpu_thread.rs:43:9: warning: field `device_id` is never read
+warning: `servo-webgpu` (lib) generated 15 warnings (run `cargo fix --lib -p servo-webgpu` to apply 14 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 21.16s

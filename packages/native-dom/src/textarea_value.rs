@@ -140,7 +140,7 @@ mod tests {
                 .unwrap()
                 .unwrap();
             let mut inner = doc.inner.borrow_mut();
-            let mut counts = [0; 64];
+            let mut counts = [0; 96];
             let mut mounted = Vec::new();
             let mut backend = super::super::BlitzBackend {
                 docm: inner.mutate(),

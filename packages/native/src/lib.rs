@@ -25,15 +25,17 @@
 mod aether_application;
 mod aether_renderer;
 mod assets;
-mod config;
 #[cfg(all(feature = "chora", not(target_arch = "wasm32")))]
 pub mod chora_frame;
+mod config;
 #[cfg(all(feature = "chora", not(target_arch = "wasm32")))]
 pub use aether_chora_client;
 mod contexts;
 mod event_handlers;
 mod hooks;
 mod link_handler;
+pub mod viewport;
+mod window_role;
 
 #[cfg(feature = "prelude")]
 pub mod prelude;
@@ -44,9 +46,16 @@ pub use aether_native_dom::*;
 use blitz_traits::net::NetProvider;
 
 pub use aether_application::{AetherNativeApplication, AetherNativeEvent};
-pub use aether_renderer::{AetherNativeWindowRenderer, RendererOptions};
+#[cfg(all(feature = "gpu-cpu-fallback", not(target_arch = "wasm32")))]
+#[doc(hidden)]
+pub use aether_renderer::FallbackScenePainter;
+pub use aether_renderer::{
+    AetherNativeWindowRenderer, RendererFallbackPolicy, RendererHealth, RendererOptions,
+};
 use assets::AetherNativeNetProvider;
 pub use assets::AssetAccess;
+pub use contexts::{NativeAppHandle, use_native_app};
+pub use window_role::{WindowClosePolicy, WindowRole};
 
 #[doc(inline)]
 pub use anyrender::CompositeAlphaMode;
@@ -232,6 +241,39 @@ pub fn try_launch_cfg_with_props<P: Clone + 'static, M: 'static>(
     contexts: Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync>>,
     configs: Vec<Box<dyn Any>>,
 ) -> Result<(), LaunchError> {
+    try_run_vdom(VirtualDom::new_with_props(app, props), contexts, configs)
+}
+
+/// Launch with a single-use startup closure and non-cloneable props.
+///
+/// The closure builds the root once. Put reactive rendering in the child
+/// components it returns so their usual rerender lifecycle is preserved.
+pub fn try_launch_cfg_once<P: 'static>(
+    app: impl FnOnce(P) -> Element + 'static,
+    props: P,
+    contexts: Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync>>,
+    configs: Vec<Box<dyn Any>>,
+) -> Result<(), LaunchError> {
+    type Startup = std::rc::Rc<std::cell::RefCell<Option<Box<dyn FnOnce() -> Element>>>>;
+    fn root() -> Element {
+        let startup = consume_context::<Startup>();
+        use_hook(|| {
+            let render = startup.borrow_mut().take();
+            render.map_or_else(aether_core::VNode::empty, |render| render())
+        })
+    }
+    let vdom = VirtualDom::new(root);
+    let startup: Startup =
+        std::rc::Rc::new(std::cell::RefCell::new(Some(Box::new(move || app(props)))));
+    vdom.provide_root_context(startup);
+    try_run_vdom(vdom, contexts, configs)
+}
+
+fn try_run_vdom(
+    mut vdom: VirtualDom,
+    contexts: Vec<Box<dyn Fn() -> Box<dyn Any> + Send + Sync>>,
+    configs: Vec<Box<dyn Any>>,
+) -> Result<(), LaunchError> {
     // Macro to attempt to downcast a type out of a Box<dyn Any>
     macro_rules! try_read_config {
         ($input:ident, $store:ident, $kind:ty) => {
@@ -295,13 +337,36 @@ pub fn try_launch_cfg_with_props<P: Clone + 'static, M: 'static>(
         })
     }
 
-    // Build the vdom first; the net provider, document, and other window-bound
-    // contexts are attached below once the event-loop proxy exists.
-    let mut vdom = VirtualDom::new_with_props(app, props);
-
     for context in contexts {
         vdom.insert_any_root_context(context());
     }
+
+    let options = RendererOptions {
+        #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
+        features,
+        #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
+        limits,
+        ..RendererOptions::default()
+    };
+    let config = build_window(vdom, config, &proxy, options);
+    let application = AetherNativeApplication::new(proxy, event_queue, config);
+    event_loop
+        .run_app(application)
+        .map_err(LaunchError::EventLoopRun)
+}
+
+pub(crate) fn build_window(
+    vdom: VirtualDom,
+    config: Config,
+    proxy: &BlitzShellProxy,
+    mut options: RendererOptions,
+) -> WindowConfig<AetherNativeWindowRenderer> {
+    let (attributes, alpha_mode, base_color) =
+        config.role.apply_to_attributes(config.window_attributes);
+    options.alpha_mode = config.alpha_mode.or(alpha_mode);
+    options.base_color = config.base_color.or(base_color);
+    options.fallback_policy = config.fallback_policy;
+    vdom.provide_root_context(config.close_policy);
 
     #[cfg(all(feature = "net", not(target_arch = "wasm32")))]
     let net_provider = {
@@ -347,26 +412,6 @@ pub fn try_launch_cfg_with_props<P: Clone + 'static, M: 'static>(
             ..Default::default()
         },
     );
-    #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
-    let renderer = AetherNativeWindowRenderer::with_options(RendererOptions {
-        base_color: config.base_color,
-        alpha_mode: config.alpha_mode,
-        features,
-        limits,
-    });
-    #[cfg(not(any(feature = "vello", feature = "vello-hybrid")))]
-    let renderer = AetherNativeWindowRenderer::with_options(RendererOptions {
-        base_color: config.base_color,
-        alpha_mode: config.alpha_mode,
-    });
-    let config =
-        WindowConfig::with_attributes(Box::new(doc) as _, renderer, config.window_attributes);
-
-    // Create application
-    let application = AetherNativeApplication::new(proxy, event_queue, config);
-
-    // Run event loop
-    event_loop
-        .run_app(application)
-        .map_err(LaunchError::EventLoopRun)
+    let renderer = AetherNativeWindowRenderer::with_options(options);
+    WindowConfig::with_attributes(Box::new(doc), renderer, attributes)
 }

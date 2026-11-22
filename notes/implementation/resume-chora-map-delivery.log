@@ -1,0 +1,69 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling syn v3.0.9
+   Compiling serde_core v1.0.229
+   Compiling serde v1.0.229
+   Compiling serde_derive v1.0.229
+   Compiling cfg_aliases v0.2.2
+   Compiling foldhash v0.2.0
+   Compiling hashbrown v0.17.1
+   Compiling bytemuck_derive v1.12.1
+   Compiling equivalent v1.0.3
+   Compiling libm v0.2.16
+   Compiling autocfg v1.5.1
+   Compiling cfg-if v1.0.5
+   Compiling num-traits v0.2.19
+   Compiling indexmap v2.14.2
+   Compiling bytemuck v1.25.2
+   Compiling syn v2.0.119
+   Compiling zerocopy v0.8.63
+   Compiling rustc-hash v1.1.0
+   Compiling naga-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling zerocopy-derive v0.8.63
+   Compiling bitflags v2.13.2
+   Compiling log v0.4.35
+   Compiling thiserror v2.0.21
+   Compiling parking_lot_core v0.9.12
+   Compiling pastey v0.2.3
+   Compiling macro_rules_attribute-proc_macro v0.2.3
+   Compiling macro_rules_attribute v0.2.3
+   Compiling naga v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling smallvec v1.16.5
+   Compiling thiserror-impl v2.0.21
+   Compiling scopeguard v1.2.0
+   Compiling unicode-width v0.2.3
+   Compiling static_assertions v1.1.0
+   Compiling raw-window-handle v0.6.2
+   Compiling bit-vec v0.10.1
+   Compiling windows-link v0.2.1
+   Compiling once_cell v1.21.4
+   Compiling bit-set v0.11.1
+   Compiling etalon-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling codespan-reporting v0.13.1
+   Compiling lock_api v0.4.14
+   Compiling half v2.7.1
+   Compiling arrayvec v0.7.8
+   Compiling parking_lot v0.12.5
+   Compiling etalon-hal v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling etalon-sync v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling etalon-naga-bridge v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling etalon-core v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling litrs v1.0.1
+   Compiling document-features v0.2.12
+   Compiling profiling v1.0.18
+   Compiling etalon-core-remote-types v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling etalon-core-remote v0.0.2 (https://github.com/mediaprophet/etalon.git?rev=8e8ab6c8349bcc6ab1d81138f2c9f2a0c90f0952#8e8ab6c8)
+   Compiling chora-etalon-api-probe v0.0.0 (C:\github\chora\support\etalon\api-probe)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10m 59s
+     Running unittests src\lib.rs (C:\Users\Hp\AppData\Local\Temp\chora-etalon-overhaul\target\api-probe\debug\deps\chora_etalon_api_probe-b35a004a9106307b.exe)
+
+running 2 tests
+test map_delivery::tests::ipc_sizes_cannot_expand_truncate_or_overflow_the_actual_mapping ... ok
+test chora_closed_device::tests::map_delivery_retains_only_acknowledged_successful_mappings ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.02s
+

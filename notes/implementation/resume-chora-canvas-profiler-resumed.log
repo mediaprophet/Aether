@@ -1,0 +1,40 @@
+    Blocking waiting for file lock on package cache
+warning: patch `gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)` was not used in the crate graph
+help: Check that the patched package version and available features are compatible
+      with the dependency requirements. If the patch has a different version from
+      what is locked in the Cargo.lock file, run `cargo update` to use the new
+      version. This may also occur with an optional dependency that is not enabled.
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_config-14ji2yn0faqyl\s-ho3ccq2i04-0sk6ghn-working`
+
+warning: `servo-config` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\servo_base-0z2xji9gorj8r\s-ho3ccus96e-1xu2zfw-working`
+
+warning: `servo-base` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\pixels-2d8cxxgo1xvle\s-ho3ccznrig-1mqrpg8-working`
+
+warning: `servo-pixels` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\profile_traits-1lm9o9jxq1vlj\s-ho3cd282z7-1pa1a35-working`
+
+warning: `servo-profile-traits` (lib) generated 1 warning
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\embedder_traits-22l1a0o6ounz2\s-ho3cd4z9c5-02ek57n-working`
+
+warning: `servo-embedder-traits` (lib) generated 1 warning
+    Checking servo-paint-api v0.7.0 (C:\github\chora\components\shared\paint)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\paint_api-1lijh4jnmaljw\s-ho4xu42357-0rcigzx-working`
+
+warning: `servo-paint-api` (lib) generated 1 warning
+    Checking servo-net-traits v0.7.0 (C:\github\chora\components\shared\net)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\net_traits-3ftf6okjunp84\s-ho4xu9fzu8-0qt7n2h-working`
+
+warning: `servo-net-traits` (lib) generated 1 warning
+    Checking gpu-command-profiler v0.28.0 (C:\github\chora\vendor\hypermedia\crates\gpu-command-profiler)
+    Checking servo-fonts v0.7.0 (C:\github\chora\components\fonts)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\chora\target\debug\incremental\fonts-34ljbelxlko5o\s-ho4xujma3s-1v34lvh-working`
+
+warning: `servo-fonts` (lib) generated 1 warning
+    Checking vector-compute-renderer v0.11.0 (C:\github\chora\vendor\hypermedia\crates\vector-compute-renderer)
+    Checking servo-canvas v0.7.0 (C:\github\chora\components\canvas)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5m 13s

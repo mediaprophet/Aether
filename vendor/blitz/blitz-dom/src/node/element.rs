@@ -791,19 +791,25 @@ impl ElementData {
     }
 
     #[cfg(feature = "custom-widget")]
-    pub fn set_custom_widget(&mut self, widget: Box<dyn crate::Widget>) {
-        use crate::node::custom_widget::CustomWidgetData;
+    pub fn set_custom_widget(
+        &mut self,
+        mut widget: Box<dyn crate::Widget>,
+    ) -> Vec<anyrender::ResourceId> {
+        let resources = self.remove_custom_widget();
+        widget.connected();
         self.special_data = SpecialElementData::CustomWidget(CustomWidgetData::new(widget));
+        resources
     }
 
     #[cfg(feature = "custom-widget")]
     pub fn remove_custom_widget(&mut self) -> Vec<anyrender::ResourceId> {
-        let resource_ids = self
-            .custom_widget_data_mut()
-            .map(|widget_data| widget_data.take_resource_ids())
-            .unwrap_or_default();
+        let Some(widget) = self.custom_widget_data_mut() else {
+            return Vec::new();
+        };
+        widget.disconnect();
+        let resources = widget.take_resource_ids();
         self.special_data = SpecialElementData::None;
-        resource_ids
+        resources
     }
 
     pub fn take_inline_layout(&mut self) -> Option<Box<TextLayout>> {

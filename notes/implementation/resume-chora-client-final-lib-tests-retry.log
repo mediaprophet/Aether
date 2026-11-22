@@ -1,0 +1,21 @@
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_bridge_protocol-17083qnm7lno0\s-ho4xzge452-1trbgz1-working`
+
+warning: `aether-chora-bridge-protocol` (lib) generated 1 warning
+   Compiling aether-chora-client v0.1.0 (C:\github\Aether\packages\chora-client)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\chora-client\debug\incremental\aether_chora_client-0xkgde86bx019\s-ho4yyn4zgp-17r6nym-working`
+
+warning: `aether-chora-client` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.31s
+     Running unittests src\lib.rs (target/chora-client\debug\deps\aether_chora_client-8f60dfc9d80fb6ac.exe)
+
+running 7 tests
+test tests::actual_document_change_cancels_old_capture_and_requests ... ok
+test tests::correct_stamp_does_not_admit_wrong_dimensions_or_capture ... ok
+test tests::navigation_never_delivers_old_pixels ... ok
+test tests::retained_events_are_bounded ... ok
+test tests::unsupported_profile_rejected_before_spawn ... ok
+test tests::resize_ack_does_not_cancel_subsequent_capture ... ok
+test tests::escaped_reply_over_wire_cap_does_not_queue_or_close_client ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

@@ -1,0 +1,2 @@
+GPU dependency policy passed for inspected GPU declarations and full lockfile.
+Scope: optional and target-specific lock entries included; active feature/target graph not evaluated.

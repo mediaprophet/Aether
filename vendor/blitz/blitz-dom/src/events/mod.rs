@@ -20,10 +20,12 @@ fn adjust_coords_for_subdocument(
     offset: Point<f32>,
     viewport_scroll: Point<f64>,
 ) {
-    coords.page_x -= offset.x - viewport_scroll.x as f32;
-    coords.page_y -= offset.y - viewport_scroll.y as f32;
-    coords.client_x -= offset.x;
-    coords.client_y -= offset.y;
+    // The node's origin and the incoming page coordinates use the same
+    // document space. Client coordinates in the embedded view start there.
+    coords.client_x = coords.page_x - offset.x;
+    coords.client_y = coords.page_y - offset.y;
+    coords.page_x = coords.client_x + viewport_scroll.x as f32;
+    coords.page_y = coords.client_y + viewport_scroll.y as f32;
 }
 
 fn map_dom_event_to_ui_event(
@@ -90,12 +92,30 @@ fn map_dom_event_to_ui_event(
         DomEventData::ContextMenu(_) => None,
         DomEventData::DoubleClick(_) => None,
         DomEventData::Input(_) => None,
-        DomEventData::Wheel(data) => Some(UiEvent::Wheel(data)),
+        DomEventData::Wheel(mut data) => {
+            adjust_coords_for_subdocument(&mut data.coords, node_offset, viewport_scroll);
+            Some(UiEvent::Wheel(data))
+        }
         DomEventData::Scroll(_) => None,
         DomEventData::Focus(_) => None,
         DomEventData::Blur(_) => None,
         DomEventData::FocusIn(_) => None,
         DomEventData::FocusOut(_) => None,
+        DomEventData::Copy(_)
+        | DomEventData::Cut(_)
+        | DomEventData::Paste(_)
+        | DomEventData::BeforeInput(_)
+        | DomEventData::Select(_)
+        | DomEventData::SelectionChange(_)
+        | DomEventData::BeforeToggle(_)
+        | DomEventData::Toggle(_)
+        | DomEventData::Resize(_)
+        | DomEventData::Load(_)
+        | DomEventData::Error(_)
+        | DomEventData::Change(_)
+        | DomEventData::Submit(_)
+        | DomEventData::Reset(_)
+        | DomEventData::Cancel(_) => None,
     }
 }
 
@@ -105,7 +125,9 @@ pub(crate) fn handle_dom_event<F: FnMut(DomEvent)>(
     mut dispatch_event: F,
 ) {
     let target_node_id = event.target;
-    let node = &mut doc.nodes[target_node_id];
+    let Some(node) = doc.get_node_mut(target_node_id) else {
+        return;
+    };
     let pos = node.absolute_position(0.0, 0.0);
 
     // Whether this event can move the caret/selection (or change the text) of a text input,
@@ -148,24 +170,16 @@ pub(crate) fn handle_dom_event<F: FnMut(DomEvent)>(
         return;
     }
 
-    // Handle event forwarding for custom widget
+    // Keep widget focus synchronized before forwarding the activating pointer event.
     #[cfg(feature = "custom-widget")]
-    if let Some(widget_data) = node
-        .element_data_mut()
-        .and_then(|el| el.custom_widget_data_mut())
+    if node
+        .element_data()
+        .is_some_and(|el| el.custom_widget_data().is_some())
     {
-        let set_focus = matches!(
-            &event.data,
+        if matches!(
+            event.data,
             DomEventData::PointerDown(_) | DomEventData::PointerUp(_)
-        );
-        let viewport_scroll = Point { x: 0.0, y: 0.0 };
-        let ui_event = map_dom_event_to_ui_event(event, pos, viewport_scroll);
-
-        if let Some(ui_event) = ui_event {
-            widget_data.widget.handle_event(&ui_event);
-        }
-
-        if set_focus {
+        ) {
             generate_focus_events(
                 doc,
                 &mut |doc| {
@@ -174,7 +188,15 @@ pub(crate) fn handle_dom_event<F: FnMut(DomEvent)>(
                 &mut dispatch_event,
             );
         }
-
+        if let Some(event) = map_dom_event_to_ui_event(event, pos, Point { x: 0.0, y: 0.0 }) {
+            if let Some(widget) = doc
+                .get_node_mut(target_node_id)
+                .and_then(|node| node.element_data_mut())
+                .and_then(|el| el.custom_widget_data_mut())
+            {
+                widget.widget.handle_event(&event);
+            }
+        }
         return;
     }
 
@@ -302,6 +324,42 @@ pub(crate) fn handle_dom_event<F: FnMut(DomEvent)>(
         DomEventData::FocusOut(_) => {
             // Do nothing (no default action)
         }
+        DomEventData::Copy(_)
+        | DomEventData::Cut(_)
+        | DomEventData::Paste(_)
+        | DomEventData::BeforeInput(_)
+        | DomEventData::Select(_)
+        | DomEventData::SelectionChange(_)
+        | DomEventData::Toggle(_)
+        | DomEventData::Resize(_)
+        | DomEventData::Load(_)
+        | DomEventData::Error(_)
+        | DomEventData::Change(_) => {}
+        DomEventData::BeforeToggle(toggle) => {
+            if let Some(event) = doc.apply_details_toggle(target_node_id, toggle) {
+                dispatch_event(event);
+            }
+        }
+        DomEventData::Submit(_) => {
+            let submitter = event
+                .related_target
+                .filter(|id| {
+                    doc.get_node(*id).is_some()
+                        && doc.controls_to_form.get(id) == Some(&target_node_id)
+                })
+                .unwrap_or(target_node_id);
+            doc.submit_form(target_node_id, submitter);
+        }
+        DomEventData::Reset(_) => doc.reset_native_form(target_node_id),
+        DomEventData::Cancel(_) => {
+            if doc.nodes[target_node_id]
+                .data
+                .is_element_with_tag_name(&markup5ever::local_name!("dialog"))
+            {
+                doc.mutate()
+                    .clear_attribute(target_node_id, crate::qual_name!("open"));
+            }
+        }
     }
 
     // Keep the focused text input scrolled so that its caret stays visible. Keyboard/IME events
@@ -311,5 +369,30 @@ pub(crate) fn handle_dom_event<F: FnMut(DomEvent)>(
         if let Some(focus_id) = doc.focus_node_id {
             doc.clamp_text_input_scroll(focus_id);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn embedded_input_uses_the_parent_page_origin_with_independent_scroll() {
+        let mut coords = PointerCoords {
+            page_x: 102.0,
+            page_y: 215.0,
+            client_x: 42.0,
+            client_y: 35.0,
+            screen_x: 50.0,
+            screen_y: 43.0,
+        };
+        adjust_coords_for_subdocument(
+            &mut coords,
+            Point { x: 95.0, y: 205.0 },
+            Point { x: 20.0, y: 30.0 },
+        );
+        assert_eq!((coords.client_x, coords.client_y), (7.0, 10.0));
+        assert_eq!((coords.page_x, coords.page_y), (27.0, 40.0));
+        assert_eq!((coords.screen_x, coords.screen_y), (50.0, 43.0));
     }
 }

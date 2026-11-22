@@ -1,0 +1,14 @@
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\github\Aether\target\debug\incremental\blitz_dom-039sxjiy3t1gd\s-ho36mw0cen-09r6aof-working`
+
+warning: `blitz-dom` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 18.58s
+     Running unittests src\lib.rs (target\debug\deps\blitz_dom-85ac57469f647478.exe)
+
+running 4 tests
+test node::text::clipboard_tests::empty_clipboard_does_not_delete_selection ... ok
+test node::text::clipboard_tests::successful_cut_and_paste_emit_one_edit_result_each ... ok
+test node::text::clipboard_tests::copy_preserves_selection_and_never_emits_input ... ok
+test node::text::clipboard_tests::unavailable_clipboard_cannot_destroy_cut_or_paste_selection ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 82 filtered out; finished in 0.30s
+

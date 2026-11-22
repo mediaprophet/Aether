@@ -1,0 +1,16 @@
+   Compiling stylo v0.22.0
+   Compiling stylo_taffy v0.3.0-beta.4
+   Compiling blitz-dom v0.3.0-beta.4 (C:\github\Aether\vendor\blitz\blitz-dom)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5m 27s
+     Running unittests src\lib.rs (target\debug\deps\blitz_dom-1dd80f1a073a7c0f.exe)
+
+running 6 tests
+test node::text::ime_tests::surrounding_delete_preserves_preedit_across_a_combining_cluster_boundary ... ok
+test node::text::ime_tests::surrounding_delete_clamps_large_lengths_without_deleting_selection ... ok
+test node::text::ime_tests::rejected_surrounding_delete_preserves_active_composition ... ok
+test node::text::ime_tests::surrounding_delete_preserves_unicode_selection_and_direction ... ok
+test node::text::ime_tests::surrounding_delete_rejects_split_utf8_on_either_side_atomically ... ok
+test node::text::ime_tests::surrounding_delete_preserves_preedit_cursor_and_later_commit ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 86 filtered out; finished in 0.24s
+

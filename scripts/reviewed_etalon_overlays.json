@@ -1,0 +1,120 @@
+{
+  "schema": "aether.reviewed-etalon-overlays.v1",
+  "revision": "6ace6cc6413a87ca10a1da58397ddc7c0b2fc41e",
+  "model_io": {
+    "files": {
+      "Cargo.toml": {
+        "sha256": "0c96ecaa77d0ec7e3b8c81f7c9450dca22c4e045bf02ab31b1c6b01c112fdecc",
+        "pinned_sha256": "42f435e82ff2c0351241afd53e8949bbfd76c30402a48f560aca42a17d7c914c",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/lease/allocation_counter.rs": {
+        "sha256": "02ff0d30900ce09d295bed50efc8b66c1b21d07a81b90ecccd754a2bc5bd2b80",
+        "pinned_sha256": "8cda9cff4a99afaa4714194dd457b654f608031b89c62bcf73da9f016ff99179",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/lease/backing.rs": {
+        "sha256": "126e3e75e85e7f9b1df9868fdd1aebdb2c4154ca43d32d8408334cc76f9de06a",
+        "pinned_sha256": "3a23c1127690584d86816fa06aac640e9b3f67039f12becb0ea0536452268143",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/lease/identity.rs": {
+        "sha256": "460526193e7e88a45f82728f8f14e73991766b19f164e14aab21eb9e1a0aec07",
+        "pinned_sha256": "5a03b67aa71489d7c2ed8c246c4b421df3ddda4a714743b698956a9f3cdc99b7",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/lease/mod.rs": {
+        "sha256": "5791c4675aefd06b4298069cf157d39f3c78d04976054b62b988dabcf0804c8b",
+        "pinned_sha256": "31f46c933bcf78478ace21f78d06c6da1a48dff085ba977ecd951bc9a13fffa6",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/lease/platform.rs": {
+        "sha256": "b088b1149dec0564f786da5cf55f5d245e1c7dc989b0694c73be3028fb20cf64",
+        "pinned_sha256": "8d259a99f65f668fb4c2e378f426c1e6bdc16c54ea3b1ac79718eda5c84fb9be",
+        "comparison": "reviewed-platform-change"
+      },
+      "src/lease/tests.rs": {
+        "sha256": "bb12774e477d0e1a6de2856bfae6accf7493155689d7e55aaaaa235a3f68c721",
+        "pinned_sha256": "d6d02b0d0771c79f903cd6400bce00fc4ba5ec7ac89a2920e811531962c02591",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/lease/unsupported_tests.rs": {
+        "sha256": "d15936a2def397e2d377eb52c70f4744bf9ecf224192cd442c48d5ef0b2b67c3",
+        "pinned_sha256": "5fd40b4c4f057aaccc3cc63def7d6de7580a2e8f77a6fc21d12658d955822f7c",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/lib.rs": {
+        "sha256": "30d9034fd1a96b5c87ffc730867efa1d763cd204fca83bbb99a794e712ade1b6",
+        "pinned_sha256": "eb077f25de4840ac130da9fb0a21bfceebb8864fbd49ae5046a0cb738a6c9f8d",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/snapshot/copy.rs": {
+        "sha256": "230db24192ea35e06fe1622014858eb135d3dcada0ae2c4d3afe1d298974874e",
+        "pinned_sha256": "b1c2a3e1306b4ebcc009e50c80f84bc9a2cf649e969f72768dcbde460e4a57f6",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/snapshot/error.rs": {
+        "sha256": "fbe1b2f7c06dbba01df1fa4e89393fa984ccce2a60e5670e9eb1534205c0515d",
+        "pinned_sha256": "36fdfa5f8c8844a6b97d647860008b471ff97c78e006019df817ae0715c8480d",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/snapshot/limits.rs": {
+        "sha256": "e3af6365980a5f9dfe05af1af4f6ce2442d42e05adc6ad2a76f99230940989cd",
+        "pinned_sha256": "b552b2a216052b813630866685dd729ac0d9b6c51509240a68a62cee8c91db12",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/snapshot/mod.rs": {
+        "sha256": "aed8b0d58c40ff3db7acc198f9ac6731015dfb419fb68898192e559a688e26ea",
+        "pinned_sha256": "2b7a88c687a39ad7bd11c3bdd4bfbe3398f91ca5cb00facc9c6f555b0ba8a3bf",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/snapshot/owner.rs": {
+        "sha256": "65cdb2d029fac5a4f4da27647ce2682adcc021a651d21bd0d24807f47cb81b19",
+        "pinned_sha256": "6131e0e5d1db29595e20472d801b549a64675fb9c6ed52b26b060d8a15267d2e",
+        "comparison": "CRLF-materialization-only"
+      },
+      "src/snapshot/tests.rs": {
+        "sha256": "b2e15150f9358507a4da17b0d27071333d0b57972949a947070c8acda64c3c36",
+        "pinned_sha256": "9055184e3ffffb8de889b1d01c91f51cf5bc680a8b29ad5b2aaf57f6aec3a0ed",
+        "comparison": "CRLF-materialization-only"
+      },
+      "tests/lease_contract.rs": {
+        "sha256": "5288898cb3414cd1a89de5ad26c2ac3468e278b4c259b9dc7329ee19fa603a21",
+        "pinned_sha256": "5d89b4a015d98ac01d6430d1dff83c2007ae9b2a42cdcdf7e8be4a10dbc00e54",
+        "comparison": "CRLF-materialization-only"
+      },
+      "tests/snapshot_contract.rs": {
+        "sha256": "25e5f04268cad02eefc142a286e7c329ce0a1e8b670513b0d4bc46a40642dd4c",
+        "pinned_sha256": "37cbdb9813384fcd15f01385aaf2509b7fd82f950f7969cce71a380ee4ba3fba",
+        "comparison": "CRLF-materialization-only"
+      },
+      "tests/support/lease_allocation.rs": {
+        "sha256": "43b3a2b8ea424cff353361aaaacff76d10e62136dda0bd1bb79bea777a12c4e3",
+        "pinned_sha256": "85507641159c68d58cee57d920e413befa4c25b2e13e3751f96a69b54a83a3cc",
+        "comparison": "CRLF-materialization-only"
+      }
+    },
+    "workspace_sha256": "1c0309b4e45e6e185935b67604f612db9923c75dc3997847a71fd742be3d1406",
+    "license_files": {
+      "LICENSE": "a5ce8e4d8c923a725ea3d1ff2743bc18e1997eac544465acfead9a9b4a9486e6",
+      "LICENSE-QUALIA": "a5ce8e4d8c923a725ea3d1ff2743bc18e1997eac544465acfead9a9b4a9486e6",
+      "upstream-licenses/LICENSE-APACHE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9",
+      "upstream-licenses/LICENSE-MIT": "f427ebe372a8ed2317b681a2ff8ff8a58ba98e64921e7d9428ea36ec7c2cbe25",
+      "upstream-licenses/README.md": "a320b984c2add7cae5aeb6ec98d590977761f21544280ac14ce081992941858f"
+    }
+  },
+  "model": {
+    "backport_receipt_sha256": "a0a97e042cb1def73e701c02168c1ab31297fc4ffa3f1b6e1584b2bf85f8ea5b",
+    "original_count": 113,
+    "added_count": 11,
+    "changed_original_paths": [
+      "Cargo.toml",
+      "src/ggml/blocks.rs",
+      "src/ggml/layout.rs",
+      "src/ggml/mod.rs",
+      "src/ggml/tests.rs",
+      "src/inference/mod.rs",
+      "src/tensor_roles.rs"
+    ]
+  }
+}

@@ -319,6 +319,9 @@ impl<S: 'static> Ctx<'_, S> {
                 break;
             }
             for path in writes {
+                if !self.flushed_dirty_paths.contains(&path) {
+                    self.flushed_dirty_paths.push(path);
+                }
                 self.apply_write(&path);
             }
             if !self.queue.is_empty() {

@@ -1,0 +1,1 @@
+GPU source inventory passed; runtime and feature/target qualification remain required.

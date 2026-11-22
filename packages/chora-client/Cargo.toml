@@ -1,0 +1,22 @@
+[package]
+name = "aether-chora-client"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "CC-BY-NC-ND-4.0"
+authors = ["Timothy Charles Holborn <timothy.holborn@gmail.com>"]
+description = "Parent-owned private Chora worker process and bounded frame delivery"
+[dependencies]
+protocol = { package = "aether-chora-bridge-protocol", path = "../chora-bridge-protocol" }
+getrandom = "0.2"
+libc = { version = "0.2", optional = true }
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", optional = true, features = ["Win32_System_Console", "Win32_Foundation", "Win32_System_Threading"] }
+[workspace]
+
+[features]
+test-fixture = ["dep:libc", "dep:windows-sys"]
+[[bin]]
+name = "transport_fixture"
+path = "src/bin/transport_fixture.rs"
+required-features = ["test-fixture"]
