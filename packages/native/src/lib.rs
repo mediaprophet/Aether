@@ -90,7 +90,13 @@ pub use {
 pub use blitz_dom::{FontContext, Widget, build_single_font_ctx};
 pub use config::Config;
 pub use event_handlers::WinitEventHandlerId;
-pub use hooks::{use_back_button, use_window_event};
+pub use hooks::{document_zoom, set_document_zoom, use_back_button, use_window_event};
+#[cfg(any(feature = "vello", feature = "vello-hybrid"))]
+pub use viewport::EtalonFrameContext;
+pub use viewport::{
+    EtalonSurfaceDelegate, EtalonSurfaceError, EtalonSurfaceWidget, EtalonVectorDelegate,
+    EtalonVectorFrame, EtalonVectorWidget, EtalonViewportState, RenderOutcome,
+};
 pub use winit;
 pub use winit::dpi::{LogicalSize, PhysicalSize};
 pub use winit::window::WindowAttributes;

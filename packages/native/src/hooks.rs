@@ -1,12 +1,44 @@
 use crate::event_handlers::{WindowEventHandlers, WinitEventHandlerId};
 
-use aether_core::{Runtime, consume_context, current_scope_id, use_hook_with_cleanup};
-use std::rc::Rc;
+use aether_core::{
+    Runtime, consume_context, current_scope_id, try_consume_context, use_hook_with_cleanup,
+};
+use blitz_dom::BaseDocument;
+use std::{cell::RefCell, rc::Rc};
 use winit::{
     event::{ElementState, WindowEvent},
     event_loop::ActiveEventLoop,
     keyboard::{Key, NamedKey},
 };
+
+/// Update the active native window's document zoom factor (`0.5..=3.0`).
+///
+/// Modifying `Viewport::zoom` automatically triggers Stylo media/rem recalculation,
+/// Parley inline text re-shaping at the new effective scale, Taffy layout update,
+/// and a window redraw.
+pub fn set_document_zoom(zoom: f32) -> Option<f32> {
+    let clamped = if zoom.is_finite() {
+        zoom.clamp(0.5, 3.0)
+    } else {
+        1.0
+    };
+    let doc = try_consume_context::<Rc<RefCell<BaseDocument>>>()?;
+    if let Ok(mut guard) = doc.try_borrow_mut() {
+        if (guard.viewport().zoom - clamped).abs() > 0.001 {
+            guard.viewport_mut().zoom = clamped;
+        }
+        Some(guard.viewport().zoom)
+    } else {
+        None
+    }
+}
+
+/// Read the active native window's current document zoom factor.
+pub fn document_zoom() -> Option<f32> {
+    let doc = try_consume_context::<Rc<RefCell<BaseDocument>>>()?;
+    doc.try_borrow().ok().map(|guard| guard.viewport().zoom)
+}
+
 
 /// Register an event handler that runs when a winit event is processed.
 ///

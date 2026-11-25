@@ -357,3 +357,150 @@ impl Widget for EtalonSurfaceWidget {
         self.delegate.paint_fallback(width, height, self.last_scale)
     }
 }
+
+/// Frame parameters passed to an [`EtalonVectorDelegate`] when recording a scene
+/// directly into the window's active Vello Hybrid / AnyRender GPU pass.
+pub struct EtalonVectorFrame<'a> {
+    pub styles: &'a ComputedStyles,
+    pub width: u32,
+    pub height: u32,
+    pub scale: f64,
+    pub frame_index: u64,
+    pub gpu_active: bool,
+}
+
+/// Zero-texture procedural vector & 2.5D/3D projected phase-space delegate that
+/// records geometry directly into the renderer's shared [`anyrender::Scene`].
+///
+/// Unlike [`EtalonSurfaceDelegate`] (which allocates double-buffered offscreen
+/// [`etalon::Texture`] targets for custom WGSL raymarching), [`EtalonVectorDelegate`]
+/// composites vector curves, 3D wireframe projections, harmonic phase-space rings,
+/// and VibeScript-driven kinetic glyphs directly in the main Vello Hybrid pass with
+/// zero per-widget texture allocation overhead.
+pub trait EtalonVectorDelegate: 'static {
+    fn paint_scene(&mut self, frame: &EtalonVectorFrame<'_>, scene: &mut Scene) -> RenderOutcome;
+
+    fn handle_event(&mut self, _event: &UiEvent, _scale: f64) {}
+    fn focus_changed(&mut self, _focused: bool) {}
+    fn intrinsic_sizes(&self) -> IntrinsicSizes {
+        IntrinsicSizes::default()
+    }
+    fn destroy(&mut self) {}
+}
+
+/// A lightweight DOM widget that records procedural vector and 3D-projected geometry
+/// directly into the window's [`anyrender::Scene`] without offscreen texture allocation.
+pub struct EtalonVectorWidget {
+    delegate: Box<dyn EtalonVectorDelegate>,
+    state: Rc<RefCell<EtalonViewportState>>,
+    last_scale: f64,
+    redraw: bool,
+    frame_index: u64,
+    gpu_active: bool,
+}
+
+impl EtalonVectorWidget {
+    pub fn new(delegate: impl EtalonVectorDelegate) -> Self {
+        Self {
+            delegate: Box::new(delegate),
+            state: Rc::new(RefCell::new(EtalonViewportState::Suspended)),
+            last_scale: 1.0,
+            redraw: false,
+            frame_index: 0,
+            gpu_active: false,
+        }
+    }
+
+    pub fn state(&self) -> EtalonViewportState {
+        self.state.borrow().clone()
+    }
+
+    pub fn state_reader(&self) -> impl Fn() -> EtalonViewportState + use<> {
+        let state = self.state.clone();
+        move || state.borrow().clone()
+    }
+}
+
+impl Widget for EtalonVectorWidget {
+    fn can_create_surfaces(&mut self, context: &mut dyn RenderContext) {
+        #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
+        if context
+            .renderer_specific_context()
+            .and_then(|value| value.downcast::<DeviceHandle>().ok())
+            .is_some()
+        {
+            self.gpu_active = true;
+            *self.state.borrow_mut() = EtalonViewportState::Active;
+            return;
+        }
+        let _ = context;
+        self.gpu_active = false;
+        *self.state.borrow_mut() =
+            EtalonViewportState::CpuFallbackNotice("CPU vector scene active".into());
+    }
+
+    fn disconnected(&mut self) {
+        self.destroy_surfaces();
+    }
+
+    fn destroy_surfaces(&mut self) {
+        self.gpu_active = false;
+        self.redraw = false;
+        self.frame_index = 0;
+        let previous = self.state.replace(EtalonViewportState::Suspended);
+        if previous != EtalonViewportState::Suspended {
+            self.delegate.destroy();
+        }
+    }
+
+    fn requires_redraw(&self) -> bool {
+        self.redraw
+    }
+
+    fn handle_event(&mut self, event: &UiEvent) {
+        self.delegate.handle_event(event, self.last_scale);
+    }
+
+    fn focus_changed(&mut self, focused: bool) {
+        self.delegate.focus_changed(focused);
+    }
+
+    fn intrinsic_sizes(&self) -> IntrinsicSizes {
+        self.delegate.intrinsic_sizes()
+    }
+
+    fn paint(
+        &mut self,
+        _context: &mut dyn RenderContext,
+        styles: &ComputedStyles,
+        width: u32,
+        height: u32,
+        scale: f64,
+    ) -> Scene {
+        self.last_scale = if scale.is_finite() && scale > 0.0 {
+            scale
+        } else {
+            1.0
+        };
+        if width == 0 || height == 0 {
+            self.redraw = false;
+            return Scene::new();
+        }
+        let mut scene = Scene::new();
+        let outcome = self.delegate.paint_scene(
+            &EtalonVectorFrame {
+                styles,
+                width,
+                height,
+                scale: self.last_scale,
+                frame_index: self.frame_index,
+                gpu_active: self.gpu_active,
+            },
+            &mut scene,
+        );
+        self.frame_index = self.frame_index.wrapping_add(1);
+        self.redraw = outcome == RenderOutcome::ContinuousRedraw;
+        scene
+    }
+}
+
