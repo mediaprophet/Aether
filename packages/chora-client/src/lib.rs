@@ -204,9 +204,49 @@ impl Outbound {
     }
 }
 
+/// Nonblocking, observational diagnostics for the current validated route.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RouteTelemetry {
+    pub stamp: RouteStamp,
+    pub last_frame_sequence: Option<u64>,
+    pub queued_page_requests: usize,
+    pub forwarded_pointer_events: u64,
+    pub forwarded_wheel_events: u64,
+    pub forwarded_key_events: u64,
+    pub forwarded_ime_events: u64,
+    pub focus_active: bool,
+}
+
+#[derive(Default)]
+struct ObservedTransport {
+    frame: Option<(RouteStamp, u64)>,
+    focus: Option<(RouteStamp, bool)>,
+    pointer_events: u64,
+    wheel_events: u64,
+    key_events: u64,
+    ime_events: u64,
+}
+
+impl ObservedTransport {
+    fn record_write(&mut self, message: &WireMessage) {
+        let WireMessage::Control(envelope) = message else {
+            return;
+        };
+        match &envelope.message {
+            Control::InputPointer(_) => self.pointer_events = self.pointer_events.saturating_add(1),
+            Control::InputWheel(_) => self.wheel_events = self.wheel_events.saturating_add(1),
+            Control::InputKey(_) => self.key_events = self.key_events.saturating_add(1),
+            Control::InputIme(_) => self.ime_events = self.ime_events.saturating_add(1),
+            Control::SetFocus { focused } => self.focus = Some((envelope.stamp, *focused)),
+            _ => {}
+        }
+    }
+}
+
 struct Owner {
     state: Arc<Mutex<State>>,
     diagnostics: Arc<Mutex<WorkerDiagnostics>>,
+    observed: Arc<Mutex<ObservedTransport>>,
     output: SyncSender<Outbound>,
     stop: Arc<AtomicBool>,
 }
@@ -300,6 +340,8 @@ impl ChoraClient {
         let drain_tail = retained_diagnostics.clone();
         thread::spawn(move || drain_diagnostics(diagnostics, &drain_tail));
         let (tx, rx) = mpsc::sync_channel(QUEUE);
+        let observed = Arc::new(Mutex::new(ObservedTransport::default()));
+        let writer_observed = Arc::clone(&observed);
         let writer_state = state.clone();
         let writer_stop = stop.clone();
         thread::spawn(move || {
@@ -310,6 +352,9 @@ impl ChoraClient {
                         if write_message(&mut input, &message).is_err() {
                             writer_stop.store(true, Ordering::Release);
                             break;
+                        }
+                        if let Ok(mut observed) = writer_observed.lock() {
+                            observed.record_write(&message);
                         }
                     }
                     Err(mpsc::RecvTimeoutError::Timeout) => {
@@ -322,6 +367,7 @@ impl ChoraClient {
             }
         });
         let reader_state = state.clone();
+        let reader_observed = Arc::clone(&observed);
         let reader_stop = stop.clone();
         thread::spawn(move || {
             let mut guard = PeerGuard::new(PeerRole::Parent, nonce);
@@ -335,10 +381,22 @@ impl ChoraClient {
                     reader_stop.store(true, Ordering::Release);
                     break;
                 };
-                if state.receive(message.into_inner()).is_err() {
+                let message = message.into_inner();
+                let frame = match &message {
+                    WireMessage::Frame(frame) if frame.stamp == state.stamp => {
+                        Some((frame.stamp, frame.sequence))
+                    }
+                    _ => None,
+                };
+                if state.receive(message).is_err() {
                     state.close();
                     reader_stop.store(true, Ordering::Release);
                     break;
+                }
+                if let Some(frame) = frame {
+                    if let Ok(mut observed) = reader_observed.lock() {
+                        observed.frame = Some(frame);
+                    }
                 }
                 if state.closed {
                     reader_stop.store(true, Ordering::Release);
@@ -413,6 +471,7 @@ impl ChoraClient {
         let client = Self(Arc::new(Owner {
             state,
             diagnostics: retained_diagnostics,
+            observed,
             output: tx,
             stop,
         }));
@@ -547,6 +606,38 @@ impl ChoraClient {
         }
         Ok(state.stamp)
     }
+    /// Counts input messages successfully written to the worker pipe. Coalesced
+    /// moves count once, and closing the transport never exposes stale pixels.
+    pub fn route_telemetry(&self) -> Result<RouteTelemetry, ProtocolError> {
+        let state = self.0.state.try_lock().map_err(|_| ProtocolError::Busy)?;
+        if state.closed || self.0.stop.load(Ordering::Acquire) {
+            return Err(ProtocolError::Closed);
+        }
+        let observed = self
+            .0
+            .observed
+            .try_lock()
+            .map_err(|_| ProtocolError::Busy)?;
+        let stamp = state.stamp;
+        Ok(RouteTelemetry {
+            stamp,
+            last_frame_sequence: observed
+                .frame
+                .filter(|(owner, _)| *owner == stamp)
+                .map(|(_, sequence)| sequence),
+            queued_page_requests: state
+                .events
+                .iter()
+                .filter(|envelope| matches!(envelope.message, Control::PageRequest { .. }))
+                .count(),
+            forwarded_pointer_events: observed.pointer_events,
+            forwarded_wheel_events: observed.wheel_events,
+            forwarded_key_events: observed.key_events,
+            forwarded_ime_events: observed.ime_events,
+            focus_active: observed.focus == Some((stamp, true)),
+        })
+    }
+
     pub fn is_ready(&self) -> bool {
         if self.0.stop.load(Ordering::Acquire) {
             return false;

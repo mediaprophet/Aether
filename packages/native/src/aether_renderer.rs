@@ -200,6 +200,23 @@ impl AetherNativeWindowRenderer {
         }
     }
 
+    /// The configured window policy, independent of whether fallback has occurred.
+    pub fn fallback_policy(&self) -> RendererFallbackPolicy {
+        self.fallback_policy
+    }
+
+    /// Whether the renderer is currently painting through its software fallback.
+    pub fn fallback_engaged(&self) -> bool {
+        #[cfg(all(feature = "gpu-cpu-fallback", not(target_arch = "wasm32")))]
+        {
+            self.active_backend.get() == Some(ActiveBackend::Software)
+        }
+        #[cfg(not(all(feature = "gpu-cpu-fallback", not(target_arch = "wasm32"))))]
+        {
+            false
+        }
+    }
+
     /// Record a backend or device fault reported by an application integration.
     pub fn record_fault(&self, reason: impl Into<String>) {
         *self.last_error.borrow_mut() = Some(reason.into());
