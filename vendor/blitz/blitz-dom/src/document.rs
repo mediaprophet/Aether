@@ -2530,7 +2530,9 @@ impl BaseDocument {
         let mut pos = crate::util::Point { x: 0.0, y: 0.0 };
         let mut current = Some(node_id);
         while let Some(id) = current {
-            let node = &self.nodes[id];
+            let Some(node) = self.nodes.get(id) else {
+                break;
+            };
             pos.x += node.unrounded_layout().location.x - node.scroll_offset().x as f32;
             pos.y += node.unrounded_layout().location.y - node.scroll_offset().y as f32;
             current = node.containing_block();

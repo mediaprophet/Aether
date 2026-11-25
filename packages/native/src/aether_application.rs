@@ -1,5 +1,6 @@
 use aether_core::{ScopeId, provide_context};
 use aether_history::{History, MemoryHistory};
+use blitz_dom::BaseDocument;
 use blitz_shell::{BlitzApplication, BlitzShellProxy, View};
 use std::sync::Arc;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
@@ -42,6 +43,20 @@ pub enum AetherNativeEvent {
         name: String,
         attributes: Vec<(String, String)>,
         contents: Option<String>,
+    },
+
+    /// Dispatch a synthetic UI event (PointerMove, PointerDown, PointerUp, KeyDown, Ime, etc.)
+    /// into a live window's document and trigger a poll + redraw.
+    DispatchUiEvent {
+        window: WindowId,
+        event: blitz_traits::events::UiEvent,
+    },
+
+    /// Click a specific DOM node by `NodeId`, scrolling it into view or synthesizing a click
+    /// if off-screen, and trigger a poll + redraw.
+    ClickNode {
+        window: WindowId,
+        node_id: blitz_traits::node_id::NodeId,
     },
 }
 
@@ -97,6 +112,7 @@ impl AetherNativeApplication {
                 proxy: self.inner.proxy.clone(),
                 queue: Rc::downgrade(&self.auxiliary_windows),
             };
+            let base_doc: Rc<RefCell<BaseDocument>> = Rc::clone(&doc.inner);
             doc.vdom.in_scope(ScopeId::ROOT, || {
                 provide_context(handle);
                 let shared: Rc<dyn aether_document::Document> = Rc::new(AetherNativeDocument::new(
@@ -105,6 +121,7 @@ impl AetherNativeApplication {
                 ));
                 provide_context(shared);
                 provide_context(self.event_handlers.clone());
+                provide_context(base_doc);
             });
 
             // Add shell provider
@@ -230,6 +247,21 @@ impl AetherNativeApplication {
             }
             AetherNativeEvent::SetWindowVisible { window, visible } => {
                 self.set_visible(*window, *visible);
+            }
+            AetherNativeEvent::DispatchUiEvent { window, event } => {
+                if let Some(window) = self.inner.windows.get_mut(window) {
+                    window.doc.handle_ui_event(event.clone());
+                    window.poll();
+                    window.request_redraw();
+                }
+            }
+            AetherNativeEvent::ClickNode { window, node_id } => {
+                if let Some(window) = self.inner.windows.get_mut(window) {
+                    let doc = window.downcast_doc_mut::<AetherDocument>();
+                    doc.click_node(*node_id);
+                    window.poll();
+                    window.request_redraw();
+                }
             }
         }
     }

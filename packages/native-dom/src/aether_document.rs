@@ -205,6 +205,95 @@ impl AetherDocument {
 
         self.vdom_state.queued_mounted_events = queued_mounted_events;
     }
+
+    /// Programmatically click a DOM node by [`NodeId`], scrolling it into view and running
+    /// full pointer hit-testing if it lies within the viewport, or dispatching a direct
+    /// DOM `Click` event through [`EventDriver`] when it is off-screen or covered.
+    pub fn click_node(&mut self, node_id: NodeId) -> bool {
+        use blitz_traits::events::{
+            BlitzPointerEvent, BlitzPointerId, MouseEventButton, MouseEventButtons, Point,
+            PointerCoords, PointerDetails,
+        };
+        {
+            let mut inner = self.inner.borrow_mut();
+            if inner.get_node(node_id).is_none() {
+                return false;
+            }
+            let _ = inner.scroll_into_view(
+                node_id,
+                blitz_dom::ScrollBehavior::Instant,
+                blitz_dom::ScrollLogicalPosition::Nearest,
+                blitz_dom::ScrollLogicalPosition::Nearest,
+            );
+        }
+        let (coords, hit_matches) = {
+            let inner = self.inner.borrow();
+            let Some(rect) = inner.get_client_bounding_rect(node_id) else {
+                return false;
+            };
+            let cx = (rect.x + rect.width * 0.5) as f32;
+            let cy = (rect.y + rect.height * 0.5) as f32;
+            let hit = inner.hit(cx, cy);
+            let matches = hit.is_some_and(|h| {
+                let mut cur = Some(h.node_id);
+                while let Some(id) = cur {
+                    if id == node_id {
+                        return true;
+                    }
+                    cur = inner.get_node(id).and_then(|n| n.parent);
+                }
+                false
+            });
+            ((cx, cy), matches)
+        };
+        let make_ptr = |x: f32, y: f32, buttons: MouseEventButtons| BlitzPointerEvent {
+            id: BlitzPointerId::Mouse,
+            is_primary: true,
+            coords: PointerCoords {
+                page_x: x,
+                page_y: y,
+                screen_x: x,
+                screen_y: y,
+                client_x: x,
+                client_y: y,
+            },
+            button: MouseEventButton::Main,
+            buttons,
+            mods: Default::default(),
+            details: PointerDetails::default(),
+            element: Point::default(),
+            active_pointers: Default::default(),
+        };
+        if hit_matches {
+            self.handle_ui_event(UiEvent::PointerMove(make_ptr(
+                coords.0,
+                coords.1,
+                MouseEventButtons::None,
+            )));
+            self.handle_ui_event(UiEvent::PointerDown(make_ptr(
+                coords.0,
+                coords.1,
+                MouseEventButtons::Primary,
+            )));
+            self.handle_ui_event(UiEvent::PointerUp(make_ptr(
+                coords.0,
+                coords.1,
+                MouseEventButtons::None,
+            )));
+        } else {
+            let handler = AetherEventHandler {
+                vdom: &mut self.vdom,
+                vdom_state: &mut self.vdom_state,
+                composition: &mut self.composition,
+            };
+            let mut driver = EventDriver::new(&mut self.inner, handler);
+            driver.handle_dom_event(DomEvent::new(
+                node_id,
+                DomEventData::Click(make_ptr(coords.0, coords.1, MouseEventButtons::None)),
+            ));
+        }
+        true
+    }
 }
 
 // Implement DocumentLike and required traits for AetherDocument

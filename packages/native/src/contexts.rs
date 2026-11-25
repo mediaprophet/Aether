@@ -46,6 +46,17 @@ impl NativeAppHandle {
     pub fn set_window_visible(&self, window: WindowId, visible: bool) {
         self.send(AetherNativeEvent::SetWindowVisible { window, visible });
     }
+
+    /// Dispatch a synthetic UI event (PointerMove, PointerDown, PointerUp, KeyDown, Ime, etc.)
+    /// into a live window's document and trigger a poll + redraw.
+    pub fn dispatch_ui_event(&self, window: WindowId, event: blitz_traits::events::UiEvent) {
+        self.send(AetherNativeEvent::DispatchUiEvent { window, event });
+    }
+
+    /// Click a specific DOM node by `NodeId` in a live window's document and trigger a poll + redraw.
+    pub fn click_node(&self, window: WindowId, node_id: blitz_traits::node_id::NodeId) {
+        self.send(AetherNativeEvent::ClickNode { window, node_id });
+    }
 }
 
 pub fn use_native_app() -> NativeAppHandle {

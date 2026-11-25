@@ -31,7 +31,9 @@ use taffy::{Point, Rect};
 /// hoisted by Taffy, otherwise `layout_parent`, which is set for every layout
 /// child by `resolve_layout_children`, anonymous blocks included).
 pub fn hoisted_child_position(tree: &NodeTree, sc_root_id: NodeId, child_id: NodeId) -> Point<f32> {
-    let child = &tree[child_id];
+    let Some(child) = tree.get(child_id) else {
+        return Point::ZERO;
+    };
     let mut position = Point::ZERO;
     let mut current = child.containing_block();
 
@@ -144,7 +146,9 @@ impl StackingContext {
         }
 
         let child_rect = |child: &HoistedPaintChild| -> Rect<f32> {
-            let node = &tree[child.node_id];
+            let Some(node) = tree.get(child.node_id) else {
+                return Rect::ZERO;
+            };
             let position = child.position(tree, sc_root_id);
             let location = node.final_layout().location;
             let mut overflow = *node.scrollable_overflow();

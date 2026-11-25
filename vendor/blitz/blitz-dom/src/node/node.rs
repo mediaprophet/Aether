@@ -1465,13 +1465,13 @@ impl Node {
         if matches_hoisted_content {
             if let Some(hoisted) = &self.stacking_context {
                 for hoisted_child in hoisted.pos_z_hoisted_children().rev() {
+                    let Some(child) = self.tree().get(hoisted_child.node_id) else {
+                        continue;
+                    };
                     let pos = hoisted_child.position(self.tree(), self.id);
                     let x = x - pos.x;
                     let y = y - pos.y;
-                    if let Some(hit) = self
-                        .with(hoisted_child.node_id)
-                        .hit_inner(x, y, scale, scrollbar)
-                    {
+                    if let Some(hit) = child.hit_inner(x, y, scale, scrollbar) {
                         return Some(hit);
                     }
                 }
@@ -1480,7 +1480,9 @@ impl Node {
 
         // Call `.hit()` on each child in turn. If any return `Some` then return that value. Else return `Some(self.id).
         for child_id in self.paint_children.borrow().iter().flatten().rev() {
-            let child = self.with(*child_id);
+            let Some(child) = self.tree().get(*child_id) else {
+                continue;
+            };
             let child_position = child.taffy_position();
             let mut child_x = x;
             let mut child_y = y;
@@ -1512,13 +1514,13 @@ impl Node {
         if matches_hoisted_content {
             if let Some(hoisted) = &self.stacking_context {
                 for hoisted_child in hoisted.neg_z_hoisted_children().rev() {
+                    let Some(child) = self.tree().get(hoisted_child.node_id) else {
+                        continue;
+                    };
                     let pos = hoisted_child.position(self.tree(), self.id);
                     let x = x - pos.x;
                     let y = y - pos.y;
-                    if let Some(hit) = self
-                        .with(hoisted_child.node_id)
-                        .hit_inner(x, y, scale, scrollbar)
-                    {
+                    if let Some(hit) = child.hit_inner(x, y, scale, scrollbar) {
                         return Some(hit);
                     }
                 }
@@ -1538,10 +1540,11 @@ impl Node {
                 {
                     let node_id = cluster.style().brush.id;
                     let text_pointer_events_none = self
-                        .with(node_id)
-                        .primary_styles()
+                        .tree()
+                        .get(node_id)
+                        .and_then(|node| node.primary_styles())
                         .is_some_and(|style| style.clone_pointer_events() == PointerEvents::None);
-                    if !text_pointer_events_none {
+                    if !text_pointer_events_none && self.tree().get(node_id).is_some() {
                         return Some(HitResult {
                             node_id,
                             x,
@@ -1575,7 +1578,7 @@ impl Node {
                 return Some(node);
             }
             let id = node.layout_parent.get()?;
-            node = self.with(id);
+            node = self.tree().get(id)?;
         }
     }
 
@@ -1653,7 +1656,8 @@ impl Node {
 
         // Recurse up the positioning hierarchy
         self.containing_block()
-            .map(|i| self.with(i).absolute_position(x, y))
+            .and_then(|i| self.tree().get(i))
+            .map(|parent| parent.absolute_position(x, y))
             .unwrap_or(crate::util::Point { x, y })
     }
 
@@ -1686,7 +1690,7 @@ impl Node {
     pub fn offset_parent(&self) -> Option<&Node> {
         let mut node = self;
         loop {
-            node = self.with(node.containing_block()?);
+            node = self.tree().get(node.containing_block()?)?;
             if node.is_offset_parent() {
                 return Some(node);
             }
@@ -1720,7 +1724,7 @@ impl Node {
                 if id == inline_root_id {
                     return false;
                 }
-                match self.with(id).parent {
+                match self.tree().get(id).and_then(|n| n.parent) {
                     Some(parent) => id = parent,
                     None => return false,
                 }
@@ -1833,7 +1837,9 @@ impl Node {
             let Some(parent_id) = current.containing_block() else {
                 break;
             };
-            let parent = self.with(parent_id);
+            let Some(parent) = self.tree().get(parent_id) else {
+                break;
+            };
             if parent.is_offset_parent() && !parent.is_static_body() {
                 let border = parent.final_layout().border;
                 x -= border.left;
