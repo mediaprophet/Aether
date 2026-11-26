@@ -76,6 +76,17 @@ pub trait EtalonSurfaceDelegate: 'static {
         IntrinsicSizes::default()
     }
     fn destroy(&mut self) {}
+
+    /// Bijective 3D pick: map a widget-local pixel to a semantic id.
+    fn pick_semantic_id(
+        &self,
+        _local_x: f32,
+        _local_y: f32,
+        _width: f32,
+        _height: f32,
+    ) -> Option<u64> {
+        None
+    }
 }
 
 #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
@@ -386,6 +397,17 @@ pub trait EtalonVectorDelegate: 'static {
         IntrinsicSizes::default()
     }
     fn destroy(&mut self) {}
+
+    /// Bijective 3D pick: map a widget-local pixel to a semantic id.
+    fn pick_semantic_id(
+        &self,
+        _local_x: f32,
+        _local_y: f32,
+        _width: f32,
+        _height: f32,
+    ) -> Option<u64> {
+        None
+    }
 }
 
 /// A lightweight DOM widget that records procedural vector and 3D-projected geometry

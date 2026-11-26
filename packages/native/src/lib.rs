@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Timothy Charles Holborn.
+// SPDX-License-Identifier: CC-BY-NC-ND-4.0
+
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 //! Native window renderer for the **Aether toolkit**.
@@ -34,6 +37,7 @@ mod contexts;
 mod event_handlers;
 mod hooks;
 mod link_handler;
+pub mod emf_hud_substrate;
 pub mod viewport;
 mod window_role;
 
@@ -93,6 +97,9 @@ pub use event_handlers::WinitEventHandlerId;
 pub use hooks::{document_zoom, set_document_zoom, use_back_button, use_window_event};
 #[cfg(any(feature = "vello", feature = "vello-hybrid"))]
 pub use viewport::EtalonFrameContext;
+pub use emf_hud_substrate::{
+    EtalonEmfUiSubstrate, EmfFieldCell, HudVertex, UiLayoutTree, MAX_EMF_CELLS, MAX_UI_NODES,
+};
 pub use viewport::{
     EtalonSurfaceDelegate, EtalonSurfaceError, EtalonSurfaceWidget, EtalonVectorDelegate,
     EtalonVectorFrame, EtalonVectorWidget, EtalonViewportState, RenderOutcome,

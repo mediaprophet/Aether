@@ -22,6 +22,7 @@ mod governance;
 mod graph;
 pub mod holographic_viewport;
 pub mod hooks;
+pub mod theme_projection;
 mod mailbox;
 #[cfg(test)]
 mod mailbox_tests;
@@ -48,7 +49,11 @@ pub use vibescript_abi;
 /// Native host contexts, actions, graph observations and source review.
 pub mod prelude {
     pub use crate::holographic_viewport::{
-        Holographic10dViewportSpec, Holographic10dViewportState,
+        Holographic10dViewportSpec, Holographic10dViewportState, HolographicNodeGpu,
+        MAX_HOLOGRAPHIC_GPU_NODES,
+    };
+    pub use crate::theme_projection::{
+        project_semantic_scene_with_cartridge, SpatialManifoldTopology,
     };
     pub use crate::hooks::*;
 }
